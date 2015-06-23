@@ -1,0 +1,16 @@
+
+        .error-messages {
+            -moz-transition: 1s linear all;
+            -o-transition: 1s linear all;
+            -webkit-transition: 1s linear all;
+            transition: 1s linear all;
+        }
+
+            .error-messages.ng-active {
+                color: #bf1c1c;
+                margin-bottom: 0;
+                margin-top: 8px;
+            }
+
+            .error-messages.ng-inactive {
+            }

@@ -1,0 +1,10 @@
+<div data-ng-controller="shell as vm">
+	<div class="main-container">
+		    <lb-spinner is-busy="vm.loadSpinner"></lb-spinner>
+            <div class="main-content">
+            	<toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
+				<div id="wrap" ng-view="" style="min-height: 637px">
+			</div>
+		</div>
+	</div>
+</div>

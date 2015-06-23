@@ -1,0 +1,205 @@
+<div class="row" data-ng-controller="login as vm">
+    <div class="col-sm-10 col-sm-offset-1">
+        <div class="login-container">
+            <div class="center">
+                <h1>
+                    <i class="ace-icon fa fa-map-marker green"></i>
+                    <span class="red">RideSense</span>
+                </h1>
+                <h4 class="blue" id="id-company-text">© LogBase</h4>
+            </div>
+
+            <div class="space-6"></div>
+            <div class="position-relative">
+                <!--Login Template-->
+                <form name="loginform">
+                    <div id="login-box" class="login-box visible widget-box no-border" data-ng-show="vm.logindiv">
+                        <div class="widget-body">
+                            <div class="widget-main"> 
+                                <h4 class="header blue lighter bigger">
+                                    <i class="ace-icon fa fa-coffee green"></i>
+                                    Please Enter Your Information
+                                </h4>                          
+                                <div class="space-6"></div>
+                                <div class="form-group" data-ng-class="{ 'has-error': loginform.txtUsername.$invalid && loginform.txtUsername.$touched }">
+                                    <span class="block input-icon input-icon-right">
+                                        <input type="email" class="form-control" id="txtUsername" data-ng-click="vm.hide();" name="txtUsername" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" data-ng-model="vm.userName" required placeholder="Username">
+                                        <i class="ace-icon fa fa-user"></i>
+                                    </span>
+                                    <div data-ng-messages="loginform.txtUsername.$error" data-ng-if="vm.interacted(loginform.txtUsername)" class="error-messages">
+                                        <div ng-message="required">User name required</div>
+                                        <div ng-message="pattern">Enter a valid email id</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" data-ng-class="{ 'has-error': loginform.txtPassword.$invalid && loginform.txtPassword.$touched }">
+                                    <span class="block input-icon input-icon-right">
+                                        <input type="password" class="form-control" id="txtPassword" data-ng-click="vm.hide();" name="txtPassword" data-ng-model="vm.password" required placeholder="Password">
+                                        <i class="ace-icon fa fa-lock"></i>
+                                    </span>
+                                    <div data-ng-messages="loginform.txtPassword.$error" data-ng-if="vm.interacted(loginform.txtPassword)" class="error-messages">
+                                        <div ng-message="required">Password required</div>
+                                    </div>
+                                </div>
+
+                                <div class="space"></div>
+                                <center style="margin-bottom:10px"><span ng-show="vm.success==false" style="color: #bf1c1c;">The email or password you entered is incorrect!</span></center>
+                                <div class="clearfix">                                        
+                                    <button type="button" class="width-35 pull-right btn btn-sm btn-primary" data-ng-disabled="!vm.canLogin" data-ng-click="vm.login()">
+                                        <i class="ace-icon fa fa-key"></i>
+                                        <span class="bigger-110">Login</span>
+                                    </button>
+                                </div>
+                                <div class="space-4"></div>
+                        </div>
+                        <div class="toolbar clearfix">
+                            <div>
+                                <a href="" class="forgot-password-link" data-ng-click="vm.forgotpasswordlinkclicked()">
+                                    <i class="ace-icon fa fa-arrow-left"></i>
+                                    I forgot my password
+                                </a>
+                            </div>
+
+                            <div>
+                                <a href="" class="user-signup-link" data-ng-click="vm.signuplinkclicked()">
+                                    I want to register
+                                    <i class="ace-icon fa fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>                        
+                        </div>
+                    </div>
+            </form>    
+            <!--Forgot Password Template-->
+            <form name="forgotpassform">
+                <div data-ng-show="vm.forgotdiv">
+                   <div id="forgot-box" class="forgot-box widget-box visible">
+                        <div class="widget-body">
+                            <div class="widget-main">
+                                <h4 class="header red lighter bigger">
+                                    <i class="ace-icon fa fa-key"></i>
+                                    Retrieve Password
+                                </h4>
+
+                                <div class="space-6"></div>
+                                <p>
+                                    Enter your email and to receive instructions
+                                </p>
+
+                                <form>
+                                    <div class="form-group" data-ng-class="{ 'has-error': forgotpassform.txtuseremail.$invalid && forgotpassform.txtuseremail.$touched }">
+                                        <span class="block input-icon input-icon-right">
+                                            <input type="email" class="form-control" placeholder="Email" data-ng-model="vm.useremail" name="txtuseremail" required ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/">
+                                            <i class="ace-icon fa fa-envelope"></i>
+                                        </span>
+                                        <div data-ng-messages="forgotpassform.txtuseremail.$error" data-ng-if="vm.interacted(forgotpassform.txtuseremail)" class="error-messages">
+                                            <div ng-message="required">User name required</div>
+                                            <div ng-message="pattern">Enter a valid email id</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="clearfix">
+                                        <button type="button" class="width-35 pull-right btn btn-sm btn-danger" data-ng-click="vm.forgotpassword()" data-ng-disabled="!vm.canResetPassword">
+                                            <i class="ace-icon fa fa-lightbulb-o"></i>
+                                            <span class="bigger-110">Send Me!</span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="toolbar center">
+                                <a href="" class="back-to-login-link" data-ng-click="vm.backtologinclicked()">
+                                    Back to login
+                                    <i class="ace-icon fa fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!-- Signup Template-->
+            <form name="signupform">
+                <div id="signup-box" class="signup-box widget-box no-border visible" data-ng-show="vm.signupdiv">
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <h4 class="header green lighter bigger">
+                                <i class="ace-icon fa fa-users blue"></i>
+                                New User Registration
+                            </h4>
+
+                            <div class="space-6"></div>
+                            <p> Enter your details to begin: </p>
+
+                            <form>
+                                <div class="form-group" data-ng-class="{ 'has-error': signupform.textnewemail.$invalid && signupform.textnewemail.$touched }">
+                                    <span class="block input-icon input-icon-right">
+                                        <input type="text" class="form-control" data-ng-model="vm.newuser.email" placeholder="Username" name="textnewemail" required ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/">
+                                        <i class="ace-icon fa fa-user"></i>
+                                    </span>
+                                    <div data-ng-messages="signupform.textnewemail.$error" data-ng-if="vm.interacted(signupform.textnewemail)" class="error-messages">
+                                        <div ng-message="required">User name required</div>
+                                        <div ng-message="pattern">Enter a valid email id</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" data-ng-class="{ 'has-error': signupform.textnewpwd.$invalid && signupform.textnewpwd.$touched }">
+                                    <span class="block input-icon input-icon-right">
+                                        <input type="password" class="form-control" placeholder="Password" name="textnewpwd" required minlength="8" data-ng-model="vm.newuser.password">
+                                        <i class="ace-icon fa fa-lock"></i>
+                                    </span>
+                                    <div data-ng-messages="signupform.textnewpwd.$error" data-ng-if="vm.interacted(signupform.textnewpwd)" class="error-messages">
+                                        <div ng-message="required">Password required</div>
+                                        <div ng-message="minlength">Enter password with minimum 8 characters</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" data-ng-class="{ 'has-error': signupform.textrepeatpwd.$invalid && signupform.textrepeatpwd.$touched }">
+                                    <span class="block input-icon input-icon-right">
+                                        <input type="password" class="form-control" placeholder="Repeat password" name="textrepeatpwd" required data-ng-model="vm.newuser.repeatpassword">
+                                        <i class="ace-icon fa fa-retweet"></i>
+                                    </span>
+                                    <div data-ng-messages="signupform.textrepeatpwd.$error" data-ng-if="vm.interacted(signupform.textrepeatpwd)" class="error-messages">
+                                        <div ng-message="required">Repeat the password</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" data-ng-class="{ 'has-error': signupform.chkagreement.$invalid && signupform.chkagreement.$touched }">
+                                    <input type="checkbox" class="ace" name="chkagreement" required data-ng-model="vm.newuser.agreed">
+                                    <span class="lbl">
+                                        I accept the
+                                        <a href="">User Agreement</a>
+                                    </span>
+                                </label>
+
+                                <div class="space-24"></div>
+                                <center style="margin-bottom:10px"><span ng-show="vm.repeatpwderror" style="color: #bf1c1c;">Password and Repeat password should be same</span></center>
+                                <div class="clearfix">
+                                    <button type="button" class="width-30 pull-left btn btn-sm" data-ng-click="vm.resetSignupForm">
+                                        <i class="ace-icon fa fa-refresh"></i>
+                                        <span class="bigger-110">Reset</span>
+                                    </button>
+
+                                    <button type="button" class="width-65 pull-right btn btn-sm btn-success" data-ng-disabled="!vm.canSignup" data-ng-click="vm.signup()">
+                                        <span class="bigger-110">Register</span>
+                                        <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="toolbar center">
+                            <a href="" data-target="#login-box" class="back-to-login-link" data-ng-click="vm.backtologinclicked()">
+                                <i class="ace-icon fa fa-arrow-left"></i>
+                                Back to login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+               
+
+                                
