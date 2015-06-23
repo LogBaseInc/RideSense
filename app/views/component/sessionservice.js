@@ -17,6 +17,7 @@ define(['angular'], function (angular) {
                 sessionStorage.clear();
                 sessionStorage.setItem('loginstatus', false);
                 userIdentity = null;
+                $rootScope.$emit('login:status', {isloggedIn:false});
             }
            
             function isLoggedIn() {
@@ -27,7 +28,7 @@ define(['angular'], function (angular) {
                 userIdentity = authdata;
                 sessionStorage.setItem('loginstatus', true);
                 sessionStorage.setItem('useridentity', angular.toJson(userIdentity, true));
-                //$rootScope.$emit('loginSuccess', userIdentity.isAuthenticated);
+                $rootScope.$emit('login:status', {isloggedIn:true});
             }
 
              function getSession() {

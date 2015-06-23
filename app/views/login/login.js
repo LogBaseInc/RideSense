@@ -14,6 +14,7 @@ define(['angular',
                 vm.newuser = {};
                 vm.newuser.agreed = false;
                 vm.repeatpwderror = false;
+                vm.success = true;
 
                 Object.defineProperty(vm, 'canLogin', {
                     get: canLogin
@@ -27,145 +28,150 @@ define(['angular',
                     get: canSignup
                 });
 
-                vm.success = true;
                 vm.interacted = function (field) {
                     return submitted || field.$dirty;
                 };
 
-                vm.login = function () {             
-                 spinner.show();
-                 submitted= true;
-                 loginservice.login(vm.userName, vm.password).then(loginCompleted, loginfailed)
-             };
+                activate();
 
-             function loginCompleted(data) {
-                spinner.hide();
-                submitted = false;
-                vm.success = true;
-                vm.password = null;
-                sessionservice.setSession(data);
-                $location.path('/account');            
-            }
-
-            function loginfailed(error) { 
-                spinner.hide();
-                submitted = false;
-                if(error.message.indexOf("The specified user does not exist") >= 0 || error.message.indexOf("The specified password is incorrect") >= 0)
-                {
-                    vm.success = false;
-                    vm.password = null;
-                    resetform($scope.loginform);
+                function activate(){
+                    sessionservice.clear();
                 }
-            }
 
-            vm.forgotpassword = function() {
-                spinner.show();
-                submitted= true;
-                loginservice.resetpasswordlink(vm.useremail).then(forgotpasswordcompleted, forgotpasswordfailed)
-            }
+                vm.login = function () {             
+                     spinner.show();
+                     submitted= true;
+                     loginservice.login(vm.userName, vm.password).then(loginCompleted, loginfailed)
+                };
 
-            function forgotpasswordcompleted() {
-                spinner.hide();
-                submitted = false;
-                notify.success('Password reset sent to '+vm.useremail);
-                vm.useremail = null;
-                resetform($scope.forgotpassform);
-                vm.backtologinclicked();
-            }
+                function loginCompleted(data) {
+                    spinner.hide();
+                    submitted = false;
+                    vm.success = true;
+                    vm.password = null;
+                    sessionservice.setSession(data);
+                    $location.path('/account');            
+                }
 
-            function forgotpasswordfailed(error) {
-                spinner.hide();
-                submitted = false;
-                notify.error(error.message)
-                vm.useremail = null;
-                resetform($scope.forgotpassform);
-            }
-
-            vm.resetSignupForm = function() {
-                vm.newuser.email = null;
-                vm.newuser = null;
-                resetform($scope.signupform);
-            }
-
-            vm.signup = function() {
-                spinner.show();
-                submitted= true;
-                loginservice.signup(vm.newuser.email, vm.newuser.password).then(signupcompleted, signupfailed)
-            }
-
-            function signupcompleted() {
-                spinner.hide();
-                submitted = false;
-                notify.success('Registered successfully!');
-                backtologinclicked();
-            }
-
-            function signupfailed(error) {
-                spinner.hide();
-                submitted = false;
-                notify.error(error.message)
-                vm.newuser = null;
-                resetform($scope.signupform);
-            }
-
-            vm.forgotpasswordlinkclicked = function() {
-                linkclicked();
-                vm.forgotdiv = true;
-            }
-
-            vm.signuplinkclicked = function() {
-                linkclicked();
-                vm.signupdiv = true;
-            }
-
-            vm.backtologinclicked = function() {
-                linkclicked();
-                vm.logindiv = true;
-            }
-
-            vm.hide = function () {
-                vm.success = true;
-            }
-
-            function canLogin() {
-                return $scope.loginform. $valid && !submitted;
-            }
-
-            function canResetPassword() {
-                return $scope.forgotpassform.$valid && !submitted;
-            }
-
-            function canSignup() {
-                if($scope.signupform.$valid)
-                {
-                    if(vm.newuser.password != null && vm.newuser.password != undefined &&
-                       vm.newuser.repeatpassword != null && vm.newuser.repeatpassword != undefined)
+                function loginfailed(error) { 
+                    spinner.hide();
+                    submitted = false;
+                    if(error.message.indexOf("The specified user does not exist") >= 0 || error.message.indexOf("The specified password is incorrect") >= 0)
                     {
-                        if(vm.newuser.password !== vm.newuser.repeatpassword)
-                            vm.repeatpwderror = true;
-                        else
-                            vm.repeatpwderror = false;
+                        vm.success = false;
+                        vm.password = null;
+                        resetform($scope.loginform);
                     }
                 }
-                return $scope.signupform.$valid && !submitted && !vm.repeatpwderror;
-            }
-            
-            function resetform(form) {
-                form.$setPristine();
-                form.$setUntouched();
-            }
 
-            function linkclicked() {
-                vm.logindiv = false;
-                vm.signupdiv = false;
-                vm.forgotdiv = false;
-                vm.useremail = null;
-                vm.password = null;
-                vm.userName =null;
-                resetform($scope.forgotpassform);
-                resetform($scope.loginform);
-                resetform($scope.signupform);
-            }
+                vm.forgotpassword = function() {
+                    spinner.show();
+                    submitted= true;
+                    loginservice.resetpasswordlink(vm.useremail).then(forgotpasswordcompleted, forgotpasswordfailed)
+                }
+
+                function forgotpasswordcompleted() {
+                    spinner.hide();
+                    submitted = false;
+                    notify.success('Password reset sent to '+vm.useremail);
+                    vm.useremail = null;
+                    resetform($scope.forgotpassform);
+                    vm.backtologinclicked();
+                }
+
+                function forgotpasswordfailed(error) {
+                    spinner.hide();
+                    submitted = false;
+                    notify.error(error.message)
+                    vm.useremail = null;
+                    resetform($scope.forgotpassform);
+                }
+
+                vm.resetSignupForm = function() {
+                    vm.newuser.email = null;
+                    vm.newuser = null;
+                    resetform($scope.signupform);
+                }
+
+                vm.signup = function() {
+                    spinner.show();
+                    submitted= true;
+                    loginservice.signup(vm.newuser.email, vm.newuser.password).then(signupcompleted, signupfailed)
+                }
+
+                function signupcompleted() {
+                    spinner.hide();
+                    submitted = false;
+                    notify.success('Registered successfully!');
+                    backtologinclicked();
+                }
+
+                function signupfailed(error) {
+                    spinner.hide();
+                    submitted = false;
+                    notify.error(error.message)
+                    vm.newuser = null;
+                    resetform($scope.signupform);
+                }
+
+                vm.forgotpasswordlinkclicked = function() {
+                    linkclicked();
+                    vm.forgotdiv = true;
+                }
+
+                vm.signuplinkclicked = function() {
+                    linkclicked();
+                    vm.signupdiv = true;
+                }
+
+                vm.backtologinclicked = function() {
+                    linkclicked();
+                    vm.logindiv = true;
+                }
+
+                vm.hide = function () {
+                    vm.success = true;
+                }
+
+                function canLogin() {
+                    return $scope.loginform. $valid && !submitted;
+                }
+
+                function canResetPassword() {
+                    return $scope.forgotpassform.$valid && !submitted;
+                }
+
+                function canSignup() {
+                    if($scope.signupform.$valid)
+                    {
+                        if(vm.newuser.password != null && vm.newuser.password != undefined &&
+                           vm.newuser.repeatpassword != null && vm.newuser.repeatpassword != undefined)
+                        {
+                            if(vm.newuser.password !== vm.newuser.repeatpassword)
+                                vm.repeatpwderror = true;
+                            else
+                                vm.repeatpwderror = false;
+                        }
+                    }
+                    return $scope.signupform.$valid && !submitted && !vm.repeatpwderror;
+                }
+                
+                function resetform(form) {
+                    form.$setPristine();
+                    form.$setUntouched();
+                }
+
+                function linkclicked() {
+                    vm.logindiv = false;
+                    vm.signupdiv = false;
+                    vm.forgotdiv = false;
+                    vm.useremail = null;
+                    vm.password = null;
+                    vm.userName =null;
+                    resetform($scope.forgotpassform);
+                    resetform($scope.loginform);
+                    resetform($scope.signupform);
+                }
         }
     })();
 });
