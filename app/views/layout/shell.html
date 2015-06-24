@@ -2,7 +2,7 @@
 	<div class="main-container">
 		    <lb-spinner is-busy="vm.loadSpinner"></lb-spinner>
             <div class="main-content" style="padding:0px">
-            	<nav class="navbar navbar-default" data-ng-show="vm.isloggedIn == true">
+            	<nav class="navbar navbar-default" data-ng-show="vm.isloggedIn">
 			      <div class="container-fluid">
 			        <div class="navbar-header">
 			          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
@@ -23,7 +23,7 @@
 			            <li class="dropdown">
 			              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings<span class="caret"></span></a>
 			              <ul class="dropdown-menu" role="menu">
-			                <li><a href="">Account</a></li>
+			                <li><a href="#/account">Account</a></li>
 			                <li class="divider"></li>
 			                <li><a href="" data-ng-click="vm.logout()">Log out</a></li>
 			              </ul>

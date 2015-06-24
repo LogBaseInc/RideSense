@@ -18,6 +18,7 @@ define(['angular'], function (angular) {
                 sessionStorage.setItem('loginstatus', false);
                 userIdentity = null;
                 $rootScope.$emit('login:status', {isloggedIn:false});
+                $('body').addClass('login-layout light-login');
             }
            
             function isLoggedIn() {
@@ -29,13 +30,14 @@ define(['angular'], function (angular) {
                 sessionStorage.setItem('loginstatus', true);
                 sessionStorage.setItem('useridentity', angular.toJson(userIdentity, true));
                 $rootScope.$emit('login:status', {isloggedIn:true});
+                $('body').removeClass('login-layout light-login');
             }
 
              function getSession() {
                 var session = null;
                 var user = sessionStorage.getItem('useridentity');
                 if (user)
-                    session = angular.fromJson(user);
+                    session = angular.fromJson(user);                
                 return session
             }
         }

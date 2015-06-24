@@ -44,7 +44,8 @@ define(['angular',
                      config: {
                          templateUrl: 'views/login/login.html',
                          title: 'login',
-                         controllerUrl: 'views/login/login'
+                         controllerUrl: 'views/login/login',
+                         allowAnonymous: true
                      }
                  },
                  {
@@ -52,7 +53,8 @@ define(['angular',
                      config: {
                          templateUrl: 'views/account/account.html',
                          title: 'account',
-                         controllerUrl: 'views/account/account'
+                         controllerUrl: 'views/account/account',
+                         allowAnonymous: false
                      }
                  }
             ];

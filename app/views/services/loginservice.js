@@ -16,24 +16,24 @@ define(['angular', 'config.route'], function (angular, configroute) {
 
             
             function login(email, password) {
-                var dfd = jQuery.Deferred();
+                var dfd =  $q.defer();
                 firebase.authWithPassword({
                   email    : email,
                   password : password
                 }, function(error, authData) {
                   if(error)
-                    return dfd.reject(error);
+                    dfd.reject(error);
                   else
-                    return dfd.resolve(authData);
+                    dfd.resolve(authData);
                 },{
                   remember: "sessionOnly"                  
                 });
-                return dfd.promise();
+                return dfd.promise;
             }
 
             function resetpasswordlink(email)
             {
-              var dfd = jQuery.Deferred();
+              var dfd = $q.defer();
               firebase.resetPassword({
                   email : email
                 }, function(error) {
@@ -42,12 +42,12 @@ define(['angular', 'config.route'], function (angular, configroute) {
                 else 
                   return dfd.resolve();
               });
-              return dfd.promise();
+              return dfd.promise;
             }
 
             function signup(email, password)
             {
-              var dfd = jQuery.Deferred();
+              var dfd = $q.defer();
               firebase.createUser({
                 email    : email,
                 password : password
@@ -57,7 +57,7 @@ define(['angular', 'config.route'], function (angular, configroute) {
                 else 
                   return dfd.resolve();
               });
-              return dfd.promise();
+              return dfd.promise;
             }
 
         }

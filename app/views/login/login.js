@@ -33,7 +33,6 @@ define(['angular',
                 };
 
                 activate();
-
                 function activate(){
                     sessionservice.clear();
                 }

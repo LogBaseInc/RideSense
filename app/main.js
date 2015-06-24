@@ -15,7 +15,8 @@ require.config({
         'config.route': 'config.route',
         'ui-bootstrap' :'scripts/ui-bootstrap-tpls-0.12.0',
         'spinner': 'scripts/spin',
-        'toaster' :'bower_components/angularjs-toaster/toaster'
+        'toaster' :'bower_components/angularjs-toaster/toaster',
+        'ngDialog' : 'bower_components/ngDialog/js/ngDialog'
     },
     shim: {
         angular: {

@@ -52,7 +52,6 @@ body {
     margin-left: 190px;
 }
 .page-content {
-    background-color: #fff;
     position: relative;
     margin: 0;
     padding: 8px 20px 24px;
@@ -1680,7 +1679,7 @@ li.open .user-info {
     border-width: 0;
 }
 .navbar .navbar-nav .dropdown-menu>li>a {
-    color: #FFF!important;
+    color: #FFF;
 }
 .navbar .navbar-nav .dropdown-menu>li>a:hover {
     background-color: rgba(0, 0, 0, .07)!important;
@@ -7291,7 +7290,7 @@ label.inline {
     margin-bottom: 3px;
 }
 textarea, input[type=text], input[type=password], input[type=datetime], input[type=datetime-local], input[type=date], input[type=month], input[type=time], input[type=week], input[type=number], input[type=email], input[type=url], input[type=search], input[type=tel], input[type=color] {
-    border-radius: 0!important;
+    /*border-radius: 0!important;*/
     color: #858585;
     background-color: #fff;
     border: 1px solid #d5d5d5;
@@ -8248,7 +8247,7 @@ input.ace+.lbl.padding-0::before {
     border-color: #EEE;
 }
 .input-group .input-group-addon {
-    border-radius: 0!important;
+    /*border-radius: 0!important;*/
 }
 .form-group.has-success .input-group .input-group-addon {
     border-color: #9cc573;

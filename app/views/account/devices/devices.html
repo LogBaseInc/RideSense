@@ -1,0 +1,104 @@
+<div data-ng-controller="devices as vm">
+	<div class="col-xs-12" style="margin-bottom:10px">
+		<h3 style="display:inline">My Devices</h3>
+		<a style="float:right" class="btn btn-success" href="" data-ng-click="vm.buydevice()">Buy a device</a>
+	</div>
+	<div class="form-group col-xs-12">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search" id="inputGroup" data-ng-model="search">
+            <span class="input-group-addon">
+                <i class="fa fa-search"></i>
+            </span>
+        </div>
+    </div>
+	<div class="col-xs-12"  data-ng-repeat="device in vm.devices | filter:search">
+		<div class="widget-header">
+			<h5 class="widget-title">Device {{$index+1}}</h5>
+			<div class="widget-toolbar">
+				<a href="">
+					<i class="ace-icon fa fa-times red" tooltip="Remove"></i>
+				</a>
+			</div>
+		</div>
+
+		<div class="widget-body">
+			<div class="widget-main" ng-class-odd="'alert alert-info'" ng-class-even="'alert alert-success'">
+				<a href="" data-ng-click="vm.editdevice(device)">
+					<div class="row">
+						<div class="col-xs-4">
+							<span style="float:right">Device #: </span>
+						</div>
+						<div class="col-xs-8">
+							<label>{{device.devicenumber}}</label>
+					    </div>
+					 </div>
+					 <div class="row">
+						<div class="col-xs-4">
+							<span style="float:right">Bought on: </span>
+						</div>
+						<div class="col-xs-8">
+							<label>{{device.boughton}}</label>
+					    </div>
+					 </div>
+					 <div class="row">
+						<div class="col-xs-4">
+							<span style="float:right">Car #: </span>
+						</div>
+						<div class="col-xs-8">
+							<label>{{device.carnumber}}</label>
+					    </div>
+					 </div>
+					 <div class="row">
+						<div class="col-xs-4">
+							<span style="float:right">License #: </span>
+						</div>
+						<div class="col-xs-8">
+							<label>{{device.licensenumber}}</label>
+					    </div>
+					 </div>
+					 <div class="row">
+						<div class="col-xs-4">
+							<span style="float:right">Model #: </span>
+						</div>
+						<div class="col-xs-8">
+							<label>{{device.modelnumber}}</label>
+					    </div>
+					 </div>
+				</a>
+			</div>
+		</div>
+	</div>
+	<script type="text/ng-template" id="devicedialog">
+        <div class="ngdialog-message">
+           <div class="row col-sm-12">
+				<form class="form-horizontal" name="deviceform">
+					<div class="form-group col-sm-12">
+						<label class="control-label no-padding-right">Car number</label>
+						</br>
+						<div>
+							 <input type="text" class="form-control" placeholder="Car number" data-ng-model="device.carnumber" required>
+						</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<label class="control-label no-padding-right">License number</label>
+						</br>
+						<div>
+							 <input type="text" class="form-control" placeholder="License number" data-ng-model="device.licensenumber" required>
+						</div>
+					</div>
+					<div class="form-group col-sm-12">
+						<label class="control-label no-padding-right">Model number</label>
+						</br>
+						<div>
+							 <input type="text" class="form-control" placeholder="Model number" data-ng-model="device.modelnumber" required>
+						</div>
+					</div>
+				</form>
+			</div>
+        </div>
+        <div class="ngdialog-buttons">
+            <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog('Cancel')">Cancel</button>
+            <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="openSecond()" data-ng-disabled="!canBuy">Buy</button>
+        </div>
+    </script>
+</div>

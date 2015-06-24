@@ -3,9 +3,9 @@ define(['angular'], function () {
         'use strict';
 
         var controllerId = 'shell';
-        angular.module('rideSenseApp').controller(controllerId, ['$rootScope', '$location', 'sessionservice', shell]);
+        angular.module('rideSenseApp').controller(controllerId, ['$rootScope', '$scope', '$location', 'sessionservice', shell]);
 
-        function shell($rootScope, $location, sessionservice) {
+        function shell($rootScope, $scope, $location, sessionservice) {
             var vm = this;
             vm.loadSpinner = false;
             vm.isloggedIn = sessionservice.isLoggedIn();
@@ -23,6 +23,19 @@ define(['angular'], function () {
             $rootScope.$on('login:status', function (event, data) {
                 vm.isloggedIn = data.isloggedIn;
             });
+
+            // $scope.$on('$routeChangeStart', function (event, next, current) {
+            //     var isAnonymous = false;
+            //     if (next.$$route && next.$$route.allowAnonymous)
+            //         isAnonymous = next.$$route.allowAnonymous;
+            //     //alert(isAnonymous +' '+ vm.isLoggedIn)
+            //     if (!isAnonymous && !vm.isLoggedIn) {
+            //         event.preventDefault();
+            //         $rootScope.$evalAsync(function () {
+            //             $location.path('/login');
+            //         });
+            //     }
+            // });
         }
     })();
 });

@@ -10,5 +10,6 @@ define([
     'jquery',
     'ui-bootstrap',
     'spinner',
-    'toaster'
+    'toaster',
+    'ngDialog'
 ], function () { });
