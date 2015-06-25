@@ -11,5 +11,7 @@ define([
     'ui-bootstrap',
     'spinner',
     'toaster',
-    'ngDialog'
+    'ngDialog',
+    'googlemaps',
+    'lodash'
 ], function () { });

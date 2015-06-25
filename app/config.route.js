@@ -12,6 +12,14 @@ define(['angular',
             app.$templateCache = $templateCache;
         }]);
 
+        app.config(function(uiGmapGoogleMapApiProvider) {
+            uiGmapGoogleMapApiProvider.configure({
+                key: 'AIzaSyD0aOSSRwYlmV586w1uIPaOxGIV-6123LU',
+                v: '3.17',
+                libraries: 'weather,geometry,visualization'
+            });
+        });
+
         // Configure the routes and route resolvers
         app.config(['$routeProvider', 'routes', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$httpProvider', routeConfigurator]);
 
@@ -54,6 +62,15 @@ define(['angular',
                          templateUrl: 'views/account/account.html',
                          title: 'account',
                          controllerUrl: 'views/account/account',
+                         allowAnonymous: false
+                     }
+                 },
+                 {
+                     url: '/live',
+                     config: {
+                         templateUrl: 'views/live/live.html',
+                         title: 'live',
+                         controllerUrl: 'views/live/live',
                          allowAnonymous: false
                      }
                  }

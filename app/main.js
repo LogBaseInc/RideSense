@@ -16,7 +16,9 @@ require.config({
         'ui-bootstrap' :'scripts/ui-bootstrap-tpls-0.12.0',
         'spinner': 'scripts/spin',
         'toaster' :'bower_components/angularjs-toaster/toaster',
-        'ngDialog' : 'bower_components/ngDialog/js/ngDialog'
+        'ngDialog' : 'bower_components/ngDialog/js/ngDialog',
+        'googlemaps' : 'bower_components/angular-google-maps/dist/angular-google-maps',
+        'lodash': 'bower_components/lodash/lodash'
     },
     shim: {
         angular: {
@@ -45,6 +47,7 @@ require.config({
             exports: 'Spinner'
         },
         'toaster': ['angular','angular-animate'],
+        'googlemaps': ['angular'],
     },
 });
 

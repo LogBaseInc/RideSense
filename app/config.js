@@ -7,7 +7,8 @@ define(['angular'], function (angular) {
 
         var config = {
             docTitle: 'RideSense::',
-            firebaseUrl: 'https://logbasedev.firebaseIO.com/'
+            firebaseUrl: 'https://logbasedev.firebaseIO.com/',
+            idleTime : '15'
         };
 
         app.value('config', config);

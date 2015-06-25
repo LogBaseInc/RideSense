@@ -15,7 +15,8 @@
 
                // 3rd Party Modules
                'ui.bootstrap',     
-               'toaster'
+               'toaster',
+               'uiGmapgoogle-maps',
             ]);
 
              app.run(['$route', function ($route) {

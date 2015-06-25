@@ -1,0 +1,29 @@
+<div data-ng-controller="live as vm">
+	 <div class="container-fluid" data-ng-if="vm.showmaps">
+		<div class="row">
+			<div id="searchBoxParent"></div>
+			<div class="tm-live-map">
+				<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom'>
+    				<ui-gmap-search-box template="vm.searchbox.template" events="vm.searchbox.events" position="BOTTOM_RIGHT"></ui-gmap-search-box>
+					<ui-gmap-markers models="vm.cars.models" coords="'self'" options="'options'" events="vm.cars.events"></ui-gmap-markers>
+				</ui-gmap-google-map>
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid tm-live-overlay" data-ng-if="vm.showmaps">
+		<div class="row">
+			<div class="col-xs-6 col-md-9">
+			</div>
+			<div class="col-xs-6 col-md-3 tm-live-summary">
+				<p class="tm-live-today">Today</p> 
+				<h1 class="tm-live-distance">{{vm.distanceCovered}} <small class="tm-overlay-unit">km <span class="glyphicon glyphicon-arrow-up"></span></small></h1>
+				<h4>{{vm.activeCabs}} <small class="tm-overlay-unit">running</small> | {{vm.idleCabs}} <small class="tm-overlay-unit">idle</small></h4>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/ng-template" id="searchbox.tpl.html">
+	
+   	<input type="text" class="form-control" placeholder="Search Location..." style="width:200px">
+</script>

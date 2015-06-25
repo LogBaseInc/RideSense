@@ -1056,12 +1056,12 @@ pre.prettyprint {
     color: #fff;
 }
 .navbar .navbar-brand {
-    color: #fff;
+    /*color: #fff;
     font-size: 24px;
     text-shadow: none;
     padding-top: 10px;
     padding-bottom: 10px;
-    height: auto;
+    height: auto;*/
 }
 .navbar .navbar-brand:hover, .navbar .navbar-brand:focus {
     color: #fff;
@@ -1628,20 +1628,20 @@ li.open .user-info {
     max-height: 120px;
 }
 }.navbar .navbar-nav>li {
-    border: 1px solid rgba(0, 0, 0, .2);
+    /*border: 1px solid rgba(0, 0, 0, .2);*/
     border-width: 0 1px 0 0;
 }
 .navbar .navbar-nav>li:first-child {
     border-width: 0 1px 0 1px;
 }
 .navbar .navbar-nav>li>a {
-    padding-top: 12px;
+    /*padding-top: 12px;
     padding-bottom: 11px;
     height: 45px;
     background-color: transparent;
     font-size: 13px;
     color: #fff;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, .25);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .25);*/
 }
 .navbar .navbar-nav>li>a:hover, .navbar .navbar-nav>li>a:focus, .navbar .navbar-nav>li.open>a {
     background-color: rgba(0, 0, 0, .1)!important;

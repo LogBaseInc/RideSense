@@ -49,7 +49,7 @@ define(['angular',
                     vm.success = true;
                     vm.password = null;
                     sessionservice.setSession(data);
-                    $location.path('/account');            
+                    $location.path('/live');            
                 }
 
                 function loginfailed(error) { 
