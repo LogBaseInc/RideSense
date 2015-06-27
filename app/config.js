@@ -6,7 +6,7 @@ define(['angular'], function (angular) {
         var app = angular.module('rideSenseApp');
 
         var config = {
-            docTitle: 'RideSense::',
+            docTitle: 'Ridesense::',
             firebaseUrl: 'https://logbasedev.firebaseIO.com/',
             idleTime : '15'
         };

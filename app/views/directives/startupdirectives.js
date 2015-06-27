@@ -46,23 +46,21 @@ define(['angular'], function (angular) {
             }
         }]);   
 
-        module.directive('googlePlaces', function(){
+        module.directive('googlePlaces', ['$rootScope', function($rootScope){
                 return {
                     restrict:'E',
                     replace:true,
-                    // transclude:true,
-                    scope: {location:'='},
-                    template: '<input id="google_places_ac" name="google_places_ac" type="text" class="input-block-level"/>',
+                    scope: {},
+                    template: '<input id="google_places_ac" name="google_places_ac" type="text" class="input-block-level" placeholder="Search location..." style="border:0px; width:100%; position: relative; z-index:3;"/>',
                     link: function($scope, elm, attrs){
                         var autocomplete = new google.maps.places.Autocomplete($("#google_places_ac")[0], {});
                         google.maps.event.addListener(autocomplete, 'place_changed', function() {
                             var place = autocomplete.getPlace();
-                            $scope.location = place.geometry.location.lat() + ',' + place.geometry.location.lng();
-                            $scope.$apply();
+                            $rootScope.$emit('search:location', {lat:place.geometry.location.lat(), lng:place.geometry.location.lng()});
                         });
                     }
                 }
-            });
+            }]);
 
     })();
 });

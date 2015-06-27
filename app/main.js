@@ -18,7 +18,9 @@ require.config({
         'toaster' :'bower_components/angularjs-toaster/toaster',
         'ngDialog' : 'bower_components/ngDialog/js/ngDialog',
         'googlemaps' : 'bower_components/angular-google-maps/dist/angular-google-maps',
-        'lodash': 'bower_components/lodash/lodash'
+        'lodash': 'bower_components/lodash/lodash',
+        'highcarts-src': 'scripts/highcharts.src',
+        'highcharts' : 'bower_components/highcharts-ng/dist/highcharts-ng'
     },
     shim: {
         angular: {
@@ -48,6 +50,7 @@ require.config({
         },
         'toaster': ['angular','angular-animate'],
         'googlemaps': ['angular'],
+        'highcharts': ['jquery','angular','highcarts-src'],
     },
 });
 

@@ -13,5 +13,7 @@ define([
     'toaster',
     'ngDialog',
     'googlemaps',
-    'lodash'
+    'lodash',
+    'highcarts-src',
+    'highcharts'
 ], function () { });

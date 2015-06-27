@@ -1,0 +1,87 @@
+<div data-ng-controller="alerts as vm">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12 col-md-8">
+				<br/>
+				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Alerts</h5>
+				<!-- Repeat section starts -->
+				<hr/>
+				<div class="row">
+					<div class="col-xs-8">
+						<p><strong>Car #62</strong>: Panic button pressed</p>
+					</div>
+					<div class="col-xs-4">
+						<p class="text-muted text-right">12 min ago</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-7">
+						<p>@Ramanathapuram Signal</p>
+					</div>
+					<div class="col-xs-5">
+						<div class="btn-group pull-right" role="group">
+						  <button type="button" class="btn btn-sm btn-default">Ignore</button>
+						  <button type="button" class="btn btn-sm btn-default">Close</button>
+						</div>
+					</div>
+				</div>
+				<!--Another repeat for mock -->
+				<hr/>
+				<div class="row">
+					<div class="col-xs-8">
+						<p><strong>Car #47</strong>: Car off grid</p>
+					</div>
+					<div class="col-xs-4">
+						<p class="text-muted text-right">26 min ago</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-7">
+						<p>@Kurumbapalayam Signal</p>
+					</div>
+					<div class="col-xs-5">
+						<div class="btn-group pull-right" role="group">
+						  <button type="button" class="btn btn-sm btn-default">Ignore</button>
+						  <button type="button" class="btn btn-sm btn-default">Close</button>
+						</div>
+					</div>
+				</div>
+				<!-- Repeat section ends -->
+				<div class="row">
+					<div class="col-xs-12">
+						<br/>
+						<button type="button" class="btn btn-info btn-sm">Previous Alerts</button>
+						<br/><br/>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-md-4 tm-alerts-summary">
+				<br/>
+				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Alerts Summary</h5>
+				<br/>
+				<highchart id="alertsChart" config="vm.alertsChartConfig"></highchart>
+				<div class="row">
+					<div class="col-xs-6">
+						<center>
+							<h2>2</h2>
+							<small>Open Alerts</small>
+						</center>
+					</div>
+					<div class="col-xs-6">
+						<center>
+							<h2>28</h2>
+							<small>Closed Alerts</small>
+						</center>
+					</div>
+				</div>
+				<hr/><br/>
+				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Alerts Contact Number</h5>
+				<br/>
+				<input type="number" class="form-control" placeholder="Mobile # to send alerts">
+				<br/>
+				<button type="button" class="btn btn-info btn-sm">Save Contact Number</button>
+				<br/><br/><br/>
+			</div>
+		</div>
+	</div>
+</div>

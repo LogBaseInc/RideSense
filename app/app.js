@@ -17,6 +17,7 @@
                'ui.bootstrap',     
                'toaster',
                'uiGmapgoogle-maps',
+               'highcharts-ng'
             ]);
 
              app.run(['$route', function ($route) {

@@ -73,6 +73,33 @@ define(['angular',
                          controllerUrl: 'views/live/live',
                          allowAnonymous: false
                      }
+                 },
+                 {
+                     url: '/alerts',
+                     config: {
+                         templateUrl: 'views/alerts/alerts.html',
+                         title: 'alerts',
+                         controllerUrl: 'views/alerts/alerts',
+                         allowAnonymous: false
+                     }
+                 },
+                 {
+                     url: '/metrics/cars',
+                     config: {
+                         templateUrl: 'views/metrics/cars/carmetrics.html',
+                         title: 'alerts',
+                         controllerUrl: 'views/metrics/cars/carmetrics',
+                         allowAnonymous: false
+                     }
+                 },
+                 {
+                     url: '/metrics/trips',
+                     config: {
+                         templateUrl: 'views/metrics/trips/tripmetrics.html',
+                         title: 'alerts',
+                         controllerUrl: 'views/metrics/trips/tripmetrics',
+                         allowAnonymous: false
+                     }
                  }
             ];
 

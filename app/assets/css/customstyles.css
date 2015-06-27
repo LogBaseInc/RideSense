@@ -15,8 +15,6 @@
         .error-messages.ng-inactive {
         }
 
-/* GENERAL */
-
 html {
     height:92%;
 }
@@ -24,7 +22,7 @@ html {
 body, .tm-partials, .tm-live-map {
     height: 100%;
     width: 100%;
-    font-family: 'Roboto Slab',sans-serif !important;
+    font-family: 'Roboto Slab' !important;
 }
 
 .navbar {
@@ -33,7 +31,7 @@ body, .tm-partials, .tm-live-map {
 
 
 .badge {
-    background-color: LightCoral;
+    background-color: LightCoral !important;
 }
 
 .dropdown-toggle {
@@ -108,6 +106,10 @@ hr {
 
 .tm-search-group {
     background-color: LightGray;
+}
+
+.tm-marker-img {
+    height:40px;
 }
 
 /* FOR TRIP METRICS */
@@ -193,8 +195,8 @@ hr {
 }
 
 .btn-info {
-    background-color: LightCoral;
-    border-color: LightCoral;
+    background-color: LightCoral !important;
+    border-color: LightCoral !important;
 }
 
 .btn-info:hover {
@@ -202,7 +204,7 @@ hr {
     border-color: #D87373;
 }
 
-/* FOR TRIP METRICS */
+/* FOR CAR METRICS */
 
 .tm-good-health {
     color: #689F38;
@@ -210,4 +212,34 @@ hr {
 
 .tm-car-summary {
     background-color: #ECEFF1;
+}
+
+.tm-marker {
+    padding-top: 20px;
+}
+
+.tm-marker-img:hover {
+    opacity: 0.60;
+    cursor: pointer;
+}
+
+.tm-car-card {
+    border: Solid;
+    border-width: 2px;
+    border-color: #ECEFF1;
+    background-color: #ECEFF1;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 2px 2px 1px LightGray;
+    cursor: pointer;
+}
+
+.tm-car-card:hover {
+    box-shadow: 3px 3px 2px LightGray;
+}
+
+/* FOR ALERTS */
+
+.tm-alerts-summary {
+    background-color: WhiteSmoke;
 }

@@ -1,0 +1,89 @@
+<div data-ng-controller="tripmetrics as vm">
+	<div class="container-fluid">
+		<div class="row">
+			<a href="#/metrics/trips">
+				<div class="col-xs-6 tm-tab tm-tab-active">
+					<span>Trips</span>
+				</div>
+			</a>
+			<a href="#/metrics/cars">
+				<div class="col-xs-6 tm-tab">
+					<span>Cars</span>
+				</div>
+			</a>
+		</div>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12 col-md-8 tm-trips-chart">
+				<br/>
+				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Trips Summary</h5>
+				<br/>
+					<div class="row">
+						<a href="">
+							<div class="col-xs-4 tm-summary-tab tm-summary-tab-active">
+								<span>Daily</span>
+							</div>
+						</a>
+						<a href="">
+							<div class="col-xs-4 tm-summary-tab">
+								<span>Monthly</span>
+							</div>
+						</a>
+						<a href="">
+							<div class="col-xs-4 tm-summary-tab">
+								<span>Yearly</span>
+							</div>
+						</a>
+					</div>
+				<br/>
+				<highchart id="tripsChart" config="vm.tripsChartConfig"></highchart>
+			</div>
+			<div class="col-xs-12 col-md-4 tm-trip-summary">
+				<br/>
+				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Statistics</h5>
+				<small>Jun 21, 2015 upto Now</small>
+				<hr/>
+				<h2>5623 km <small> (+353) <span class="glyphicon glyphicon-arrow-up"></small></h2>
+				<h4>120 trips</h4>
+				<h4>82% running | 18% idle</h4>		
+				<br/><br/>
+			</div>
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-xs-12">
+				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Recent Trips</h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-md-4 tm-card-wrap" ng-repeat="trip in vm.recentTrips">
+				<div class="tm-card" ng-click="cardClicked()">
+					<div class="row">
+						<div class="col-xs-3">
+							<h4>#{{trip.carID}}</h4>
+							<small>Car ID</small>
+						</div>
+						<div class="col-xs-3">
+							<h4>{{trip.score == null? 'NR' : trip.score}}</h4>
+							<small>Trip Score</small>
+						</div>
+						<div class="col-xs-6">
+							<h4 class="text-right">{{trip.distance}} kms | {{trip.duration}} min</h4>
+							<p class="text-right"><small>{{trip.startTime}}</small></p>
+						</div>
+					</div>
+					<hr/>
+					<p>{{trip.from}} > {{trip.to}}</p>
+				</div>
+			</div>
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-xs-12">
+				<button type="button" class="btn btn-info btn-sm">More Trips</button>
+			</div>
+		</div>
+		<br/>
+	</div>
+</div>
