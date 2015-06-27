@@ -1,5 +1,6 @@
 define(['angular',
-    'config.route'], function (angular, configroute) {
+    'config.route',
+    'lib'], function (angular, configroute) {
     (function () {
 
         configroute.register.controller('live', ['$rootScope', '$scope', 'config', 'spinner', 'uiGmapGoogleMapApi', live]);
@@ -28,11 +29,17 @@ define(['angular',
 		  		if(searchoption == 'location'){
 		  			vm.locationsearch = true;
 		  			vm.carsearch = false;
+		  			vm.carsearchselected = null;
 		  		}
 		  		else{
 					vm.locationsearch = false;
 					vm.carsearch = true;
+					vm.carsearchselected = null;
 		  		}
+		  	}
+
+		  	vm.carsearched = function($item, $model, $label){
+		  		setGoogleMaps($item.latitude, $item.longitude);
 		  	}
 
 		  	vm.marker = {
