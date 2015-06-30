@@ -23,6 +23,8 @@ define(['angular',
 			var directionsDisplays = [];
 			var directionsService
 			var mapinstance;
+			var routecolor = ['red', 'green',  'purple', 'orange', 'blue'];
+			// ['#F4CE37', '#00adef', '#7cc576', '#f36523', '#898f99'];
 
 		  	activate();
 		  	function activate(){
@@ -57,7 +59,7 @@ define(['angular',
 		  		if(vm.dragMarker) {
 			  		vm.marker.coords.latitude =  vm.map.center.latitude;
 			  	    vm.marker.coords.longitude =   vm.map.center.longitude;
-			  	    setGoogleMaps(vm.map.center.latitude, vm.map.center.longitude);
+			  	    //setGoogleMaps(vm.map.center.latitude, vm.map.center.longitude);
 			  	    calculateDistances();
 			  	}
 			  	else{
@@ -79,12 +81,12 @@ define(['angular',
 		        latitude: 1000000000,
 		        longitude: 1000000000
 		      },
-		      options: { draggable: true, icon: 'assets/images/marker-small.png' },
+		      options: { draggable: true, icon: 'assets/images/user-marker-small.png' },
 		      events: {
 		        dragend: function (marker, eventName, args) {
 		          var lat = marker.getPosition().lat();
 		          var lng = marker.getPosition().lng();
-		  		  setGoogleMaps(lat, lng);
+		  		  //setGoogleMaps(lat, lng);
 		  		  calculateDistances();
 		  		  vm.cars.models = vm.cars.models;
 		        }
@@ -116,14 +118,14 @@ define(['angular',
 		  				{
 		  					latitude: data[i].latitude,
 		  					longitude: data[i].longitude,
-		  					title: data[i].devicenumber,
+		  					title: '#'+data[i].devicenumber,
 		  					id : i,
 		  					isIdle: isIdle,
 		  					options: {
-					    		labelContent:  data[i].devicenumber, 
+					    		labelContent:  '#'+data[i].devicenumber, 
 					    		labelClass: ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
 					    		icon: (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
-					    		labelAnchor: ((isIdle && vm.dragMarker) ? '20 80' : '0 0')
+					    		labelAnchor: ((isIdle && vm.dragMarker) ? '20 60' : '0 0')
 				    		}
 		  				});
 			  		}
@@ -155,8 +157,7 @@ define(['angular',
 	  					}
 	  				}
 	  				calculateDistances();
-
-	  				setGoogleMaps(vm.map.center.latitude, vm.map.center.longitude);
+	  				//setGoogleMaps(vm.map.center.latitude, vm.map.center.longitude);
 	  			}
 		  	}
 
@@ -208,7 +209,8 @@ define(['angular',
 
 					  	directionsService.route(request, function(response, status) {
 						    if (status == google.maps.DirectionsStatus.OK) {
-						    	var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers : true});
+						    	var colorindex = directionsDisplays.length < 4 ? directionsDisplays.length : ((directionsDisplays.length)%5);
+						    	var directionsDisplay = new google.maps.DirectionsRenderer({preserveViewprot: true, suppressMarkers: true, polylineOptions: { strokeColor: routecolor[colorindex],strokeOpacity:.4, strokeWeight:5 }});
 						      	directionsDisplay.setMap(mapinstance);
 						      	directionsDisplay.setDirections(response);
 						      	directionsDisplays.push(directionsDisplay);
@@ -225,16 +227,15 @@ define(['angular',
 						var distance = element.distance.text;
 						var duration = element.duration.text;
 						/*if(element.distance.value <= 30000) {*/
-						vm.cars.models[i].options.labelContent = idleCarlist[i].title + '<div>Distance: '+distance+'</div>' + '<div>Duration: '+duration+'</div>';
+						vm.cars.models[i].options.labelContent = idleCarlist[i].title + '<div>'+distance + ' | '+duration +'</div>';
 						vm.cars.models[i].options.labelClass = 'tm-marker-label-distance';
-						vm.cars.models[i].options.labelAnchor = '20 80';
+						vm.cars.models[i].options.labelAnchor = '20 60';
 						/*}
 						else {
 							vm.cars.models[i].options.labelContent = idleCarlist[i].title;
 							vm.cars.models[i].options.labelClass = 'tm-marker-label';
 							vm.cars.models[i].options.labelAnchor = '0 0';
 						}*/
-
 					}
 				}
 
@@ -255,6 +256,7 @@ define(['angular',
 	    	}
 
 	    	$rootScope.$on('search:location', function (event, data) {
+	    		vm.map.zoom = 14;
                 setGoogleMaps(data.lat, data.lng);
             });
 

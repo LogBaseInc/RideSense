@@ -11,7 +11,9 @@ define(['angular'], function (angular) {
                 scope: {
                     isBusy: "=",
                 },
-                template: '<div data-ng-show="isBusy" class="page-splash"><div data-cc-spinner="spinnerOptions"></div></div>'
+                //template: '<div data-ng-show="isBusy" class="page-splash"><div data-cc-spinner="spinnerOptions"></div></div>'
+                template: '<div data-ng-show="isBusy"><img src="assets/images/loader.gif" class="ajax-loader"></img></div>'
+               
             };
             function link(scope, element, attrs) {
                 scope.spinnerOptions = {

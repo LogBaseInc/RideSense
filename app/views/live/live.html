@@ -4,7 +4,7 @@
 		<input data-ng-show="vm.carsearch" type="text" class="input-block-level" placeholder="Search car..." data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars.models | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html" style="border:0px; width:100%; position: relative; z-index:3;" 
 		typeahead-on-select="vm.carsearched($item, $model, $label)"/>
 		<div style="position: relative; z-index:3; margin-top:-31px">
-			<select style="border:0px; float:right;background-color: transparent;margin-top: 3px;" data-ng-model="vm.searchoption" data-ng-change="vm.searchOptionChanged(vm.searchoption)">
+			<select style="border:0px; float:right;margin-top: 3px;" data-ng-model="vm.searchoption" data-ng-change="vm.searchOptionChanged(vm.searchoption)">
 				<option value="" data-ng-if="false"></option>
 				<option value="location">Location</option>
 				<option value="car">Car</option>
@@ -28,9 +28,8 @@
 				<center>
 					<br/>
 					<a href="" data-ng-click="vm.showDragMarker()">
-						<img src="assets/images/marker.png" class="tm-marker-img"></img>
-						<p data-ng-show="vm.dragMarker">Remove Marker</p>
-						<p data-ng-hide="vm.dragMarker">Add Marker</p>
+						<img data-ng-hide="vm.dragMarker" src="assets/images/user-marker.png"></img>
+						<img data-ng-show="vm.dragMarker" src="assets/images/user-marker-remove.png"></img>
 					</a>
 				</center>
 			</div>
@@ -46,8 +45,8 @@
 </div>
 
 <script type="text/ng-template" id="typeaheadElement.html">
-  <a style="background-color:white; padding-left:5px; border-top: 1px solid rgba(128, 128, 128, 0.38); padding-top: 3px; padding-bottom: 6px;" >
-  	  <i class="fa fa-map-marker" style="color:#858585"></i>
+  <a style="background-color:white; padding-left:5px; border-top: 1px solid rgba(128, 128, 128, 0.38); padding-top: 10px; height : 40px; font-size: 13px; width: 100%" >
+  	  <img src="assets/images/car-front.png" style="height:11px; color:#858585"></img>
       <span bind-html-unsafe="match.label" style="color:black"></span>
   </a>
 </script>

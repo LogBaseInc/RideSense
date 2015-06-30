@@ -95,7 +95,7 @@ hr {
     font-style: italic;
     margin-top: 5px;
     font-size: 12px;
-    color:red;
+    font-weight: bold;
 }
 
 .tm-marker-label-distance {
@@ -254,4 +254,17 @@ hr {
 
 .tm-alerts-summary {
     background-color: WhiteSmoke;
+}
+
+.ajax-loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -32px; /* -1 * image width / 2 */
+  margin-top: -32px; /* -1 * image height / 2 */
+}
+
+.pac-item {
+    height: 38px;
+    padding-top: 5px;
 }
