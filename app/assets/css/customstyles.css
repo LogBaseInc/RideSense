@@ -15,7 +15,7 @@
         .error-messages.ng-inactive {
         }
 
-html {
+html {tm-marker-label
     height:92%;
 }
 
@@ -93,8 +93,20 @@ hr {
 
 .tm-marker-label {
     font-style: italic;
-    padding: 1px;
+    margin-top: 5px;
+    font-size: 12px;
+    color:red;
 }
+
+.tm-marker-label-distance {
+    font-style: italic;
+    margin-top: 5px;
+    font-size: 12px;
+    background-color: white;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
 
 .glyphicon-arrow-up {
     color: #689F38;

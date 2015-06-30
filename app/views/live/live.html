@@ -1,5 +1,5 @@
 <div data-ng-controller="live as vm">
-	<div style="border: 1px solid rgba(128, 128, 128, 0.34); border-radius: 4px;">
+	<div data-ng-if="vm.showmaps" style="border: 1px solid rgba(128, 128, 128, 0.34); border-radius: 4px;">
 		<google-places data-ng-show="vm.locationsearch"></google-places>
 		<input data-ng-show="vm.carsearch" type="text" class="input-block-level" placeholder="Search car..." data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars.models | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html" style="border:0px; width:100%; position: relative; z-index:3;" 
 		typeahead-on-select="vm.carsearched($item, $model, $label)"/>
@@ -16,19 +16,22 @@
 		<div class="row">
 			<div class="tm-live-map">
 				<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom'>
-					<ui-gmap-marker coords="vm.marker.coords" options="vm.marker.options" events="vm.marker.events" idkey="vm.marker.id"></ui-gmap-marker>
-					<ui-gmap-markers models="vm.cars.models" coords="'self'" options="'options'" events="vm.cars.events" fit="true"></ui-gmap-markers>
+					<ui-gmap-marker data-ng-show="vm.dragMarker" coords="vm.marker.coords" options="vm.marker.options" events="vm.marker.events" idkey="vm.marker.id"></ui-gmap-marker>
+					<ui-gmap-markers models="vm.cars.models" coords="'self'" options="'options'" events="vm.cars.events" fit="true" labelVisible="true" doCluster="'true'" clusterOptions="vm.clusterOptions"></ui-gmap-markers>
 				</ui-gmap-google-map>
 			</div>
 		</div>
 	</div>
-	<div class="container-fluid tm-live-overlay">
+	<div data-ng-if="vm.showmaps" class="container-fluid tm-live-overlay">
 		<div class="row">
 			<div class="col-xs-3 col-md-2 tm-marker">
 				<center>
 					<br/>
-					<img src="assets/images/marker.png" class="tm-marker-img"></img>
-					<p>Marker</p>
+					<a href="" data-ng-click="vm.showDragMarker()">
+						<img src="assets/images/marker.png" class="tm-marker-img"></img>
+						<p data-ng-show="vm.dragMarker">Remove Marker</p>
+						<p data-ng-hide="vm.dragMarker">Add Marker</p>
+					</a>
 				</center>
 			</div>
 			<div class="col-xs-3 col-md-7 col-lg-8">
