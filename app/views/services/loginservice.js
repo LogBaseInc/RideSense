@@ -51,7 +51,7 @@ define(['angular', 'config.route'], function (angular, configroute) {
               firebase.createUser({
                 email    : email,
                 password : password
-              },  function(error) {
+              },  function(error, userData) {
                 if (error) 
                   return dfd.reject(error);
                 else 

@@ -15,5 +15,7 @@ define([
     'googlemaps',
     'lodash',
     'highcarts-src',
-    'highcharts'
+    'highcharts',
+    'moment',
+    'angularfire'
 ], function () { });

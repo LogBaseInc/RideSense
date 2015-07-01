@@ -100,6 +100,33 @@ define(['angular',
                          controllerUrl: 'views/metrics/trips/tripmetrics',
                          allowAnonymous: false
                      }
+                 },
+                 {
+                     url: '/report',
+                     config: {
+                         templateUrl: 'views/tripreport/tripreport.html',
+                         title: 'alerts',
+                         controllerUrl: 'views/tripreport/tripreport',
+                         allowAnonymous: false
+                     }
+                 },
+                 {
+                     url: '/alertdetail',
+                     config: {
+                         templateUrl: 'views/alerts/alertdetail/alertdetails.html',
+                         title: 'alerts',
+                         controllerUrl: 'views/alerts/alertdetail/alertdetails',
+                         allowAnonymous: false
+                     }
+                 },
+                 {
+                     url: '/alertdetail1',
+                     config: {
+                         templateUrl: 'views/alerts/alertdetail/alertdetails1.html',
+                         title: 'alerts',
+                         controllerUrl: 'views/alerts/alertdetail/alertdetails1',
+                         allowAnonymous: false
+                     }
                  }
             ];
 

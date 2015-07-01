@@ -20,7 +20,9 @@ require.config({
         'googlemaps' : 'bower_components/angular-google-maps/dist/angular-google-maps',
         'lodash': 'bower_components/lodash/lodash',
         'highcarts-src': 'scripts/highcharts.src',
-        'highcharts' : 'bower_components/highcharts-ng/dist/highcharts-ng'
+        'highcharts' : 'bower_components/highcharts-ng/dist/highcharts-ng',
+        'moment' :'bower_components/moment/moment',
+        'angularfire': 'scripts/AngularFire'
     },
     shim: {
         angular: {
@@ -50,7 +52,10 @@ require.config({
         },
         'toaster': ['angular','angular-animate'],
         'googlemaps': ['angular'],
+        'highcarts-src' : ['jquery','angular'],
         'highcharts': ['jquery','angular','highcarts-src'],
+        'moment' : ['jquery','angular'],
+        'angularfire' : ['angular']
     },
 });
 

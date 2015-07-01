@@ -1,85 +1,97 @@
 <div data-ng-controller="alerts as vm">
-	<div class="container-fluid">
+	<div class="container-fluid" data-ng-show="vm.alertsdata != null">
 		<div class="row">
-			<div class="col-xs-12 col-md-8">
+			<div class="col-xs-12 col-md-8" data-ng-show="vm.alertsdata.length > 0">
 				<br/>
-				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Alerts</h5>
-				<!-- Repeat section starts -->
-				<hr/>
-				<div class="row">
-					<div class="col-xs-8">
-						<p><strong>Car #62</strong>: Panic button pressed</p>
-					</div>
-					<div class="col-xs-4">
-						<p class="text-muted text-right">12 min ago</p>
-					</div>
+				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Open Alerts</h5>
+				<div data-ng-if="vm.openalerts.length == 0">
+					<center>
+						<span>No open alerts available</span>
+					</center>
 				</div>
-				<div class="row">
-					<div class="col-xs-7">
-						<p>@Ramanathapuram Signal</p>
+				<div data-ng-repeat="alert in vm.openalerts">
+					<hr/>
+					<div class="row">
+						<div class="col-xs-8">
+							<p style="color:red"><strong>Car #{{alert.devicenumber}}</strong>: {{alert.text}}</p>
+						</div>
+						<div class="col-xs-4">
+							<p class="text-muted text-right">{{alert.time}}</p>
+						</div>
 					</div>
-					<div class="col-xs-5">
-						<div class="btn-group pull-right" role="group">
-						  <button type="button" class="btn btn-sm btn-default">Ignore</button>
-						  <button type="button" class="btn btn-sm btn-default">Close</button>
+					<div class="row">
+						<div class="col-xs-7">
+							<p>@ {{alert.location}}</p>
+						</div>
+						
+						<div class="col-xs-5">
+							<div class="btn-group pull-right" role="group">
+							  <a type="button" class="btn btn-sm btn-default" href="#/alertdetail">Details</a>
+							  <button type="button" class="btn btn-sm btn-default" data-ng-click="vm.closealert(alert)">Close</button>
+							</div>
 						</div>
 					</div>
 				</div>
-				<!--Another repeat for mock -->
-				<hr/>
-				<div class="row">
-					<div class="col-xs-8">
-						<p><strong>Car #47</strong>: Car off grid</p>
-					</div>
-					<div class="col-xs-4">
-						<p class="text-muted text-right">26 min ago</p>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-7">
-						<p>@Kurumbapalayam Signal</p>
-					</div>
-					<div class="col-xs-5">
-						<div class="btn-group pull-right" role="group">
-						  <button type="button" class="btn btn-sm btn-default">Ignore</button>
-						  <button type="button" class="btn btn-sm btn-default">Close</button>
-						</div>
-					</div>
-				</div>
-				<!-- Repeat section ends -->
-				<div class="row">
+				<div class="row" data-ng-show="vm.closedalerts.length>0">
+					<hr/>
 					<div class="col-xs-12">
 						<br/>
-						<button type="button" class="btn btn-info btn-sm">Previous Alerts</button>
+						<button type="button" data-ng-hide="vm.showclosed" class="btn btn-info btn-sm" style="float:right" data-ng-click="vm.showclosed=true">Show Closed Alerts</button>
+						<button type="button" data-ng-show="vm.showclosed" class="btn btn-info btn-sm" style="float:right" data-ng-click="vm.showclosed=false;">Hide Closed Alerts</button>
 						<br/><br/>
+						<div data-ng-show="vm.showclosed">
+							<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Closed Alerts</h5>
+							<div data-ng-repeat="alert in vm.closedalerts">
+								<hr/>
+								<div class="row">
+									<div class="col-xs-8">
+										<p style="color:red"><strong>Car #{{alert.devicenumber}}</strong>: {{alert.text}}</p>
+									</div>
+									<div class="col-xs-4">
+										<p class="text-muted text-right">{{alert.time}}</p>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xs-7">
+										<p>@ {{alert.location}}</p>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-xs-12 col-md-4 tm-alerts-summary">
-				<br/>
-				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Alerts Summary</h5>
-				<br/>
-				<highchart id="alertsChart" config="vm.alertsChartConfig"></highchart>
-				<div class="row">
-					<div class="col-xs-6">
-						<center>
-							<h2>2</h2>
-							<small>Open Alerts</small>
-						</center>
+				</br>
+				<div data-ng-show="vm.alertsdata.length > 0">
+					<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Alerts Summary</h5>
+					<br/>
+					<highchart id="alertsChart" config="vm.alertsChartConfig"></highchart>
+					<div class="row">
+						<div class="col-xs-6">
+							<center>
+								<h2>{{vm.openalerts.length}}</h2>
+								<small>Open Alerts</small>
+							</center>
+						</div>
+						<div class="col-xs-6">
+							<center>
+								<h2>{{vm.closedalerts.length}}</h2>
+								<small>Closed Alerts</small>
+							</center>
+						</div>
 					</div>
-					<div class="col-xs-6">
-						<center>
-							<h2>28</h2>
-							<small>Closed Alerts</small>
-						</center>
-					</div>
+					<hr/><br/>
 				</div>
-				<hr/><br/>
-				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Alerts Contact Number</h5>
+				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Alerts Mobile Number</h5>
 				<br/>
-				<input type="number" class="form-control" placeholder="Mobile # to send alerts">
+				<form name="alertmobileform" class="form-horizontal">
+					<div class="form-group" data-ng-class="{ 'has-error': alertmobileform.mobile.$invalid && alertmobileform.mobile.$touched }">
+						<input style="margin-left:3%; width: 94%" type="text" class="form-control" placeholder="Mobile # to send alerts" data-ng-model="vm.mobilenumber" name="mobile" id="mobile" ng-pattern="/^[0-9]*$/" minlength="10" maxlength="10">
+					</div>
+				</form>
 				<br/>
-				<button type="button" class="btn btn-info btn-sm">Save Contact Number</button>
+				<button type="button" class="btn btn-info btn-sm" data-ng-disabled="!vm.canSaveMobile(alertmobileform)" data-ng-click="vm.saveMobile()">Save Mobile Number</button>
 				<br/><br/><br/>
 			</div>
 		</div>

@@ -268,3 +268,21 @@ hr {
     height: 38px;
     padding-top: 5px;
 }
+
+.overlaymarigin
+{
+    position: absolute;
+    z-index: 3;
+    padding-top: 5px;
+    margin-left: 70%;
+
+}
+
+.overlayoption
+{
+}
+
+.overlaydiv
+{
+    background-color:white;
+}

@@ -2,7 +2,6 @@ define(['angular',
     'config.route',
     'views/services/loginservice'], function (angular, configroute) {
         (function () {
-
             configroute.register.controller('login', ['$scope', '$location', 'spinner', 'notify', 'sessionservice','loginservice', login]);
             function login($scope, $location, spinner, notify, sessionservice, loginservice) {
                 var vm = this, submitted = false;
@@ -55,8 +54,7 @@ define(['angular',
                 function loginfailed(error) { 
                     spinner.hide();
                     submitted = false;
-                    if(error.message.indexOf("The specified user does not exist") >= 0 || error.message.indexOf("The specified password is incorrect") >= 0)
-                    {
+                    if(error.message.indexOf("The specified user does not exist") >= 0 || error.message.indexOf("The specified password is incorrect") >= 0) {
                         vm.success = false;
                         vm.password = null;
                         resetform($scope.loginform);
@@ -102,7 +100,7 @@ define(['angular',
                     spinner.hide();
                     submitted = false;
                     notify.success('Registered successfully!');
-                    backtologinclicked();
+                    vm.backtologinclicked();
                 }
 
                 function signupfailed(error) {

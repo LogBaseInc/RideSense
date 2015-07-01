@@ -11,6 +11,7 @@ define(['angular'], function (angular) {
                 clear: clear,
                 isLoggedIn: isLoggedIn,
                 setSession: setSession,
+                getSessionUid : getSessionUid
             };
 
             function clear() {
@@ -39,6 +40,14 @@ define(['angular'], function (angular) {
                 if (user)
                     session = angular.fromJson(user);                
                 return session
+            }
+
+            function getSessionUid() {
+                var user = sessionStorage.getItem('useridentity');
+                if(user)
+                    return angular.fromJson(user).uid;
+                else
+                    return null; 
             }
         }
 
