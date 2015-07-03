@@ -23,7 +23,7 @@ define(['angular'], function () {
                             for(var i=0; i < data.length; i++) {
                                 if(_.filter(vm.alerts, function(alert){ return alert.alertid == data[i].alertid}).length == 0) {
                                     if(data[i].status == 'Open') {
-                                        notify.error('Car #'+data[i].devicenumber+": "+ getAlertText(data[i].alerttype));
+                                        notify.error('Car #555: '+ getAlertText(data[i].alerttype));
                                     }
                                 }
                             }
@@ -32,21 +32,28 @@ define(['angular'], function () {
 
                     vm.alerts = data === null ? [] : data;
                     vm.openAlertsCount = _.filter(data, function(alert){ return alert.status == 'Open'}).length;
-                    $scope.$apply();
+                    if ($scope.$root && $scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
+                        $scope.$apply();
+                }
 
                 }, function (errorObject) {
                     console.log("The alerts read failed: " + errorObject.code);
                 });
             }
 
-            function getAlertText(alertType) {
+           function getAlertText(alertType) {
                 var alerttext = '';
-                if(alertType == 'Panic')
+                alertType = alertType.toLowerCase();
+                if(alertType == 'panic')
                     alerttext = 'Panic button pressed';
-                else if (alertType == 'AccidentProne')
+                else if (alertType == 'accidentprone')
                     alerttext = 'Accident prone driving';
-                else if (alertType == 'Crashed')
+                else if (alertType == 'crashed')
                     alerttext = 'Car crashed';
+                else if (alertType == 'plugged')
+                    alerttext = 'Device plugged into car';
+                else if (alertType == 'unplugged')
+                    alerttext = 'Device unplugged from car';
                 return alerttext;
             }
 

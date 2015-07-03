@@ -41,7 +41,7 @@ define(['angular',
                 $routeProvider.when(r.url, definition);
                 return $routeProvider;
             });
-            $routeProvider.otherwise({ redirectTo: '/login  ' });
+            $routeProvider.otherwise({ redirectTo: '/login' });
         }
 
         // Define the routes 
@@ -116,15 +116,6 @@ define(['angular',
                          templateUrl: 'views/alerts/alertdetail/alertdetails.html',
                          title: 'alerts',
                          controllerUrl: 'views/alerts/alertdetail/alertdetails',
-                         allowAnonymous: false
-                     }
-                 },
-                 {
-                     url: '/alertdetail1',
-                     config: {
-                         templateUrl: 'views/alerts/alertdetail/alertdetails1.html',
-                         title: 'alerts',
-                         controllerUrl: 'views/alerts/alertdetail/alertdetails1',
                          allowAnonymous: false
                      }
                  }

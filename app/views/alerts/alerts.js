@@ -2,8 +2,8 @@ define(['angular',
     'config.route',
     'moment'], function (angular, configroute, moment) {
     (function () {
-        configroute.register.controller('alerts', ['$rootScope', '$scope', 'config', 'spinner', 'notify', 'sessionservice', alerts]);
-        function alerts($rootScope, $scope, config, spinner, notify, sessionservice) {
+        configroute.register.controller('alerts', ['$rootScope', '$scope', '$location', 'config', 'spinner', 'notify', 'sessionservice', alerts]);
+        function alerts($rootScope, $scope, $location, config, spinner, notify, sessionservice) {
             $rootScope.routeSelection = 'alerts';
             var vm = this;
             vm.showclosed = false;
@@ -30,7 +30,7 @@ define(['angular',
 				  		vm.alertsdata = [];
 				  		vm.openalerts  = [];
 				  		vm.closedalerts = [];
-				  		$scope.$apply();
+				  		applyscope();
 				  	}
 				  		
 				}, function (errorObject) {
@@ -103,30 +103,39 @@ define(['angular',
 
 		 	function getAlertText(alertType) {
 		 		var alerttext = '';
-		 		if(alertType == 'Panic')
+		 		alertType = alertType.toLowerCase();
+		 		if(alertType == 'panic')
 		 			alerttext = 'Panic button pressed';
-		 		else if (alertType == 'AccidentProne')
+		 		else if (alertType == 'accidentprone')
 		 			alerttext = 'Accident prone driving';
-		 		else if (alertType == 'Crashed')
+		 		else if (alertType == 'crashed')
 		 			alerttext = 'Car crashed';
+		 		else if (alertType == 'plugged')
+		 			alerttext = 'Device plugged into car';
+		 		else if (alertType == 'unplugged')
+		 			alerttext = 'Device unplugged from car';
 		 		return alerttext;
 		 	}
 
 		 	function getTimeStamp(unixtimestamp){
-				return moment((unixtimestamp*1000)).fromNow();
+				return moment((unixtimestamp)).fromNow();
 		 	}
 
 		 	function readlocation(latlng, alertobject){
 			 	var geocoder = new google.maps.Geocoder();
-		 		geocoder.geocode({ 'latLng': latlng }, function (results, status, i) {
+		 		geocoder.geocode({ 'latLng': latlng }, function (results, status) {
 		            if (status == google.maps.GeocoderStatus.OK) {
 		                if (results[1]) {
 		                    var strt = results[1].formatted_address;
 		                    alertobject.location = strt.substring(0,strt.indexOf(','));
-		                    if ($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
-		                    	$scope.$apply();
-		                    }
+		                    alertobject.address = results[1].formatted_address;
+		                    applyscope();
 		                }
+		            }
+		            else {
+		            	alertobject.address = 'Calculating...';
+		            	applyscope();
+		            	console.log(status);
 		            }
 	            });
 		 	}
@@ -145,6 +154,11 @@ define(['angular',
 		 		mobilefbref.set(vm.mobilenumber, saveMobileOnComplete);
 		 	}
 
+		 	vm.showAlertDetail = function (alert) {
+		 		$rootScope.selectedAlert = alert;
+		 		$location.path('/alertdetail');     
+		 	}
+
 		 	var saveMobileOnComplete = function(error) {
 		 		submitted = false;
 		 		spinner.hide();
@@ -153,8 +167,14 @@ define(['angular',
 				else
 				    notify.success('Mobile number saved successfully');
 			  	
-			  	$scope.$apply();
+			  	applyscope(); 
 			};
+
+			function applyscope() {
+				if ($scope.$root && $scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
+		            $scope.$apply();
+		        }
+			}
 
 		 	function getAlertSummaryData(){
 		 		alertsummarydata.categories =[];
@@ -166,7 +186,7 @@ define(['angular',
 				});
 
 		 		for(var i=0; i<alertSummaryArray.length; i++){
-		 			var date = moment((alertSummaryArray[i].time*1000)).format('MMM DD, YYYY');
+		 			var date = moment((alertSummaryArray[i].time)).format('MMM DD, YYYY');
 		 			var dateIndex = alertsummarydata.categories.indexOf(date);
 		 			if(dateIndex >= 0) 
 			 			alertsummarydata.data[dateIndex] += 1;
