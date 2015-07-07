@@ -20,6 +20,38 @@ define(['angular',
             });
         });
 
+
+        /*app.config(function() {
+            Offline.options = 
+                {
+                    checkOnLoad: false,
+                    interceptRequests: false,
+                    reconnect: {
+                        initialDelay: 1,
+                        delay: 1,
+                    },
+                    requests: false,
+                    game: false
+                };
+
+            Offline.on('down', function () {
+                Offline.state = 
+                alert('A network error has occurred.');
+            });
+
+            Offline.on('up', function () {
+                alert('A network connected.');
+            });
+
+            var run = function() {
+                if (Offline.state === 'up')
+                    Offline.check();
+            }
+        
+            setInterval(run, 1000);
+
+        });*/
+
         // Configure the routes and route resolvers
         app.config(['$routeProvider', 'routes', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$httpProvider', routeConfigurator]);
 

@@ -11,11 +11,13 @@ define(['angular'], function (angular) {
                 clear: clear,
                 isLoggedIn: isLoggedIn,
                 setSession: setSession,
-                getSessionUid : getSessionUid
+                getSessionUid : getSessionUid,
+                setAlertsLocation : setAlertsLocation,
+                getAlertsLocation : getAlertsLocation
             };
 
             function clear() {
-                sessionStorage.clear();
+                //sessionStorage.clear();
                 sessionStorage.setItem('loginstatus', false);
                 userIdentity = null;
                 $rootScope.$emit('login:status', {isloggedIn:false});
@@ -48,6 +50,20 @@ define(['angular'], function (angular) {
                     return angular.fromJson(user).uid;
                 else
                     return null; 
+            }
+
+            function setAlertsLocation(data) {
+                sessionStorage.setItem('alertlocation', angular.toJson(data, true));
+            }
+
+            function getAlertsLocation(data) {
+                var alertslocation = [];
+                var alertslocation = sessionStorage.getItem('alertlocation');
+                if (alertslocation)
+                    alertslocation = angular.fromJson(alertslocation); 
+                else
+                    alertslocation = [];               
+                return alertslocation            
             }
         }
 

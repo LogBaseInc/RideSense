@@ -10,6 +10,7 @@ define(['angular',
             vm.alertsdata = null;
             var alertsummarydata= {};
             var submitted = false;
+            var alertslocation = getAlertsLocation();
 			var firebaseref = new Firebase(config.firebaseUrl+'account/'+sessionservice.getSessionUid()+'/alerts');
 			var mobilefbref = new Firebase(config.firebaseUrl+'account/'+sessionservice.getSessionUid()+'/mobile');
 
@@ -18,6 +19,20 @@ define(['angular',
             };
 
 			activate();
+
+			function setAlertsLocation(data) {
+                sessionStorage.setItem('alertlocation', angular.toJson(data, true));
+            }
+
+            function getAlertsLocation(data) {
+                var alertslocation = [];
+                var alertslocation = sessionStorage.getItem('alertlocation');
+                if (alertslocation)
+                    alertslocation = angular.fromJson(alertslocation); 
+                else
+                    alertslocation = [];               
+                return alertslocation            
+            }
 
 		 	function activate() {
 		 		spinner.show();
@@ -68,6 +83,8 @@ define(['angular',
 
 		 		vm.openalerts = [];
 		 		for(var i =0; i < openalertsdata.length; i++) {
+		 			var alertlocation =  _.first(_.filter(alertslocation, function(alertloc){ return alertloc.alertid == openalertsdata[i].alertid}));
+
 		 			vm.openalerts.push(
 		 			{
 		 				alertid : openalertsdata[i].alertid,
@@ -76,14 +93,20 @@ define(['angular',
 		 				time: getTimeStamp(openalertsdata[i].time),
 		 				latitude : openalertsdata[i].latitude,
 		 				longitude : openalertsdata[i].longitude,
-		 				location: ''
+		 				location: alertlocation ? alertlocation.location : 'Calulating...',
+		 				address : alertlocation ? alertlocation.address : ''
 		 			});
-		 			var openlatlng = new google.maps.LatLng(openalertsdata[i].latitude, openalertsdata[i].longitude);
-	                readlocation(openlatlng, vm.openalerts[i]);
+
+		 			if(alertlocation == null || alertlocation == undefined) {
+		 				var openlatlng = new google.maps.LatLng(openalertsdata[i].latitude, openalertsdata[i].longitude);
+	                	readlocation(openlatlng, vm.openalerts[i]);
+	                }
 		 		}
 
 				vm.closedalerts = [];
 		 		for(var i =0; i < closedalertsdata.length; i++) {
+		 			
+		 			var alertlocation =  _.first(_.filter(alertslocation, function(alertloc){ return alertloc.alertid == closedalertsdata[i].alertid}));
 		 			vm.closedalerts.push(
 		 			{
 		 				alertid : closedalertsdata[i].alertid,
@@ -92,10 +115,13 @@ define(['angular',
 		 				time: getTimeStamp(closedalertsdata[i].time),
 		 				latitude : closedalertsdata[i].latitude,
 		 				longitude : closedalertsdata[i].longitude,
-		 				location: ''
+		 				location: alertlocation ? alertlocation.location : 'Calulating...',
 		 			});
-		 			var closedlatlng = new google.maps.LatLng(closedalertsdata[i].latitude, closedalertsdata[i].longitude);
-	                readlocation(closedlatlng, vm.closedalerts[i]);
+
+		 			if(alertlocation == null || alertlocation == undefined) {
+		 				var closedlatlng = new google.maps.LatLng(closedalertsdata[i].latitude, closedalertsdata[i].longitude);
+	                	readlocation(closedlatlng, vm.closedalerts[i]);
+	                }
 		 		}
 
 		 		spinner.hide();
@@ -129,11 +155,17 @@ define(['angular',
 		                    var strt = results[1].formatted_address;
 		                    alertobject.location = strt.substring(0,strt.indexOf(','));
 		                    alertobject.address = results[1].formatted_address;
+		                    alertslocation.push ({
+		                    	alertid : alertobject.alertid,
+		                    	location : alertobject.location,
+		                    	address : alertobject.address
+		                    });
+		                    setAlertsLocation(alertslocation);
 		                    applyscope();
 		                }
 		            }
 		            else {
-		            	alertobject.address = 'Calculating...';
+		            	alertobject.location = 'Calculating...';
 		            	applyscope();
 		            	console.log(status);
 		            }
@@ -203,10 +235,15 @@ define(['angular',
 			            	zoomType: 'x',
 				        	backgroundColor: 'WhiteSmoke',
 				        	marginBottom: 25,
+				        	events: {
+                    		load: function (event) {
+								window.resizeBy(100,100);
+                    		}
+               			 }
 			            },
 				        legend: {
 				            enabled: false
-				        }
+				        },
 			        },
 			        credits: {
 						enabled: false
@@ -227,14 +264,18 @@ define(['angular',
 			        yAxis: {
 			            min: 0
 			        },
-			        size: {
-			           height: 250
-			        }, 
 			        loading: false,
 			        size: {
 			        	height: 150
-			        }
+			        },
+			        events: {
+                    		load: function (event) {
+		    					$(window).resize();
+		    					alert('chart loaded 1');
+                    		}
+               			 }
 		    	};
+
 		 	}
 		}
     })();

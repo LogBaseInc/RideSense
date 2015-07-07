@@ -10,54 +10,11 @@ define(['angular',
         function mainController($rootScope, $scope, $location, $timeout, sessionservice) {
             var layoutpath = 'views/layout/';
             $scope.shelltmp = getLayoutUrl();
-            // $scope.style_fixedHeader = $global.get('fixedHeader');
-            // $scope.style_headerBarHidden = $global.get('headerBarHidden');
-            // $scope.style_layoutBoxed = $global.get('layoutBoxed');
-            // $scope.style_fullscreen = $global.get('fullscreen');
-            // $scope.style_leftbarCollapsed = $global.get('leftbarCollapsed');
-            // $scope.style_leftbarShown = $global.get('leftbarShown');
-            // $scope.style_rightbarCollapsed = $global.get('rightbarCollapsed');
-            // $scope.style_isSmallScreen = false;
-            // $scope.style_showSearchCollapsed = $global.get('showSearchCollapsed');
-
-            // $scope.hideSearchBar = function () {
-            //     $global.set('showSearchCollapsed', false);
-            // };
-
-            // $scope.hideHeaderBar = function () {
-            //     $global.set('headerBarHidden', true);
-            // };
-
-            // $scope.showHeaderBar = function ($event) {
-            //     $event.stopPropagation();
-            //     $global.set('headerBarHidden', false);
-            // };
-
-            // $scope.toggleLeftBar = function () {
-            //     if ($scope.style_isSmallScreen) {
-            //         return $global.set('leftbarShown', !$scope.style_leftbarShown);
-            //     }
-            //     $global.set('leftbarCollapsed', !$scope.style_leftbarCollapsed);
-            // };
-
-            // $scope.toggleRightBar = function () {
-            //     $global.set('rightbarCollapsed', !$scope.style_rightbarCollapsed);
-            // };
-
+            
             $scope.$on('globalStyles:changed', function (event, newVal) {
                 $scope['style_' + newVal.key] = newVal.value;
             });
-            // $scope.$on('globalStyles:maxWidth767', function (event, newVal) {
-            //     $timeout(function () {
-            //         $scope.style_isSmallScreen = newVal;
-            //         if (!newVal) {
-            //             $global.set('leftbarShown', false);
-            //         } else {
-            //             $global.set('leftbarCollapsed', false);
-            //         }
-            //     });
-            // });
-
+            
             $scope.isLoggedIn = sessionservice.isLoggedIn();
             $scope.logOut = function () {
                 $scope.isLoggedIn = false;

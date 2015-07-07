@@ -17,5 +17,5 @@ define([
     'highcarts-src',
     'highcharts',
     'moment',
-    'angularfire'
+    'angularfire',
 ], function () { });

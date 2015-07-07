@@ -2,8 +2,8 @@ define(['angular',
     'config.route',
     'views/services/loginservice'], function (angular, configroute) {
         (function () {
-            configroute.register.controller('login', ['$scope', '$location', 'spinner', 'notify', 'sessionservice','loginservice', login]);
-            function login($scope, $location, spinner, notify, sessionservice, loginservice) {
+            configroute.register.controller('login', ['$rootScope', '$scope', '$location', 'spinner', 'notify', 'sessionservice','loginservice', login]);
+            function login($rootScope, $scope, $location, spinner, notify, sessionservice, loginservice) {
                 var vm = this, submitted = false;
                 vm.userName = 'kalaivani@logbase.io';
                 vm.password = 'zaq1';
@@ -100,6 +100,7 @@ define(['angular',
                     spinner.hide();
                     submitted = false;
                     notify.success('Registered successfully!');
+                    $rootScope.$emit('alertcount')
                     vm.backtologinclicked();
                 }
 

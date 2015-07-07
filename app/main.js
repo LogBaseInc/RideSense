@@ -22,7 +22,7 @@ require.config({
         'highcarts-src': 'scripts/highcharts.src',
         'highcharts' : '../bower_components/highcharts-ng/dist/highcharts-ng',
         'moment' :'../bower_components/moment/moment',
-        'angularfire': 'scripts/AngularFire'
+        'angularfire': 'scripts/AngularFire',
     },
     shim: {
         angular: {

@@ -12,6 +12,16 @@ define(['angular'], function () {
             vm.openAlertsCount = 0;
             vm.alerts = null;
             var alertsfbref = new Firebase(config.firebaseUrl+'account/'+sessionservice.getSessionUid()+'/alerts');
+            vm.offline = false;
+            vm.reconnect = false;
+            vm.notnet = false;
+            vm.online = false;
+
+            checkinternetstatus();
+
+            $rootScope.$on('alertcount', function (event, data) {
+                activate();
+            });
 
             activate();
             function activate() {
@@ -32,9 +42,7 @@ define(['angular'], function () {
 
                     vm.alerts = data === null ? [] : data;
                     vm.openAlertsCount = _.filter(data, function(alert){ return alert.status == 'Open'}).length;
-                    if ($scope.$root && $scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
-                        $scope.$apply();
-                }
+                    applyscope();
 
                 }, function (errorObject) {
                     console.log("The alerts read failed: " + errorObject.code);
@@ -57,6 +65,11 @@ define(['angular'], function () {
                 return alerttext;
             }
 
+            function applyscope() {
+                if ($scope.$root && $scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') 
+                    $scope.$apply();
+            }
+
             vm.logout = function(){
                 sessionservice.clear();
                 vm.isloggedIn = false;
@@ -74,6 +87,50 @@ define(['angular'], function () {
             $rootScope.$on('login:status', function (event, data) {
                 vm.isloggedIn = data.isloggedIn;
             });
+
+            function isOnline () {
+                vm.offline = false;
+                vm.reconnect = false;
+                vm.notnet = false;
+                vm.online = true;
+                applyscope();
+            }
+
+            function isOffline () {
+                vm.online = false;
+                vm.offline = true;
+                vm.reconnect = false;
+                vm.notnet = true;
+                applyscope();
+
+                setTimeout(function(){
+                    vm.reconnect = true;
+                    vm.notnet = false;
+                    applyscope();
+                }, 2000)
+            };
+
+
+            function checkinternetstatus () {
+                if (window.addEventListener) {
+                    /*
+                        Works well in Firefox and Opera with the 
+                        Work Offline option in the File menu.
+                        Pulling the ethernet cable doesn't seem to trigger it.
+                        Later Google Chrome and Safari seem to trigger it well
+                    */
+                    window.addEventListener("online", isOnline, false);
+                    window.addEventListener("offline", isOffline, false);
+                }
+                else {
+                    /*
+                        Works in IE with the Work Offline option in the 
+                        File menu and pulling the ethernet cable
+                    */
+                    document.body.ononline = isOnline;
+                    document.body.onoffline = isOffline;
+                }
+            }
 
             // $scope.$on('$routeChangeStart', function (event, next, current) {
             //     var isAnonymous = false;
