@@ -2,14 +2,19 @@
 	<div class="main-container">
 		    <lb-spinner is-busy="vm.loadSpinner"></lb-spinner>
 		    <div data-ng-show="vm.offline && vm.reconnect" class="offline-ui  offline-ui-down offline-ui-waiting">
-		    	<div class="offline-ui-content" data-retry-in-seconds="62" data-retry-in-abbr="1m" data-retry-in="1 minute"></div>
-		    	<!--<a href="" class="offline-ui-retry"></a>-->
+		    	<center>
+		    		Lost internet connection. Reconnecting ...
+		    	</center>
 		    </div>
 		    <div data-ng-show="vm.offline && vm.notnet" data-phase="1" class="offline-ui offline-ui-down offline-ui-down-5s">
-		    	<div class="offline-ui-content" data-retry-in="" data-retry-in-abbr=""></div>
+		    	<center>
+		    		Lost internet connection.
+		    	</center>
 		    </div>
 		    <div data-ng-if="vm.online" class="offline-ui offline-ui-up offline-ui-up-5s">
-		    	<div class="offline-ui-content" data-retry-in-seconds="62" data-retry-in-abbr="1m" data-retry-in="1 minute"></div>
+		    	<center>
+		    		Connected to internet
+		    	</center>
 		    </div>
 
             <div class="main-content" style="padding:0px">
