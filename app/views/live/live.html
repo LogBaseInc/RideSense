@@ -2,14 +2,14 @@
 	<div data-ng-if="vm.showmaps" style="border: 1px solid rgba(128, 128, 128, 0.34); border-radius: 4px;">
 		<google-places data-ng-show="vm.locationsearch">
 		</google-places>
-		<input data-ng-show="vm.carsearch" type="text" class="input-block-level" placeholder="Search car..." data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars.models | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html" style="border:0px; width:100%; position: relative; z-index:3;" 
+		<input data-ng-show="vm.carsearch" type="text" class="input-block-level" placeholder="Search car..." data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars.models | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html" style="border:0px; width:100%; position: relative; z-index:3; height:50px" 
 		typeahead-on-select="vm.carsearched($item, $model, $label)"/>
 		<div style="position: relative; z-index:3; margin-top:-31px">
-			<select style="border:0px; float:right;margin-top: 3px;" data-ng-model="vm.searchoption" data-ng-change="vm.searchOptionChanged(vm.searchoption)">
-			<option value="" data-ng-if="false"></option>
-			<option value="location">Location</option>
-			<option value="car">Car</option>
-			   </select>
+			<select style="border:0px; float:right;  margin-top: -4px;" data-ng-model="vm.searchoption" data-ng-change="vm.searchOptionChanged(vm.searchoption)">
+				<option value="" data-ng-if="false"></option>
+				<option value="location">Location</option>
+				<option value="car">Car</option>
+			</select>
 		</div>
 	</div>
 

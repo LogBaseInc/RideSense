@@ -11,38 +11,45 @@ define(['angular'], function () {
             vm.isloggedIn = sessionservice.isLoggedIn();
             vm.openAlertsCount = 0;
             vm.alerts = null;
-            var alertsfbref = new Firebase(config.firebaseUrl+'account/'+sessionservice.getSessionUid()+'/alerts');
+            var alertsfbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/alerts');
             vm.offline = false;
             vm.reconnect = false;
             vm.notnet = false;
             vm.online = false;
-
-            checkinternetstatus();
-
-            $rootScope.$on('alertcount', function (event, data) {
-                activate();
-            });
+            vm.logout = logout;
+            var timer;
 
             activate();
-            function activate() {
 
+            function activate() { 
+                checkinternetstatus();
+                readalerts();
+                checkexpiry();
+            }
+
+            $rootScope.$on('alertcount', function (event, data) {
+                alertsfbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/alerts');
+                readalerts();
+            });
+
+            function readalerts() {
                 alertsfbref.on("value", function(snapshot) {
                     var data = snapshot.val();
+                    vm.openAlertsCount = 0;
                     if(data !== null) {
-                        if(vm.alerts != null) {
-                            for(var i=0; i < data.length; i++) {
-                                if(_.filter(vm.alerts, function(alert){ return alert.alertid == data[i].alertid}).length == 0) {
-                                    if(data[i].status == 'Open') {
-                                        notify.error('Car #555: '+ getAlertText(data[i].alerttype));
-                                    }
+                        for(var property in data) {
+                            if(vm.alerts != null && property != undefined && vm.alerts[property] != property) {
+                                if(property.status == 'Open' && vm.isloggedIn) {
+                                    notify.error('Car #555: '+ getAlertText(data[property].alerttype));
                                 }
                             }
+                            if(data[property].status == 'Open')
+                                vm.openAlertsCount = vm.openAlertsCount+1;
                         }
                     }
 
-                    vm.alerts = data === null ? [] : data;
-                    vm.openAlertsCount = _.filter(data, function(alert){ return alert.status == 'Open'}).length;
-                    applyscope();
+                    vm.alerts = data === null ? {} : data;
+                    sessionservice.applyscope($scope);
 
                 }, function (errorObject) {
                     console.log("The alerts read failed: " + errorObject.code);
@@ -65,15 +72,15 @@ define(['angular'], function () {
                 return alerttext;
             }
 
-            function applyscope() {
-                if ($scope.$root && $scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') 
-                    $scope.$apply();
-            }
-
-            vm.logout = function(){
+            function logout(){
                 sessionservice.clear();
                 vm.isloggedIn = false;
+                vm.loadSpinner = false;
                 $location.path('/login');
+                var ref = new Firebase(config.firebaseUrl);
+                ref.unauth();
+                if(timer !=undefined && timer != null)
+                    clearTimeout(timer);
             }
 
             $rootScope.$on('spinner:toggle', function (event, data) {
@@ -93,7 +100,7 @@ define(['angular'], function () {
                 vm.reconnect = false;
                 vm.notnet = false;
                 vm.online = true;
-                applyscope();
+                sessionservice.applyscope($scope);
             }
 
             function isOffline () {
@@ -101,12 +108,12 @@ define(['angular'], function () {
                 vm.offline = true;
                 vm.reconnect = false;
                 vm.notnet = true;
-                applyscope();
+                sessionservice.applyscope($scope);
 
                 setTimeout(function(){
                     vm.reconnect = true;
                     vm.notnet = false;
-                    applyscope();
+                    sessionservice.applyscope($scope);
                 }, 2000)
             };
 
@@ -129,6 +136,16 @@ define(['angular'], function () {
                     */
                     document.body.ononline = isOnline;
                     document.body.onoffline = isOffline;
+                }
+            }
+
+            timer = setInterval(checkexpiry, 1000);
+            function checkexpiry() {
+                if(sessionservice.isLoggedIn() == 'true') {
+                    if(new Date() > new Date((sessionservice.getSessionExpiry())*1000)) {
+                        notify.warning('Session expired. Please login');
+                        logout();
+                    }
                 }
             }
 

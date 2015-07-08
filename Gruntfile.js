@@ -55,11 +55,11 @@ module.exports = function (grunt) {
                     '<%= tempDir %>/app/assets/css/style.build.min.css':
                         ['<%= tempDir %>/app/assets/css/customstyles.css',
                             '<%= tempDir %>/app/assets/css/styles.css',
-                            '<%= tempDir %>bower_components/bootstrap/dist/css/bootstrap.css',
-                            '<%= tempDir %>bower_components/angularjs-toaster/toaster.css',
-                            '<%= tempDir %>assets/fonts/font-awesome/css/font-awesome.css',
-                            '<%= tempDir %>bower_components/ngDialog/css/ngDialog.css',
-                            '<%= tempDir %>bower_components/ngDialog/css/ngDialog-theme-default.css']
+                            '<%= tempDir %>/app/assets/css/bootstrap.min.css',
+                            '<%= tempDir %>/app/assets/css/toaster.min.css',
+                            '<%= tempDir %>/app/assets/css/ngDialog.min.css',
+                            '<%= tempDir %>/app/assets/css/ngDialog-theme-default.min.css',
+                            '<%= tempDir %>/app/assets/css/offline-theme-default.css']
                 }
             }
 

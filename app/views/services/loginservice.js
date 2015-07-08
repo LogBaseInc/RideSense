@@ -55,7 +55,7 @@ define(['angular', 'config.route'], function (angular, configroute) {
                 if (error) 
                   return dfd.reject(error);
                 else 
-                  return dfd.resolve();
+                  return dfd.resolve(userData);
               });
               return dfd.promise;
             }

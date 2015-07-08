@@ -1,9 +1,9 @@
 define(['angular',
-    'config.route',
+    'config.route', 
     'views/services/loginservice'], function (angular, configroute) {
         (function () {
-            configroute.register.controller('login', ['$rootScope', '$scope', '$location', 'spinner', 'notify', 'sessionservice','loginservice', login]);
-            function login($rootScope, $scope, $location, spinner, notify, sessionservice, loginservice) {
+            configroute.register.controller('login', ['$rootScope', '$scope', '$location', 'config', 'spinner', 'notify', 'sessionservice','loginservice', login]);
+            function login($rootScope, $scope, $location, config, spinner, notify, sessionservice, loginservice) {
                 var vm = this, submitted = false;
                 vm.userName = 'kalaivani@logbase.io';
                 vm.password = 'zaq1';
@@ -39,16 +39,27 @@ define(['angular',
                 vm.login = function () {             
                      spinner.show();
                      submitted= true;
-                     loginservice.login(vm.userName, vm.password).then(loginCompleted, loginfailed)
+                     loginservice.login(vm.userName, vm.password).then(getAccountId, loginfailed)
                 };
 
-                function loginCompleted(data) {
+                function getAccountId(data) {
+                    var ref1 = new Firebase(config.firebaseUrl+'users/'+data.uid+'/');
+                    ref1.once("value", function(snapshot) {
+                        loginCompleted(data, snapshot.val());   
+                    }, function (errorObject) {
+                        notify.error('Something went wrong, please try again later');
+                    });
+                }
+
+                function loginCompleted(data, accountId) {
                     spinner.hide();
                     submitted = false;
                     vm.success = true;
                     vm.password = null;
-                    sessionservice.setSession(data);
-                    $location.path('/live');            
+                    sessionservice.setSession(data, accountId);
+                    $rootScope.$emit('alertcount')
+                    $location.path('/live');    
+                    sessionservice.applyscope($scope);     
                 }
 
                 function loginfailed(error) { 
@@ -96,11 +107,13 @@ define(['angular',
                     loginservice.signup(vm.newuser.email, vm.newuser.password).then(signupcompleted, signupfailed)
                 }
 
-                function signupcompleted() {
+                function signupcompleted(userData) {
+                    var accountref = new Firebase(config.firebaseUrl+'account/'+userData.uid+'/');
+                    var accountjson = '{"email" : "'+vm.newuser.email+'", "accountname" : "'+vm.newuser.accountname+'"}';
+                    accountref.set(angular.fromJson(accountjson));
                     spinner.hide();
                     submitted = false;
                     notify.success('Registered successfully!');
-                    $rootScope.$emit('alertcount')
                     vm.backtologinclicked();
                 }
 
@@ -108,7 +121,7 @@ define(['angular',
                     spinner.hide();
                     submitted = false;
                     notify.error(error.message)
-                    vm.newuser = null;
+                    vm.newuser = null;s
                     resetform($scope.signupform);
                 }
 
@@ -166,10 +179,13 @@ define(['angular',
                     vm.useremail = null;
                     vm.password = null;
                     vm.userName =null;
+                    vm.newuser = {};
+                    vm.newuser.email = null;
+                    vm.newuser.password = null;
                     resetform($scope.forgotpassform);
                     resetform($scope.loginform);
                     resetform($scope.signupform);
                 }
-        }
+            }
     })();
 });

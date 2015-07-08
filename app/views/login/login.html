@@ -125,6 +125,15 @@
                             <div class="space-6"></div>
                             <p> Enter your details to begin: </p>
 
+                            <div class="form-group" data-ng-class="{ 'has-error': signupform.textaccountname.$invalid && signupform.textaccountname.$touched }">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="text" class="form-control" data-ng-model="vm.newuser.accountname" placeholder="Account name" name="textaccountname" required>
+                                </span>
+                                <div data-ng-messages="signupform.textaccountname.$error" data-ng-if="vm.interacted(signupform.textaccountname)" class="error-messages">
+                                    <div ng-message="required">Account name required</div>
+                                </div>
+                            </div>
+
                             <div class="form-group" data-ng-class="{ 'has-error': signupform.textnewemail.$invalid && signupform.textnewemail.$touched }">
                                 <span class="block input-icon input-icon-right">
                                     <input type="text" class="form-control" data-ng-model="vm.newuser.email" placeholder="Username" name="textnewemail" required ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/">

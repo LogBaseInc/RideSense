@@ -10,29 +10,15 @@ define(['angular',
             vm.alertsdata = null;
             var alertsummarydata= {};
             var submitted = false;
-            var alertslocation = getAlertsLocation();
-			var firebaseref = new Firebase(config.firebaseUrl+'account/'+sessionservice.getSessionUid()+'/alerts');
-			var mobilefbref = new Firebase(config.firebaseUrl+'account/'+sessionservice.getSessionUid()+'/mobile');
+            var alertslocation = sessionservice.getAlertsLocation();
+			var firebaseref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/alerts');
+			var mobilefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/mobile');
 
    			vm.canSaveMobile = function (form) {
                 return form.$valid && form.$dirty && !submitted;
             };
 
 			activate();
-
-			function setAlertsLocation(data) {
-                sessionStorage.setItem('alertlocation', angular.toJson(data, true));
-            }
-
-            function getAlertsLocation(data) {
-                var alertslocation = [];
-                var alertslocation = sessionStorage.getItem('alertlocation');
-                if (alertslocation)
-                    alertslocation = angular.fromJson(alertslocation); 
-                else
-                    alertslocation = [];               
-                return alertslocation            
-            }
 
 		 	function activate() {
 		 		spinner.show();
@@ -45,7 +31,7 @@ define(['angular',
 				  		vm.alertsdata = [];
 				  		vm.openalerts  = [];
 				  		vm.closedalerts = [];
-				  		applyscope();
+				  		sessionservice.applyscope($scope);
 				  	}
 				  		
 				}, function (errorObject) {
@@ -69,62 +55,54 @@ define(['angular',
 
 		 	function setAlerts(data) {
 		 		vm.alertsdata = data;
-		 		getAlertSummaryData();
+		 		var devicedetails = sessionservice.getAccountDevices();
 
-		 		var openalertsdata = _.filter(data, function(alert){ return alert.status == 'Open'});
-		 		var closedalertsdata = _.filter(data, function(alert){ return alert.status == 'Closed'});
-
-		 		openalertsdata.sort(function(a, b) {
-    				return parseInt(b.time) - parseInt(a.time);
-				});
-				closedalertsdata.sort(function(a, b) {
-    				return parseInt(b.time) - parseInt(a.time);
-				});
-
+				alertsummarydata.categories =[];
+		 		alertsummarydata.data =[];
+				
 		 		vm.openalerts = [];
-		 		for(var i =0; i < openalertsdata.length; i++) {
-		 			var alertlocation =  _.first(_.filter(alertslocation, function(alertloc){ return alertloc.alertid == openalertsdata[i].alertid}));
+		 		vm.closedalerts = [];
+		 		for(property in data) {
+		 			if(property != undefined) {
+		 				var alert = data[property];
+			 			var date = moment((alert.time)).format('MMM DD, YYYY');
+			 			var dateIndex = alertsummarydata.categories.indexOf(date);
+			 			if(dateIndex >= 0) 
+				 			alertsummarydata.data[dateIndex] += 1;
+			 			else {
+			 				alertsummarydata.categories.push(date);
+			 				alertsummarydata.data.push(1);
+			 			}
 
-		 			vm.openalerts.push(
-		 			{
-		 				alertid : openalertsdata[i].alertid,
-		 				devicenumber: openalertsdata[i].devicenumber,
-		 				text: getAlertText(openalertsdata[i].alerttype),
-		 				time: getTimeStamp(openalertsdata[i].time),
-		 				latitude : openalertsdata[i].latitude,
-		 				longitude : openalertsdata[i].longitude,
-		 				location: alertlocation ? alertlocation.location : 'Calulating...',
-		 				address : alertlocation ? alertlocation.address : ''
-		 			});
+			 			var alertlocation =  _.first(_.filter(alertslocation, function(alertloc){ return alertloc.alertid == property}));
 
-		 			if(alertlocation == null || alertlocation == undefined) {
-		 				var openlatlng = new google.maps.LatLng(openalertsdata[i].latitude, openalertsdata[i].longitude);
-	                	readlocation(openlatlng, vm.openalerts[i]);
-	                }
+			 			var alertdetail =  {
+			 				alertid : property,
+			 				devicenumber: alert.devicenumber,
+			 				vehiclenumber : devicedetails[alert.devicenumber].vehiclenumber,
+			 				text: getAlertText(alert.alerttype),
+			 				time: getTimeStamp(alert.time),
+			 				latitude : alert.latitude,
+			 				longitude : alert.longitude,
+			 				location: alertlocation ? alertlocation.location : 'Calulating...',
+			 				address : alertlocation ? alertlocation.address : ''
+			 			};
+
+			 			if(alert.status == 'Open')
+							vm.openalerts.push(alertdetail);
+						else
+							vm.closedalerts.push(alertdetail)
+
+			 			if(alertlocation == null || alertlocation == undefined) {
+			 				var openlatlng = new google.maps.LatLng(alert.latitude, alert.longitude);
+		                	readlocation(openlatlng, alertdetail);
+		                }
+		            }
 		 		}
 
-				vm.closedalerts = [];
-		 		for(var i =0; i < closedalertsdata.length; i++) {
-		 			
-		 			var alertlocation =  _.first(_.filter(alertslocation, function(alertloc){ return alertloc.alertid == closedalertsdata[i].alertid}));
-		 			vm.closedalerts.push(
-		 			{
-		 				alertid : closedalertsdata[i].alertid,
-		 				devicenumber: closedalertsdata[i].devicenumber,
-		 				text: getAlertText(closedalertsdata[i].alerttype),
-		 				time: getTimeStamp(closedalertsdata[i].time),
-		 				latitude : closedalertsdata[i].latitude,
-		 				longitude : closedalertsdata[i].longitude,
-		 				location: alertlocation ? alertlocation.location : 'Calulating...',
-		 			});
-
-		 			if(alertlocation == null || alertlocation == undefined) {
-		 				var closedlatlng = new google.maps.LatLng(closedalertsdata[i].latitude, closedalertsdata[i].longitude);
-	                	readlocation(closedlatlng, vm.closedalerts[i]);
-	                }
-		 		}
-
+		 		setAlertSummaryData();
 		 		spinner.hide();
+		 		sessionservice.applyscope($scope);
 		 	}
 
 		 	function getAlertText(alertType) {
@@ -160,13 +138,12 @@ define(['angular',
 		                    	location : alertobject.location,
 		                    	address : alertobject.address
 		                    });
-		                    setAlertsLocation(alertslocation);
-		                    applyscope();
-		                }
+		                    sessionservice.setAlertsLocation(alertslocation);
+							sessionservice.applyscope($scope);		                }
 		            }
 		            else {
 		            	alertobject.location = 'Calculating...';
-		            	applyscope();
+		            	sessionservice.applyscope($scope);
 		            	console.log(status);
 		            }
 	            });
@@ -175,8 +152,7 @@ define(['angular',
 		 	vm.closealert = function(alertobj){
 		 		var alertclosed = _.first(_.filter(vm.alertsdata, function(alert){ return alert.alertid == alertobj.alertid}));
 		 		alertclosed.status = 'Closed';
-		 		var index = vm.alertsdata.indexOf(alertclosed);
-		 		var alertref = new Firebase(config.firebaseUrl+'account/'+sessionservice.getSessionUid()+'/alerts/'+index+'/status');
+		 		var alertref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/alerts/'+alertobj.alertid+'/status');
 		 		alertref.set('Closed');
 		 	}
 
@@ -199,35 +175,10 @@ define(['angular',
 				else
 				    notify.success('Mobile number saved successfully');
 			  	
-			  	applyscope(); 
+			  	sessionservice.applyscope($scope);
 			};
-
-			function applyscope() {
-				if ($scope.$root && $scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
-		            $scope.$apply();
-		        }
-			}
-
-		 	function getAlertSummaryData(){
-		 		alertsummarydata.categories =[];
-		 		alertsummarydata.data =[];
-		 		var alertSummaryArray = angular.copy(vm.alertsdata);
-
-				alertSummaryArray.sort(function(a, b) {
-    				return parseInt(a.time) - parseInt(b.time);
-				});
-
-		 		for(var i=0; i<alertSummaryArray.length; i++){
-		 			var date = moment((alertSummaryArray[i].time)).format('MMM DD, YYYY');
-		 			var dateIndex = alertsummarydata.categories.indexOf(date);
-		 			if(dateIndex >= 0) 
-			 			alertsummarydata.data[dateIndex] += 1;
-		 			else {
-		 				alertsummarydata.categories.push(date);
-		 				alertsummarydata.data.push(1);
-		 			}
-		 		}
-
+		
+		 	function setAlertSummaryData() {
 		 		vm.alertsChartConfig = {
 			        options: {
 			            chart: {
@@ -251,8 +202,7 @@ define(['angular',
 			        title: {
 			            text: ''
 			        },
-			        series: [
-			            {
+			        series: [{
 			                name: 'Alerts',
 			                data: alertsummarydata.data,
 			                color: 'LightCoral'
@@ -269,11 +219,11 @@ define(['angular',
 			        	height: 150
 			        },
 			        events: {
-                    		load: function (event) {
-		    					$(window).resize();
-		    					alert('chart loaded 1');
-                    		}
-               			 }
+                		load: function (event) {
+	    					$(window).resize();
+	    					alert('chart loaded 1');
+                		}
+               		}
 		    	};
 
 		 	}

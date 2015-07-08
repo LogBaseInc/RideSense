@@ -1,5 +1,5 @@
 <div data-ng-controller="devices as vm">
-	<div class="col-xs-12" style="margin-bottom:10px">
+	<div class="col-xs-12" style="margin-bottom:10px;margin-top:10px">
 		<h3 style="display:inline">My Devices</h3>
 		<a style="float:right" class="btn btn-success" href="" data-ng-click="vm.buydevice()">Buy a device</a>
 	</div>
@@ -73,32 +73,34 @@
            <div class="row col-sm-12">
 				<form class="form-horizontal" name="deviceform">
 					<div class="form-group col-sm-12">
-						<label class="control-label no-padding-right">Car number</label>
-						</br>
-						<div>
-							 <input type="text" class="form-control" placeholder="Car number" data-ng-model="device.carnumber" required>
-						</div>
-					</div>
-					<div class="form-group col-sm-12">
 						<label class="control-label no-padding-right">License number</label>
 						</br>
-						<div>
-							 <input type="text" class="form-control" placeholder="License number" data-ng-model="device.licensenumber" required>
-						</div>
+						<div class="form-group" data-ng-class="{ 'has-error': deviceform.textlicensenumber.$invalid && deviceform.textlicensenumber.$touched }" style="margin:0px">
+	                        <input type="text" class="form-control" placeholder="License number" name="textlicensenumber" data-ng-model="device.licensenumber" required>
+	                        </span>
+	                        <div data-ng-messages="deviceform.textlicensenumber.$error" data-ng-if="interacted(deviceform.textlicensenumber)" class="error-messages">
+	                            <div ng-message="required">License number required</div>
+	                        </div>
+                    	</div>
 					</div>
+
 					<div class="form-group col-sm-12">
-						<label class="control-label no-padding-right">Model number</label>
+						<label class="control-label no-padding-right">Vehicle number</label>
 						</br>
-						<div>
-							 <input type="text" class="form-control" placeholder="Model number" data-ng-model="device.modelnumber" required>
-						</div>
+						<div class="form-group" data-ng-class="{ 'has-error': deviceform.textvehiclenumber.$invalid && deviceform.textvehiclenumber.$touched }" style="margin:0px">
+							 <input type="text" class="form-control" placeholder="Vehicle number" name="textvehiclenumber" data-ng-model="device.vehiclenumber" required>
+	                        </span>
+	                        <div data-ng-messages="deviceform.textvehiclenumber.$error" data-ng-if="interacted(deviceform.textvehiclenumber)" class="error-messages">
+	                            <div ng-message="required">Vehicle number required</div>
+	                        </div>
+                    	</div>
 					</div>
 				</form>
 			</div>
         </div>
         <div class="ngdialog-buttons">
-            <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog('Cancel')">Cancel</button>
-            <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="openSecond()" data-ng-disabled="!canBuy">Buy</button>
+            <button type="button" class="ngdialog-button ngdialog-button-secondary"  ng-click="closeThisDialog('Cancel')">Cancel</button>
+            <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="adddevice()" data-ng-disabled="!canBuy">Buy</button>
         </div>
     </script>
 </div>

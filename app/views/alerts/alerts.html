@@ -1,7 +1,7 @@
 <div data-ng-controller="alerts as vm">
 	<div class="container-fluid" data-ng-show="vm.alertsdata != null">
 		<div class="row">
-			<div class="col-xs-12 col-md-8" data-ng-show="vm.alertsdata.length > 0">
+			<div class="col-xs-12 col-md-8" data-ng-show="vm.alertsdata != null">
 				<br/>
 				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Open Alerts</h5>
 				<div data-ng-if="vm.openalerts.length == 0">
@@ -13,7 +13,7 @@
 					<hr/>
 					<div class="row">
 						<div class="col-xs-8">
-							<p style="color:red"><strong>Car #555</strong>: {{alert.text}}</p>
+							<p style="color:red"><strong>Car #{{alert.vehiclenumber}}</strong>: {{alert.text}}</p>
 						</div>
 						<div class="col-xs-4">
 							<p class="text-muted text-right">{{alert.time}}</p>
@@ -45,7 +45,7 @@
 								<hr/>
 								<div class="row">
 									<div class="col-xs-8">
-										<p><strong>Car #555</strong>: {{alert.text}}</p>
+										<p><strong>Car #{{alert.vehiclenumber}}</strong>: {{alert.text}}</p>
 									</div>
 									<div class="col-xs-4">
 										<p class="text-muted text-right">{{alert.time}}</p>
@@ -63,7 +63,7 @@
 			</div>
 			<div class="col-xs-12 col-md-4 tm-alerts-summary">
 				</br>
-				<div data-ng-show="vm.alertsdata.length > 0">
+				<div data-ng-show="vm.alertsdata != null">
 					<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Alerts Summary</h5>
 					<br/>
 					<highchart id="alertsChart" config="vm.alertsChartConfig"></highchart>

@@ -25,33 +25,27 @@ define(['angular',
 			var directionsService;
 			var mapinstance;
 			var routecolor = ['red', 'green',  'purple', 'orange', 'blue'];
-			//['#F4CE37', '#00adef', '#7cc576', '#f36523', '#898f99'];
 
 		 	activate();
 
 		 	function activate(){
 			 	spinner.show();
-				var ref = new Firebase(config.firebaseUrl+'account/'+sessionservice.getSessionUid()+'/livecars');
+				var ref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars');
 				ref.on("value", function(snapshot) {
 				  	livecarsmodel(snapshot.val());
 				}, function (errorObject) {
 				  	console.log("The livecars read failed: " + errorObject.code);
 				});
 
-				var distancefbref = new Firebase(config.firebaseUrl+'account/'+sessionservice.getSessionUid()+'/distance');
+				var distancefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/distance');
 				distancefbref.on("value", function(snapshot) {
 				  	vm.distanceCovered = snapshot.val();
-				  	applyscope();
+				  	sessionservice.applyscope($scope);
 				}, function (errorObject) {
 				  	console.log("The mobile number read failed: " + errorObject.code);
 				});
 		 	}
-
-			function applyscope() {
-				if ($scope.$root && $scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
-		            $scope.$apply();
-		        }
-			}
+			
 		 	vm.searchOptionChanged = function(searchoption){
 			 	if(searchoption == 'location'){
 				 	vm.locationsearch = true;
@@ -101,7 +95,6 @@ define(['angular',
 				        dragend: function (marker, eventName, args) {
 				        var lat = marker.getPosition().lat();
 				        var lng = marker.getPosition().lng();
-			 	 		//setGoogleMaps(lat, lng);
 			 	 		calculateDistances();
 			 	 		vm.cars.models = vm.cars.models;
 		       		}
@@ -111,50 +104,54 @@ define(['angular',
 		 	function livecarsmodel(data) {
 			 	vm.activeCabs = 0;
 			 	vm.idleCabs = 0
+			 	var devicedetails = sessionservice.getAccountDevices();
 			 	var isinitail = vm.cars === undefined;
 			 	if(isinitail) {
 				 	vm.cars = {};
 				 	vm.cars.models =[];
 				 	vm.carlist =[];
 
-				 	for(var i=0; i<data.length; i++) {
-					 	var currentdatetime = new Date();
-					 	var locationdate = moment(data[i].locationtime);
-					 	var datetimediff = (new Date() - locationdate);
-					 	var isIdle = true;
-						if(datetimediff > config.idleTime)
-							vm.idleCabs = vm.idleCabs+1;
-						else {
-							vm.activeCabs = vm.activeCabs+1;
-							isIdle = false;
-						}
-						vm.carlist.push({name : data[i].carnumber});
-						 	vm.cars.models.push(
-							 	{
-								 	latitude: data[i].latitude,
-								 	longitude: data[i].longitude,
-								 	title: '#'+data[i].carnumber,
-								 	id : i,
+				 	for(property in data) {
+				 		if(property != undefined) {
+					 		var livecarobj  = data[property];
+					 		var vehiclenumber = devicedetails[property].vehiclenumber;
+						 	var currentdatetime = new Date();
+						 	var locationdate = moment(livecarobj.locationtime);
+						 	var datetimediff = (new Date() - locationdate);
+						 	var isIdle = true;
+							if(datetimediff > config.idleTime)
+								vm.idleCabs = vm.idleCabs+1;
+							else {
+								vm.activeCabs = vm.activeCabs+1;
+								isIdle = false;
+							}
+							vm.carlist.push({name : vehiclenumber});
+							 	vm.cars.models.push({
+								 	latitude: livecarobj.latitude,
+								 	longitude: livecarobj.longitude,
+								 	title: '#'+ vehiclenumber,
+								 	id : property,
 								 	isIdle: isIdle,
 								 	options: {
-								   	labelContent:  '#'+data[i].carnumber, 
+								   	labelContent:  '#'+vehiclenumber, 
 								   	labelClass: ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
 								   	icon: (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
 								   	labelAnchor: ((isIdle && vm.dragMarker) ? '20 60' : '0 0')
-							   	}
-						 	});
-					 	}
-					 	applyscope();
-					 	setGoogleMaps(vm.cars.models[0].latitude,vm.cars.models[0].longitude);
+								   }
+							 });
+						 }
+					 	sessionservice.applyscope($scope);
+					 	setGoogleMaps(null, null);
 					}
-				 	else {
-					 	for(var i=0; i<data.length; i++) {
-
-							var locationdate = moment(data[i].locationtime);
-							console.log(data[i].latitude + ' , ' + data[i].longitude +' , ' +locationdate.format("MMM DD YYYY HH:mm:ss"));
-
+				}
+			 	else {
+				 	for(property in data) {
+				 		if(property != undefined) {
+					 		var livecarobj  = data[property];
+					 		var vehiclenumber = devicedetails[property].vehiclenumber;
+							var locationdate = moment(livecarobj.locationtime);
+							//console.log(livecarobj.latitude + ' , ' + livecarobj.longitude +' , ' +locationdate.format("MMM DD YYYY HH:mm:ss"));
 					 		var datetimediff = (new Date() - locationdate);
-
 						 	var isIdle = true;
 							if(datetimediff > config.idleTime)
 								vm.idleCabs = vm.idleCabs+1;
@@ -163,23 +160,22 @@ define(['angular',
 								isIdle = false;
 							}
 
-						 	var cardetail =  _.first(_.filter(vm.cars.models, function(carmodel){ return carmodel.title == '#'+data[i].carnumber}));
-						 	if(cardetail){
-							 	cardetail.latitude = data[i].latitude;
-							 	cardetail.longitude = data[i].longitude;
+						 	var cardetail =  _.first(_.filter(vm.cars.models, function(carmodel){ return carmodel.title == '#'+vehiclenumber}));
+						 	if(cardetail) {
+							 	cardetail.latitude = livecarobj.latitude;
+							 	cardetail.longitude = livecarobj.longitude;
 							 	cardetail.isIdle = isIdle;
 							 	if(cardetail.isIdle === false)
-								 	cardetail.options.labelContent = '#'+data[i].carnumber;
-								 	cardetail.options.labelClass = ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
-								   	cardetail.options.icon = (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
-								   	cardetail.options.labelAnchor = ((isIdle && vm.dragMarker) ? '20 80' : '0 0')
+								 	cardetail.options.labelContent = '#'+vehiclenumber;
+							 	cardetail.options.labelClass = ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
+							   	cardetail.options.icon = (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
+							   	cardetail.options.labelAnchor = ((isIdle && vm.dragMarker) ? '20 80' : '0 0')
 						 	}
-		 				}
-		 				//calculateDistances();
-		 				applyscope();
-		 				//setGoogleMaps(vm.cars.models[0].latitude,vm.cars.models[0].longitude);
-		 				//setGoogleMaps(vm.map.center.latitude, vm.map.center.longitude);
+						}
+		 				sessionservice.applyscope($scope);
+		 				setMapCenterOfAllMarkers();
 		 			}
+	 			}
 		 	}
 
 		 	function calculateDistances() {
@@ -224,10 +220,10 @@ define(['angular',
 				 	idleCarlist.push(vm.cars.models[i]);
 				 	var origin = new google.maps.LatLng(vm.cars.models[i].latitude,vm.cars.models[i].longitude);
 				 	var request = {
-							    origin: origin, 
-							    destination: dest1,
-							   	travelMode: google.maps.TravelMode.DRIVING
-				 			};
+					    origin: origin, 
+					    destination: dest1,
+					   	travelMode: google.maps.TravelMode.DRIVING
+				 	};
 
 			 		directionsService.route(request, function(response, status) {
 					   if (status == google.maps.DirectionsStatus.OK) {
@@ -248,16 +244,9 @@ define(['angular',
 						var element = response.rows[i].elements[0];
 						var distance = element.distance.text;
 						var duration = element.duration.text;
-						/*if(element.distance.value <= 30000) {*/
 						vm.cars.models[i].options.labelContent = idleCarlist[i].title + '<div>'+distance + ' | '+duration +'</div>';
 						vm.cars.models[i].options.labelClass = 'tm-marker-label-distance';
 						vm.cars.models[i].options.labelAnchor = '20 60';
-						/*}
-						else {
-						vm.cars.models[i].options.labelContent = idleCarlist[i].title;
-						vm.cars.models[i].options.labelClass = 'tm-marker-label';
-						vm.cars.models[i].options.labelAnchor = '0 0';
-						}*/
 					}
 				}
 
@@ -266,13 +255,10 @@ define(['angular',
 		 	function setGoogleMaps(lat, lng){
 				vm.showmaps =true;
 		       	uiGmapGoogleMapApi.then(function(maps) {
-		       	var defaultBounds = new google.maps.LatLngBounds(
-					new google.maps.LatLng(40.82148, -73.66450),
-					new google.maps.LatLng(40.66541, -74.31715));
 		       		maps.visualRefresh = true;
 				   	vm.map = { center: { latitude: (lat!==null?lat:11), longitude: (lng!==null?lng:77) }, zoom: vm.map.zoom };
-				});
-		   		spinner.hide();
+		   			spinner.hide();
+		   		});
 		   	}
 
 		   	$rootScope.$on('search:location', function (event, data) {
@@ -281,9 +267,22 @@ define(['angular',
 			});
 
 			uiGmapIsReady.promise(1).then(function(instances) {
-			   directionsService = new google.maps.DirectionsService();
-			   mapinstance = instances[0].map;
+			   	directionsService = new google.maps.DirectionsService();
+			   	mapinstance = instances[0].map;
+				setMapCenterOfAllMarkers();
 			});
+
+			function setMapCenterOfAllMarkers() {
+				var bounds = new google.maps.LatLngBounds();
+				for(i=0;i<vm.cars.models.length;i++) {
+					bounds.extend(new google.maps.LatLng(vm.cars.models[i].latitude,vm.cars.models[i].longitude));
+				}
+
+				mapinstance.setCenter(bounds.getCenter());
+				mapinstance.fitBounds(bounds);
+				mapinstance.setZoom(mapinstance.getZoom() - 4);			
+			}
+
 		}
 	})();
 });

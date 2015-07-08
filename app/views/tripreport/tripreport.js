@@ -13,7 +13,7 @@ define(['angular',
             vm.stoploc=null;
             vm.showmap= false;
 
-           var myDataRef = new Firebase(config.firebaseUrl+'account/'+sessionservice.getSessionUid()+'/report');
+           var myDataRef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/report');
             spinner.show();
             myDataRef.on("value", function(snapshot) {
                     setPath(snapshot.val());
@@ -33,7 +33,7 @@ define(['angular',
                 vm.datetime = data.datetime;
                 vm.showmap= true;  
                 $rootScope.$emit('pathsource', {path:vm.pathsource, brake:vm.brakesource, speedbrake:vm.speedbrakesource});
-                 applyscope();
+                sessionservice.applyscope($scope);
                     
                 var geocoder = new google.maps.Geocoder();
                 var latlng = new google.maps.LatLng(vm.pathsource[0].latitude, vm.pathsource[1].longitude);
@@ -42,7 +42,7 @@ define(['angular',
                         if (results[1]) {
                             var strt = results[1].formatted_address;
                             vm.startloc = strt.substring(0,strt.indexOf(','));
-                            applyscope();
+                            sessionservice.applyscope($scope);
                         } 
                     } 
                 });
@@ -53,7 +53,7 @@ define(['angular',
                         if (results[1]) {
                             var stop = results[1].formatted_address;
                             vm.stoploc = stop.substring(0,stop.indexOf(','));
-                             applyscope();
+                            sessionservice.applyscope($scope);
                         } 
                     } 
                 });
@@ -68,12 +68,6 @@ define(['angular',
             vm.brakechecked = function()
             {
                 $rootScope.$emit('brake', {show:vm.brake});
-            }
-
-            function applyscope() {
-                if ($scope.$root.$$phase != '$apply' && $scope.$root.$$phase != '$digest') {
-                    $scope.$apply();
-                }
             }
         }
     })();
