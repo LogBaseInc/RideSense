@@ -2,13 +2,14 @@ define(['angular',
     'config.route'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('devices', ['$scope', 'ngDialog', 'config', 'spinner', 'sessionservice', devices]);
-        function devices($scope, ngDialog, config, spinner, sessionservice) {
+        configroute.register.controller('devices', ['$rootScope','$scope', 'ngDialog', 'config', 'spinner', 'sessionservice', devices]);
+        function devices($rootScope, $scope, ngDialog, config, spinner, sessionservice) {
             var vm = this;
 
             activate();
 
             function activate(){
+                $rootScope.routeSelection = '';
             	spinner.show();
                 var ref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/devices');
                 ref.on("value", function(snapshot) {

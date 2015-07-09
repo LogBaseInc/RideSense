@@ -8,7 +8,7 @@ define(['angular',
             var vm = this;
             vm.showclosed = false;
             vm.alertsdata = null;
-            var alertsummarydata= {};
+            vm.alertsummarydata= {};
             var submitted = false;
             var alertslocation = sessionservice.getAlertsLocation();
 			var firebaseref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/alerts');
@@ -57,21 +57,28 @@ define(['angular',
 		 		vm.alertsdata = data;
 		 		var devicedetails = sessionservice.getAccountDevices();
 
-				alertsummarydata.categories =[];
-		 		alertsummarydata.data =[];
-				
+				vm.alertsummarydata.categories =[];
+		 		vm.alertsummarydata.data =[];
+
+				for(var i = 15 ; i >= 0; i --) {
+					var newdate = new Date();
+					newdate.setDate(newdate.getDate() - i);
+					vm.alertsummarydata.categories.push(moment(new Date(newdate)).format('MMM DD'));
+					vm.alertsummarydata.data.push(0);
+				}
+
 		 		vm.openalerts = [];
 		 		vm.closedalerts = [];
 		 		for(property in data) {
 		 			if(property != undefined) {
 		 				var alert = data[property];
-			 			var date = moment((alert.time)).format('MMM DD, YYYY');
-			 			var dateIndex = alertsummarydata.categories.indexOf(date);
+			 			var date = moment((alert.time)).format('MMM DD');
+			 			var dateIndex = vm.alertsummarydata.categories.indexOf(date);
 			 			if(dateIndex >= 0) 
-				 			alertsummarydata.data[dateIndex] += 1;
+				 			vm.alertsummarydata.data[dateIndex] += 1;
 			 			else {
-			 				alertsummarydata.categories.push(date);
-			 				alertsummarydata.data.push(1);
+			 				vm.alertsummarydata.categories.push(date);
+			 				vm.alertsummarydata.data.push(1);
 			 			}
 
 			 			var alertlocation =  _.first(_.filter(alertslocation, function(alertloc){ return alertloc.alertid == property}));
@@ -204,19 +211,19 @@ define(['angular',
 			        },
 			        series: [{
 			                name: 'Alerts',
-			                data: alertsummarydata.data,
+			                data: vm.alertsummarydata.data,
 			                color: 'LightCoral'
 			            }
 			        ],
 			        xAxis: {
-	            		categories: alertsummarydata.categories
+	            		categories: vm.alertsummarydata.categories
 	        		},
 			        yAxis: {
 			            min: 0
 			        },
 			        loading: false,
 			        size: {
-			        	height: 150
+			        	height: 200
 			        },
 			        events: {
                 		load: function (event) {

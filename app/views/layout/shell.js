@@ -150,6 +150,12 @@ define(['angular'], function () {
                 }
             }
 
+            $(document).on('click','.navbar-collapse.in',function(e) {
+                if( $(e.target).is('a') ) {
+                    $(this).collapse('hide');
+                }
+            });
+
             // $scope.$on('$routeChangeStart', function (event, next, current) {
             //     var isAnonymous = false;
             //     if (next.$$route && next.$$route.allowAnonymous)

@@ -49,9 +49,10 @@ define(['angular',
 				  	console.log("The livecars read failed: " + errorObject.code);
 				});
 
-				var distancefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/distance');
+				var currentday = moment().format("YYYYMMDD");
+				var distancefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/daily/'+currentday);
 				distancefbref.on("value", function(snapshot) {
-				  	vm.distanceCovered = snapshot.val() != null ? snapshot.val() : 0; 
+				  	vm.distanceCovered = snapshot.val() != null ? snapshot.val().distance : 0; 
 				  	sessionservice.applyscope($scope);
 				}, function (errorObject) {
 				  	console.log("The mobile number read failed: " + errorObject.code);

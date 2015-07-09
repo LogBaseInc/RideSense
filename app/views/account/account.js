@@ -4,9 +4,9 @@ define(['angular',
     'views/account/device/device'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('account', [account]);
+        configroute.register.controller('account', ['$rootScope', account]);
         function account() {
-            
+            $rootScope.routeSelection = '';
         }
     })();
 });
