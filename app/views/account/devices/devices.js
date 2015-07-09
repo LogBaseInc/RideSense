@@ -2,39 +2,35 @@ define(['angular',
     'config.route'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('devices', ['ngDialog', devices]);
-        function devices(ngDialog) {
+        configroute.register.controller('devices', ['$scope', 'ngDialog', 'config', 'spinner', 'sessionservice', devices]);
+        function devices($scope, ngDialog, config, spinner, sessionservice) {
             var vm = this;
 
             activate();
 
             function activate(){
-            	getDevices();
+            	spinner.show();
+                var ref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/devices');
+                ref.on("value", function(snapshot) {
+                    getDevices(snapshot.val());
+                }, function (errorObject) {
+                    console.log("The livecars read failed: " + errorObject.code);
+                });
             }
 
-            function getDevices(){
+            function getDevices(data){
             	vm.devices = [];
-            	vm.devices.push({
-            		devicenumber : '1234567890',
-            		boughton: 'May 1, 2015',
-            		carnumber: 'TN 37 AY 5306',
-            		licensenumber: 'AT1235',
-            		modelnumber: 'TACWS1234'
-            	});
-            	vm.devices.push({
-            		devicenumber : '1234567891',
-            		boughton: 'May 5, 2015',
-            		carnumber: 'TN 37 AY 5307',
-            		licensenumber: 'AT12345',
-            		modelnumber: 'TAASWS34234'
-            	});
-            	vm.devices.push({
-            		devicenumber : '1234567892',
-            		boughton: 'May 5, 2015',
-            		carnumber: 'TN 37 AY 5308',
-            		licensenumber: 'AT12345SO',
-            		modelnumber: 'TAASWS34234'
-            	});
+                for(var property in data) {
+                    vm.devices.push({
+                        devicenumber : property,
+                        //boughton: data[property].addedOn,
+                        vehiclenumber: data[property].vehiclenumber,
+                        displayvehiclenumber: data[property].vehiclenumber.length > 25 ? (data[property].vehiclenumber.substring(0,25)+" ...") : data[property].vehiclenumber
+                    });
+                }
+
+                spinner.hide();($scope);
+                sessionservice.applyscope($scope);
             }
 
             vm.buydevice = function(){

@@ -2,10 +2,10 @@ define(['angular',
     'config.route'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('device', ['$scope', 'ngDialog','config', 'sessionservice', device]);
-        function device($scope, ngDialog, config, sessionservice) {
+        configroute.register.controller('device', ['$scope', 'ngDialog','config', 'notify', 'sessionservice', device]);
+        function device($scope, ngDialog, config, notify, sessionservice) {
             var submitted = false;
-
+            $scope.isDeviceEdit = false;
 
             Object.defineProperty($scope, 'canBuy', {
                 get: canBuy
@@ -18,8 +18,10 @@ define(['angular',
             activate();
 
             function activate(){
-                if($scope.ngDialogData.device)
+                if($scope.ngDialogData.device) {
+                    $scope.isDeviceEdit = true;
                     $scope.device = $scope.ngDialogData.device;
+                }
             }
 
             function canBuy(){
@@ -27,10 +29,19 @@ define(['angular',
             }
 
             $scope.adddevice = function () {
-                //var devicefberef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/licenses/'+$scope.device.licensenumber+'/');
-                //var devicejson = '{"vehiclenumber" : "'+$scope.device.vehiclenumber+'"}';
-                //devicefberef.set(angular.fromJson(devicejson));
-                ngDialog.close();
+                var accountnumber = sessionservice.getaccountId();
+                var accountfberef = new Firebase(config.firebaseUrl+'devices/'+$scope.device.devicenumber+'/');
+                accountfberef.set(accountnumber);
+
+                var devicefberef = new Firebase(config.firebaseUrl+'accounts/'+accountnumber+'/devices/'+$scope.device.devicenumber+'/');
+                var devicejson = '{"vehiclenumber" : "'+$scope.device.vehiclenumber+'"}';
+                devicefberef.set(angular.fromJson(devicejson));
+                if($scope.isDeviceEdit)
+                    notify.success('Device updated successfully');
+                else
+                    notify.success('Device added successfully');
+
+                $scope.closeThisDialog('Cancel');
             }
 
         }

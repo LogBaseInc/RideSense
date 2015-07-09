@@ -79,6 +79,7 @@ define(['angular'], function () {
                 $location.path('/login');
                 var ref = new Firebase(config.firebaseUrl);
                 ref.unauth();
+                ref.off();
                 if(timer !=undefined && timer != null)
                     clearTimeout(timer);
             }

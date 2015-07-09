@@ -1,9 +1,9 @@
 <div data-ng-controller="devices as vm">
 	<div class="col-xs-12" style="margin-bottom:10px;margin-top:10px">
-		<h3 style="display:inline">My Devices</h3>
-		<a style="float:right" class="btn btn-success" href="" data-ng-click="vm.buydevice()">Buy a device</a>
+		<h4 style="display:inline" data-ng-show="vm.devices.length > 0">My Devices</h3>
+		<a style="float:right" class="btn btn-success" href="" data-ng-click="vm.buydevice()">Add a device</a>
 	</div>
-	<div class="form-group col-xs-12">
+	<div class="form-group col-xs-12" data-ng-show="vm.devices.length > 0">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Search" id="inputGroup" data-ng-model="search">
             <span class="input-group-addon">
@@ -11,60 +11,13 @@
             </span>
         </div>
     </div>
-	<div class="col-xs-12"  data-ng-repeat="device in vm.devices | filter:search">
-		<div class="widget-header">
-			<h5 class="widget-title">Device {{$index+1}}</h5>
-			<div class="widget-toolbar">
-				<a href="">
-					<i class="ace-icon fa fa-times red" tooltip="Remove"></i>
-				</a>
-			</div>
-		</div>
-
-		<div class="widget-body">
-			<div class="widget-main" ng-class-odd="'alert alert-info'" ng-class-even="'alert alert-success'">
-				<a href="" data-ng-click="vm.editdevice(device)">
-					<div class="row">
-						<div class="col-xs-4">
-							<span style="float:right">Device #: </span>
-						</div>
-						<div class="col-xs-8">
-							<label>{{device.devicenumber}}</label>
-					    </div>
-					 </div>
-					 <div class="row">
-						<div class="col-xs-4">
-							<span style="float:right">Bought on: </span>
-						</div>
-						<div class="col-xs-8">
-							<label>{{device.boughton}}</label>
-					    </div>
-					 </div>
-					 <div class="row">
-						<div class="col-xs-4">
-							<span style="float:right">Car #: </span>
-						</div>
-						<div class="col-xs-8">
-							<label>{{device.carnumber}}</label>
-					    </div>
-					 </div>
-					 <div class="row">
-						<div class="col-xs-4">
-							<span style="float:right">License #: </span>
-						</div>
-						<div class="col-xs-8">
-							<label>{{device.licensenumber}}</label>
-					    </div>
-					 </div>
-					 <div class="row">
-						<div class="col-xs-4">
-							<span style="float:right">Model #: </span>
-						</div>
-						<div class="col-xs-8">
-							<label>{{device.modelnumber}}</label>
-					    </div>
-					 </div>
-				</a>
+    
+	<div class="col-xs-12" style="width:100%">
+		<div class="tm-alerts-summary" style="width: 250px; height: 100px; margin-right:20px; margin-bottom : 20px; display:inline-block; color: gray" data-ng-repeat="device in vm.devices | filter:search">
+			<div style="margin-left:10px;" data-ng-click="vm.editdevice(device)">
+				<h3>{{device.devicenumber}}</label>
+				</br>
+				<img style="height:18px" src="assets/images/car-front.png"></img><label style="margin-left:5px">{{device.displayvehiclenumber}}</label>
 			</div>
 		</div>
 	</div>
@@ -73,13 +26,13 @@
            <div class="row col-sm-12">
 				<form class="form-horizontal" name="deviceform">
 					<div class="form-group col-sm-12">
-						<label class="control-label no-padding-right">License number</label>
+						<label class="control-label no-padding-right">Device number</label>
 						</br>
-						<div class="form-group" data-ng-class="{ 'has-error': deviceform.textlicensenumber.$invalid && deviceform.textlicensenumber.$touched }" style="margin:0px">
-	                        <input type="text" class="form-control" placeholder="License number" name="textlicensenumber" data-ng-model="device.licensenumber" required>
+						<div class="form-group" data-ng-class="{ 'has-error': deviceform.textdevicenumber.$invalid && deviceform.textdevicenumber.$touched }" style="margin:0px">
+	                        <input type="text" class="form-control" placeholder="Device number" name="textdevicenumber" data-ng-model="device.devicenumber" required ng-readonly="isDeviceEdit">
 	                        </span>
-	                        <div data-ng-messages="deviceform.textlicensenumber.$error" data-ng-if="interacted(deviceform.textlicensenumber)" class="error-messages">
-	                            <div ng-message="required">License number required</div>
+	                        <div data-ng-messages="deviceform.textdevicenumber.$error" data-ng-if="interacted(deviceform.textdevicenumber)" class="error-messages">
+	                            <div ng-message="required">Device number required</div>
 	                        </div>
                     	</div>
 					</div>
@@ -100,7 +53,8 @@
         </div>
         <div class="ngdialog-buttons">
             <button type="button" class="ngdialog-button ngdialog-button-secondary"  ng-click="closeThisDialog('Cancel')">Cancel</button>
-            <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="adddevice()" data-ng-disabled="!canBuy">Buy</button>
+            <button data-ng-hide="isDeviceEdit" type="button" class="ngdialog-button ngdialog-button-primary" ng-click="adddevice();" data-ng-disabled="!canBuy">Add</button>
+            <button data-ng-show="isDeviceEdit" type="button" class="ngdialog-button ngdialog-button-primary" ng-click="adddevice();" data-ng-disabled="!canBuy">Update</button>
         </div>
     </script>
 </div>

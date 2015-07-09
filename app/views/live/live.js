@@ -8,7 +8,7 @@ define(['angular',
         function live($rootScope, $scope, config, spinner, uiGmapIsReady, uiGmapGoogleMapApi, sessionservice) {
         $rootScope.routeSelection = 'live'
 	        var vm = this;
-		 	vm.distanceCovered = '0';
+		 	vm.distanceCovered = 0;
 		 	vm.showmaps =false;
 		 	vm.location = '';
 			vm.locationsearch = true;
@@ -30,20 +30,33 @@ define(['angular',
 
 		 	function activate(){
 			 	spinner.show();
+			 	
 				var ref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars');
 				ref.on("value", function(snapshot) {
-				  	livecarsmodel(snapshot.val());
+					if(snapshot.val())
+				  		livecarsmodel(snapshot.val());
+				  	else {
+				  		spinner.hide();
+				  		vm.activeCabs = 0;
+			 			vm.idleCabs = 0
+			 			vm.cars = {};
+			 			vm.cars.models = [];
+				  		setGoogleMaps(null,null)
+				  		sessionservice.applyscope($scope);
+				  	}
+
 				}, function (errorObject) {
 				  	console.log("The livecars read failed: " + errorObject.code);
 				});
 
 				var distancefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/distance');
 				distancefbref.on("value", function(snapshot) {
-				  	vm.distanceCovered = snapshot.val();
+				  	vm.distanceCovered = snapshot.val() != null ? snapshot.val() : 0; 
 				  	sessionservice.applyscope($scope);
 				}, function (errorObject) {
 				  	console.log("The mobile number read failed: " + errorObject.code);
 				});
+
 		 	}
 			
 		 	vm.searchOptionChanged = function(searchoption){
@@ -273,14 +286,16 @@ define(['angular',
 			});
 
 			function setMapCenterOfAllMarkers() {
-				var bounds = new google.maps.LatLngBounds();
-				for(i=0;i<vm.cars.models.length;i++) {
-					bounds.extend(new google.maps.LatLng(vm.cars.models[i].latitude,vm.cars.models[i].longitude));
-				}
+				if(vm.cars.models.length > 0) {
+					var bounds = new google.maps.LatLngBounds();
+					for(i=0;i<vm.cars.models.length;i++) {
+						bounds.extend(new google.maps.LatLng(vm.cars.models[i].latitude,vm.cars.models[i].longitude));
+					}
 
-				mapinstance.setCenter(bounds.getCenter());
-				mapinstance.fitBounds(bounds);
-				mapinstance.setZoom(mapinstance.getZoom() - 4);			
+					mapinstance.setCenter(bounds.getCenter());
+					mapinstance.fitBounds(bounds);
+					mapinstance.setZoom(mapinstance.getZoom() - 4);
+				}		
 			}
 
 		}

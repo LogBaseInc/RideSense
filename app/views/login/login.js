@@ -14,6 +14,8 @@ define(['angular',
                 vm.newuser.agreed = false;
                 vm.repeatpwderror = false;
                 vm.success = true;
+                var uuid = null;
+                vm.backtologinclicked = backtologinclicked;
 
                 Object.defineProperty(vm, 'canLogin', {
                     get: canLogin
@@ -70,6 +72,11 @@ define(['angular',
                         vm.password = null;
                         resetform($scope.loginform);
                     }
+                    else {
+                        notify.error('Something went wrong, please try again later');
+                        vm.password = null;
+                        resetform($scope.loginform);
+                    }
                 }
 
                 vm.forgotpassword = function() {
@@ -108,14 +115,20 @@ define(['angular',
                 }
 
                 function signupcompleted(userData) {
-                    var accountref = new Firebase(config.firebaseUrl+'account/'+userData.uid+'/');
-                    var accountjson = '{"email" : "'+vm.newuser.email+'", "accountname" : "'+vm.newuser.accountname+'"}';
+                    uuid =  sessionservice.generateUUID();
+                    var usersref = new Firebase(config.firebaseUrl+'users/'+userData.uid+'/');
+                    usersref.set( "account" + uuid);
+
+                    var accountref = new Firebase(config.firebaseUrl+'accounts/account'+uuid);
+                    var accountjson = '{"name" : "'+vm.newuser.accountname+'"}';
                     accountref.set(angular.fromJson(accountjson));
+
                     spinner.hide();
                     submitted = false;
                     notify.success('Registered successfully!');
-                    vm.backtologinclicked();
+                    backtologinclicked();
                 }
+
 
                 function signupfailed(error) {
                     spinner.hide();
@@ -135,7 +148,7 @@ define(['angular',
                     vm.signupdiv = true;
                 }
 
-                vm.backtologinclicked = function() {
+                function backtologinclicked() {
                     linkclicked();
                     vm.logindiv = true;
                 }
