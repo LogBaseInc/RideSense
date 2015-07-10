@@ -30,8 +30,12 @@ define(['angular',
 
 		 	function activate(){
 			 	spinner.show();
-			 	
-				var ref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars');
+				getlivecardata();
+				getDistance();
+		 	}
+
+		 	function getlivecardata() {
+		 		var ref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars');
 				ref.on("value", function(snapshot) {
 					if(snapshot.val())
 				  		livecarsmodel(snapshot.val());
@@ -48,16 +52,36 @@ define(['angular',
 				}, function (errorObject) {
 				  	console.log("The livecars read failed: " + errorObject.code);
 				});
+		 	}
 
-				var currentday = moment().format("YYYYMMDD");
+		 	function getDistance() {
+				var newdate = new Date();
+				newdate.setDate(newdate.getDate() - 1);
+				var previousday = moment(new Date(newdate)).format('YYYYMMDD');
+
+				var distancefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/daily/'+previousday);
+				distancefbref.once("value", function(snapshot) {
+				  	vm.previousdaydistance = snapshot.val() != null ? snapshot.val().distance : 0; 
+					getCurrentdayDistance();
+				}, function (errorObject) {
+				  	console.log("The previous day distance read failed: " + errorObject.code);
+				});
+		 	}
+
+		 	function getCurrentdayDistance() {
+		 		var currentday = moment().format("YYYYMMDD");
 				var distancefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/daily/'+currentday);
 				distancefbref.on("value", function(snapshot) {
 				  	vm.distanceCovered = snapshot.val() != null ? snapshot.val().distance : 0; 
+
+				  	var distancex =  vm.previousdaydistance / 24;
+				  	var time = moment().format("HH.mm");
+				  	vm.isUP = vm.distanceCovered >= (distancex * time);
+
 				  	sessionservice.applyscope($scope);
 				}, function (errorObject) {
-				  	console.log("The mobile number read failed: " + errorObject.code);
+				  	console.log("The current day distance read failed: " + errorObject.code);
 				});
-
 		 	}
 			
 		 	vm.searchOptionChanged = function(searchoption){

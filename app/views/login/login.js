@@ -120,7 +120,7 @@ define(['angular',
                     usersref.set( "account" + uuid);
 
                     var accountref = new Firebase(config.firebaseUrl+'accounts/account'+uuid);
-                    var accountjson = '{"name" : "'+vm.newuser.accountname+'"}';
+                    var accountjson = '{"name" : "'+vm.newuser.accountname+'","timezone" : "'+getTimeZone()+'"}';
                     accountref.set(angular.fromJson(accountjson));
 
                     spinner.hide();
@@ -136,6 +136,14 @@ define(['angular',
                     notify.error(error.message)
                     vm.newuser = null;s
                     resetform($scope.signupform);
+                }
+
+                function getTimeZone() {
+                    return (new Date).toLocaleString('en-US', {
+                        hour12: false,
+                        hour: '2-digit',
+                        timeZoneName: 'long'
+                    }).replace(/^\d\d /, '');
                 }
 
                 vm.forgotpasswordlinkclicked = function() {

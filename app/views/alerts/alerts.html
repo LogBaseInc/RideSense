@@ -87,7 +87,7 @@
 				<br/>
 				<form name="alertmobileform" class="form-horizontal">
 					<div class="form-group" data-ng-class="{ 'has-error': alertmobileform.mobile.$invalid && alertmobileform.mobile.$touched }">
-						<input style="margin-left:3%; width: 94%" type="text" class="form-control" placeholder="Mobile # to send alerts" data-ng-model="vm.mobilenumber" name="mobile" id="mobile" ng-pattern="/^[0-9]*$/" minlength="10" maxlength="10">
+						<span style="display:inline-block; margin-left:1%">+91 </span><input style="margin-left:1%; width: 91%; display: inline-block" type="text" class="form-control" placeholder="Mobile # to send alerts" data-ng-model="vm.mobilenumber" name="mobile" id="mobile" ng-pattern="/^[0-9]*$/" minlength="10" maxlength="10">
 					</div>
 				</form>
 				<br/>

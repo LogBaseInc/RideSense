@@ -60,7 +60,7 @@ define(['angular',
 				vm.alertsummarydata.categories =[];
 		 		vm.alertsummarydata.data =[];
 
-				for(var i = 15 ; i >= 0; i --) {
+				for(var i = 30 ; i >= 0; i --) {
 					var newdate = new Date();
 					newdate.setDate(newdate.getDate() - i);
 					vm.alertsummarydata.categories.push(moment(new Date(newdate)).format('MMM DD'));
@@ -192,10 +192,10 @@ define(['angular',
 			                type: 'line',
 			            	zoomType: 'x',
 				        	backgroundColor: 'WhiteSmoke',
-				        	marginBottom: 25,
+				        	marginBottom: 50,
 				        	events: {
                     		load: function (event) {
-								window.resizeBy(100,100);
+								setTimeout( function () {$(window).resize();}, 100);
                     		}
                			 }
 			            },
@@ -216,7 +216,7 @@ define(['angular',
 			            }
 			        ],
 			        xAxis: {
-	            		categories: vm.alertsummarydata.categories
+	            		categories: vm.alertsummarydata.categories,
 	        		},
 			        yAxis: {
 			            min: 0
@@ -224,13 +224,7 @@ define(['angular',
 			        loading: false,
 			        size: {
 			        	height: 200
-			        },
-			        events: {
-                		load: function (event) {
-	    					$(window).resize();
-	    					alert('chart loaded 1');
-                		}
-               		}
+			        }
 		    	};
 
 		 	}
