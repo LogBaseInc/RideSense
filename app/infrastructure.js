@@ -11,7 +11,6 @@ define([
     'ui-bootstrap',
     'spinner',
     'toaster',
-    'ngDialog',
     'googlemaps',
     'lodash',
     'highcarts-src',

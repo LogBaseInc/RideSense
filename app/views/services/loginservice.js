@@ -10,29 +10,29 @@ define(['angular', 'config.route'], function (angular, configroute) {
             var service = {
                 login: login,
                 resetpasswordlink : resetpasswordlink,
-                signup : signup
+                signup : signup,
+                changepassword : changepassword
             };
             return service;
 
             
             function login(email, password) {
-                var dfd =  $q.defer();
-                firebase.authWithPassword({
-                  email    : email,
-                  password : password
-                }, function(error, authData) {
-                  if(error)
-                    dfd.reject(error);
-                  else
-                    dfd.resolve(authData);
-                },{
-                  remember: "sessionOnly"                  
-                });
-                return dfd.promise;
+              var dfd =  $q.defer();
+              firebase.authWithPassword({
+                email    : email,
+                password : password
+              }, function(error, authData) {
+                if(error)
+                  dfd.reject(error);
+                else
+                  dfd.resolve(authData);
+              },{
+                remember: "sessionOnly"                  
+              });
+              return dfd.promise;
             }
 
-            function resetpasswordlink(email)
-            {
+            function resetpasswordlink(email) {
               var dfd = $q.defer();
               firebase.resetPassword({
                   email : email
@@ -45,8 +45,7 @@ define(['angular', 'config.route'], function (angular, configroute) {
               return dfd.promise;
             }
 
-            function signup(email, password)
-            {
+            function signup(email, password) {
               var dfd = $q.defer();
               firebase.createUser({
                 email    : email,
@@ -60,6 +59,20 @@ define(['angular', 'config.route'], function (angular, configroute) {
               return dfd.promise;
             }
 
-        }
+            function changepassword(email, oldpassword, newpassword) {
+                var dfd = $q.defer();
+                firebase.changePassword({
+                  email: email,
+                  oldPassword: oldpassword,
+                  newPassword: newpassword
+                }, function(error) {
+                  if (error) 
+                     return dfd.reject(error);
+                  else 
+                     return dfd.resolve(userData);
+                });
+                return dfd.promise;
+              }
+          }
     })();
 });

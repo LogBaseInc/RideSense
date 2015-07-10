@@ -1,0 +1,82 @@
+<div class="container-fluid">
+	<div class="row">
+		<a href="">
+			<div class="col-xs-6 tm-tab tm-tab-active">
+				<span>Devices</span>
+			</div>
+		</a>
+		<a href="#/account/detail">
+			<div class="col-xs-6 tm-tab">
+				<span>Account</span>
+			</div>
+		</a>
+	</div>
+</div>
+
+<div data-ng-controller="device as vm">
+	<div class="col-xs-12">
+		<form class="form-horizontal" name="deviceform">
+			<h4>Add device</h4>
+			</br>
+			<div class="form-group" data-ng-class="{ 'has-error': deviceform.textdevicenumber.$invalid && deviceform.textdevicenumber.$touched }" style="margin:0px">
+				<label class="col-md-3 control-label">Device number</label>
+				<div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Device number" name="textdevicenumber" data-ng-model="vm.device.devicenumber" required ng-readonly="vm.isDeviceEdit">
+                    <div data-ng-messages="deviceform.textdevicenumber.$error" data-ng-if="vm.interacted(deviceform.textdevicenumber)" class="error-messages">
+                        <div ng-message="required">Device number required</div>
+                    </div>
+            	</div>
+			</div>
+			</br>
+			<div class="form-group" data-ng-class="{ 'has-error': deviceform.textvehiclenumber.$invalid && deviceform.textvehiclenumber.$touched }" style="margin:0px">
+				<label class="col-md-3 control-label">Vehicle number</label>
+				<div class="col-md-6">
+					<input type="text" class="form-control" placeholder="Vehicle number" name="textvehiclenumber" data-ng-model="vm.device.vehiclenumber" required>
+                    <div data-ng-messages="deviceform.textvehiclenumber.$error" data-ng-if="vm.interacted(deviceform.textvehiclenumber)" class="error-messages">
+                        <div ng-message="required">Vehicle number required</div>
+                    </div>
+            	</div>
+			</div>
+			</br>
+			<div class="form-group" data-ng-class="{ 'has-error': deviceform.textdrivername.$invalid && deviceform.textdrivername.$touched }" style="margin:0px">
+				<label class="col-md-3 control-label">Driver name</label>
+				<div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Driver name" name="textdrivername" data-ng-model="vm.device.drivername" required>
+                    <div data-ng-messages="deviceform.textdrivername.$error" data-ng-if="vm.interacted(deviceform.textdrivername)" class="error-messages">
+                        <div ng-message="required">Driver name required</div>
+                    </div>
+            	</div>
+			</div>
+			</br>
+			<div class="form-group" data-ng-class="{ 'has-error': deviceform.textdriverid.$invalid && deviceform.textdriverid.$touched }" style="margin:0px">
+				<label class="col-md-3 control-label">Driver Id</label>
+				<div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Driver Id" name="textdriverid" data-ng-model="vm.device.driverid" required>
+                    <div data-ng-messages="deviceform.textdriverid.$error" data-ng-if="vm.interacted(deviceform.textdriverid)" class="error-messages">
+                        <div ng-message="required">Driver Id required</div>
+                    </div>
+            	</div>
+			</div>
+			</br>
+			<div class="form-group" data-ng-class="{ 'has-error': deviceform.textdrivercontactnumber.$invalid && deviceform.textdrivercontactnumber.$touched }" style="margin:0px">
+				<label class="col-md-3 control-label">Driver mobile number</label>
+				<div class="col-md-6">
+					<input type="text" class="form-control" placeholder="Driver mobile number" name="textdrivercontactnumber" data-ng-model="vm.device.drivermobile" required ng-pattern="/^[0-9]*$/" minlength="10" maxlength="10">
+                    <div data-ng-messages="deviceform.textdrivercontactnumber.$error" data-ng-if="vm.interacted(deviceform.textdrivercontactnumber)" class="error-messages">
+                        <div ng-message="required">Driver mobile number required</div>
+                        <div ng-message="pattern">Enter a valid mobile number</div>
+                    </div>
+            	</div>
+			</div>
+		</form>
+		<div>
+		 	</br>
+		 	<center>
+	            <button data-ng-hide="vm.isDeviceEdit" type="button" class="btn btn-primary" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Add</button>
+	            <button data-ng-show="vm.isDeviceEdit" type="button" class="btn btn-primary" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Update</button>
+	            <a type="button" class="btn btn-default"  href="#/account/devices">Cancel</a>
+	           	<button type="button" class="btn btn-default" ng-click="vm.deletedevice();">Delete</button>
+	        </center>
+        </div>
+	</div>
+</div>

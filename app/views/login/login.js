@@ -120,7 +120,7 @@ define(['angular',
                     usersref.set( "account" + uuid);
 
                     var accountref = new Firebase(config.firebaseUrl+'accounts/account'+uuid);
-                    var accountjson = '{"name" : "'+vm.newuser.accountname+'","timezone" : "'+getTimeZone()+'"}';
+                    var accountjson = '{"email":"'+ vm.newuser.email + '","name" : "'+vm.newuser.accountname+'","timezone" : "'+getTimeZone()+'"}';
                     accountref.set(angular.fromJson(accountjson));
 
                     spinner.hide();
@@ -128,7 +128,6 @@ define(['angular',
                     notify.success('Registered successfully!');
                     backtologinclicked();
                 }
-
 
                 function signupfailed(error) {
                     spinner.hide();

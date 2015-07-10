@@ -17,7 +17,11 @@ define(['angular'], function (angular) {
                 getAlertsLocation : getAlertsLocation,
                 getSessionExpiry : getSessionExpiry,
                 getaccountId : getaccountId,
-                generateUUID : generateUUID
+                generateUUID : generateUUID,
+                setDeviceSelected : setDeviceSelected,
+                getDeviceSelected : getDeviceSelected,
+                setAccountName : setAccountName,
+                getAccountName : getAccountName
             };
             
             function getDevices() {
@@ -41,6 +45,9 @@ define(['angular'], function (angular) {
                 $rootScope.$emit('login:status', {isloggedIn:false});
                 sessionStorage.setItem('accountid', null);
                 sessionStorage.setItem('devices', null);
+                sessionStorage.setItem('useridentity', null);
+                sessionStorage.setItem('selecteddevice', null);
+                sessionStorage.setItem('accountname', null);
                 $('body').addClass('login-layout light-login');
             }
            
@@ -99,6 +106,25 @@ define(['angular'], function (angular) {
                 return alertslocation            
             }
 
+            function setDeviceSelected(device) {
+                sessionStorage.setItem('selecteddevice', (device != null ? angular.toJson(device, true) : null));
+            }
+
+            function getDeviceSelected(device) {
+                var selecteddevice = sessionStorage.getItem('selecteddevice');
+                if (selecteddevice)
+                    selecteddevice = angular.fromJson(selecteddevice);
+                return selecteddevice                
+            }
+
+            function setAccountName(name) {
+                sessionStorage.setItem('accountname', name);
+            }
+
+            function getAccountName() {
+                return sessionStorage.getItem('accountname');
+            }
+
             function generateUUID() {
                 // http://www.ietf.org/rfc/rfc4122.txt
                 var s = [];
@@ -112,7 +138,6 @@ define(['angular'], function (angular) {
 
                 var uuid = s.join("");
                 return uuid;
-
              }
          }
 

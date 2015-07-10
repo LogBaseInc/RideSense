@@ -17,6 +17,7 @@ define(['angular'], function () {
             vm.notnet = false;
             vm.online = false;
             vm.logout = logout;
+            vm.accountname = sessionservice.getAccountName();
             var timer;
 
             activate();
@@ -29,6 +30,16 @@ define(['angular'], function () {
 
             $rootScope.$on('alertcount', function (event, data) {
                 alertsfbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/alerts');
+
+                var accountnamefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/name');
+                accountnamefbref.on("value", function(snapshot) {
+                    vm.accountname = snapshot.val();
+                    sessionservice.setAccountName(vm.accountname);
+                    sessionservice.applyscope($scope);
+                }, function (errorObject) {
+                    console.log("The account name read failed: " + errorObject.code);
+                });
+
                 readalerts();
             });
 

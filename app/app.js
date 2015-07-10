@@ -11,7 +11,6 @@
                'ngRoute',         
                'ngSanitize',       
                'ngMessages',
-               'ngDialog',
 
                // 3rd Party Modules
                'ui.bootstrap',     

@@ -1,3 +1,4 @@
 define([    
-    '_'
+    '_',
+    'bootbox',
 ], function () { });

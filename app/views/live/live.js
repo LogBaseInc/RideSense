@@ -72,7 +72,7 @@ define(['angular',
 		 		var currentday = moment().format("YYYYMMDD");
 				var distancefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/daily/'+currentday);
 				distancefbref.on("value", function(snapshot) {
-				  	vm.distanceCovered = snapshot.val() != null ? snapshot.val().distance : 0; 
+				  	vm.distanceCovered = snapshot.val() != null ? (snapshot.val().distance.toFixed(2)) : 0; 
 
 				  	var distancex =  vm.previousdaydistance / 24;
 				  	var time = moment().format("HH.mm");
@@ -209,6 +209,22 @@ define(['angular',
 							   	cardetail.options.icon = (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
 							   	cardetail.options.labelAnchor = ((isIdle && vm.dragMarker) ? '20 80' : '0 0')
 						 	}
+						 	else {
+						 		vm.carlist.push({name : vehiclenumber});
+							 	vm.cars.models.push({
+								 	latitude: livecarobj.latitude,
+								 	longitude: livecarobj.longitude,
+								 	title: '#'+ vehiclenumber,
+								 	id : property,
+								 	isIdle: isIdle,
+								 	options: {
+								   	labelContent:  '#'+vehiclenumber, 
+								   	labelClass: ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
+								   	icon: (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
+								   	labelAnchor: ((isIdle && vm.dragMarker) ? '20 60' : '0 0')
+								   }
+							 });
+						 	}
 						}
 		 				sessionservice.applyscope($scope);
 		 				setMapCenterOfAllMarkers();
@@ -311,7 +327,7 @@ define(['angular',
 			});
 
 			function setMapCenterOfAllMarkers() {
-				if(vm.cars.models.length > 0) {
+				/*if(vm.cars.models.length > 0) {
 					var bounds = new google.maps.LatLngBounds();
 					for(i=0;i<vm.cars.models.length;i++) {
 						bounds.extend(new google.maps.LatLng(vm.cars.models[i].latitude,vm.cars.models[i].longitude));
@@ -320,7 +336,7 @@ define(['angular',
 					mapinstance.setCenter(bounds.getCenter());
 					mapinstance.fitBounds(bounds);
 					mapinstance.setZoom(mapinstance.getZoom() - 4);
-				}		
+				}*/	
 			}
 
 		}

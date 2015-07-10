@@ -16,13 +16,13 @@ require.config({
         'ui-bootstrap' :'scripts/ui-bootstrap-tpls-0.12.0',
         'spinner': 'scripts/spin',
         'toaster' :'../bower_components/angularjs-toaster/toaster',
-        'ngDialog' : '../bower_components/ngDialog/js/ngDialog',
         'googlemaps' : '../bower_components/angular-google-maps/dist/angular-google-maps',
         'lodash': '../bower_components/lodash/lodash',
         'highcarts-src': 'scripts/highcharts.src',
         'highcharts' : '../bower_components/highcharts-ng/dist/highcharts-ng',
         'moment' :'../bower_components/moment/moment',
         'angularfire': 'scripts/AngularFire',
+        bootbox: '../bower_components/bootbox/bootbox',
     },
     shim: {
         angular: {

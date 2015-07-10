@@ -1,9 +1,9 @@
 define(['angular',
-    'config.route'], function (angular, configroute) {
+    'config.route','moment'], function (angular, configroute, moment) {
     (function () {
 
-        configroute.register.controller('devices', ['$rootScope','$scope', 'ngDialog', 'config', 'spinner', 'sessionservice', devices]);
-        function devices($rootScope, $scope, ngDialog, config, spinner, sessionservice) {
+        configroute.register.controller('devices', ['$rootScope','$scope', '$location', 'config', 'spinner', 'sessionservice', devices]);
+        function devices($rootScope, $scope, $location, config, spinner, sessionservice) {
             var vm = this;
 
             activate();
@@ -24,7 +24,10 @@ define(['angular',
                 for(var property in data) {
                     vm.devices.push({
                         devicenumber : property,
-                        //boughton: data[property].addedOn,
+                        boughton: moment(data[property].addedon).format('MMM DD, YYYY'),
+                        drivername : data[property].drivername,
+                        driverid : data[property].driverid,
+                        drivermobile : data[property].drivermobile,
                         vehiclenumber: data[property].vehiclenumber,
                         displayvehiclenumber: data[property].vehiclenumber.length > 25 ? (data[property].vehiclenumber.substring(0,25)+" ...") : data[property].vehiclenumber
                     });
@@ -35,21 +38,13 @@ define(['angular',
             }
 
             vm.buydevice = function(){
-                ngDialog.open({
-                    template: 'devicedialog',
-                    controller: 'device',
-                    className: 'ngdialog-theme-default',
-                    data: '{"device" : null}'
-                });
+                sessionservice.setDeviceSelected(null);
+                $location.path('/account/device');
             }
 
             vm.editdevice = function(device){
-                ngDialog.open({
-                    template: 'devicedialog',
-                    controller: 'device',
-                    className: 'ngdialog-theme-default',
-                    data: {device: angular.copy(device)}
-                });
+                sessionservice.setDeviceSelected(device);
+                $location.path('/account/device');
             }
         }
     })();

@@ -1,3 +1,18 @@
+<div class="container-fluid">
+	<div class="row">
+		<a href="">
+			<div class="col-xs-6 tm-tab tm-tab-active">
+				<span>Devices</span>
+			</div>
+		</a>
+		<a href="#/account/detail">
+			<div class="col-xs-6 tm-tab">
+				<span>Account</span>
+			</div>
+		</a>
+	</div>
+</div>
+
 <div data-ng-controller="devices as vm">
 	<div class="col-xs-12" style="margin-bottom:10px;margin-top:10px">
 		<h4 style="display:inline" data-ng-show="vm.devices.length > 0">My Devices</h3>
@@ -13,48 +28,16 @@
     </div>
     
 	<div class="col-xs-12" style="width:100%">
-		<div class="tm-alerts-summary" style="width: 250px; height: 100px; margin-right:20px; margin-bottom : 20px; display:inline-block; color: gray" data-ng-repeat="device in vm.devices | filter:search">
+		<div class="tm-alerts-summary" style="width: 250px; height: 125px; margin-right:20px; margin-bottom : 20px; display:inline-block; color: gray" data-ng-repeat="device in vm.devices | filter:search">
 			<div style="margin-left:10px;" data-ng-click="vm.editdevice(device)">
-				<h3>{{device.devicenumber}}</label>
-				</br>
-				<img style="height:18px" src="assets/images/car-front.png"></img><label style="margin-left:5px">{{device.displayvehiclenumber}}</label>
+				<h3>{{device.devicenumber}}</h3>
+				<div style="margin-top: 15px">
+					<img style="height:14px" src="assets/images/car-front.png"></img><label style="margin-left:5px">{{device.displayvehiclenumber}}</label>
+					<br/>
+					<i class="fa fa-calendar" style="font-size:14px"></i><label style="margin-left:5px">{{device.boughton}}</label>
+				</div>
 			</div>
 		</div>
 	</div>
-	<script type="text/ng-template" id="devicedialog">
-        <div class="ngdialog-message">
-           <div class="row col-sm-12">
-				<form class="form-horizontal" name="deviceform">
-					<div class="form-group col-sm-12">
-						<label class="control-label no-padding-right">Device number</label>
-						</br>
-						<div class="form-group" data-ng-class="{ 'has-error': deviceform.textdevicenumber.$invalid && deviceform.textdevicenumber.$touched }" style="margin:0px">
-	                        <input type="text" class="form-control" placeholder="Device number" name="textdevicenumber" data-ng-model="device.devicenumber" required ng-readonly="isDeviceEdit">
-	                        </span>
-	                        <div data-ng-messages="deviceform.textdevicenumber.$error" data-ng-if="interacted(deviceform.textdevicenumber)" class="error-messages">
-	                            <div ng-message="required">Device number required</div>
-	                        </div>
-                    	</div>
-					</div>
-
-					<div class="form-group col-sm-12">
-						<label class="control-label no-padding-right">Vehicle number</label>
-						</br>
-						<div class="form-group" data-ng-class="{ 'has-error': deviceform.textvehiclenumber.$invalid && deviceform.textvehiclenumber.$touched }" style="margin:0px">
-							 <input type="text" class="form-control" placeholder="Vehicle number" name="textvehiclenumber" data-ng-model="device.vehiclenumber" required>
-	                        </span>
-	                        <div data-ng-messages="deviceform.textvehiclenumber.$error" data-ng-if="interacted(deviceform.textvehiclenumber)" class="error-messages">
-	                            <div ng-message="required">Vehicle number required</div>
-	                        </div>
-                    	</div>
-					</div>
-				</form>
-			</div>
-        </div>
-        <div class="ngdialog-buttons">
-            <button type="button" class="ngdialog-button ngdialog-button-secondary"  ng-click="closeThisDialog('Cancel')">Cancel</button>
-            <button data-ng-hide="isDeviceEdit" type="button" class="ngdialog-button ngdialog-button-primary" ng-click="adddevice();" data-ng-disabled="!canBuy">Add</button>
-            <button data-ng-show="isDeviceEdit" type="button" class="ngdialog-button ngdialog-button-primary" ng-click="adddevice();" data-ng-disabled="!canBuy">Update</button>
-        </div>
-    </script>
+	
 </div>
