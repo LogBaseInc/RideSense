@@ -75,7 +75,7 @@
 	            <button data-ng-hide="vm.isDeviceEdit" type="button" class="btn btn-primary" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Add</button>
 	            <button data-ng-show="vm.isDeviceEdit" type="button" class="btn btn-primary" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Update</button>
 	            <a type="button" class="btn btn-default"  href="#/account/devices">Cancel</a>
-	           	<button type="button" class="btn btn-default" ng-click="vm.deletedevice();">Delete</button>
+	           	<button data-ng-show="vm.isDeviceEdit" type="button" class="btn btn-default" ng-click="vm.deletedevice();">Delete</button>
 	        </center>
         </div>
 	</div>
