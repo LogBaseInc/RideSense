@@ -59,7 +59,7 @@ define(['angular',
                     vm.success = true;
                     vm.password = null;
                     sessionservice.setSession(data, accountId);
-                    $rootScope.$emit('alertcount')
+                    $rootScope.$emit('alertcount');
                     $location.path('/live');    
                     sessionservice.applyscope($scope);     
                 }

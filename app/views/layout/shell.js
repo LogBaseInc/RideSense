@@ -43,6 +43,10 @@ define(['angular'], function () {
                 readalerts();
             });
 
+            $rootScope.$on('logout', function() {
+                logout();
+            });
+
             function readalerts() {
                 alertsfbref.on("value", function(snapshot) {
                     var data = snapshot.val();

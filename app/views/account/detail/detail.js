@@ -12,8 +12,7 @@ define(['angular',
             });
 
             vm.interacted = function (field) {
-                return submitted;
-                //|| field.$dirty;
+                return submitted || field.$dirty;
             };
 
             var accountref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/name');
@@ -41,8 +40,7 @@ define(['angular',
             }
 
             function canupdate(){
-                //return $scope.accountform.$valid && !submitted;
-                return  true;
+                return $scope.accountform.$valid && !submitted;
             }
 
             vm.update = function () {

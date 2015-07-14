@@ -105,7 +105,7 @@ define(['angular',
                      url: '/metrics/cars',
                      config: {
                          templateUrl: 'views/metrics/cars/carmetrics.html',
-                         title: 'alerts',
+                         title: 'cars',
                          controllerUrl: 'views/metrics/cars/carmetrics',
                          allowAnonymous: false
                      }
@@ -114,7 +114,7 @@ define(['angular',
                      url: '/metrics/trips',
                      config: {
                          templateUrl: 'views/metrics/trips/tripmetrics.html',
-                         title: 'alerts',
+                         title: 'trips',
                          controllerUrl: 'views/metrics/trips/tripmetrics',
                          allowAnonymous: false
                      }
@@ -123,7 +123,7 @@ define(['angular',
                      url: '/report',
                      config: {
                          templateUrl: 'views/tripreport/tripreport.html',
-                         title: 'alerts',
+                         title: 'reports',
                          controllerUrl: 'views/tripreport/tripreport',
                          allowAnonymous: false
                      }
@@ -134,6 +134,15 @@ define(['angular',
                          templateUrl: 'views/alerts/alertdetail/alertdetails.html',
                          title: 'alerts',
                          controllerUrl: 'views/alerts/alertdetail/alertdetails',
+                         allowAnonymous: false
+                     }
+                 },
+                 {
+                     url: '/account/changepassword',
+                     config: {
+                         templateUrl: 'views/account/changepassword/changepassword.html',
+                         title: 'changepassword',
+                         controllerUrl: 'views/account/changepassword/changepassword',
                          allowAnonymous: false
                      }
                  }
