@@ -4,8 +4,8 @@ define(['angular',
     'lib'], function (angular, configroute, moment) {
     (function () {
 
-        configroute.register.controller('live', ['$rootScope', '$scope', 'config', 'spinner', 'uiGmapIsReady', 'uiGmapGoogleMapApi', 'sessionservice', live]);
-        function live($rootScope, $scope, config, spinner, uiGmapIsReady, uiGmapGoogleMapApi, sessionservice) {
+        configroute.register.controller('live', ['$compile', '$rootScope', '$scope', 'config', 'spinner', 'uiGmapIsReady', 'uiGmapGoogleMapApi', 'sessionservice', live]);
+        function live($compile, $rootScope, $scope, config, spinner, uiGmapIsReady, uiGmapGoogleMapApi, sessionservice) {
         $rootScope.routeSelection = 'live'
 	        var vm = this;
 		 	vm.distanceCovered = 0;
@@ -27,6 +27,27 @@ define(['angular',
 			var routecolor = ['red', 'green',  'purple', 'orange', 'blue'];
 
 		 	activate();
+
+		 	vm.markersEvents = {
+			    click: function (gMarker, eventName, model) {
+				    var latlng = new google.maps.LatLng(model.latitude, model.longitude);
+				    var geocoder = new google.maps.Geocoder();
+			 		geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+			            if (status == google.maps.GeocoderStatus.OK) {
+			                if (results[0]) {
+			          			var content = '<div id="infowindow_content">'+results[0].formatted_address+'<br>'+model.time+'<br><a>More details</a></div>';
+			          			var compiled = $compile(content)($scope);
+						        infowindow.setContent(compiled[0].innerHTML);
+						        infowindow.open( mapinstance , gMarker );
+			          		}
+			            }
+		            });
+			    }
+			 };
+
+			var infowindow = new google.maps.InfoWindow({
+			  	content: ''
+			});
 
 		 	function activate(){
 			 	spinner.show();
@@ -170,6 +191,7 @@ define(['angular',
 								 	title: '#'+ vehiclenumber,
 								 	id : property,
 								 	isIdle: isIdle,
+								 	time : locationdate.format('MMM DD, YYYY HH:mm:SS'),
 								 	options: {
 								   	labelContent:  '#'+vehiclenumber, 
 								   	labelClass: ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
@@ -202,6 +224,7 @@ define(['angular',
 						 	if(cardetail) {
 							 	cardetail.latitude = livecarobj.latitude;
 							 	cardetail.longitude = livecarobj.longitude;
+							 	cardetail.time = locationdate.format('MMM DD, YYYY HH:mm:SS');
 							 	cardetail.isIdle = isIdle;
 							 	if(cardetail.isIdle === false)
 								 	cardetail.options.labelContent = '#'+vehiclenumber;
@@ -217,6 +240,7 @@ define(['angular',
 								 	title: '#'+ vehiclenumber,
 								 	id : property,
 								 	isIdle: isIdle,
+								 	time : locationdate.format('MMM DD, YYYY HH:mm:SS'),
 								 	options: {
 								   	labelContent:  '#'+vehiclenumber, 
 								   	labelClass: ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),

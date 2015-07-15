@@ -16,7 +16,8 @@
 <div data-ng-controller="device as vm">
 	<div class="col-xs-12">
 		<form class="form-horizontal" name="deviceform">
-			<h4>Add device</h4>
+			<h4 data-ng-hide="vm.isDeviceEdit">Add device</h4>
+			<h4 data-ng-show="vm.isDeviceEdit">Edit device</h4>
 			</br>
 			<div class="form-group" data-ng-class="{ 'has-error': deviceform.textdevicenumber.$invalid && deviceform.textdevicenumber.$touched }" style="margin:0px">
 				<label class="col-md-3 control-label">Device number</label>

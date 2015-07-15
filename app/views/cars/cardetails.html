@@ -1,0 +1,107 @@
+<div data-ng-controller="cardetails as vm">
+		
+	<input type="text" class="input-block-level" placeholder="Search car..." style="width:100%;" />
+	<br>
+	<div class="col-xs-12">
+		<div class="col-xs-12 col-md-4" style="padding:0px">
+			<br>
+			<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Car details</h5>
+			<div class="col-md-12 tm-card-wrap ng-scope">
+				<div class="tm-car-card">
+					<h4 style="display: inline; color:LightCoral">#12434</h4><span> car number</span> 
+					<div class="space-6"></div>
+					<span style="display: inline;">123445</span><p><small>Today</small></p>
+					<div class="space-6"></div>
+					<span>David | 1234567890</span>
+					<div class="space-6"></div>
+					<span>Idle @ Pleelamedu</span>
+					<div class="space-6"></div>
+					<span>1200 Km</span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-xs-12 col-md-8" style="padding:0px">
+			<br>
+			<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Distance summary</h5>
+			<br>
+			<highchart config="vm.distanceConfig"></highchart>
+		</div>
+	</div>
+	<div class="col-xs-12" style="margin-top:20px">
+		<br>
+			<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Today trips</h5>
+			<div class="col-md-4 tm-card-wrap ng-scope">
+				<div class="tm-car-card" ng-click="vm.cardClicked()">
+					<div class="row">
+						<div class="col-xs-3 col-md-3">
+							<h4 class="ng-binding">#53</h4>
+							<small>Car ID</small>
+						</div>
+						<div class="col-xs-3 col-md-3">
+							<h4 class="ng-binding">Idle</h4>
+							<small class="ng-binding">for 15 min</small>
+						</div>
+						<div class="col-xs-6 col-md-6">
+							<h4 class="text-right ng-binding">64 km | 3 trips</h4>
+							<p class="text-right"><small>Today</small></p>
+						</div>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col-xs-12 col-md-12">
+							<p class="ng-binding">@Ramanathapuram</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 tm-card-wrap ng-scope">
+				<div class="tm-car-card" ng-click="vm.cardClicked()">
+					<div class="row">
+						<div class="col-xs-3 col-md-3">
+							<h4 class="ng-binding">#62</h4>
+							<small>Car ID</small>
+						</div>
+						<div class="col-xs-3 col-md-3">
+							<h4 class="ng-binding">Running</h4>
+							<small class="ng-binding">for 6 min</small>
+						</div>
+						<div class="col-xs-6 col-md-6">
+							<h4 class="text-right ng-binding">103 km | 6 trips</h4>
+							<p class="text-right"><small>Today</small></p>
+						</div>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col-xs-12 col-md-12">
+							<p class="ng-binding">@Saibaba Colony</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4 tm-card-wrap ng-scope">
+				<div class="tm-car-card" ng-click="vm.cardClicked()">
+					<div class="row">
+						<div class="col-xs-3 col-md-3">
+							<h4 class="ng-binding">#18</h4>
+							<small>Car ID</small>
+						</div>
+						<div class="col-xs-3 col-md-3">
+							<h4 class="ng-binding">Idle</h4>
+							<small class="ng-binding">for 2 hr</small>
+						</div>
+						<div class="col-xs-6 col-md-6">
+							<h4 class="text-right ng-binding">76 km | 5 trips</h4>
+							<p class="text-right"><small>Today</small></p>
+						</div>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col-xs-12 col-md-12">
+							<p class="ng-binding">@Avinashi Road Signal</p>
+						</div>
+					</div>
+				</div>
+			</div><!-- end ngRepeat: car in vm.searchedCars -->
+		</div>
+</div>

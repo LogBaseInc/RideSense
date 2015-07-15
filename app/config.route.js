@@ -145,7 +145,16 @@ define(['angular',
                          controllerUrl: 'views/account/changepassword/changepassword',
                          allowAnonymous: false
                      }
-                 }
+                 },
+                 {
+                     url: '/cars',
+                     config: {
+                         templateUrl: 'views/cars/cardetails.html',
+                         title: 'cars',
+                         controllerUrl: 'views/cars/cardetails',
+                         allowAnonymous: false
+                     }
+                 },
             ];
 
             return routs;
