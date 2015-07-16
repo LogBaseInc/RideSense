@@ -147,7 +147,7 @@ define(['angular',
                      }
                  },
                  {
-                     url: '/cars',
+                     url: '/cars/:selectedcar?',
                      config: {
                          templateUrl: 'views/cars/cardetails.html',
                          title: 'cars',

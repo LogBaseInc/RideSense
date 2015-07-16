@@ -13,7 +13,7 @@
                'ngMessages',
 
                // 3rd Party Modules
-               'ui.bootstrap',     
+               'ui.bootstrap',
                'toaster',
                'uiGmapgoogle-maps',
                'highcharts-ng',

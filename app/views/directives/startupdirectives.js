@@ -29,23 +29,36 @@ define(['angular', 'bootbox'], function (angular, bootbox) {
             }
         });  
 
-         module.directive('ccSpinner', ['$window', function ($window) {
-            var directive = {
-                link: link,
-                restrict: 'A'
-            };
-            return directive;
+        module.directive('ccSpinner', ['$window', function ($window) {
+          var directive = {
+              link: link,
+              restrict: 'A'
+          };
+          return directive;
 
-            function link(scope, element, attrs) {
-                scope.spinner = null;
-                scope.$watch(attrs.ccSpinner, function (options) {
-                    if (scope.spinner) {
-                        scope.spinner.stop();
-                    }
-                    scope.spinner = new $window.Spinner(options);
-                    scope.spinner.spin(element[0]);
-                }, true);
-            }
+          function link(scope, element, attrs) {
+              scope.spinner = null;
+              scope.$watch(attrs.ccSpinner, function (options) {
+                  if (scope.spinner) {
+                      scope.spinner.stop();
+                  }
+                  scope.spinner = new $window.Spinner(options);
+                  scope.spinner.spin(element[0]);
+              }, true);
+          }
+        }]);
+
+        module.directive("lbDatepicker", ["$filter", function ($filter) {
+            var linkFn = function (scope, element, attr, ctrl) {
+                element.datepicker({
+                    format: 'dd/mm/yyyy',
+                    minDate: 0,
+                });
+            };
+            return {
+                restrict: 'A',
+                link: linkFn
+            };
         }]);
 
         module.factory('$bootbox', ['$modal', function ($modal) {

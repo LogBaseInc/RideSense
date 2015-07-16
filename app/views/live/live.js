@@ -35,7 +35,7 @@ define(['angular',
 			 		geocoder.geocode({ 'latLng': latlng }, function (results, status) {
 			            if (status == google.maps.GeocoderStatus.OK) {
 			                if (results[0]) {
-			          			var content = '<div id="infowindow_content">'+results[0].formatted_address+'<br>'+model.time+'<br><a>More details</a></div>';
+			          			var content = '<div id="infowindow_content">'+results[0].formatted_address+'<br>'+model.time+'<br><a href="#/cars/'+model.title+'">More details</a></div>';
 			          			var compiled = $compile(content)($scope);
 						        infowindow.setContent(compiled[0].innerHTML);
 						        infowindow.open( mapinstance , gMarker );
@@ -188,12 +188,12 @@ define(['angular',
 							 	vm.cars.models.push({
 								 	latitude: livecarobj.latitude,
 								 	longitude: livecarobj.longitude,
-								 	title: '#'+ vehiclenumber,
+								 	title: vehiclenumber,
 								 	id : property,
 								 	isIdle: isIdle,
-								 	time : locationdate.format('MMM DD, YYYY HH:mm:SS'),
+								 	time : getTimeStamp(livecarobj.locationtime),
 								 	options: {
-								   	labelContent:  '#'+vehiclenumber, 
+								   	labelContent: vehiclenumber, 
 								   	labelClass: ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
 								   	icon: (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
 								   	labelAnchor: ((isIdle && vm.dragMarker) ? '20 60' : '0 0')
@@ -220,14 +220,14 @@ define(['angular',
 								isIdle = false;
 							}
 
-						 	var cardetail =  _.first(_.filter(vm.cars.models, function(carmodel){ return carmodel.title == '#'+vehiclenumber}));
+						 	var cardetail =  _.first(_.filter(vm.cars.models, function(carmodel){ return carmodel.title == vehiclenumber}));
 						 	if(cardetail) {
 							 	cardetail.latitude = livecarobj.latitude;
 							 	cardetail.longitude = livecarobj.longitude;
-							 	cardetail.time = locationdate.format('MMM DD, YYYY HH:mm:SS');
+							 	cardetail.time = getTimeStamp(livecarobj.locationtime),
 							 	cardetail.isIdle = isIdle;
 							 	if(cardetail.isIdle === false)
-								 	cardetail.options.labelContent = '#'+vehiclenumber;
+								 	cardetail.options.labelContent = vehiclenumber;
 							 	cardetail.options.labelClass = ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
 							   	cardetail.options.icon = (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
 							   	cardetail.options.labelAnchor = ((isIdle && vm.dragMarker) ? '20 80' : '0 0')
@@ -237,12 +237,12 @@ define(['angular',
 							 	vm.cars.models.push({
 								 	latitude: livecarobj.latitude,
 								 	longitude: livecarobj.longitude,
-								 	title: '#'+ vehiclenumber,
+								 	title: vehiclenumber,
 								 	id : property,
 								 	isIdle: isIdle,
-								 	time : locationdate.format('MMM DD, YYYY HH:mm:SS'),
+								    time : getTimeStamp(livecarobj.locationtime),
 								 	options: {
-								   	labelContent:  '#'+vehiclenumber, 
+								   	labelContent: vehiclenumber, 
 								   	labelClass: ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
 								   	icon: (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
 								   	labelAnchor: ((isIdle && vm.dragMarker) ? '20 60' : '0 0')
@@ -254,6 +254,10 @@ define(['angular',
 		 				setMapCenterOfAllMarkers();
 		 			}
 	 			}
+		 	}
+
+		 	function getTimeStamp(unixtimestamp){
+				return moment((unixtimestamp)).fromNow();
 		 	}
 
 		 	function calculateDistances() {

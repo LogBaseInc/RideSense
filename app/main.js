@@ -23,6 +23,7 @@ require.config({
         'moment' :'../bower_components/moment/moment',
         'angularfire': 'scripts/AngularFire',
         bootbox: '../bower_components/bootbox/bootbox',
+        'bootstrap-datepicker': 'Scripts/bootstrap-datepicker',
     },
     shim: {
         angular: {
@@ -55,7 +56,7 @@ require.config({
         'highcarts-src' : ['jquery','angular'],
         'highcharts': ['jquery','angular','highcarts-src'],
         'moment' : ['jquery','angular'],
-        'angularfire' : ['angular']
+        'angularfire' : ['angular'],
     },
 });
 

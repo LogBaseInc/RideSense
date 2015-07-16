@@ -128,11 +128,11 @@ define(['angular',
 		 		return alerttext;
 		 	}
 
-		 	function getTimeStamp(unixtimestamp){
+		 	function getTimeStamp(unixtimestamp) {
 				return moment((unixtimestamp)).fromNow();
 		 	}
 
-		 	function readlocation(latlng, alertobject){
+		 	function readlocation(latlng, alertobject) {
 			 	var geocoder = new google.maps.Geocoder();
 		 		geocoder.geocode({ 'latLng': latlng }, function (results, status) {
 		            if (status == google.maps.GeocoderStatus.OK) {
