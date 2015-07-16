@@ -11,9 +11,7 @@ define(['angular', 'bootbox'], function (angular, bootbox) {
                 scope: {
                     isBusy: "=",
                 },
-                //template: '<div data-ng-show="isBusy" class="page-splash"><div data-cc-spinner="spinnerOptions"></div></div>'
                 template: '<div data-ng-show="isBusy"><img src="assets/images/loader.gif" class="ajax-loader"></img></div>'
-               
             };
             function link(scope, element, attrs) {
                 scope.spinnerOptions = {
@@ -99,7 +97,7 @@ define(['angular', 'bootbox'], function (angular, bootbox) {
                 restrict:'E',
                 replace:true,
                 scope: {},
-                template: '<input id="google_places_ac" name="google_places_ac" type="text" class="input-block-level" placeholder="Search location..." style="border:0px; width:100%; position: relative; z-index:3; height:50px"/>',
+                template: '<input id="google_places_ac" name="google_places_ac" type="text" class="input-block-level" placeholder="Search location..." style="border:0px; width:100%; position: relative; z-index:3;"/>',
                 link: function($scope, elm, attrs){
                     var autocomplete = new google.maps.places.Autocomplete($("#google_places_ac")[0], {});
                     google.maps.event.addListener(autocomplete, 'place_changed', function() {

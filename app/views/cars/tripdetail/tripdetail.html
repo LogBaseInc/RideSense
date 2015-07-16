@@ -1,0 +1,23 @@
+<div class="container-fluid" data-ng-controller="tripdetail as vm">
+	<div class="row">
+		<div class="overlaymarigin" data-ng-if="vm.showmap" >
+			<div class="overlayoption">
+				<div class="overlaydiv">
+					<div style="padding-left:10px">
+			        	<br/>
+			        	<label>{{vm.selectedtrip.vehiclenumber}}</label>
+			        	<br/>
+			        	<span>{{vm.selectedtrip.starttime}} > {{vm.selectedtrip.endtime}}</span>
+			        	<br/>
+			        	<span>{{vm.selectedtrip.startlocation}} > {{vm.selectedtrip.endlocation}}</span>
+			        	<br/>
+			        	<span>{{vm.selectedtrip.distance}}</span>
+		        	</div>
+	        	</div>
+       		 </div>
+        </div>
+		<div class="tm-live-map">
+			<div my-map="" path="vm.pathsource"></div>
+		</div>
+	</div>
+</div>

@@ -110,7 +110,7 @@ define(['angular'], function (angular) {
                 sessionStorage.setItem('selecteddevice', (device != null ? angular.toJson(device, true) : null));
             }
 
-            function getDeviceSelected(device) {
+            function getDeviceSelected() {
                 var selecteddevice = sessionStorage.getItem('selecteddevice');
                 if (selecteddevice)
                     selecteddevice = angular.fromJson(selecteddevice);

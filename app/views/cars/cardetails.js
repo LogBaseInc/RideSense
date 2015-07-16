@@ -37,7 +37,7 @@ define(['angular',
                 vm.totalcars = Object.keys(sessionservice.getAccountDevices()).length;
             }
           
-            vm.carsearched = function($item, $model, $label){
+            vm.carsearched = function($item, $model, $label) {
                 spinner.show(); 
                 vm.selecteddate = moment(new Date()).format('DD/MM/YYYY');
                 vm.showallcars = false;
@@ -51,11 +51,11 @@ define(['angular',
 
             vm.datechanged = function () {
                 getTrips(vm.selectedcar.devicenumber);
-                
             }
 
             vm.tripClicked = function (trip) {
-
+                $rootScope.selectedtrip = trip;
+                $location.path('/car/trip');
             }
 
             vm.clearcar = function() {
@@ -102,6 +102,7 @@ define(['angular',
                             startlongitude : data[property].startlongitude,
                             endlatitude : data[property].endlatitude,
                             endlongitude : data[property].endlongitude,
+                            vehiclenumber : vm.selectedcar.title
                         };
                         vm.trips.push(tripdetail);
                         readlocation(new google.maps.LatLng(tripdetail.startlatitude,tripdetail.startlongitude), tripdetail, true);

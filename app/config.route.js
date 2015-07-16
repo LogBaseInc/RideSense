@@ -155,6 +155,15 @@ define(['angular',
                          allowAnonymous: false
                      }
                  },
+                 {
+                     url: '/car/trip',
+                     config: {
+                         templateUrl: 'views/cars/tripdetail/tripdetail.html',
+                         title: 'trip',
+                         controllerUrl: 'views/cars/tripdetail/tripdetail',
+                         allowAnonymous: false
+                     }
+                 },
             ];
 
             return routs;

@@ -174,31 +174,8 @@ define(['angular',
 				 		if(property != undefined) {
 					 		var livecarobj  = data[property];
 					 		var vehiclenumber = devicedetails[property].vehiclenumber;
-						 	var currentdatetime = new Date();
-						 	var locationdate = moment(livecarobj.locationtime);
-						 	var datetimediff = (new Date() - locationdate);
-						 	var isIdle = true;
-							if(datetimediff > config.idleTime)
-								vm.idleCabs = vm.idleCabs+1;
-							else {
-								vm.activeCabs = vm.activeCabs+1;
-								isIdle = false;
-							}
 							vm.carlist.push({name : vehiclenumber});
-							 	vm.cars.models.push({
-								 	latitude: livecarobj.latitude,
-								 	longitude: livecarobj.longitude,
-								 	title: vehiclenumber,
-								 	id : property,
-								 	isIdle: isIdle,
-								 	time : getTimeStamp(livecarobj.locationtime),
-								 	options: {
-								   	labelContent: vehiclenumber, 
-								   	labelClass: ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
-								   	icon: (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
-								   	labelAnchor: ((isIdle && vm.dragMarker) ? '20 60' : '0 0')
-								   }
-							 });
+							vm.cars.models.push(getLiveCarObject(livecarobj, property, vehiclenumber));
 						 }
 					 	sessionservice.applyscope($scope);
 					 	setGoogleMaps(null, null);
@@ -209,19 +186,11 @@ define(['angular',
 				 		if(property != undefined) {
 					 		var livecarobj  = data[property];
 					 		var vehiclenumber = devicedetails[property].vehiclenumber;
-							var locationdate = moment(livecarobj.locationtime);
-							//console.log(livecarobj.latitude + ' , ' + livecarobj.longitude +' , ' +locationdate.format("MMM DD YYYY HH:mm:ss"));
-					 		var datetimediff = (new Date() - locationdate);
-						 	var isIdle = true;
-							if(datetimediff > config.idleTime)
-								vm.idleCabs = vm.idleCabs+1;
-							else {
-								vm.activeCabs = vm.activeCabs+1;
-								isIdle = false;
-							}
 
 						 	var cardetail =  _.first(_.filter(vm.cars.models, function(carmodel){ return carmodel.title == vehiclenumber}));
 						 	if(cardetail) {
+						 		var isIdle = getIsIdle(livecarobj);
+
 							 	cardetail.latitude = livecarobj.latitude;
 							 	cardetail.longitude = livecarobj.longitude;
 							 	cardetail.time = getTimeStamp(livecarobj.locationtime),
@@ -234,20 +203,7 @@ define(['angular',
 						 	}
 						 	else {
 						 		vm.carlist.push({name : vehiclenumber});
-							 	vm.cars.models.push({
-								 	latitude: livecarobj.latitude,
-								 	longitude: livecarobj.longitude,
-								 	title: vehiclenumber,
-								 	id : property,
-								 	isIdle: isIdle,
-								    time : getTimeStamp(livecarobj.locationtime),
-								 	options: {
-								   	labelContent: vehiclenumber, 
-								   	labelClass: ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
-								   	icon: (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
-								   	labelAnchor: ((isIdle && vm.dragMarker) ? '20 60' : '0 0')
-								   }
-							 });
+							 	vm.cars.models.push(getLiveCarObject(livecarobj, property, vehiclenumber));
 						 	}
 						}
 		 				sessionservice.applyscope($scope);
@@ -255,6 +211,34 @@ define(['angular',
 		 			}
 	 			}
 		 	}
+
+		 	function getLiveCarObject(livecarobj, property, vehiclenumber) {
+		 		var isIdle = getIsIdle(livecarobj);
+		 		return {
+				 	latitude: livecarobj.latitude,
+				 	longitude: livecarobj.longitude,
+				 	title: vehiclenumber,
+				 	id : property,
+				 	isIdle: isIdle,
+				 	time : getTimeStamp(livecarobj.locationtime),
+				 	options: {
+					   	labelContent: vehiclenumber, 
+					   	labelClass: ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
+					   	icon: (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
+					   	labelAnchor: ((isIdle && vm.dragMarker) ? '20 60' : '0 0')
+					}
+				}
+			}
+
+			function getIsIdle(livecarobj) {
+				var isIdle = livecarobj.running ? !livecarobj.running: true;
+		 		if(isIdle)
+		 			vm.idleCabs = vm.idleCabs + 1;
+		 		else
+		 			vm.activeCabs = vm.activeCabs + 1;
+
+		 		return isIdle;
+			}
 
 		 	function getTimeStamp(unixtimestamp){
 				return moment((unixtimestamp)).fromNow();
