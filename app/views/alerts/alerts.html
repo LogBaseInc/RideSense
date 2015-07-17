@@ -13,7 +13,7 @@
 					<hr/>
 					<div class="row">
 						<div class="col-xs-8">
-							<p style="color:red"><strong>Car #{{alert.vehiclenumber}}</strong>: {{alert.text}}</p>
+							<p class="redtext"><strong>Car #{{alert.vehiclenumber}}</strong>: {{alert.text}}</p>
 						</div>
 						<div class="col-xs-4">
 							<p class="text-muted text-right">{{alert.time}}</p>
@@ -36,8 +36,8 @@
 					<hr/>
 					<div class="col-xs-12">
 						<br/>
-						<button type="button" data-ng-hide="vm.showclosed" class="btn btn-default btn-sm" style="float:right;" data-ng-click="vm.showclosed=true">Show Closed Alerts</button>
-						<button type="button" data-ng-show="vm.showclosed" class="btn btn-default btn-sm" style="float:right" data-ng-click="vm.showclosed=false;">Hide Closed Alerts</button>
+						<button type="button" data-ng-hide="vm.showclosed" class="btn btn-default btn-sm floatright" data-ng-click="vm.showclosed=true">Show Closed Alerts</button>
+						<button type="button" data-ng-show="vm.showclosed" class="btn btn-default btn-sm floatright" data-ng-click="vm.showclosed=false;">Hide Closed Alerts</button>
 						<br/><br/>
 						<div data-ng-show="vm.showclosed">
 							<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Closed Alerts</h5>
@@ -81,13 +81,14 @@
 							</center>
 						</div>
 					</div>
-					<hr/><br/>
+					<hr/>
+					<br/>
 				</div>
 				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Alerts Mobile Number</h5>
 				<br/>
 				<form name="alertmobileform" class="form-horizontal">
 					<div class="form-group" data-ng-class="{ 'has-error': alertmobileform.mobile.$invalid && alertmobileform.mobile.$touched }">
-						<span style="display:inline-block; margin-left:1%">+91 </span><input style="margin-left:1%; width: 91%; display: inline-block" type="text" class="form-control" placeholder="Mobile # to send alerts" data-ng-model="vm.mobilenumber" name="mobile" id="mobile" ng-pattern="/^[0-9]*$/" minlength="10" maxlength="10">
+						<span class="contactmobilecode">+91 </span><input class="contactmobileinput" type="text" class="form-control" placeholder="Mobile # to send alerts" data-ng-model="vm.mobilenumber" name="mobile" id="mobile" ng-pattern="/^[0-9]*$/" minlength="10" maxlength="10">
 					</div>
 				</form>
 				<br/>

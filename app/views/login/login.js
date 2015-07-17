@@ -197,6 +197,7 @@ define(['angular',
                     vm.signupdiv = false;
                     vm.forgotdiv = false;
                     vm.useremail = null;
+                    vm.repeatpwderror = false;
                     vm.password = null;
                     vm.userName =null;
                     vm.newuser = {};

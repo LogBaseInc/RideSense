@@ -269,20 +269,153 @@ hr {
     padding-top: 5px;
 }
 
-.overlaymarigin
-{
+.overlaymarigin {
     position: absolute;
     z-index: 3;
     padding-top: 5px;
     margin-left: 70%;
-
 }
 
-.overlayoption
-{
+.overlayoption {
 }
 
-.overlaydiv
-{
+.overlaydiv {
     background-color:white;
 }
+
+.redtext {
+    display: inline; 
+    color: LightCoral
+}
+
+.zeromargin {
+    margin: 0px;
+}
+
+.errortext {
+    color: #bf1c1c;
+}
+
+.margintop20 {
+    margin-top: 20px
+}
+
+.mydevicespace {
+    margin-bottom:10px;
+    margin-top:10px
+}
+
+.displayline {
+    display:inline
+}
+
+.floatright {
+    float: right;
+}
+
+.fullwidth {
+    width: 100% !important;
+}
+
+.devicelistbox {
+    width: 250px; 
+    height: 125px; 
+    margin-right:20px; 
+    margin-bottom : 20px; 
+    display:inline-block; 
+    color: gray
+}
+
+.marginleft10 {
+    margin-left:10px;
+}
+
+.margintop15 {
+    margin-top: 15px
+}
+
+.heighth13 {
+    height:13px
+}
+
+.marginleft5 {
+    margin-left:5px
+}
+
+.fontsize13 {
+    font-size:13px
+}
+
+.contactmobilecode {
+    display: inline-block; 
+    margin-left: 1%
+}
+
+.contactmobileinput {
+    margin-left: 1%; 
+    width: 91%; 
+    display: inline-block
+}
+
+.zeropadding {
+    padding:0px !important
+}
+
+.tripsheading {
+    display:inline !important;
+    width:90px !important;
+    margin-top:3px !important;
+}
+
+.width170 {
+    width:170px !important;
+}
+
+.hrborder {
+    border-top: 1px solid rgba(6, 5, 5, 0.06); !important
+}
+
+.typeheadanchor {
+    background-color: white !important; 
+    padding-left: 5px !important; 
+    border-top: 1px solid rgba(128, 128, 128, 0.38) !important; 
+    padding-top: 10px !important; 
+    height : 40px !important; 
+    font-size: 13px !important; 
+    width: 100%
+}
+
+.typeheadimage {
+    height: 11px !important; 
+    color: #858585 !important
+}
+
+.blackcolor {
+    color: black !important
+}
+
+.marginbottom0 {
+    margin-bottom: 0px !important;
+}
+
+.logoimage {
+    display:inline !important;
+    margin-right:5px !important;
+}
+
+.minheight637 {
+    min-height: 637px !important;
+}
+
+.marginbottom10 {
+    margin-bottom:10px
+}
+
+.fontbold {
+    font-weight:bold
+}
+
+
+
+
+

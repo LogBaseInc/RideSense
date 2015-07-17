@@ -1,9 +1,10 @@
 define(['angular',
-    'config.route'], function (angular, configroute) {
+    'config.route',
+    'views/services/triphistory'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('tripdetail', ['$rootScope', '$scope', 'config', 'spinner','sessionservice', tripdetail]);
-        function tripdetail($rootScope, $scope, config, spinner, sessionservice) {
+        configroute.register.controller('tripdetail', ['$rootScope', '$location', '$scope', 'config', 'notify', 'spinner', 'sessionservice', 'triphistory', tripdetail]);
+        function tripdetail($rootScope, $location, $scope, config, notify, spinner, sessionservice, triphistory) {
             var vm= this;
             vm.pathsource =[];
             vm.showmap= false;
@@ -12,27 +13,39 @@ define(['angular',
 
             function activate() {
                 $rootScope.routeSelection = 'cars';
-                vm.selectedtrip = $rootScope.selectedtrip;
-
-                vm.showmap= true;  
-                
-                /*var myDataRef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/report');
-                    spinner.show();
-                    myDataRef.on("value", function(snapshot) {
-                        setPath(snapshot.val());
-                    }, 
-                    function (errorObject) {
-                        console.log("The read failed: " + errorObject.code);
-                    }
-                );*/
+                if($rootScope.selectedtrip) {
+                    vm.selecteddate = $rootScope.selecteddate;
+                    vm.selectedtrip = $rootScope.selectedtrip;
+                    getTripHistory();
+                }
+                else {
+                    $location.path('/cars');
+                }
             }
 
-            function setPath(data) {
+            function getTripHistory() {
+                spinner.show();
+                return triphistory.getTripHistory(vm.selectedtrip.devicenumber, 
+                    vm.selectedtrip.starttimestamp, vm.selectedtrip.endtimestamp).then(getTripHistoryCompleted, getTripHistoryFailed);
+            }
+
+            function getTripHistoryCompleted (data) {
+                if(data.length > 0) {
+                    vm.showmap= true;  
+                    spinner.hide();
+                    $rootScope.$emit('pathsource', {path:data, brake:null, speedbrake:null});
+                    return;
+                }
+                else {
+                   notify.warning("Selected trip doesn't have history");
+                   $location.path('/cars'); 
+                }
+            }
+
+            function getTripHistoryFailed(){
                 spinner.hide();
-                vm.pathsource = data.position;
-                vm.showmap= true;  
-                $rootScope.$emit('pathsource', {path:vm.pathsource});
-                sessionservice.applyscope($scope);
+                notify.error('Something went wrong, try after some time');
+                return;
             }
         }
     })();

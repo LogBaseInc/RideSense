@@ -3,7 +3,7 @@
 		<div class="overlaymarigin" data-ng-if="vm.showmap" >
 			<div class="overlayoption">
 				<div class="overlaydiv">
-					<div style="padding-left:10px">
+					<div class="zeropadding">
 			        	<input type="checkbox" ng-model="vm.speedbrake" name="direction" id="Speedbrake" value="Speedbrake" data-ng-change="vm.speedbrakechecked()"/>
 			        	<span>Rash driving on speed bumps</span>
 			        	<img src="assets/images/speedbump.png" /> {{vm.speedbrakesource.length}}
@@ -21,7 +21,7 @@
 			        	<br/>
 			        	<span>Stop: {{vm.stoploc}}</span>
 			        	<br/>
-			        	<span>Score: <span style="font-weight:bold">{{vm.score}}</span>/100</span>
+			        	<span>Score: <span class="fontbold">{{vm.score}}</span>/100</span>
 		        	</div>
 	        	</div>
        		 </div>

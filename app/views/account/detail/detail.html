@@ -18,7 +18,7 @@
 		<form class="form-horizontal" name="accountform">
 			<h4>Account details</h4>
 			</br>
-			<div class="form-group" data-ng-class="{ 'has-error': accountform.textaccountname.$invalid && accountform.textaccountname.$touched }" style="margin:0px">
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textaccountname.$invalid && accountform.textaccountname.$touched }">
 				<label class="col-md-3 control-label">Account name</label>
 				<div class="col-md-6">
                     <input type="text" class="form-control" placeholder="Account name" name="textaccountname" data-ng-model="vm.accountname" required>
@@ -30,7 +30,7 @@
 			</br>
 			<h4>Contact Address</h4>
 			</br>
-			<div class="form-group" data-ng-class="{ 'has-error': accountform.textname.$invalid && accountform.textname.$touched }" style="margin:0px">
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textname.$invalid && accountform.textname.$touched }">
 				<label class="col-md-3 control-label">Name</label>
 				<div class="col-md-6">
 					<input type="text" class="form-control" placeholder="Name" name="textname" data-ng-model="vm.address.name" required>
@@ -39,8 +39,7 @@
                     </div>
             	</div>
 			</div>
-			</br>
-			<div class="form-group" data-ng-class="{ 'has-error': accountform.textaddressline1.$invalid && accountform.textaddressline1.$touched }" style="margin:0px">
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textaddressline1.$invalid && accountform.textaddressline1.$touched }">
 				<label class="col-md-3 control-label">Address line 1</label>
 				<div class="col-md-6">
                     <input type="text" class="form-control" placeholder="Address line 1" name="textaddressline1" data-ng-model="vm.address.addressline1" required>
@@ -49,8 +48,7 @@
                     </div>
             	</div>
 			</div>
-			</br>
-			<div class="form-group" data-ng-class="{ 'has-error': accountform.textaddressline2.$invalid && accountform.textaddressline2.$touched }" style="margin:0px">
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textaddressline2.$invalid && accountform.textaddressline2.$touched }">
 				<label class="col-md-3 control-label">Address line 2</label>
 				<div class="col-md-6">
 					<input type="text" class="form-control" placeholder="Address line 2" name="textaddressline2" data-ng-model="vm.device.textaddressline2">
@@ -59,8 +57,7 @@
                     </div>
             	</div>
 			</div>
-			</br>
-			<div class="form-group" data-ng-class="{ 'has-error': accountform.textcity.$invalid && accountform.textcity.$touched }" style="margin:0px">
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textcity.$invalid && accountform.textcity.$touched }">
 				<label class="col-md-3 control-label">City</label>
 				<div class="col-md-6">
                     <input type="text" class="form-control" placeholder="City" name="textcity" data-ng-model="vm.address.city" required>
@@ -69,8 +66,7 @@
                     </div>
             	</div>
 			</div>
-			</br>
-			<div class="form-group" data-ng-class="{ 'has-error': accountform.textstate.$invalid && accountform.textstate.$touched }" style="margin:0px">
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textstate.$invalid && accountform.textstate.$touched }">
 				<label class="col-md-3 control-label">State</label>
 				<div class="col-md-6">
                     <input type="text" class="form-control" placeholder="State" name="textstate" data-ng-model="vm.address.state" required>
@@ -79,8 +75,7 @@
                     </div>
             	</div>
 			</div>
-			</br>
-			<div class="form-group" data-ng-class="{ 'has-error': accountform.textcountry.$invalid && accountform.textcountry.$touched }" style="margin:0px">
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textcountry.$invalid && accountform.textcountry.$touched }">
 				<label class="col-md-3 control-label">Country</label>
 				<div class="col-md-6">
                     <input type="text" class="form-control" placeholder="Country" name="textcountry" data-ng-model="vm.address.country" required>
@@ -89,8 +84,7 @@
                     </div>
             	</div>
 			</div>
-			</br>
-			<div class="form-group" data-ng-class="{ 'has-error': accountform.textzipcode.$invalid && accountform.textzipcode.$touched }" style="margin:0px">
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textzipcode.$invalid && accountform.textzipcode.$touched }">
 				<label class="col-md-3 control-label">Zip code</label>
 				<div class="col-md-6">
                     <input type="text" class="form-control" placeholder="Zipcode" name="textzipcode" data-ng-model="vm.address.zipcode" required ng-pattern="/^[0-9]*$/" minlength="6" maxlength="6">

@@ -46,12 +46,16 @@ define(['angular', 'bootbox'], function (angular, bootbox) {
           }
         }]);
 
-        module.directive("lbDatepicker", ["$filter", function ($filter) {
+        module.directive("lbDatepicker", ["$rootScope", function ($rootScope) {
             var linkFn = function (scope, element, attr, ctrl) {
-                element.datepicker({
-                    format: 'dd/mm/yyyy',
-                    minDate: 0,
+                element.datetimepicker({
+                    format: 'DD/MM/YYYY',
                 });
+
+                 element.on("dp.change", function (e) {
+                     $rootScope.$emit('cardetail:dateselected', {date: e.date});
+                });
+
             };
             return {
                 restrict: 'A',
@@ -205,18 +209,22 @@ define(['angular', 'bootbox'], function (angular, bootbox) {
               }
 
               function setSpeedPoints()
-              {
-                for(var i=0; i<scope.speedbrake.length>0; i++)
-                {
-                    setSpeedMarker(map, new google.maps.LatLng(scope.speedbrake[i].latitude, scope.speedbrake[i].longitude), scope.speedbrake[i].speed.toString(), 'At speed '+scope.speedbrake[i].speed.toString());
+              { 
+                if(scope.speedbrake) {
+                  for(var i=0; i<scope.speedbrake.length>0; i++)
+                  {
+                      setSpeedMarker(map, new google.maps.LatLng(scope.speedbrake[i].latitude, scope.speedbrake[i].longitude), scope.speedbrake[i].speed.toString(), 'At speed '+scope.speedbrake[i].speed.toString());
+                  }
                 }
               }
 
               function setBrakePoints()
               {
-                for(var i=0; i<scope.brake.length>0; i++)
-                {
-                  setBrakeMarker(map, new google.maps.LatLng(scope.brake[i].latitude, scope.brake[i].longitude), null, null);
+                if(scope.brake) {
+                  for(var i=0; i<scope.brake.length>0; i++)
+                  {
+                    setBrakeMarker(map, new google.maps.LatLng(scope.brake[i].latitude, scope.brake[i].longitude), null, null);
+                  }
                 }
               }
               /*if(scope.path)

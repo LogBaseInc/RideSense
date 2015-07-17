@@ -19,7 +19,7 @@
 			<h4 data-ng-hide="vm.isDeviceEdit">Add device</h4>
 			<h4 data-ng-show="vm.isDeviceEdit">Edit device</h4>
 			</br>
-			<div class="form-group" data-ng-class="{ 'has-error': deviceform.textdevicenumber.$invalid && deviceform.textdevicenumber.$touched }" style="margin:0px">
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdevicenumber.$invalid && deviceform.textdevicenumber.$touched }">
 				<label class="col-md-3 control-label">Device number</label>
 				<div class="col-md-6">
                     <input type="text" class="form-control" placeholder="Device number" name="textdevicenumber" data-ng-model="vm.device.devicenumber" required ng-readonly="vm.isDeviceEdit">
@@ -28,8 +28,7 @@
                     </div>
             	</div>
 			</div>
-			</br>
-			<div class="form-group" data-ng-class="{ 'has-error': deviceform.textvehiclenumber.$invalid && deviceform.textvehiclenumber.$touched }" style="margin:0px">
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textvehiclenumber.$invalid && deviceform.textvehiclenumber.$touched }">
 				<label class="col-md-3 control-label">Vehicle number</label>
 				<div class="col-md-6">
 					<input type="text" class="form-control" placeholder="Vehicle number" name="textvehiclenumber" data-ng-model="vm.device.vehiclenumber" required>
@@ -38,8 +37,7 @@
                     </div>
             	</div>
 			</div>
-			</br>
-			<div class="form-group" data-ng-class="{ 'has-error': deviceform.textdrivername.$invalid && deviceform.textdrivername.$touched }" style="margin:0px">
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdrivername.$invalid && deviceform.textdrivername.$touched }">
 				<label class="col-md-3 control-label">Driver name</label>
 				<div class="col-md-6">
                     <input type="text" class="form-control" placeholder="Driver name" name="textdrivername" data-ng-model="vm.device.drivername" required>
@@ -48,8 +46,7 @@
                     </div>
             	</div>
 			</div>
-			</br>
-			<div class="form-group" data-ng-class="{ 'has-error': deviceform.textdriverid.$invalid && deviceform.textdriverid.$touched }" style="margin:0px">
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdriverid.$invalid && deviceform.textdriverid.$touched }">
 				<label class="col-md-3 control-label">Driver Id</label>
 				<div class="col-md-6">
                     <input type="text" class="form-control" placeholder="Driver Id" name="textdriverid" data-ng-model="vm.device.driverid" required>
@@ -58,8 +55,7 @@
                     </div>
             	</div>
 			</div>
-			</br>
-			<div class="form-group" data-ng-class="{ 'has-error': deviceform.textdrivercontactnumber.$invalid && deviceform.textdrivercontactnumber.$touched }" style="margin:0px">
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdrivercontactnumber.$invalid && deviceform.textdrivercontactnumber.$touched }">
 				<label class="col-md-3 control-label">Driver mobile number</label>
 				<div class="col-md-6">
 					<input type="text" class="form-control" placeholder="Driver mobile number" name="textdrivercontactnumber" data-ng-model="vm.device.drivermobile" required ng-pattern="/^[0-9]*$/" minlength="10" maxlength="10">

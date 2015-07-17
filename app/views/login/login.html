@@ -41,7 +41,7 @@
                                 </div>
 
                                 <div class="space"></div>
-                                <center style="margin-bottom:10px"><span ng-show="vm.success==false" style="color: #bf1c1c;">The email or password you entered is incorrect!</span></center>
+                                <center class="marginbottom10"><span ng-show="vm.success==false" class="errortext">The email or password you entered is incorrect!</span></center>
                                 <div class="clearfix">                                        
                                     <button type="button" class="width-35 pull-right btn btn-sm btn-primary" data-ng-disabled="!vm.canLogin" data-ng-click="vm.login()">
                                         <i class="ace-icon fa fa-key"></i>
@@ -172,7 +172,7 @@
                             </label>
 
                             <div class="space-6"></div>
-                            <center style="margin-bottom:10px"><span ng-show="vm.repeatpwderror" style="color: #bf1c1c;">Password and Repeat password should be same</span></center>
+                            <center class="marginbottom10"><span ng-show="vm.repeatpwderror" class="errortext">Password and Repeat password should be same</span></center>
                             <div class="clearfix">
                                 <button type="button" class="width-30 pull-left btn btn-sm" data-ng-click="vm.resetSignupForm">
                                     <i class="ace-icon fa fa-refresh"></i>

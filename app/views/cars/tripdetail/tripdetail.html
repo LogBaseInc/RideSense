@@ -1,23 +1,26 @@
 <div class="container-fluid" data-ng-controller="tripdetail as vm">
 	<div class="row">
-		<div class="overlaymarigin" data-ng-if="vm.showmap" >
-			<div class="overlayoption">
-				<div class="overlaydiv">
-					<div style="padding-left:10px">
-			        	<br/>
-			        	<label>{{vm.selectedtrip.vehiclenumber}}</label>
-			        	<br/>
-			        	<span>{{vm.selectedtrip.starttime}} > {{vm.selectedtrip.endtime}}</span>
-			        	<br/>
-			        	<span>{{vm.selectedtrip.startlocation}} > {{vm.selectedtrip.endlocation}}</span>
-			        	<br/>
-			        	<span>{{vm.selectedtrip.distance}}</span>
-		        	</div>
-	        	</div>
-       		 </div>
-        </div>
 		<div class="tm-live-map">
 			<div my-map="" path="vm.pathsource"></div>
 		</div>
+		
+		<div data-ng-if="vm.showmap" class="container-fluid tm-live-overlay">
+			<div class="row">
+				<div class="col-xs-3 col-md-2 tm-marker">
+				</div>
+				<div class="col-xs-3 col-md-7 col-lg-8">
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-2 tm-live-summary">
+					<label class="redtext">{{vm.selectedtrip.vehiclenumber}} </label>
+					<span>  |  {{vm.selectedtrip.distance}} Km</span>
+		        	<br/>
+		        	<span>{{vm.selecteddate}} {{vm.selectedtrip.starttime}} > {{vm.selecteddate}} {{vm.selectedtrip.endtime}}</span>
+		        	<br/>
+		        	<br/>
+		        	<span>{{vm.selectedtrip.startlocation}} > {{vm.selectedtrip.endlocation}}</span>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </div>

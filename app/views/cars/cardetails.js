@@ -20,36 +20,54 @@ define(['angular',
 
             function activate() {
                 $rootScope.routeSelection = 'cars';
-                vm.selecteddate = moment(new Date()).format('DD/MM/YYYY');
-
-                getCarList();
+                if($rootScope.selecteddate) {
+                    vm.selecteddate  = $rootScope.selecteddate;
+                }
+                else {
+                    vm.selecteddate = moment(new Date()).format('DD/MM/YYYY');
+                    $rootScope.selecteddate  = vm.selecteddate;
+                }
 
                 if($routeParams.selectedcar) {
                     vm.showallcars = false;
+                    $rootScope.selectedcar = $routeParams.selectedcar;
                     vm.carsearchselected = $routeParams.selectedcar;
-                    getTrips($routeParams.selectedcar);
+                }
+                else if($rootScope.selectedcar) {
+                    vm.showallcars = false;
+                    vm.carsearchselected = $rootScope.selectedcar;
                 }
                 else {
                     vm.showallcars = true;
                     getAllCarDistanceDetails();
                 }
 
+                getCarList();
                 vm.totalcars = Object.keys(sessionservice.getAccountDevices()).length;
             }
-          
+
             vm.carsearched = function($item, $model, $label) {
                 spinner.show(); 
                 vm.selecteddate = moment(new Date()).format('DD/MM/YYYY');
+                $rootScope.selecteddate  = vm.selecteddate;
+
                 vm.showallcars = false;
                 vm.selectedcar = $item;
-                $routeParams.selectedcar = $item.title;
+                $rootScope.selectedcar = $item.title;
                 vm.totalDistance = 0;
                 allcaractivityref.off("value");
                 getCarDistanceDetail(vm.selectedcar.devicenumber);
                 getTrips(vm.selectedcar.devicenumber);
             }
 
-            vm.datechanged = function () {
+            $rootScope.$on('cardetail:dateselected', function (event, data) {
+                if(data.date.format('DD/MM/YYYY') != vm.selecteddate)
+                    vm.datechanged(data.date.format('DD/MM/YYYY'));
+            });
+
+            vm.datechanged = function (date) {
+                $rootScope.selecteddate = date
+                vm.selecteddate = date;
                 getTrips(vm.selectedcar.devicenumber);
             }
 
@@ -62,6 +80,8 @@ define(['angular',
                 if(vm.showallcars == false) {
                     vm.showallcars = true;
                     vm.carsearchselected = null;
+                    $rootScope.selecteddate = "";
+                    $rootScope.selectedcar = "";
                     getAllCarDistanceDetails();
                 }
             }
@@ -77,9 +97,14 @@ define(['angular',
                         drivermobile : devices[property].drivermobile
                     };
 
-                    if($routeParams.selectedcar == devices[property].vehiclenumber) {
+                    if($rootScope.selectedcar == devices[property].vehiclenumber) {
                         vm.selectedcar = cardetail;
                         getCarDistanceDetail(vm.selectedcar.devicenumber);
+                    }
+
+                    if($rootScope.selecteddate) {
+                        vm.selecteddate = $rootScope.selecteddate;
+                        getTrips(vm.selectedcar.devicenumber);
                     }
 
                     vm.cars.push(cardetail);
@@ -88,26 +113,44 @@ define(['angular',
 
             function getTrips(devicenumber) {
                 spinner.show(); 
-                vm.trips = [];
                 var tripref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/trips/devices/'+devicenumber+'/daily/'+getDateRef());
                 tripref.once("value", function(snapshot) {
+                    vm.trips = [];
+                    vm.tripsBy3 = [];
+                    vm.tripsplit = [];
+
                     var data = snapshot.val();
                     for(property in data) {
                         var tripdetail = {
                             tripid : property,
-                            starttime : moment(data[property].starttime).format('HH:MM'),
-                            endtime : moment(data[property].endtime).format('HH:MM'),
+                            starttimestamp : data[property].starttime,
+                            endtimestamp : data[property].endtime,
+                            starttime : moment(data[property].starttime).format('hh:mm a'),
+                            endtime : moment(data[property].endtime).format('hh:mm a'),
                             distance : (data[property].endodo - data[property].startodo).toFixed(2),
                             startlatitude : data[property].startlatitude,
                             startlongitude : data[property].startlongitude,
                             endlatitude : data[property].endlatitude,
                             endlongitude : data[property].endlongitude,
-                            vehiclenumber : vm.selectedcar.title
+                            vehiclenumber : vm.selectedcar.title,
+                            devicenumber : devicenumber
                         };
                         vm.trips.push(tripdetail);
+                        vm.tripsplit.push(tripdetail);
+                        if(vm.tripsplit.length == 3) {
+                            vm.tripsBy3.push({trips: vm.tripsplit});
+                            vm.tripsplit = [];
+                        }
+
                         readlocation(new google.maps.LatLng(tripdetail.startlatitude,tripdetail.startlongitude), tripdetail, true);
                         readlocation(new google.maps.LatLng(tripdetail.endlatitude,tripdetail.endlongitude), tripdetail, false);
                     }
+
+                    if(vm.tripsplit.length > 0) {
+                        vm.tripsBy3.push({trips: vm.tripsplit});
+                        vm.tripsplit = [];
+                    }
+
                     spinner.hide(); 
                     sessionservice.applyscope($scope);
                 });

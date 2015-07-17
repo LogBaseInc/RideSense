@@ -102,24 +102,6 @@ define(['angular',
                      }
                  },
                  {
-                     url: '/metrics/cars',
-                     config: {
-                         templateUrl: 'views/metrics/cars/carmetrics.html',
-                         title: 'cars',
-                         controllerUrl: 'views/metrics/cars/carmetrics',
-                         allowAnonymous: false
-                     }
-                 },
-                 {
-                     url: '/metrics/trips',
-                     config: {
-                         templateUrl: 'views/metrics/trips/tripmetrics.html',
-                         title: 'trips',
-                         controllerUrl: 'views/metrics/trips/tripmetrics',
-                         allowAnonymous: false
-                     }
-                 },
-                 {
                      url: '/report',
                      config: {
                          templateUrl: 'views/tripreport/tripreport.html',

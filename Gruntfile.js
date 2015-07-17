@@ -56,6 +56,7 @@ module.exports = function (grunt) {
                         ['<%= tempDir %>/app/assets/css/customstyles.css',
                             '<%= tempDir %>/app/assets/css/styles.css',
                             '<%= tempDir %>/app/assets/css/bootstrap.min.css',
+                            '<%= tempDir %>/app/assets/css/datepicker.css',
                             '<%= tempDir %>/app/assets/css/toaster.min.css',
                             '<%= tempDir %>/app/assets/css/ngDialog.min.css',
                             '<%= tempDir %>/app/assets/css/ngDialog-theme-default.min.css',

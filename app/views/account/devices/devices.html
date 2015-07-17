@@ -14,9 +14,9 @@
 </div>
 
 <div data-ng-controller="devices as vm">
-	<div class="col-xs-12" style="margin-bottom:10px;margin-top:10px">
-		<h4 style="display:inline" data-ng-show="vm.devices.length > 0">My Devices</h3>
-		<a style="float:right" class="btn btn-success" href="" data-ng-click="vm.buydevice()">Add a device</a>
+	<div class="col-xs-12 mydevicespace">
+		<h4 class="displayline" data-ng-show="vm.devices.length > 0">My Devices</h3>
+		<a class="floatright btn btn-success" href="" data-ng-click="vm.buydevice()">Add a device</a>
 	</div>
 	<div class="form-group col-xs-12" data-ng-show="vm.devices.length > 0">
         <div class="input-group">
@@ -27,14 +27,14 @@
         </div>
     </div>
     
-	<div class="col-xs-12" style="width:100%">
-		<div class="tm-alerts-summary" style="width: 250px; height: 125px; margin-right:20px; margin-bottom : 20px; display:inline-block; color: gray" data-ng-repeat="device in vm.devices | filter:search">
-			<div style="margin-left:10px;" data-ng-click="vm.editdevice(device)">
+	<div class="col-xs-12 fullwidth">
+		<div class="tm-alerts-summary devicelistbox" data-ng-repeat="device in vm.devices | filter:search">
+			<div class="marginleft10" data-ng-click="vm.editdevice(device)">
 				<h3>{{device.devicenumber}}</h3>
-				<div style="margin-top: 15px">
-					<img style="height:14px" src="assets/images/car-front.png"></img><label style="margin-left:5px">{{device.displayvehiclenumber}}</label>
+				<div class="margintop15">
+					<img class="heighth13" src="assets/images/car-front.png"></img><label class="marginleft5">{{device.displayvehiclenumber}}</label>
 					<br/>
-					<i class="fa fa-calendar" style="font-size:14px"></i><label style="margin-left:5px">{{device.boughton}}</label>
+					<i class="fa fa-calendar fontsize13" ></i><label class="marginleft5">{{device.boughton}}</label>
 				</div>
 			</div>
 		</div>

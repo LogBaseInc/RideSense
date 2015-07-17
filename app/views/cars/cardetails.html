@@ -1,25 +1,23 @@
 <div data-ng-controller="cardetails as vm">
 	<div class="input-group">
-		<input type="text" class="input-block-level" placeholder="Search car..." data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html" style="width:100%;" 
-			typeahead-on-select="vm.carsearched($item, $model, $label)"/>
+		<input type="text" class="input-block-level fullwidth" placeholder="Search car..." data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html" typeahead-on-select="vm.carsearched($item, $model, $label)"/>
 		<span class="input-group-addon add-on" data-ng-click="vm.clearcar()"><span class="fa fa-times"></span></span>
 	</div>
 	<br>
 	<div class="col-xs-12">
-		<div class="col-xs-12 col-md-4" style="padding:0px" data-ng-hide="vm.showallcars">
-			<br>
+		<div class="col-xs-12 col-md-4 zeropadding" data-ng-hide="vm.showallcars">
 			<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Car details</h5>
-			<div class="col-md-12 tm-card-wrap ng-scope" style="padding:0px">
+			<div class="row col-md-12 tm-card-wrap zeropadding">
 				<div class="tm-car-card">
-					<h4 class="text-right" style="display: inline; color:LightCoral">{{vm.selectedcar.title}}</h4>
+					<h4 class="text-right redtext">{{vm.selectedcar.title}}</h4>
 					<small>car number</small>
 					<div class="space-6"></div>
-					<h4 class="text-right" style="display: inline;">{{vm.selectedcar.devicenumber}}</h5>
+					<h4 class="text-right displayline">{{vm.selectedcar.devicenumber}}</h5>
 					<small>device number</small>
 					<div class="space-6"></div>
 					<h4>{{vm.selectedcar.drivername}} | {{vm.selectedcar.drivermobile}}</h4>
 					<div class="space-6"></div>
-					<h4 class="text-right" style="display: inline;">{{vm.totalDistance}} km</h4>
+					<h4 class="text-right displayline">{{vm.totalDistance}} km</h4>
 					<small>Today</small>
 					<!--<span>Idle @ Pleelamedu</span>
 					<div class="space-6"></div>
@@ -27,61 +25,73 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-12 col-md-4" style="padding:0px" data-ng-show="vm.showallcars">
+		<div class="col-xs-12 col-md-4 zeropadding" data-ng-show="vm.showallcars">
 			<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Statistics of all cars</h5>
-			<div class="col-md-12 tm-card-wrap ng-scope" style="padding:0px">
+			<div class="row col-md-12 tm-card-wrap zeropadding">
 				<div class="tm-car-card">
-					<h4 class="text-right" style="display: inline;">{{vm.totalDistance}} km</h4>
+					<h4 class="text-right displayline">{{vm.totalDistance}} km</h4>
 					<small>Today</small>
 					<div class="space-6"></div>
-					<h4 class="text-right" style="display: inline;">{{vm.totalcars}}</h4>
+					<h4 class="text-right displayline">{{vm.totalcars}}</h4>
 					<small>Cars</small>
 					<div class="space-6"></div>
-					<h4 class="text-right" style="display: inline;">3</h4>
+					<h4 class="text-right displayline">3</h4>
 					<small>trips</small>
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-12 col-md-8" style="padding:0px" data-ng-if="vm.distanceData.data.length > 0" >
+		<div class="col-xs-12 col-md-8 zeropadding" data-ng-if="vm.distanceData.data.length > 0" >
 			<br>
 			<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Distance summary</h5>
 			<br>
 			<highchart config="vm.distanceConfig"></highchart>
 		</div>
 	</div>
-	<div class="col-xs-12" style="padding:0px" data-ng-hide="vm.showallcars">
+	<div class="col-xs-12 zeropadding" data-ng-hide="vm.showallcars">
 		<br>
-		<h5 class="col-xs-1 tm-heading" style="display:inline; width:90px; margin-top:3px"><span class="glyphicon glyphicon-chevron-right"></span> Trips</h5>
-		<div class="col-xs-1 input-group input-append date" lb-datepicker style="width:150px">
-            <span class="input-group-addon add-on"><span class="fa fa-calendar"></span></span>
-            <input type="text" class="form-control" data-ng-model="vm.selecteddate" ng-readonly="true" data-ng-change= "vm.datechanged(vm.selectedate)" />
-        </div>
-        <br/>
-		<div class="col-xs-12 col-md-4 tm-card-wrap ng-scope" data-ng-repeat="trip in vm.trips">
-			<div class="col-md-12 tm-car-card" ng-click="vm.tripClicked(trip)" style="min-height: 184px">
-				<div class="row">
-					<div class="col-xs-3 col-md-3">
-						<h4 class="ng-binding">{{trip.starttime}}</h4>
-						<small>Start</small>
-					</div>
-					<div class="col-xs-3 col-md-3">
-						<h4 class="ng-binding">{{trip.endtime}}</h4>
-						<small>End</small>
-					</div>
-					<div class="col-xs-6 col-md-6">
-						<h4 class="text-right">{{trip.distance}}</h4>
-						<p class="text-right"><small>Distance</small></p>
-					</div>
-				</div>
-				<hr style="border-top: 1px solid rgba(6, 5, 5, 0.06); !important">
-				<div class="row">
-					<div class="col-xs-12 col-md-12">
-						<p class="ng-binding">{{trip.startlocation}} > {{trip.endlocation}}</p>
+		<div>
+			<h5 class="col-xs-1 tm-heading tripsheading"><span class="glyphicon glyphicon-chevron-right"></span> Trips</h5>
+			<div class="col-xs-1 form-group width170">
+	            <div class='input-group date' lb-datepicker>
+	                <input type='text' class="form-control" data-ng-model="vm.selecteddate" />
+	                <span class="input-group-addon">
+	                    <span class="fa fa-calendar"></span>
+	                </span>
+	            </div>
+	        </div>
+	    </div>
+        <div class="col-xs-12"></div>
+        <div data-ng-repeat="tripdetail in vm.tripsBy3">
+        	<div class="row">
+	        	<div data-ng-repeat="trip in tripdetail.trips">
+					<div class="col-xs-12 col-md-4 tm-card-wrap ng-scope">
+						<div class="col-md-12 tm-car-card" ng-click="vm.tripClicked(trip)">
+							<div class="row">
+								<div class="col-xs-4 col-md-4">
+									<h4 class="ng-binding">{{trip.starttime}}</h4>
+									<small>Start</small>
+								</div>
+								<div class="col-xs-4 col-md-4">
+									<h4 class="ng-binding">{{trip.endtime}}</h4>
+									<small>End</small>
+								</div>
+								<div class="col-xs-4 col-md-4">
+									<h4 class="text-right">{{trip.distance}}</h4>
+									<p class="text-right"><small>Distance</small></p>
+								</div>
+							</div>
+							<hr class="hrborder">
+							<div class="row">
+								<div class="col-xs-12 col-md-12">
+									<p class="ng-binding"> {{trip.startlocation}} > {{trip.endlocation}}</p>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div data-ng-show="vm.trips.length==0">
+		</div>        
+		<div class="col-xs-12" data-ng-show="vm.trips.length==0">
 			<center>
 				<span> No trip available for date - {{vm.selecteddate}}
 			</center>
@@ -90,8 +100,8 @@
 </div>
 
 <script type="text/ng-template" id="typeaheadElement.html">
-  <a style="background-color:white; padding-left:5px; border-top: 1px solid rgba(128, 128, 128, 0.38); padding-top: 10px; height : 40px; font-size: 13px; width: 100%" >
-   <img src="assets/images/car-front.png" style="height:11px; color:#858585"></img>
-      <span bind-html-unsafe="match.label" style="color:black"></span>
+  <a class="typeheadanchor">
+   <img src="assets/images/car-front.png" class="typeheadimage"></img>
+      <span bind-html-unsafe="match.label" class="blackcolor"></span>
   </a>
 </script>

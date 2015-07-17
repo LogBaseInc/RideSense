@@ -4,8 +4,8 @@ define(['angular',
     'lib'], function (angular, configroute, moment) {
     (function () {
 
-        configroute.register.controller('live', ['$compile', '$rootScope', '$scope', 'config', 'spinner', 'uiGmapIsReady', 'uiGmapGoogleMapApi', 'sessionservice', live]);
-        function live($compile, $rootScope, $scope, config, spinner, uiGmapIsReady, uiGmapGoogleMapApi, sessionservice) {
+        configroute.register.controller('live', ['$compile', '$rootScope', '$scope', 'config', 'notify', 'spinner', 'uiGmapIsReady', 'uiGmapGoogleMapApi', 'sessionservice', live]);
+        function live($compile, $rootScope, $scope, config, notify, spinner, uiGmapIsReady, uiGmapGoogleMapApi, sessionservice) {
         $rootScope.routeSelection = 'live'
 	        var vm = this;
 		 	vm.distanceCovered = 0;
@@ -266,7 +266,8 @@ define(['angular',
 				     avoidTolls: false
 				   }, callback);
 				
-				calcRoute();
+				//// TODO calculate route
+				//calcRoute();
 			}
 
 			function clearRoutes(){
@@ -315,7 +316,8 @@ define(['angular',
 						vm.cars.models[i].options.labelAnchor = '20 60';
 					}
 				}
-
+				notify.success('Distance and time updated');
+				sessionservice.applyscope($scope);
 			}
 
 		 	function setGoogleMaps(lat, lng){
