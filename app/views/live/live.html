@@ -1,11 +1,11 @@
 <div data-ng-controller="live as vm">
-	<div data-ng-if="vm.showmaps" style="border: 1px solid rgba(128, 128, 128, 0.34); border-radius: 4px;">
+	<div data-ng-if="vm.showmaps" class="livemapsearch">
 		<google-places data-ng-show="vm.locationsearch">
 		</google-places>
-		<input data-ng-show="vm.carsearch" type="text" class="input-block-level" placeholder="Search car..." data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars.models | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html" style="border:0px; width:100%; position: relative; z-index:3;" 
+		<input data-ng-show="vm.carsearch" type="text" class="input-block-level livecarsearch" placeholder="Search car..." data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars.models | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html"
 		typeahead-on-select="vm.carsearched($item, $model, $label)"/>
-		<div style="position: relative; z-index:3; margin-top:-31px">
-			<select style="border:0px; float:right;  margin-top: 3px;" data-ng-model="vm.searchoption" data-ng-change="vm.searchOptionChanged(vm.searchoption)">
+		<div class="carselectdiv">
+			<select class="carselect" data-ng-model="vm.searchoption" data-ng-change="vm.searchOptionChanged(vm.searchoption)">
 				<option value="" data-ng-if="false"></option>
 				<option value="location">Location</option>
 				<option value="car">Car</option>
@@ -13,7 +13,7 @@
 		</div>
 	</div>
 
-	<div class="container-fluid" data-ng-if="vm.showmaps" style="margin-top:30px">
+	<div class="container-fluid margintop30" data-ng-if="vm.showmaps">
 		<div class="row">
 			<div class="tm-live-map">
 				<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom'>
@@ -51,8 +51,8 @@
 </div>
 
 <script type="text/ng-template" id="typeaheadElement.html">
-  <a style="background-color:white; padding-left:5px; border-top: 1px solid rgba(128, 128, 128, 0.38); padding-top: 10px; height : 40px; font-size: 13px; width: 100%" >
-   <img src="assets/images/car-front.png" style="height:11px; color:#858585"></img>
-      <span bind-html-unsafe="match.label" style="color:black"></span>
+  <a class="typeheadanchor">
+   <img src="assets/images/car-front.png" class="typeheadimage"></img>
+      <span bind-html-unsafe="match.label" class="blackcolor"></span>
   </a>
 </script>

@@ -415,6 +415,35 @@ hr {
     font-weight:bold
 }
 
+.livemapsearch {
+    border: 1px solid rgba(128, 128, 128, 0.34); 
+    border-radius: 4px;
+}
+
+.livecarsearch {
+    border:0px; 
+    width:100%; 
+    position: 
+    relative; 
+    z-index:3;
+}
+
+.carselectdiv {
+    position: relative; 
+    z-index:3; 
+    margin-top:-31px
+}
+
+.carselect {
+    border:0px; 
+    float:right;  
+    margin-top: 3px;
+}
+
+.margintop30 {
+    margin-top:30px
+}
+
 
 
 
