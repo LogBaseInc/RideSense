@@ -22,7 +22,7 @@ define(['angular',
 
             function activate() {
                 var accountemailfbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/email');
-                accountemailfbref.on("value", function(snapshot) {
+                accountemailfbref.once("value", function(snapshot) {
                     email = snapshot.val();
                 }, function (errorObject) {
                     console.log("The account name read failed: " + errorObject.code);

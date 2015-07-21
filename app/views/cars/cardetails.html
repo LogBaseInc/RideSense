@@ -1,7 +1,7 @@
 <div data-ng-controller="cardetails as vm">
 	<div class="input-group">
 		<input type="text" class="input-block-level fullwidth" placeholder="Search car..." data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html" typeahead-on-select="vm.carsearched($item, $model, $label)"/>
-		<span class="input-group-addon add-on" data-ng-click="vm.clearcar()"><span class="fa fa-times"></span></span>
+		<span class="input-group-addon add-on" data-ng-click="vm.clearcar()"><span class="glyphicon glyphicon-remove"></span></span>
 	</div>
 	<br>
 	<div class="col-xs-12">
@@ -10,15 +10,15 @@
 			<div class="row col-md-12 tm-card-wrap zeropadding">
 				<div class="tm-car-card">
 					<h4 class="text-right redtext">{{vm.selectedcar.title}}</h4>
-					<small>car number</small>
+					<small class="hspace">car number</small>
 					<div class="space-6"></div>
 					<h4 class="text-right displayline">{{vm.selectedcar.devicenumber}}</h5>
-					<small>device number</small>
+					<small class="hspace">device number</small>
 					<div class="space-6"></div>
 					<h4>{{vm.selectedcar.drivername}} | {{vm.selectedcar.drivermobile}}</h4>
 					<div class="space-6"></div>
 					<h4 class="text-right displayline">{{vm.totalDistance}} km</h4>
-					<small>Today</small>
+					<small class="hspace">Today</small>
 					<!--<span>Idle @ Pleelamedu</span>
 					<div class="space-6"></div>
 					<span>1200 Km</span>-->
@@ -30,13 +30,13 @@
 			<div class="row col-md-12 tm-card-wrap zeropadding">
 				<div class="tm-car-card">
 					<h4 class="text-right displayline">{{vm.totalDistance}} km</h4>
-					<small>Today</small>
+					<small class="hspace">Today</small>
 					<div class="space-6"></div>
 					<h4 class="text-right displayline">{{vm.totalcars}}</h4>
-					<small>Cars</small>
+					<small class="hspace">Cars</small>
 					<div class="space-6"></div>
-					<h4 class="text-right displayline">3</h4>
-					<small>trips</small>
+					<!--<h4 class="text-right displayline">3</h4>
+					<small class="hspace">trips</small>-->
 				</div>
 			</div>
 		</div>
@@ -55,7 +55,7 @@
 	            <div class='input-group date' lb-datepicker>
 	                <input type='text' class="form-control" data-ng-model="vm.selecteddate" />
 	                <span class="input-group-addon">
-	                    <span class="fa fa-calendar"></span>
+	                    <span class="glyphicon glyphicon-th"></span>
 	                </span>
 	            </div>
 	        </div>

@@ -12,7 +12,7 @@ define(['angular',
                 $rootScope.routeSelection = '';
             	spinner.show();
                 var ref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/devices');
-                ref.on("value", function(snapshot) {
+                ref.once("value", function(snapshot) {
                     getDevices(snapshot.val());
                 }, function (errorObject) {
                     console.log("The livecars read failed: " + errorObject.code);

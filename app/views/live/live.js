@@ -4,6 +4,15 @@ define(['angular',
     'lib'], function (angular, configroute, moment) {
     (function () {
 
+    	var app = angular.module('rideSenseApp');
+		app.config(function(uiGmapGoogleMapApiProvider) {
+            uiGmapGoogleMapApiProvider.configure({
+                key: 'AIzaSyD0aOSSRwYlmV586w1uIPaOxGIV-6123LU',
+                v: '3.17',
+                libraries: 'weather,geometry,visualization'
+            });
+        });
+
         configroute.register.controller('live', ['$compile', '$rootScope', '$scope', 'config', 'notify', 'spinner', 'uiGmapIsReady', 'uiGmapGoogleMapApi', 'sessionservice', live]);
         function live($compile, $rootScope, $scope, config, notify, spinner, uiGmapIsReady, uiGmapGoogleMapApi, sessionservice) {
         $rootScope.routeSelection = 'live'
@@ -26,7 +35,7 @@ define(['angular',
 			var mapinstance;
 			var routecolor = ['red', 'green',  'purple', 'orange', 'blue'];
 
-		 	activate();
+			activate();
 
 		 	vm.markersEvents = {
 			    click: function (gMarker, eventName, model) {
@@ -311,9 +320,9 @@ define(['angular',
 						var element = response.rows[i].elements[0];
 						var distance = element.distance.text;
 						var duration = element.duration.text;
-						vm.cars.models[i].options.labelContent = idleCarlist[i].title + '<div>'+distance + ' | '+duration +'</div>';
-						vm.cars.models[i].options.labelClass = 'tm-marker-label-distance';
-						vm.cars.models[i].options.labelAnchor = '20 60';
+						idleCarlist[i].options.labelContent = idleCarlist[i].title + '<div>'+distance + ' | '+duration +'</div>';
+						idleCarlist[i].options.labelClass = 'tm-marker-label-distance';
+						idleCarlist[i].options.labelAnchor = '20 60';
 					}
 				}
 				notify.success('Distance and time updated');

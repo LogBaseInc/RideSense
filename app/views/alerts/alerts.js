@@ -1,6 +1,7 @@
 define(['angular',
     'config.route',
-    'moment'], function (angular, configroute, moment) {
+    'moment',
+    'lib'], function (angular, configroute, moment) {
     (function () {
         configroute.register.controller('alerts', ['$rootScope', '$scope', '$location', 'config', 'spinner', 'notify', 'sessionservice', alerts]);
         function alerts($rootScope, $scope, $location, config, spinner, notify, sessionservice) {
@@ -38,7 +39,7 @@ define(['angular',
 				  	console.log("The alerts read failed: " + errorObject.code);
 				});
 
-				mobilefbref.on("value", function(snapshot) {
+				mobilefbref.once("value", function(snapshot) {
 				  	setMobileNumber(snapshot.val());
 				}, function (errorObject) {
 				  	console.log("The mobile number read failed: " + errorObject.code);
@@ -51,6 +52,7 @@ define(['angular',
 
 		 	function setMobileNumber (data) {
 		 		vm.mobilenumber = data;
+		 		sessionservice.applyscope($scope);
 		 	}
 
 		 	function setAlerts(data) {
@@ -157,8 +159,6 @@ define(['angular',
 		 	}
 
 		 	vm.closealert = function(alertobj){
-		 		var alertclosed = _.first(_.filter(vm.alertsdata, function(alert){ return alert.alertid == alertobj.alertid}));
-		 		alertclosed.status = 'Closed';
 		 		var alertref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/alerts/'+alertobj.alertid+'/status');
 		 		alertref.set('Closed');
 		 	}

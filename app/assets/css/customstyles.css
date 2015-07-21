@@ -105,6 +105,8 @@ hr {
     background-color: white;
     padding-left: 2px;
     padding-right: 2px;
+    color : #5090C1 !important;
+    font-weight: bold;
 }
 
 
@@ -442,6 +444,10 @@ hr {
 
 .margintop30 {
     margin-top:30px
+}
+
+.hspace {
+    margin-left: 5px;
 }
 
 

@@ -52,18 +52,16 @@ module.exports = function (grunt) {
             },
             combine: {
                 files: {
-                    '<%= tempDir %>/app/assets/css/style.build.min.css':
-                        ['<%= tempDir %>/app/assets/css/customstyles.css',
-                            '<%= tempDir %>/app/assets/css/styles.css',
-                            '<%= tempDir %>/app/assets/css/bootstrap.min.css',
-                            '<%= tempDir %>/app/assets/css/datepicker.css',
-                            '<%= tempDir %>/app/assets/css/toaster.min.css',
-                            '<%= tempDir %>/app/assets/css/ngDialog.min.css',
-                            '<%= tempDir %>/app/assets/css/ngDialog-theme-default.min.css',
-                            '<%= tempDir %>/app/assets/css/offline-theme-default.css']
+                '<%= tempDir %>/app/assets/css/style.build.min.css':
+                    ['<%= tempDir %>/app/assets/css/customstyles.css',
+                        '<%= tempDir %>/app/assets/css/styles.css',
+                        '<%= tempDir %>/app/assets/css/bootstrap.min.css',
+                        '<%= tempDir %>/app/assets/css/datepicker.css',
+                        '<%= tempDir %>/app/assets/css/toaster.min.css',
+                        '<%= tempDir %>/app/assets/css/offline-theme-default.css',
+                        '<%= tempDir %>/app/assets/css/RobotoSlab.css']
                 }
             }
-
         },
         requirejs: {
             compile: {
@@ -85,6 +83,7 @@ module.exports = function (grunt) {
                         },
                         {
                             name: "lib",
+                            exclude: ['main']
                         }
                     ],
                     generateSourceMaps: false,

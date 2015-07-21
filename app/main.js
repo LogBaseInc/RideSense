@@ -1,13 +1,11 @@
 require.config({
-    urlArgs: 'V1.0',
+    urlArgs: '2.2',
     waitSeconds: 0,
     paths: {
         angular: '../bower_components/angular/angular',
         angularAMD: '../bower_components/angularAMD/angularAMD',
-        'angular-cookies': '../bower_components/angular-cookies/angular-cookies.min',
         'angular-animate': '../bower_components//angular-animate/angular-animate',
         'angular-route': '../bower_components/angular-route/angular-route',
-        'angular-sanitize': '../bower_components/angular-sanitize/angular-sanitize',
         bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
         ngMessages: '../bower_components/angular-messages/angular-messages',
         jquery: '../bower_components/jquery/dist/jquery',
@@ -17,13 +15,12 @@ require.config({
         'spinner': 'scripts/spin',
         'toaster' :'../bower_components/angularjs-toaster/toaster',
         'googlemaps' : '../bower_components/angular-google-maps/dist/angular-google-maps',
-        'lodash': '../bower_components/lodash/lodash',
         'highcarts-src': 'scripts/highcharts.src',
         'highcharts' : '../bower_components/highcharts-ng/dist/highcharts-ng',
         'moment' :'../bower_components/moment/moment',
-        'angularfire': 'scripts/AngularFire',
         bootbox: '../bower_components/bootbox/bootbox',
-        'bootstrap-datepicker': 'Scripts/bootstrap-datepicker',
+        'bootstrap-datepicker': 'scripts/bootstrap-datepicker',
+        'directives': 'views/directives/directives',
     },
     shim: {
         angular: {
@@ -33,8 +30,6 @@ require.config({
         'angularAMD': ['angular'],
         'angular-animate': ['angular'],
         'angular-route': ['angular'],
-        'angular-sanitize': ['angular'],
-        'angular-cookies': ['angular'],
         'ngMessages': ['angular'],
         bootstrap: {
             deps: ["jquery"]
@@ -52,11 +47,6 @@ require.config({
             exports: 'Spinner'
         },
         'toaster': ['angular','angular-animate'],
-        'googlemaps': ['angular'],
-        'highcarts-src' : ['jquery','angular'],
-        'highcharts': ['jquery','angular','highcarts-src'],
-        'moment' : ['jquery','angular'],
-        'angularfire' : ['angular'],
     },
 });
 

@@ -21,14 +21,14 @@ define(['angular',
 
             function activate(){
                 spinner.show();
-                accountref.on("value", function(snapshot) {
+                accountref.once("value", function(snapshot) {
                     vm.accountname = snapshot.val();
                     sessionservice.applyscope($scope);
                 }, function (errorObject) {
                     console.log("The account name read failed: " + errorObject.code);
                 });
                 
-                addressref.on("value", function(snapshot) {
+                addressref.once("value", function(snapshot) {
                     vm.address = snapshot.val();
                     if(vm.address == null)
                         vm.address = {};

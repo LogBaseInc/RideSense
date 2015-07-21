@@ -1,5 +1,6 @@
 define(['angular',
     'config.route',
+    'lib',
     'views/services/triphistory'], function (angular, configroute) {
     (function () {
 

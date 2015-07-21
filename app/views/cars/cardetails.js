@@ -1,7 +1,7 @@
 define(['angular',
     'config.route',
     'moment',
-    'bootstrap-datepicker'], function (angular, configroute, moment) {
+    'lib'], function (angular, configroute, moment) {
     (function () {
 
         configroute.register.controller('cardetails', ['$rootScope', '$routeParams' ,'$scope', '$location', 'config', 'spinner', 'sessionservice', cardetails]);
@@ -265,7 +265,7 @@ define(['angular',
                     series: [{
                             name: 'Distance',
                             data: vm.distanceData.data,
-                            color: 'LightCoral'
+                            color: '#5090C1'
                         }
                     ],
                     xAxis: {

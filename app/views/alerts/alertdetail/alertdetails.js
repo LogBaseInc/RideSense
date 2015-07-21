@@ -13,8 +13,11 @@ define(['angular',
 
 		  	activate();
 		  	function activate() {
-		  		if(vm.selectedAlert)
-					setGoogleMaps()
+		  		if(vm.selectedAlert) {
+		  			var devices = sessionservice.getAccountDevices();
+					vm.cardetail = devices[vm.selectedAlert.devicenumber];
+					setGoogleMaps();
+		  		}
 				else
 					$location.path('/alerts');
 		  	}
