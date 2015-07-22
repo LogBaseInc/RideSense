@@ -132,11 +132,9 @@ define(['angular',
                             endtimestamp : data[property].endtime,
                             starttime : moment(data[property].starttime).format('hh:mm a'),
                             endtime : moment(data[property].endtime).format('hh:mm a'),
-                            distance : (data[property].endodo - data[property].startodo).toFixed(2),
-                            startlatitude : data[property].startlatitude,
-                            startlongitude : data[property].startlongitude,
-                            endlatitude : data[property].endlatitude,
-                            endlongitude : data[property].endlongitude,
+                            distance : data[property].tripdistance.toFixed(2),
+                            startlocation : data[property].startaddress,
+                            endlocation : data[property].endaddress,
                             vehiclenumber : vm.selectedcar.title,
                             devicenumber : devicenumber
                         };
@@ -147,8 +145,6 @@ define(['angular',
                             vm.tripsplit = [];
                         }
 
-                        readlocation(new google.maps.LatLng(tripdetail.startlatitude,tripdetail.startlongitude), tripdetail, true);
-                        readlocation(new google.maps.LatLng(tripdetail.endlatitude,tripdetail.endlongitude), tripdetail, false);
                     }
 
                     if(vm.tripsplit.length > 0) {
@@ -160,44 +156,7 @@ define(['angular',
                     sessionservice.applyscope($scope);
                 });
             }
-
-            function readlocation(latlng, obj, isStart) {
-                var geocoder = new google.maps.Geocoder();
-                geocoder.geocode({ 'latLng': latlng }, function (results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        if (results[0]) {
-                            var location =  results[0].address_components[0].short_name;
-                            if(results[0].address_components[1])
-                                location = location +', '+results[0].address_components[1].short_name;
-                            if(results[0].address_components[2])
-                                location = location +', '+results[0].address_components[2].short_name;
-
-                            if(isStart)
-                                obj.startlocation = location;
-                            else
-                                obj.endlocation = location;
-
-                            //var strt = results[0].formatted_address;
-                            //obj.location = strt.substring(0,strt.indexOf(','));
-                            //obj.address = results[1].formatted_address;
-
-                            /*alertslocation.push ({
-                                alertid : alertobject.alertid,
-                                location : alertobject.location,
-                                address : alertobject.address
-                            });*/
-                            //sessionservice.setAlertsLocation(alertslocation);
-                            sessionservice.applyscope($scope);                      }
-                    }
-                    else {
-                        if(isStart)
-                            obj.startlocation = 'Start location';
-                        else
-                            obj.endlocation = 'End location';
-                    }
-                });
-            }
-
+            
             function getAllCarDistanceDetails() {
                 spinner.show();  
                 if(selectedcarref) selectedcarref.off("value");              

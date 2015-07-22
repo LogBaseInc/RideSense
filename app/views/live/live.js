@@ -60,6 +60,8 @@ define(['angular',
 				getlivecardata();
 				getDistance();
 
+				vm.map = { center: { latitude: 11, longitude: 77 }, zoom: 15 };
+				
 				navigator.geolocation.getCurrentPosition(currentPositionCallback);
 		 	}
 
