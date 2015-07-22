@@ -60,6 +60,11 @@ define(['angular',
                 getTrips(vm.selectedcar.devicenumber);
             }
 
+            vm.carsearchedchanged = function() {
+                if(vm.carsearchselected == null || vm.carsearchselected == '')
+                    vm.clearcar();
+            }
+
             $rootScope.$on('cardetail:dateselected', function (event, data) {
                 if(data.date.format('DD/MM/YYYY') != vm.selecteddate)
                     vm.datechanged(data.date.format('DD/MM/YYYY'));
@@ -196,7 +201,7 @@ define(['angular',
             function getAllCarDistanceDetails() {
                 spinner.show();  
                 if(selectedcarref) selectedcarref.off("value");              
-                allcaractivityref.orderByChild("timestamp").limitToLast(30).on("value", function(snapshot) {
+                allcaractivityref.orderByChild("timestamp").limitToLast(30).once("value", function(snapshot) {
                     setDistanceChartConfig(snapshot.val());
                 });
             }
@@ -204,7 +209,7 @@ define(['angular',
             function getCarDistanceDetail(devicenumber) {
                 spinner.show();
                 selectedcarref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/devices/'+devicenumber+'/daily/');
-                selectedcarref.orderByChild("timestamp").limitToLast(30).on("value", function(snapshot) {
+                selectedcarref.orderByChild("timestamp").limitToLast(30).once("value", function(snapshot) {
                     setDistanceChartConfig(snapshot.val());
                 });
             }

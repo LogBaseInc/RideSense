@@ -24,7 +24,6 @@ define(['angular',
 		 	vm.carsearch = false;
 		 	vm.searchoption = "location";
 		 	vm.dragMarker = false;
-		 	vm.map = { center: { latitude: 11, longitude: 77 }, zoom: 12 };
 		 	vm.clusterOptions = {
 							      averageCenter : true,
 							      ignoreHidden : true,
@@ -34,6 +33,7 @@ define(['angular',
 			var directionsService;
 			var mapinstance;
 			var routecolor = ['red', 'green',  'purple', 'orange', 'blue'];
+			var infowindow;
 
 			activate();
 
@@ -44,7 +44,8 @@ define(['angular',
 			 		geocoder.geocode({ 'latLng': latlng }, function (results, status) {
 			            if (status == google.maps.GeocoderStatus.OK) {
 			                if (results[0]) {
-			          			var content = '<div id="infowindow_content">'+results[0].formatted_address+'<br>'+model.time+'<br><a href="#/cars/'+model.title+'">More details</a></div>';
+			                	var sublocality = _.first(_.filter(results[0].address_components, function(address){ return address.types[0].indexOf('sublocality') >= 0})).long_name;
+			          			var content = '<div id="infowindow_content"><span style="font-weight: bold;">'+sublocality+'</span><br>Last updated '+model.time+'<br><a style="margin-left:25%" href="#/cars/'+model.title+'"><img src="assets/images/more-details.png"></img></a></div>';
 			          			var compiled = $compile(content)($scope);
 						        infowindow.setContent(compiled[0].innerHTML);
 						        infowindow.open( mapinstance , gMarker );
@@ -54,14 +55,16 @@ define(['angular',
 			    }
 			 };
 
-			var infowindow = new google.maps.InfoWindow({
-			  	content: ''
-			});
-
 		 	function activate(){
 			 	spinner.show();
 				getlivecardata();
 				getDistance();
+
+				navigator.geolocation.getCurrentPosition(currentPositionCallback);
+		 	}
+
+		 	function currentPositionCallback(position) {
+		 		vm.map = { center: { latitude: position.coords.latitude, longitude: position.coords.longitude }, zoom: 15 };
 		 	}
 
 		 	function getlivecardata() {
@@ -333,13 +336,18 @@ define(['angular',
 				vm.showmaps =true;
 		       	uiGmapGoogleMapApi.then(function(maps) {
 		       		maps.visualRefresh = true;
-				   	vm.map = { center: { latitude: (lat!==null?lat:11), longitude: (lng!==null?lng:77) }, zoom: vm.map.zoom };
+		       		if(lat != null && lng != null)
+				   		vm.map = { center: { latitude: lat, longitude: lng }, zoom: vm.map.zoom };
+				   	infowindow = new google.maps.InfoWindow({
+			  			content: ''
+					});
+
 		   			spinner.hide();
 		   		});
 		   	}
 
 		   	$rootScope.$on('search:location', function (event, data) {
-			   	vm.map.zoom = 14;
+			   	vm.map.zoom = 15;
 			    setGoogleMaps(data.lat, data.lng);
 			});
 

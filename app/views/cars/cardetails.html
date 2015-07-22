@@ -1,6 +1,6 @@
 <div data-ng-controller="cardetails as vm">
-	<div class="input-group">
-		<input type="text" class="input-block-level fullwidth" placeholder="Search car..." data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html" typeahead-on-select="vm.carsearched($item, $model, $label)"/>
+	<div class="input-group blueborder">
+		<input type="text" class="input-block-level fullwidth" placeholder="Search car..." data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html" typeahead-on-select="vm.carsearched($item, $model, $label)" data-ng-change="vm.carsearchedchanged()"/>
 		<span class="input-group-addon add-on" data-ng-click="vm.clearcar()"><span class="glyphicon glyphicon-remove"></span></span>
 	</div>
 	<br>
@@ -55,7 +55,7 @@
 	            <div class='input-group date' lb-datepicker>
 	                <input type='text' class="form-control" data-ng-model="vm.selecteddate" />
 	                <span class="input-group-addon">
-	                    <span class="glyphicon glyphicon-th"></span>
+	                    <span class="glyphicon glyphicon-calendar"></span>
 	                </span>
 	            </div>
 	        </div>

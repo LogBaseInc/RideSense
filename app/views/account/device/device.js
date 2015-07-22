@@ -63,6 +63,9 @@ define(['angular',
                         var devicesfberef = new Firebase(config.firebaseUrl+'devices/'+vm.device.devicenumber+'/');
                         devicesfberef.remove();
 
+                        var actvityfberef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/devices/'+vm.device.devicenumber+'/');
+                        actvityfberef.remove();
+
                         notify.success('Device deleted successfully');
                         $location.path('/account/devices');
                     }

@@ -1,18 +1,3 @@
-<div class="container-fluid">
-	<div class="row">
-		<a href="#/account/devices">
-			<div class="col-xs-6 tm-tab">
-				<span>Devices</span>
-			</div>
-		</a>
-		<a href="">
-			<div class="col-xs-6 tm-tab tm-tab-active">
-				<span>Account</span>
-			</div>
-		</a>
-	</div>
-</div>
-
 <div data-ng-controller="accountdetail as vm">
 	<div class="col-xs-12">
 		<form class="form-horizontal" name="accountform">
@@ -39,21 +24,12 @@
                     </div>
             	</div>
 			</div>
-			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textaddressline1.$invalid && accountform.textaddressline1.$touched }">
-				<label class="col-md-3 control-label">Address line 1</label>
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textaddressline.$invalid && accountform.textaddressline.$touched }">
+				<label class="col-md-3 control-label">Address</label>
 				<div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="Address line 1" name="textaddressline1" data-ng-model="vm.address.addressline1" required>
-                    <div data-ng-messages="accountform.textaddressline1.$error" data-ng-if="vm.interacted(accountform.textaddressline1)" class="error-messages">
-                        <div ng-message="required">Address line 1 required</div>
-                    </div>
-            	</div>
-			</div>
-			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textaddressline2.$invalid && accountform.textaddressline2.$touched }">
-				<label class="col-md-3 control-label">Address line 2</label>
-				<div class="col-md-6">
-					<input type="text" class="form-control" placeholder="Address line 2" name="textaddressline2" data-ng-model="vm.device.textaddressline2">
-                    <div data-ng-messages="accountform.textaddressline2.$error" data-ng-if="vm.interacted(accountform.textaddressline2)" class="error-messages">
-                        <div ng-message="required">Address line 2 required</div>
+                    <textarea type="text" class="form-control addresstextarea" placeholder="Address line" name="textaddressline" data-ng-model="vm.address.addressline" required> </textarea>
+                    <div data-ng-messages="accountform.textaddressline.$error" data-ng-if="vm.interacted(accountform.textaddressline)" class="error-messages">
+                        <div ng-message="required">Address required</div>
                     </div>
             	</div>
 			</div>
@@ -63,34 +39,6 @@
                     <input type="text" class="form-control" placeholder="City" name="textcity" data-ng-model="vm.address.city" required>
                     <div data-ng-messages="accountform.textcity.$error" data-ng-if="vm.interacted(accountform.textcity)" class="error-messages">
                         <div ng-message="required">City required</div>
-                    </div>
-            	</div>
-			</div>
-			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textstate.$invalid && accountform.textstate.$touched }">
-				<label class="col-md-3 control-label">State</label>
-				<div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="State" name="textstate" data-ng-model="vm.address.state" required>
-                    <div data-ng-messages="accountform.textstate.$error" data-ng-if="vm.interacted(accountform.textstate)" class="error-messages">
-                        <div ng-message="required">State required</div>
-                    </div>
-            	</div>
-			</div>
-			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textcountry.$invalid && accountform.textcountry.$touched }">
-				<label class="col-md-3 control-label">Country</label>
-				<div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="Country" name="textcountry" data-ng-model="vm.address.country" required>
-                    <div data-ng-messages="accountform.textcountry.$error" data-ng-if="vm.interacted(accountform.textcountry)" class="error-messages">
-                        <div ng-message="required">Country required</div>
-                    </div>
-            	</div>
-			</div>
-			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textzipcode.$invalid && accountform.textzipcode.$touched }">
-				<label class="col-md-3 control-label">Zip code</label>
-				<div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="Zipcode" name="textzipcode" data-ng-model="vm.address.zipcode" required ng-pattern="/^[0-9]*$/" minlength="6" maxlength="6">
-                    <div data-ng-messages="accountform.textzipcode.$error" data-ng-if="vm.interacted(accountform.textzipcode)" class="error-messages">
-                        <div ng-message="required">Zip code required</div>
-                        <div ng-message="required">Enter a valid zip code</div>
                     </div>
             	</div>
 			</div>

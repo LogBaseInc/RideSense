@@ -323,3 +323,11 @@ textarea, input[type=text], input[type=password], input[type=datetime], input[ty
   margin: 12px 0;
   margin: 24px 0 23px;
 }
+
+input:focus{
+   outline:none;
+}
+
+select:focus {
+    outline: none
+};

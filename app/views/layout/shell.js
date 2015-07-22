@@ -26,6 +26,9 @@ define(['angular'], function () {
                 checkinternetstatus();
                 readalerts();
                 checkexpiry();
+                if(vm.isloggedIn == 'true') {
+                    sessionservice.getDevices();
+                }
             }
 
             $rootScope.$on('alertcount', function (event, data) {

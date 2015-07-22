@@ -344,6 +344,10 @@ hr {
     margin-left:5px
 }
 
+.marginright5 {
+    margin-right:5px
+}
+
 .fontsize13 {
     font-size:13px
 }
@@ -423,7 +427,7 @@ hr {
 }
 
 .livecarsearch {
-    border:0px; 
+    border: 2px solid rgba(59, 153, 252, 0.68) !important;
     width:100%; 
     position: 
     relative; 
@@ -440,6 +444,7 @@ hr {
     border:0px; 
     float:right;  
     margin-top: 3px;
+    margin-right: 2px;
 }
 
 .margintop30 {
@@ -448,6 +453,16 @@ hr {
 
 .hspace {
     margin-left: 5px;
+}
+
+.blueborder {
+    border: 2px solid rgba(59, 153, 252, 0.68) !important;
+    border-radius: 4px
+}
+
+.addresstextarea {
+    padding-left: 4px !important;
+    color: #858585 !important
 }
 
 

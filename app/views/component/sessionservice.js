@@ -21,7 +21,8 @@ define(['angular'], function (angular) {
                 setDeviceSelected : setDeviceSelected,
                 getDeviceSelected : getDeviceSelected,
                 setAccountName : setAccountName,
-                getAccountName : getAccountName
+                getAccountName : getAccountName,
+                getDevices : getDevices
             };
             
             function getDevices() {
