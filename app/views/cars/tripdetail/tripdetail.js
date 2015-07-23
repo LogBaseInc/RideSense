@@ -4,8 +4,8 @@ define(['angular',
     'views/services/triphistory'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('tripdetail', ['$rootScope', '$location', '$scope', 'config', 'notify', 'spinner', 'sessionservice', 'triphistory', tripdetail]);
-        function tripdetail($rootScope, $location, $scope, config, notify, spinner, sessionservice, triphistory) {
+        configroute.register.controller('tripdetail', ['$rootScope', '$location', '$scope', 'config', 'notify', 'spinner', 'uiGmapIsReady', 'sessionservice', 'triphistory', tripdetail]);
+        function tripdetail($rootScope, $location, $scope, config, notify, spinner, uiGmapIsReady, sessionservice, triphistory) {
             var vm= this;
             vm.pathsource =[];
             vm.showmap= false;
@@ -34,8 +34,29 @@ define(['angular',
                 if(data.length > 0) {
                     vm.showmap= true;  
                     spinner.hide();
-                    $rootScope.$emit('pathsource', {path:data, brake:null, speedbrake:null});
-                    return;
+                    var centerindex = Math.floor(data.length/2);
+                    vm.map = { center: { latitude: data[centerindex].latitude, longitude: data[centerindex].longitude }, zoom: 15 };
+                    
+                    var flightPlanCoordinates = [];
+                    for(var i=0; i<data.length; i++)
+                    {
+                        flightPlanCoordinates.push(new google.maps.LatLng(data[i].latitude, data[i].longitude));
+                    }
+
+                    var flightPath = new google.maps.Polyline({
+                         path: flightPlanCoordinates,
+                         geodesic: true,
+                         strokeColor: '#00A0FF',
+                         strokeOpacity: 1.0,
+                         strokeWeight: 4
+                    });
+
+                    sessionservice.applyscope($scope);
+
+                    uiGmapIsReady.promise(1).then(function(instances) {
+                        var mapinstance = instances[0].map;
+                        flightPath.setMap(mapinstance);
+                    });
                 }
                 else {
                    notify.warning("Selected trip doesn't have history");

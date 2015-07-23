@@ -1,7 +1,8 @@
 <div class="container-fluid" data-ng-controller="tripdetail as vm">
 	<div class="row">
 		<div class="tm-live-map">
-			<div my-map="" path="vm.pathsource"></div>
+			<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom'>
+			</ui-gmap-google-map>
 		</div>
 		
 		<div data-ng-if="vm.showmap" class="container-fluid tm-live-overlay">
@@ -21,6 +22,5 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
 </div>

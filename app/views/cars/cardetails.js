@@ -126,25 +126,26 @@ define(['angular',
 
                     var data = snapshot.val();
                     for(property in data) {
-                        var tripdetail = {
-                            tripid : property,
-                            starttimestamp : data[property].starttime,
-                            endtimestamp : data[property].endtime,
-                            starttime : moment(data[property].starttime).format('hh:mm a'),
-                            endtime : moment(data[property].endtime).format('hh:mm a'),
-                            distance : data[property].tripdistance.toFixed(2),
-                            startlocation : data[property].startaddress,
-                            endlocation : data[property].endaddress,
-                            vehiclenumber : vm.selectedcar.title,
-                            devicenumber : devicenumber
-                        };
-                        vm.trips.push(tripdetail);
-                        vm.tripsplit.push(tripdetail);
-                        if(vm.tripsplit.length == 3) {
-                            vm.tripsBy3.push({trips: vm.tripsplit});
-                            vm.tripsplit = [];
+                        if(data[property].endtime) {
+                            var tripdetail = {
+                                tripid : property,
+                                starttimestamp : data[property].starttime,
+                                endtimestamp : data[property].endtime,
+                                starttime : moment(data[property].starttime).format('hh:mm a'),
+                                endtime : moment(data[property].endtime).format('hh:mm a'),
+                                distance : data[property].tripdistance ? data[property].tripdistance.toFixed(2) : 0,
+                                startlocation : data[property].startaddress,
+                                endlocation : data[property].endaddress,
+                                vehiclenumber : vm.selectedcar.title,
+                                devicenumber : devicenumber
+                            };
+                            vm.trips.push(tripdetail);
+                            vm.tripsplit.push(tripdetail);
+                            if(vm.tripsplit.length == 3) {
+                                vm.tripsBy3.push({trips: vm.tripsplit});
+                                vm.tripsplit = [];
+                            }
                         }
-
                     }
 
                     if(vm.tripsplit.length > 0) {

@@ -66,6 +66,9 @@ define(['angular',
                         var actvityfberef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/devices/'+vm.device.devicenumber+'/');
                         actvityfberef.remove();
 
+                        var tripfberef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/trips/devices/'+vm.device.devicenumber+'/');
+                        tripfberef.remove();
+
                         notify.success('Device deleted successfully');
                         $location.path('/account/devices');
                     }

@@ -245,7 +245,6 @@ hr {
     padding: 10px;
     margin: 10px;
     box-shadow: 2px 2px 1px LightGray;
-    cursor: pointer;
 }
 
 .tm-car-card:hover {
@@ -463,6 +462,15 @@ hr {
 .addresstextarea {
     padding-left: 4px !important;
     color: #858585 !important
+}
+
+.tripdetail {
+  border-bottom: Solid;
+  border-width: 2px;
+  border-color: rgba(17, 100, 155, 0.52);
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
 }
 
 

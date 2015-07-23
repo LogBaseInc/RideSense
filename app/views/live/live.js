@@ -60,13 +60,13 @@ define(['angular',
 				getlivecardata();
 				getDistance();
 
-				vm.map = { center: { latitude: 11, longitude: 77 }, zoom: 15 };
+				vm.map = { center: { latitude: 11, longitude: 77 }, zoom: 14 };
 				
 				navigator.geolocation.getCurrentPosition(currentPositionCallback);
 		 	}
 
 		 	function currentPositionCallback(position) {
-		 		vm.map = { center: { latitude: position.coords.latitude, longitude: position.coords.longitude }, zoom: 15 };
+		 		vm.map = { center: { latitude: position.coords.latitude, longitude: position.coords.longitude }, zoom: 14 };
 		 	}
 
 		 	function getlivecardata() {
@@ -86,6 +86,11 @@ define(['angular',
 
 				}, function (errorObject) {
 				  	console.log("The livecars read failed: " + errorObject.code);
+				});
+
+				ref.on('child_removed', function(oldChildSnapshot) {
+  					var carmodel = _.first(_.filter(vm.cars.models, function(car){ return car.id == oldChildSnapshot.key()}));
+  					vm.cars.models.pop(carmodel);
 				});
 		 	}
 
@@ -323,11 +328,30 @@ define(['angular',
 				if(status == 'OK'){
 					for(var i=0; i<response.rows.length; i++){
 						var element = response.rows[i].elements[0];
-						var distance = element.distance.text;
-						var duration = element.duration.text;
-						idleCarlist[i].options.labelContent = idleCarlist[i].title + '<div>'+distance + ' | '+duration +'</div>';
-						idleCarlist[i].options.labelClass = 'tm-marker-label-distance';
-						idleCarlist[i].options.labelAnchor = '20 60';
+						if(element.status == 'OK' && element.distance.value <= 5000) {
+							var distance = element.distance.text;
+							var duration = element.duration.text;
+							idleCarlist[i].options.labelContent = idleCarlist[i].title + '<div>'+distance + ' | '+duration +'</div>';
+							idleCarlist[i].options.labelClass = 'tm-marker-label-distance';
+							idleCarlist[i].options.labelAnchor = '20 60';
+						}
+						else if(element.status == 'OK' && element.distance.value > 5000) {
+							var distance = element.distance.text;
+							var duration = element.duration.text;
+							idleCarlist[i].options.labelContent = idleCarlist[i].title + '<div>> 5 km</div>';
+							idleCarlist[i].options.labelClass = 'tm-marker-label-distance';
+							idleCarlist[i].options.labelAnchor = '20 60';
+						}
+						else if (element.status == 'ZERO_RESULTS') {
+							idleCarlist[i].options.labelContent = idleCarlist[i].title + '<div>Not found</div>';
+							idleCarlist[i].options.labelClass = 'tm-marker-label-distance';
+							idleCarlist[i].options.labelAnchor = '20 60';
+						}
+						else {
+							idleCarlist[i].options.labelContent = idleCarlist[i].title;
+							idleCarlist[i].options.labelClass = 'tm-marker-label';
+							idleCarlist[i].options.labelAnchor = '0 0'
+						}
 					}
 				}
 				notify.success('Distance and time updated');
@@ -349,7 +373,7 @@ define(['angular',
 		   	}
 
 		   	$rootScope.$on('search:location', function (event, data) {
-			   	vm.map.zoom = 15;
+			   	vm.map.zoom = 14;
 			    setGoogleMaps(data.lat, data.lng);
 			});
 
