@@ -20,13 +20,13 @@ define(['angular',
 
             function activate() {
                 $rootScope.routeSelection = 'cars';
-                if($rootScope.selecteddate) {
-                    vm.selecteddate  = $rootScope.selecteddate;
+
+                if($rootScope.tripdetails == false) {
+                    $rootScope.selecteddate = null;
+                    $rootScope.selectedcar = null;
                 }
-                else {
-                    vm.selecteddate = moment(new Date()).format('DD/MM/YYYY');
-                    $rootScope.selecteddate  = vm.selecteddate;
-                }
+
+                setSelectedDate();
 
                 if($routeParams.selectedcar) {
                     vm.showallcars = false;
@@ -42,8 +42,19 @@ define(['angular',
                     getAllCarDistanceDetails();
                 }
 
+                $rootScope.tripdetails = false;
                 getCarList();
                 vm.totalcars = Object.keys(sessionservice.getAccountDevices()).length;
+            }
+
+            function setSelectedDate() {
+                if($rootScope.selecteddate) {
+                    vm.selecteddate  = $rootScope.selecteddate;
+                }
+                else {
+                    vm.selecteddate = moment(new Date()).format('DD/MM/YYYY');
+                    $rootScope.selecteddate  = vm.selecteddate;
+                }
             }
 
             vm.carsearched = function($item, $model, $label) {

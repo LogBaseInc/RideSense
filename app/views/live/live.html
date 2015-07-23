@@ -23,29 +23,24 @@
 			</div>
 		</div>
 	</div>
-	<div data-ng-if="vm.showmaps" class="container-fluid tm-live-overlay">
-		<div class="row">
-			<div class="col-xs-3 col-md-2 tm-marker">
-				<center>
-					<br/>
-						<a href="" data-ng-click="vm.showDragMarker()">
-							<img data-ng-hide="vm.dragMarker" src="assets/images/user-marker.png"></img>
-							<img data-ng-show="vm.dragMarker" src="assets/images/user-marker-remove.png"></img>
-						</a>
-				</center>
-			</div>
-			<div class="col-xs-3 col-md-7 col-lg-8">
-			</div>
-			<div class="col-xs-6 col-md-3 col-lg-2 tm-live-summary">
-				<p class="tm-live-today">Today</p> 
+	
+	<div data-ng-if="vm.showmaps">
+		<div class="tm-location-marker">
+		    <a href="" data-ng-click="vm.showDragMarker()">
+				<img data-ng-hide="vm.dragMarker" src="assets/images/user-marker.png"></img>
+				<img data-ng-show="vm.dragMarker" src="assets/images/user-marker-remove.png"></img>
+			</a>
+		</div>
+
+		<div class="tm-live-summary">
+		    <p class="tm-live-today">Today</p> 
 				<h1 class="tm-live-distance">{{vm.distanceCovered}} 
 					<small class="tm-overlay-unit">km 
 						<span data-ng-show="vm.isUP" class="glyphicon glyphicon-arrow-up"></span>
 						<span data-ng-hide="vm.isUP" class="glyphicon glyphicon-arrow-down"></span>
 					</small>
 				</h1>
-				<h4>{{vm.activeCabs}} <small class="tm-overlay-unit">running</small> | {{vm.idleCabs}} <small class="tm-overlay-unit">idle</small></h4>
-			</div>
+			<h4>{{vm.activeCabs}} <small class="tm-overlay-unit">running</small> | {{vm.idleCabs}} <small class="tm-overlay-unit">idle</small></h4>
 		</div>
 	</div>
 </div>

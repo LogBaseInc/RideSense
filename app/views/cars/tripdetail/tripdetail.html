@@ -1,26 +1,15 @@
-<div class="container-fluid" data-ng-controller="tripdetail as vm">
-	<div class="row">
-		<div class="tm-live-map">
-			<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom'>
-			</ui-gmap-google-map>
-		</div>
-		
-		<div data-ng-if="vm.showmap" class="container-fluid tm-live-overlay">
-			<div class="row">
-				<div class="col-xs-3 col-md-2 tm-marker">
-				</div>
-				<div class="col-xs-3 col-md-7 col-lg-8">
-				</div>
-				<div class="col-xs-6 col-md-3 col-lg-2 tm-live-summary">
-					<label class="redtext">{{vm.selectedtrip.vehiclenumber}} </label>
-					<span>  |  {{vm.selectedtrip.distance}} Km</span>
-		        	<br/>
-		        	<span>{{vm.selecteddate}} {{vm.selectedtrip.starttime}} > {{vm.selecteddate}} {{vm.selectedtrip.endtime}}</span>
-		        	<br/>
-		        	<br/>
-		        	<span>{{vm.selectedtrip.startlocation}} > {{vm.selectedtrip.endlocation}}</span>
-				</div>
-			</div>
-		</div>
+<div data-ng-controller="tripdetail as vm">
+	<div class="container-fluid tm-live-map">
+		<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom'>
+		</ui-gmap-google-map>
+	</div>
+	
+	<div data-ng-if="vm.showmap" class="tm-live-summary">
+		<h3 style="margin-top:0px"> <span class="redtext">{{vm.selectedtrip.vehiclenumber}}</span>
+		<span> | {{vm.selectedtrip.distance}} Km</span></h3>
+    	<span>{{vm.selecteddate}} {{vm.selectedtrip.starttime}} > {{vm.selecteddate}} {{vm.selectedtrip.endtime}}</span>
+    	</br>
+    	<span>{{vm.selectedtrip.startlocation}} > {{vm.selectedtrip.endlocation}}</span>
 	</div>
 </div>
+	

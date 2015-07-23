@@ -79,8 +79,23 @@ hr {
 
 .tm-live-summary {
     background-color: White;
-    opacity: 0.75;
+    opacity: .9;
+    padding:10px;
+    text-decoration: none; 
+    position: fixed; 
+    bottom: 10px; 
+    right: 10px; 
+    border-radius: 5px; 
+    z-index: 1;
+}
+
+.tm-location-marker {
+    opacity: .9;
     padding:5px;
+    position: fixed; 
+    z-index: 1;
+    left: 10px;
+    bottom: 10px;
 }
 
 .tm-live-today {
@@ -472,6 +487,11 @@ hr {
   margin: 10px;
   cursor: pointer;
 }
+
+.btt {background: #f00; 
+    text-align: center; 
+    color: #fff; padding: 
+    5px; text-decoration: none; position: fixed; bottom: 20px; right: 20px; border-radius: 5px; z-index: 1;}
 
 
 

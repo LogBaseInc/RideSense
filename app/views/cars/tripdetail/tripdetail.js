@@ -14,6 +14,7 @@ define(['angular',
 
             function activate() {
                 $rootScope.routeSelection = 'cars';
+                $rootScope.tripdetails = true;
                 if($rootScope.selectedtrip) {
                     vm.selecteddate = $rootScope.selecteddate;
                     vm.selectedtrip = $rootScope.selectedtrip;
