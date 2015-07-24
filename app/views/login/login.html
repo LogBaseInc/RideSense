@@ -13,7 +13,7 @@
             <div class="position-relative">
                 <!--Login Template-->
                 <form name="loginform">
-                    <div id="login-box" class="login-box visible widget-box no-border" data-ng-if="vm.logindiv">
+                    <div id="login-box" class="login-box visible widget-box no-border" data-ng-show="vm.logindiv">
                         <div class="widget-body">
                             <div class="widget-main"> 
                                 <h4 class="header blue lighter bigger">
@@ -68,7 +68,7 @@
             </form>    
             <!--Forgot Password Template-->
             <form name="forgotpassform">
-                <div data-ng-if="vm.forgotdiv">
+                <div data-ng-show="vm.forgotdiv">
                    <div id="forgot-box" class="forgot-box widget-box visible">
                         <div class="widget-body">
                             <div class="widget-main">
@@ -110,7 +110,7 @@
             </form>
             <!-- Signup Template-->
             <form name="signupform">
-                <div id="signup-box" class="signup-box widget-box no-border visible" data-ng-if="vm.signupdiv">
+                <div id="signup-box" class="signup-box widget-box no-border visible" data-ng-show="vm.signupdiv">
                     <div class="widget-body">
                         <div class="widget-main">
                             <h4 class="header green lighter bigger">
@@ -122,7 +122,7 @@
 
                             <div class="form-group" data-ng-class="{ 'has-error': signupform.textaccountname.$invalid && signupform.textaccountname.$touched }">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="text" class="form-control" data-ng-model="vm.newuser.accountname" placeholder="Account name" name="textaccountname" required>
+                                    <input type="text" class="form-control" data-ng-model="vm.newuser.accountname" placeholder="Account name" name="textaccountname" required maxLength="50">
                                 </span>
                                 <div data-ng-messages="signupform.textaccountname.$error" data-ng-if="vm.interacted(signupform.textaccountname)" class="error-messages">
                                     <div ng-message="required">Account name required</div>
@@ -169,7 +169,7 @@
                             <div class="space-6"></div>
                             <center class="marginbottom10"><span ng-show="vm.repeatpwderror" class="errortext">Password and Repeat password should be same</span></center>
                             <div class="clearfix">
-                                <button type="button" class="width-30 pull-left btn btn-sm" data-ng-click="vm.resetSignupForm">
+                                <button type="button" class="width-30 pull-left btn btn-sm" data-ng-click="vm.resetSignupForm()">
                                     <i class="ace-icon glyphicon glyphicon-refresh"></i>
                                     <span class="bigger-110">Reset</span>
                                 </button>

@@ -44,8 +44,10 @@ define(['angular',
 			 		geocoder.geocode({ 'latLng': latlng }, function (results, status) {
 			            if (status == google.maps.GeocoderStatus.OK) {
 			                if (results[0]) {
-			                	var sublocality = _.first(_.filter(results[0].address_components, function(address){ return address.types[0].indexOf('sublocality') >= 0})).long_name;
-			          			var content = '<div id="infowindow_content"><span style="font-weight: bold;">'+sublocality+'</span><br>Last updated '+model.time+'<br><a style="margin-left:25%" href="#/cars/'+model.title+'"><img src="assets/images/more-details.png"></img></a></div>';
+			                	var sublocality = _.first(_.filter(results[0].address_components, function(address){ return address.types[0].indexOf('sublocality') >= 0}));
+			                	if(sublocality == null)
+			                		sublocality = _.first(_.filter(results[0].address_components, function(address){ return address.types[0].indexOf('route') >= 0}));
+			          			var content = '<div id="infowindow_content"><span style="font-weight: bold;">'+sublocality.long_name+'</span><br>Last updated '+model.time+'<br><a style="margin-left:25%" href="#/cars/'+model.title+'"><img src="assets/images/more-details.png"></img></a></div>';
 			          			var compiled = $compile(content)($scope);
 						        infowindow.setContent(compiled[0].innerHTML);
 						        infowindow.open( mapinstance , gMarker );
@@ -56,12 +58,13 @@ define(['angular',
 			 };
 
 		 	function activate(){
+		 		vm.islocationsearhced = true;
+
 			 	spinner.show();
 				getlivecardata();
 				getDistance();
 
 				vm.map = { center: { latitude: 11, longitude: 77 }, zoom: 14 };
-				
 				navigator.geolocation.getCurrentPosition(currentPositionCallback);
 		 	}
 
@@ -129,11 +132,13 @@ define(['angular',
 				 	vm.locationsearch = true;
 				 	vm.carsearch = false;
 				 	vm.carsearchselected = null;
+				 	vm.islocationsearhced = true;
 			 	}
 			 	else {
 					vm.locationsearch = false;
 					vm.carsearch = true;
 					vm.carsearchselected = null;
+					vm.islocationsearhced = false;
 			 	}
 		 	}
 

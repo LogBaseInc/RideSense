@@ -47,7 +47,7 @@ define(['angular',
             vm.changepassword = function () {
                 submitted = true;
                 spinner.show();
-                loginservice.changepassword(email, vm.currentpassword, 'vm.password').then(changepasswordCompleted, changepasswordFailed);
+                loginservice.changepassword(email, vm.currentpassword, vm.password).then(changepasswordCompleted, changepasswordFailed);
             }
 
             function changepasswordCompleted() {

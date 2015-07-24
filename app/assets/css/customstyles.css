@@ -335,11 +335,12 @@ hr {
 
 .devicelistbox {
     width: 250px; 
-    height: 125px; 
+    height: 150px; 
     margin-right:20px; 
     margin-bottom : 20px; 
-    display:inline-block; 
-    color: gray
+    display: inline-table; 
+    color: gray;
+    cursor: pointer;
 }
 
 .marginleft10 {
@@ -451,7 +452,7 @@ hr {
 .carselectdiv {
     position: relative; 
     z-index:3; 
-    margin-top:-31px
+    margin-top:-38px
 }
 
 .carselect {
@@ -488,11 +489,10 @@ hr {
   cursor: pointer;
 }
 
-.btt {background: #f00; 
-    text-align: center; 
-    color: #fff; padding: 
-    5px; text-decoration: none; position: fixed; bottom: 20px; right: 20px; border-radius: 5px; z-index: 1;}
-
+.searchfilter {
+    width: 44px;
+    margin-right: -2px;
+}
 
 
 

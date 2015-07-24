@@ -218,7 +218,7 @@ define(['angular',
                 vm.distanceConfig = {
                     options: {
                         chart: {
-                            type: 'line',
+                            type: 'column',
                             zoomType: 'x',
                             //backgroundColor: 'WhiteSmoke',
                             marginBottom: 50,

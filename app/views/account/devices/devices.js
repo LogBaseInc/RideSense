@@ -21,15 +21,23 @@ define(['angular',
 
             function getDevices(data){
             	vm.devices = [];
+                vm.devicesdetails = [];
                 for(var property in data) {
                     vm.devices.push({
+                        devicenumber : property,
+                        boughton: moment(data[property].addedon).format('MMM DD, YYYY'),
+                        displayvehiclenumber: data[property].vehiclenumber.length > 25 ? (data[property].vehiclenumber.substring(0,25)+" ...") : data[property].vehiclenumber,
+                        drivername : data[property].drivername,
+                    });
+
+                    vm.devicesdetails.push({
                         devicenumber : property,
                         boughton: moment(data[property].addedon).format('MMM DD, YYYY'),
                         drivername : data[property].drivername,
                         driverid : data[property].driverid,
                         drivermobile : data[property].drivermobile,
                         vehiclenumber: data[property].vehiclenumber,
-                        displayvehiclenumber: data[property].vehiclenumber.length > 25 ? (data[property].vehiclenumber.substring(0,25)+" ...") : data[property].vehiclenumber
+                        type : data[property].type ? data[property].type : 'stick',
                     });
                 }
 
@@ -42,8 +50,8 @@ define(['angular',
                 $location.path('/account/device');
             }
 
-            vm.editdevice = function(device){
-                sessionservice.setDeviceSelected(device);
+            vm.editdevice = function(index){
+                sessionservice.setDeviceSelected(vm.devicesdetails[index]);
                 $location.path('/account/device');
             }
         }

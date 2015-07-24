@@ -4,21 +4,35 @@
 			<h4 data-ng-hide="vm.isDeviceEdit">Add device</h4>
 			<h4 data-ng-show="vm.isDeviceEdit">Edit device</h4>
 			</br>
-			<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdevicenumber.$invalid && deviceform.textdevicenumber.$touched }">
-				<label class="col-md-3 control-label">Device number</label>
+			<div class="form-group zeromargin">
+				<label class="col-md-3 control-label">Select type</label>
+				<div ng-disabled="vm.isDeviceEdit" class="col-md-6" style=" width: 226px; margin-left: 15px; padding: 0px; border: 1px solid #2e6da4; border-radius: 4px;">
+                    <button ng-disabled="vm.isDeviceEdit" ng-class="{ 'btn btn-primary': vm.isStick, 'btn btn-default': !vm.isStick}" style=
+                    "width:110px; border: 0px;  border-radius: 0px;" data-ng-click="vm.selectDeviceType('stick')">Stick</button>
+					<button ng-disabled="vm.isDeviceEdit" style=" border: 0px; border-radius: 0px; width: 110.5px;" ng-class="{ 'btn btn-primary': !vm.isStick, 'btn btn-default': vm.isStick}" data-ng-click="vm.selectDeviceType('stickmobile')">Stick Mobile</button>
+            	</div>	
+			</div>
+			<div data-ng-if="vm.isStick" class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdevicenumber.$invalid && deviceform.textdevicenumber.$touched }">
+				<label class="col-md-3 control-label">Device Id</label>
 				<div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="Device number" name="textdevicenumber" data-ng-model="vm.device.devicenumber" required ng-readonly="vm.isDeviceEdit">
-                    <div data-ng-messages="deviceform.textdevicenumber.$error" data-ng-if="vm.interacted(deviceform.textdevicenumber)" class="error-messages">
-                        <div ng-message="required">Device number required</div>
+                    <input type="text" class="form-control" placeholder="Device Id" name="textdevicenumber" data-ng-model="vm.device.devicenumber" required ng-readonly="vm.isDeviceEdit" ng-blur="vm.deviceIdCheck()">
+                    <div data-ng-if="vm.isdeviceavailable">
+                    	<i class="glyphicon glyphicon-ok green"/><span class="marginleft5" style="color:green">Device Id available</span>
+                    </div>
+                     <div data-ng-if="vm.isdeviceavailable == false">
+                    	<i class="glyphicon glyphicon-remove errortext"/><span class="marginleft5 errortext">Device Id not available. Its in use</span>
+                    </div>
+                    <div data-ng-messages="deviceform.textdevicenumber.$error" data-ng-if="vm.interacted(deviceform.textdevicenumber, true)" class="error-messages">
+                        <div ng-message="required">Device Id required</div>
                     </div>
             	</div>
 			</div>
 			<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textvehiclenumber.$invalid && deviceform.textvehiclenumber.$touched }">
-				<label class="col-md-3 control-label">Vehicle number</label>
+				<label class="col-md-3 control-label">Vehicle Id</label>
 				<div class="col-md-6">
 					<input type="text" class="form-control" placeholder="Vehicle number" name="textvehiclenumber" data-ng-model="vm.device.vehiclenumber" required>
                     <div data-ng-messages="deviceform.textvehiclenumber.$error" data-ng-if="vm.interacted(deviceform.textvehiclenumber)" class="error-messages">
-                        <div ng-message="required">Vehicle number required</div>
+                        <div ng-message="required">Vehicle Id required</div>
                     </div>
             	</div>
 			</div>
@@ -32,11 +46,11 @@
             	</div>
 			</div>
 			<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdriverid.$invalid && deviceform.textdriverid.$touched }">
-				<label class="col-md-3 control-label">Driver Id</label>
+				<label class="col-md-3 control-label">License Id</label>
 				<div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="Driver Id" name="textdriverid" data-ng-model="vm.device.driverid" required>
+                    <input type="text" class="form-control" placeholder="License Id" name="textdriverid" data-ng-model="vm.device.driverid" required>
                     <div data-ng-messages="deviceform.textdriverid.$error" data-ng-if="vm.interacted(deviceform.textdriverid)" class="error-messages">
-                        <div ng-message="required">Driver Id required</div>
+                        <div ng-message="required">License Id required</div>
                     </div>
             	</div>
 			</div>
@@ -47,6 +61,7 @@
                     <div data-ng-messages="deviceform.textdrivercontactnumber.$error" data-ng-if="vm.interacted(deviceform.textdrivercontactnumber)" class="error-messages">
                         <div ng-message="required">Driver mobile number required</div>
                         <div ng-message="pattern">Enter a valid mobile number</div>
+                        <div ng-message="minlength">Enter a valid mobile number</div>
                     </div>
             	</div>
 			</div>

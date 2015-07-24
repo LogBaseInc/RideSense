@@ -5,8 +5,6 @@ define(['angular',
             configroute.register.controller('login', ['$rootScope', '$scope', '$location', 'config', 'spinner', 'notify', 'sessionservice','loginservice', login]);
             function login($rootScope, $scope, $location, config, spinner, notify, sessionservice, loginservice) {
                 var vm = this, submitted = false;
-                vm.userName = 'kalaivani@logbase.io';
-                vm.password = 'zaq1';
                 vm.logindiv = true;
                 vm.signupdiv = false;
                 vm.forgotdiv = false;
@@ -103,8 +101,9 @@ define(['angular',
                 }
 
                 vm.resetSignupForm = function() {
+                    vm.newuser = {};
                     vm.newuser.email = null;
-                    vm.newuser = null;
+                    vm.newuser.password = null;
                     resetform($scope.signupform);
                 }
 

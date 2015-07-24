@@ -5,7 +5,7 @@
 	</div>
 	<div class="form-group col-xs-12" data-ng-show="vm.devices.length > 0">
         <div class="input-group blueborder">
-            <input type="text" class="form-control" placeholder="Search car number / device number" id="inputGroup" data-ng-model="search">
+            <input type="text" class="form-control" placeholder="Search car number / device number / driver name" id="inputGroup" data-ng-model="search">
             <span class="input-group-addon">
                 <i class="glyphicon glyphicon-search"></i>
             </span>
@@ -14,12 +14,14 @@
     
 	<div class="col-xs-12 fullwidth">
 		<div class="tm-alerts-summary devicelistbox" data-ng-repeat="device in vm.devices | filter:search">
-			<div class="marginleft10" data-ng-click="vm.editdevice(device)">
-				<h3>{{device.devicenumber}}</h3>
+			<div class="marginleft10" data-ng-click="vm.editdevice($index)">
+				<h4>{{device.devicenumber}}</h4>
 				<div class="margintop15">
-					<img class="heighth13" src="assets/images/car-front.png"></img><label class="marginleft5">{{device.displayvehiclenumber}}</label>
+					<img class="heighth13" src="assets/images/car-front.png"></img><label class="marginleft5 fontsize13">{{device.displayvehiclenumber}}</label>
 					<br/>
-					<span class="glyphicon glyphicon-calendar fontsize13"></span><label class="marginleft5">{{device.boughton}}</label>
+					<span class="glyphicon glyphicon-user fontsize13"></span><label class="marginleft5 fontsize13">{{device.drivername}}</label>
+					<br/>
+					<span class="glyphicon glyphicon-calendar fontsize13"></span><label class="marginleft5 fontsize13">{{device.boughton}}</label>
 				</div>
 			</div>
 		</div>
