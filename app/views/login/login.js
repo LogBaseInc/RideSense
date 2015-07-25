@@ -15,9 +15,6 @@ define(['angular',
                 var uuid = null;
                 vm.backtologinclicked = backtologinclicked;
 
-                //vm.userName = "kalaivani@logbase.io";
-                //vm.password = "zaq12wsx";
-
                 Object.defineProperty(vm, 'canLogin', {
                     get: canLogin
                 });
