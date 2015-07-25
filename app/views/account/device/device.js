@@ -10,6 +10,7 @@ define(['angular',
             var vm = this;
             vm.isDeviceEdit = false;
             vm.devicetype = 'stick';
+            var devicesfberef;
 
             Object.defineProperty(vm, 'canBuy', {
                 get: canBuy
@@ -56,7 +57,7 @@ define(['angular',
             vm.deviceIdCheck = function () {
                 vm.isdeviceavailable = null;
                 if(vm.isDeviceEdit != true && submitted != true && vm.isStick && vm.device.devicenumber != null && vm.device.devicenumber != '') {
-                    var devicesfberef = new Firebase(config.firebaseUrl+'devices/'+vm.device.devicenumber+'/');
+                    devicesfberef = new Firebase(config.firebaseUrl+'devices/'+vm.device.devicenumber+'/');
                     devicesfberef.on("value", function(snapshot) {
                         if(snapshot.val() == null)
                             vm.isdeviceavailable = true;
@@ -146,6 +147,11 @@ define(['angular',
                     }
                 });
             }
+
+            $scope.$on('$destroy', function iVeBeenDismissed() {
+                if(devicesfberef)
+                    devicesfberef.off();
+            });
         }
     })();
 });

@@ -15,7 +15,8 @@ define(['angular',
             vm.selectedcar = {};
             var allcaractivityref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/daily');
             var selectedcarref;
-            
+            var carLiveRef = ""
+
             activate();
 
             function activate() {
@@ -67,6 +68,8 @@ define(['angular',
                 $rootScope.selectedcar = $item.vehiclenumber;
                 vm.totalDistance = 0;
                 allcaractivityref.off("value");
+                vm.carlocation = 'Locating...'
+                getCarLiveData();
                 getCarDistanceDetail(vm.selectedcar.devicenumber);
                 getTrips(vm.selectedcar.devicenumber);
             }
@@ -98,8 +101,52 @@ define(['angular',
                     vm.carsearchselected = null;
                     $rootScope.selecteddate = "";
                     $rootScope.selectedcar = "";
+                    if(carLiveRef != "")
+                        carLiveRef.off();
                     getAllCarDistanceDetails();
                 }
+            }
+
+            vm.gotoCarDetail = function () {
+                if(carLiveRef != "")
+                    carLiveRef.off();
+                $rootScope.selecteddevice = vm.selectedcar.devicenumber;
+                $location.path('/car/detail');
+            }
+
+            function getCarLiveData(){
+                if(carLiveRef != "")
+                    carLiveRef.off();
+
+                carLiveRef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars/'+vm.selectedcar.devicenumber);
+                carLiveRef.on("value", function(snapshot) {
+                    var data = snapshot.val();
+                    if(data) {
+                        vm.havelivedata = true;
+                        vm.carrunning = data.running;
+                        var latlng = new google.maps.LatLng(data.latitude, data.longitude);
+                        var geocoder = new google.maps.Geocoder();
+                        geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                if (results[0]) {
+                                    var sublocality = _.first(_.filter(results[0].address_components, function(address){ return address.types[0].indexOf('sublocality') >= 0}));
+                                    if(sublocality == null)
+                                        sublocality = _.first(_.filter(results[0].address_components, function(address){ return address.types[0].indexOf('route') >= 0}));
+                                    vm.carlocation = sublocality.long_name;
+                                    sessionservice.applyscope($scope);
+                                }
+                            }
+                        });
+                        sessionservice.applyscope($scope);
+                    }
+                    else {
+                        vm.havelivedata = false;
+                    }
+
+                }, function (errorObject) {
+                    console.log("The livecars read failed: " + errorObject.code);
+                });
+
             }
 
             function getCarList() {
@@ -118,6 +165,7 @@ define(['angular',
 
                     if($rootScope.selectedcar == devices[property].vehiclenumber) {
                         vm.selectedcar = cardetail;
+                        getCarLiveData();
                         getCarDistanceDetail(vm.selectedcar.devicenumber);
                     }
 
@@ -273,6 +321,17 @@ define(['angular',
                 var parts = vm.selecteddate.split('/');
                 return moment(new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10))).format("YYYYMMDD");
             }
+
+            $scope.$on('$destroy', function iVeBeenDismissed() {
+                if(allcaractivityref)
+                    allcaractivityref.off();
+
+                if(selectedcarref)
+                    selectedcarref.off();
+
+                if(carLiveRef)
+                    carLiveRef.off();
+            });
         }
     })();
 });

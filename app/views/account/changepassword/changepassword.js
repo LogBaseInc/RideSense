@@ -41,7 +41,7 @@ define(['angular',
                             vm.repeatpwderror = false;
                     }
                 }
-                return $scope.passform.$valid && !submitted;
+                return $scope.passform.$valid && !submitted && !vm.repeatpwderror;
             }
 
             vm.changepassword = function () {

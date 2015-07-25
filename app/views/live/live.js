@@ -35,7 +35,9 @@ define(['angular',
 			var routecolor = ['red', 'green',  'purple', 'orange', 'blue'];
 			var infowindow;
 			vm.docluster = true;
-
+			var livecarref;
+			var distancefbref
+			;
 			activate();
 
 		 	vm.markersEvents = {
@@ -74,8 +76,8 @@ define(['angular',
 		 	}
 
 		 	function getlivecardata() {
-		 		var ref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars');
-				ref.on("value", function(snapshot) {
+		 		livecarref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars');
+				livecarref.on("value", function(snapshot) {
 					if(snapshot.val())
 				  		livecarsmodel(snapshot.val());
 				  	else {
@@ -92,7 +94,7 @@ define(['angular',
 				  	console.log("The livecars read failed: " + errorObject.code);
 				});
 
-				ref.on('child_removed', function(oldChildSnapshot) {
+				livecarref.on('child_removed', function(oldChildSnapshot) {
   					var carmodel = _.first(_.filter(vm.cars.models, function(car){ return car.id == oldChildSnapshot.key()}));
   					vm.cars.models.pop(carmodel);
 				});
@@ -103,8 +105,8 @@ define(['angular',
 				newdate.setDate(newdate.getDate() - 1);
 				var previousday = moment(new Date(newdate)).format('YYYYMMDD');
 
-				var distancefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/daily/'+previousday);
-				distancefbref.once("value", function(snapshot) {
+				var pdistancefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/daily/'+previousday);
+				pdistancefbref.once("value", function(snapshot) {
 				  	vm.previousdaydistance = snapshot.val() != null ? snapshot.val().distance : 0; 
 					getCurrentdayDistance();
 				}, function (errorObject) {
@@ -114,7 +116,7 @@ define(['angular',
 
 		 	function getCurrentdayDistance() {
 		 		var currentday = moment().format("YYYYMMDD");
-				var distancefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/daily/'+currentday);
+				distancefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/daily/'+currentday);
 				distancefbref.on("value", function(snapshot) {
 				  	vm.distanceCovered = snapshot.val() != null ? (snapshot.val().distance.toFixed(2)) : 0; 
 
@@ -410,6 +412,13 @@ define(['angular',
 				}*/	
 			}
 
+			$scope.$on('$destroy', function iVeBeenDismissed() {
+				if(livecarref)
+					livecarref.off();
+
+				if(distancefbref)
+					distancefbref.off();
+			});
 		}
 	})();
 });

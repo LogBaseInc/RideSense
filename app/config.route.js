@@ -140,6 +140,15 @@ define(['angular',
                          allowAnonymous: false
                      }
                  },
+                 {
+                     url: '/car/detail',
+                     config: {
+                         templateUrl: 'views/cars/carmap/carmap.html',
+                         title: 'detail',
+                         controllerUrl: 'views/cars/carmap/carmap',
+                         allowAnonymous: false
+                     }
+                 },
             ];
 
             return routs;

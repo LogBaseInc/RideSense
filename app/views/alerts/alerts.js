@@ -228,6 +228,14 @@ define(['angular',
 		    	};
 
 		 	}
+
+		 	$scope.$on('$destroy', function iVeBeenDismissed() {
+                if(firebaseref)
+                    firebaseref.off();
+
+                if(mobilefbref)
+                	mobilefbref.off();
+            });
 		}
     })();
 });

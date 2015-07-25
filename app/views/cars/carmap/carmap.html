@@ -1,0 +1,27 @@
+<div data-ng-controller="carmap as vm">
+	<div data-ng-if="vm.showmaps" class="livemapsearch">
+		<google-places>
+		</google-places>
+	</div>
+
+	<div class="container-fluid" data-ng-if="vm.showmaps">
+		<div class="row">
+			<div class="tm-live-map">
+				<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom'>
+					<ui-gmap-marker coords="vm.marker.coords" options="vm.marker.options" events="vm.marker.events" idkey="vm.marker.id"></ui-gmap-marker>
+				</ui-gmap-google-map>
+			</div>
+		</div>
+	</div>
+	
+	<div data-ng-if="vm.showmaps">
+		<div class="tm-live-summary" style="padding-left:25px; padding-right:25px">
+		    <p class="tm-live-today">Today</p> 
+			<h1 class="tm-live-distance zeropadding zeromargin">{{vm.distanceCovered}} 
+				<small class="tm-overlay-unit">km </small>
+			</h1>
+			<h1 class="zeropadding zeromargin"><small class="tm-overlay-unit">{{vm.status}}</small></h1>
+		</div>
+	</div>
+</div>
+

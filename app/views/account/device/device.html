@@ -27,6 +27,17 @@
                     </div>
             	</div>
 			</div>
+			<div data-ng-if="!vm.isStick" class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdrivercontactnumber.$invalid && deviceform.textdrivercontactnumber.$touched }">
+				<label class="col-md-3 control-label">Driver mobile number</label>
+				<div class="col-md-6">
+					<input type="text" class="form-control" placeholder="Driver mobile number" name="textdrivercontactnumber" data-ng-model="vm.device.drivermobile" required ng-pattern="/^[0-9]*$/" minlength="10" maxlength="10">
+                    <div data-ng-messages="deviceform.textdrivercontactnumber.$error" data-ng-if="vm.interacted(deviceform.textdrivercontactnumber)" class="error-messages">
+                        <div ng-message="required">Driver mobile number required</div>
+                        <div ng-message="pattern">Enter a valid mobile number</div>
+                        <div ng-message="minlength">Enter a valid mobile number</div>
+                    </div>
+            	</div>
+			</div>
 			<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textvehiclenumber.$invalid && deviceform.textvehiclenumber.$touched }">
 				<label class="col-md-3 control-label">Vehicle Id</label>
 				<div class="col-md-6">
@@ -46,16 +57,13 @@
                     </div>
             	</div>
 			</div>
-			<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdriverid.$invalid && deviceform.textdriverid.$touched }">
+			<div class="form-group zeromargin">
 				<label class="col-md-3 control-label">License Id</label>
 				<div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="License Id" name="textdriverid" data-ng-model="vm.device.driverid" required>
-                    <div data-ng-messages="deviceform.textdriverid.$error" data-ng-if="vm.interacted(deviceform.textdriverid)" class="error-messages">
-                        <div ng-message="required">License Id required</div>
-                    </div>
+                    <input type="text" class="form-control" placeholder="License Id" name="textdriverid" data-ng-model="vm.device.driverid">
             	</div>
 			</div>
-			<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdrivercontactnumber.$invalid && deviceform.textdrivercontactnumber.$touched }">
+			<div data-ng-if="vm.isStick" class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdrivercontactnumber.$invalid && deviceform.textdrivercontactnumber.$touched }">
 				<label class="col-md-3 control-label">Driver mobile number</label>
 				<div class="col-md-6">
 					<input type="text" class="form-control" placeholder="Driver mobile number" name="textdrivercontactnumber" data-ng-model="vm.device.drivermobile" required ng-pattern="/^[0-9]*$/" minlength="10" maxlength="10">

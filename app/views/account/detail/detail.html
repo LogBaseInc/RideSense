@@ -18,16 +18,17 @@
 			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textname.$invalid && accountform.textname.$touched }">
 				<label class="col-md-3 control-label">Name</label>
 				<div class="col-md-6">
-					<input type="text" class="form-control" placeholder="Name" name="textname" data-ng-model="vm.address.name" required>
+					<input type="text" class="form-control" placeholder="Name" name="textname" data-ng-model="vm.address.name" required ng-pattern="/^[a-zA-Z .]*$/">
                     <div data-ng-messages="accountform.textname.$error" data-ng-if="vm.interacted(accountform.textname)" class="error-messages">
                         <div ng-message="required">Name required</div>
+                        <div ng-message="pattern">Enter only alphabets</div>
                     </div>
             	</div>
 			</div>
 			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textaddressline.$invalid && accountform.textaddressline.$touched }">
 				<label class="col-md-3 control-label">Address</label>
 				<div class="col-md-6">
-                    <textarea type="text" class="form-control addresstextarea" placeholder="Address line" name="textaddressline" data-ng-model="vm.address.addressline" required> </textarea>
+                    <textarea type="text" class="form-control addresstextarea" placeholder="Address line" name="textaddressline" data-ng-model="vm.address.addressline" required maxLength="300"> </textarea>
                     <div data-ng-messages="accountform.textaddressline.$error" data-ng-if="vm.interacted(accountform.textaddressline)" class="error-messages">
                         <div ng-message="required">Address required</div>
                     </div>

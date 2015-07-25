@@ -10,7 +10,17 @@
 			<div class="row col-md-12 tm-card-wrap zeropadding">
 				<div class="tm-car-card">
 					<img class="heighth13" src="assets/images/car-front.png" style="margin-top:-5px"></img>
-					<h5 class="marginleft5 text-right redtext">{{vm.selectedcar.vehiclenumber}}</h5>
+					<h5 class="marginleft5 text-right redtext">{{vm.selectedcar.vehiclenumber}}</h5> 
+					<div class="space-6"></div>
+					<a data-ng-show="vm.havelivedata" href="" data-ng-click="vm.gotoCarDetail()">
+						<i class="glyphicon glyphicon-map-marker"></i>
+						<span class="marginleft5" data-ng-if="vm.carrunning">Running @ {{vm.carlocation}}</span>
+						<span class="marginleft5" data-ng-if="!vm.carrunning">Idle @ {{vm.carlocation}}</span>
+					</a>
+					<div data-ng-show="!vm.havelivedata">
+						<i class="glyphicon glyphicon-map-marker"></i>
+						<span class="marginleft5">No live data</span>
+					</div>
 					<div class="space-6"></div>
 					<i class="glyphicon glyphicon-inbox"></i>
 					<h5 class="marginleft5 text-right displayline">{{vm.selectedcar.devicenumber}}</h5>

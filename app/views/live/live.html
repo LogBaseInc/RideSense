@@ -6,7 +6,7 @@
 		typeahead-on-select="vm.carsearched($item, $model, $label)"/>
 		<div class="carselectdiv">
 			<div class="carselect">
-				<button ng-class="{ 'btn btn-primary': vm.islocationsearhced, 'btn btn-default': !vm.islocationsearhced}" class="searchfilter" data-ng-click="vm.searchOptionChanged('location')"><i class="glyphicon glyphicon-map-marker"></i></button>
+				<button ng-class="{ 'btn btn-primary': vm.islocationsearhced, 'btn btn-default': !vm.islocationsearhced}" class="searchfilter" data-ng-click="vm.searchOptionChanged('location')" style="margin-right:-3px"><i class="glyphicon glyphicon-map-marker"></i></button>
 				<button ng-class="{ 'btn btn-primary': !vm.islocationsearhced, 'btn btn-default': vm.islocationsearhced}" data-ng-click="vm.searchOptionChanged('car')"><img style="width:18px" src="assets/images/car-front.png"></img></button>
 			</div>
 		</div>
