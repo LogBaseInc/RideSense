@@ -64,7 +64,7 @@ define(['angular',
 
                 vm.showallcars = false;
                 vm.selectedcar = $item;
-                $rootScope.selectedcar = $item.title;
+                $rootScope.selectedcar = $item.vehiclenumber;
                 vm.totalDistance = 0;
                 allcaractivityref.off("value");
                 getCarDistanceDetail(vm.selectedcar.devicenumber);
@@ -104,13 +104,16 @@ define(['angular',
 
             function getCarList() {
                 vm.cars = [];
+                vm.searchlist = [];
                 var devices = sessionservice.getAccountDevices();
                 for(property in devices) {
                     var cardetail = {
                         title : devices[property].vehiclenumber, 
+                        vehiclenumber : devices[property].vehiclenumber, 
                         devicenumber : property,
                         drivername : devices[property].drivername,
-                        drivermobile : devices[property].drivermobile
+                        drivermobile : devices[property].drivermobile,
+                        type : 'Car'
                     };
 
                     if($rootScope.selectedcar == devices[property].vehiclenumber) {
@@ -124,6 +127,14 @@ define(['angular',
                     }
 
                     vm.cars.push(cardetail);
+                    vm.cars.push({
+                        title : devices[property].drivername, 
+                        vehiclenumber : devices[property].vehiclenumber, 
+                        devicenumber : property,
+                        drivername : devices[property].drivername,
+                        drivermobile : devices[property].drivermobile,
+                        type : 'Driver'
+                    });
                 }
             }
 
@@ -147,7 +158,7 @@ define(['angular',
                                 distance : data[property].tripdistance ? data[property].tripdistance.toFixed(2) : 0,
                                 startlocation : data[property].startaddress,
                                 endlocation : data[property].endaddress,
-                                vehiclenumber : vm.selectedcar.title,
+                                vehiclenumber : vm.selectedcar.vehiclenumber,
                                 devicenumber : devicenumber
                             };
                             vm.trips.push(tripdetail);

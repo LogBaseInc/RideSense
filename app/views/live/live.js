@@ -34,6 +34,7 @@ define(['angular',
 			var mapinstance;
 			var routecolor = ['red', 'green',  'purple', 'orange', 'blue'];
 			var infowindow;
+			vm.docluster = true;
 
 			activate();
 
@@ -386,6 +387,14 @@ define(['angular',
 			   	directionsService = new google.maps.DirectionsService();
 			   	mapinstance = instances[0].map;
 				setMapCenterOfAllMarkers();
+
+				google.maps.event.addListener(mapinstance, 'zoom_changed', function() {
+				    var zoomLevel = mapinstance.getZoom();
+				  	if(zoomLevel >= 16) 
+				  		vm.docluster = false;
+				  	else
+				  		vm.docluster = true;
+			  	});
 			});
 
 			function setMapCenterOfAllMarkers() {

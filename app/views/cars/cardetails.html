@@ -10,7 +10,7 @@
 			<div class="row col-md-12 tm-card-wrap zeropadding">
 				<div class="tm-car-card">
 					<img class="heighth13" src="assets/images/car-front.png" style="margin-top:-5px"></img>
-					<h5 class="marginleft5 text-right redtext">{{vm.selectedcar.title}}</h5>
+					<h5 class="marginleft5 text-right redtext">{{vm.selectedcar.vehiclenumber}}</h5>
 					<div class="space-6"></div>
 					<i class="glyphicon glyphicon-inbox"></i>
 					<h5 class="marginleft5 text-right displayline">{{vm.selectedcar.devicenumber}}</h5>
@@ -23,9 +23,6 @@
 					<div class="space-6"></div>
 					<i class="glyphicon glyphicon-move"></i>
 					<h5 class="marginleft5 text-right displayline">{{vm.totalDistance}} km</h5>
-					<!--<span>Idle @ Pleelamedu</span>
-					<div class="space-6"></div>
-					<span>1200 Km</span>-->
 				</div>
 			</div>
 		</div>
@@ -39,8 +36,6 @@
 					<img class="heighth13" src="assets/images/car-front.png" style="margin-top:-5px"></img>
 					<h5 class="marginleft5 text-right displayline">{{vm.totalcars}}</h5>
 					<div class="space-6"></div>
-					<!--<h4 class="text-right displayline">3</h4>
-					<small class="hspace">trips</small>-->
 				</div>
 			</div>
 		</div>
@@ -98,8 +93,14 @@
 </div>
 
 <script type="text/ng-template" id="typeaheadElement.html">
-  <a class="typeheadanchor">
-   <img src="assets/images/car-front.png" class="typeheadimage"></img>
-      <span bind-html-unsafe="match.label" class="blackcolor"></span>
+  <a class="typeheadanchor" style="height: 54px !important">
+    <img data-ng-show="match.model.type == 'Car'" src="assets/images/car-front.png" style="margin-top:-5px" class="typeheadimage"></img>
+    <i data-ng-show="match.model.type == 'Driver'" class="glyphicon glyphicon-user blackcolor"></i>
+      <span class="blackcolor">{{match.label}}</span>
+      <br/>
+      <small style="color:gray">
+      	<span data-ng-show="match.model.type == 'Driver'">Driver name</span>
+      	<span data-ng-show="match.model.type == 'Car'">Car number</span>
+      </small>
   </a>
 </script>

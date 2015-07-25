@@ -39,9 +39,10 @@
 			<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdrivername.$invalid && deviceform.textdrivername.$touched }">
 				<label class="col-md-3 control-label">Driver name</label>
 				<div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="Driver name" name="textdrivername" data-ng-model="vm.device.drivername" required>
+                    <input type="text" class="form-control" placeholder="Driver name" name="textdrivername" data-ng-model="vm.device.drivername" required ng-pattern="/^[a-zA-Z .]*$/">
                     <div data-ng-messages="deviceform.textdrivername.$error" data-ng-if="vm.interacted(deviceform.textdrivername)" class="error-messages">
                         <div ng-message="required">Driver name required</div>
+                        <div ng-message="pattern">Enter only alphabets</div>
                     </div>
             	</div>
 			</div>

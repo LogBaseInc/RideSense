@@ -55,7 +55,7 @@ define(['angular',
                     spinner.hide();
                     submitted = false;
                     vm.success = true;
-                    vm.password = null;
+                    //vm.password = null;
                     sessionservice.setSession(data, accountId);
                     $rootScope.$emit('alertcount');
                     $location.path('/live');    

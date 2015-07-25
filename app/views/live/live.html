@@ -17,7 +17,7 @@
 			<div class="tm-live-map">
 				<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom'>
 					<ui-gmap-marker data-ng-show="vm.dragMarker" coords="vm.marker.coords" options="vm.marker.options" events="vm.marker.events" idkey="vm.marker.id"></ui-gmap-marker>
-					<ui-gmap-markers models="vm.cars.models" coords="'self'" options="'options'" events="vm.markersEvents" doCluster="'true'" clusterOptions="vm.clusterOptions"></ui-gmap-markers>
+					<ui-gmap-markers models="vm.cars.models" coords="'self'" options="'options'" events="vm.markersEvents" doCluster="vm.docluster" clusterOptions="vm.clusterOptions"></ui-gmap-markers>
 				</ui-gmap-google-map>
 			</div>
 		</div>
@@ -45,8 +45,8 @@
 </div>
 
 <script type="text/ng-template" id="typeaheadElement.html">
-  <a class="typeheadanchor">
-   <img src="assets/images/car-front.png" class="typeheadimage"></img>
-      <span bind-html-unsafe="match.label" class="blackcolor"></span>
+  <a class="typeheadanchor blackcolor">
+   <img src="assets/images/car-front.png" style="margin-top:-4px" class="typeheadimage"></img>
+      <span>{{match.label}}</span>
   </a>
 </script>
