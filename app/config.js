@@ -8,7 +8,7 @@ define(['angular'], function (angular) {
         var config = {
             docTitle: 'Ridesense::',
             firebaseUrl: 'https://logbasedev.firebaseIO.com/',
-            apiUrl : 'http://stick-read-api.cloudapp.net/api/',
+            apiUrl : 'http://stick-read-dev.logbase.io/api/',
         };
 
         app.value('config', config);

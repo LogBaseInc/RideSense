@@ -54,8 +54,8 @@ define(['angular',
 				    },
 			     	options: { draggable: false, icon: (vm.cardetail.running ? 'assets/images/car-moving.png' : 'assets/images/car-parked.png')},
 			     	events: {
-				        click: function (gMarker, eventName, model) {
-						    var latlng = new google.maps.LatLng(vm.marker.latitude, vm.marker.longitude);
+				        click: function (marker, eventName, args) {
+						    var latlng = new google.maps.LatLng(vm.marker.coords.latitude, vm.marker.coords.longitude);
 						    var geocoder = new google.maps.Geocoder();
 					 		geocoder.geocode({ 'latLng': latlng }, function (results, status) {
 					            if (status == google.maps.GeocoderStatus.OK) {
@@ -63,10 +63,10 @@ define(['angular',
 					                	var sublocality = _.first(_.filter(results[0].address_components, function(address){ return address.types[0].indexOf('sublocality') >= 0}));
 					                	if(sublocality == null)
 					                		sublocality = _.first(_.filter(results[0].address_components, function(address){ return address.types[0].indexOf('route') >= 0}));
-					          			var content = '<div id="infowindow_content"><span style="font-weight: bold;">'+sublocality.long_name+'</span><br>Last updated '+model.time+'<br><a style="margin-left:25%" href="#/cars/'+model.title+'"><img src="assets/images/more-details.png"></img></a></div>';
+					          			var content = '<div id="infowindow_content"><span style="font-weight: bold;">'+sublocality.long_name+'</span><br>Last updated '+getTimeStamp(vm.cardetail.locationtime)+'</div>';
 					          			var compiled = $compile(content)($scope);
 								        infowindow.setContent(compiled[0].innerHTML);
-								        infowindow.open( mapinstance , gMarker );
+								        infowindow.open(mapinstance , marker);
 					          		}
 					            }
 				            });
@@ -75,11 +75,18 @@ define(['angular',
 			    };
 			}
 
+			function getTimeStamp(unixtimestamp){
+				return moment((unixtimestamp)).fromNow();
+		 	}
+
 		    function setGoogleMaps(lat, lng, zoom) {
 	        	uiGmapGoogleMapApi.then(function(maps) {
 	        		vm.showmaps =true;
 	        		maps.visualRefresh = true;
 		    		vm.map = { center: { latitude: lat ? lat : vm.cardetail.latitude, longitude: lng ? lng : vm.cardetail.longitude }, zoom: zoom ? zoom : 19};
+		    		infowindow = new google.maps.InfoWindow({
+			  			content: ''
+					});
 	    		});
 	    	}
 
