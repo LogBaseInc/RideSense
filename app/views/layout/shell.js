@@ -18,6 +18,7 @@ define(['angular'], function () {
             vm.online = false;
             vm.logout = logout;
             vm.accountname = sessionservice.getAccountName();
+            vm.isAdmin = sessionservice.getRole();
             var timer;
 
             activate();
@@ -48,6 +49,10 @@ define(['angular'], function () {
 
             $rootScope.$on('logout', function() {
                 logout();
+            });
+
+            $rootScope.$on('login:role', function(event, data) {
+                vm.isAdmin = data.role;
             });
 
             function readalerts() {

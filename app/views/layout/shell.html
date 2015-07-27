@@ -39,10 +39,10 @@
 			            <li class="dropdown">
 			              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{vm.accountname}}<span class="caret"></span></a>
 			              <ul class="dropdown-menu" role="menu">
-			                <li><a href="#/account/devices">Manage devices</a></li>
-			                <!--<li><a href="#/account/users" style="margin-top:5px">Manage users</a></li>-->
-			                <li><a href="#/account/detail" style="margin-top:5px">Account</a></li>
-			                <li class="divider"></li>
+			                <li data-ng-if="vm.isAdmin"><a href="#/account/devices">Manage devices</a></li>
+			                <li data-ng-if="vm.isAdmin"><a href="#/account/users" style="margin-top:5px">Manage users</a></li>
+			                <li data-ng-if="vm.isAdmin"><a href="#/account/detail" style="margin-top:5px">Account</a></li>
+			                <li data-ng-if="vm.isAdmin" class="divider"></li>
 			                <li><a href="" data-ng-click="vm.logout()">Log out</a></li>
 			              </ul>
 			            </li>

@@ -1,0 +1,59 @@
+<div data-ng-controller="activateuser as vm">
+	 <div class="login-container">
+	 	<div class="center">
+            <h1>
+                <img class="logoimage" style="height:30px" src = "assets/images/logo.png"></img>
+                <span class="red">Stick</span>
+            </h1>
+            <h4 class="blue lighter" id="id-company-text">© LogBase</h4>
+        </div>
+        <div class="space-6"></div>
+	 	<div class="position-relative">
+			<form name="signupform">
+                <div id="signup-box" class="signup-box widget-box no-border visible">
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <h4 class="header green lighter bigger">
+                                Activate Account
+                            </h4>
+
+                            <div class="space-6"></div>
+							<div class="form-group">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="text" class="form-control" data-ng-model="vm.email" placeholder="Username" name="textnewemail" ng-readonly="'true'">
+                                </span>
+                            </div>
+
+                            <div class="form-group" data-ng-class="{ 'has-error': signupform.textnewpwd.$invalid && signupform.textnewpwd.$touched }">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="password" class="form-control" placeholder="Password" name="textnewpwd" required minlength="8" data-ng-model="vm.password">
+                                </span>
+                                <div data-ng-messages="signupform.textnewpwd.$error" data-ng-if="vm.interacted(signupform.textnewpwd)" class="error-messages">
+                                    <div ng-message="required">Password required</div>
+                                    <div ng-message="minlength">Enter password with minimum 8 characters</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" data-ng-class="{ 'has-error': signupform.textrepeatpwd.$invalid && signupform.textrepeatpwd.$touched }">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="password" class="form-control" placeholder="Repeat password" name="textrepeatpwd" required data-ng-model="vm.repeatpassword">
+                                </span>
+                                <div data-ng-messages="signupform.textrepeatpwd.$error" data-ng-if="vm.interacted(signupform.textrepeatpwd)" class="error-messages">
+                                    <div ng-message="required">Repeat the password</div>
+                                </div>
+                            </div>
+
+                            <div class="space-6"></div>
+                            <center class="marginbottom10"><span ng-show="vm.repeatpwderror" class="errortext">Password and Repeat password should be same</span></center>
+                            <div class="clearfix">
+                                <button type="button" class="width-65 pull-right btn btn-sm btn-success" data-ng-disabled="!vm.canactivate" data-ng-click="vm.activate()">
+                                    <span class="bigger-110">Activate</span>
+                                    <i class="ace-icon glyphicon glyphicon-arrow-right icon-on-right"></i>
+                                </button>
+                            </div>
+				    </div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

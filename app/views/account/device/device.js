@@ -17,7 +17,6 @@ define(['angular',
             });
 
             vm.interacted = function (field, isdevicenumber) {
-                //if(isdevicenumber == true && vm.isdeviceavailable != null) vm.isdeviceavailable = null;
                 return submitted || field.$dirty;
             };
 

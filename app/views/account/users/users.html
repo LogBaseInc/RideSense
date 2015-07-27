@@ -1,0 +1,33 @@
+<div data-ng-controller="users as vm">
+	<div class="col-xs-12 mydevicespace" data-ng-show="vm.users.length > 0">
+		<h4 class="displayline">Users</h3>
+		<a href="" data-ng-click="vm.adduser()"><img class="marginleft5" src="assets/images/plus.png"></img></a>
+	</div>
+	<div class="form-group col-xs-12" data-ng-show="vm.users.length > 0">
+        <div class="input-group blueborder">
+            <input type="text" class="form-control" placeholder="Search email / role / status" id="inputGroup" data-ng-model="search">
+            <span class="input-group-addon">
+                <i class="glyphicon glyphicon-search"></i>
+            </span>
+        </div>
+    </div>
+    
+	<div class="col-xs-12 fullwidth">
+		<div class="tm-alerts-summary devicelistbox" data-ng-repeat="user in vm.users | filter:search">
+			<div class="marginleft10" data-ng-click="vm.edituser($index)">
+				<h4>{{user.email}}</h4>
+				<div class="margintop15">
+					<span class="glyphicon glyphicon-user fontsize13"></span><label class="marginleft5 fontsize13">{{user.admin}}</label>
+					<br/>
+					<span class="glyphicon glyphicon-flash fontsize13"></span><label class="marginleft5 fontsize13">{{user.status}}</label>
+					<br/>
+					<span data-ng-if="user.status == 'Joined'" class="glyphicon glyphicon-calendar fontsize13"></span><label class="marginleft5 fontsize13">{{user.joinedon}}</label>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-12" data-ng-show="vm.users.length == 0">
+		<center style="margin-top:200px">No users available. Click <a href="" class="marginright5" data-ng-click="vm.adduser()"><img class="marginleft5" src="assets/images/plus.png"></img></a>to add new user</center>
+	</div>
+</div>

@@ -149,6 +149,33 @@ define(['angular',
                          allowAnonymous: false
                      }
                  },
+                 {
+                     url: '/account/users',
+                     config: {
+                         templateUrl: 'views/account/users/users.html',
+                         title: 'detail',
+                         controllerUrl: 'views/account/users/users',
+                         allowAnonymous: false
+                     }
+                 },
+                 {
+                     url: '/account/user',
+                     config: {
+                         templateUrl: 'views/account/users/user.html',
+                         title: 'detail',
+                         controllerUrl: 'views/account/users/user',
+                         allowAnonymous: false
+                     }
+                 },
+                 {
+                     url: '/user/activate/:accountId/:email',
+                     config: {
+                         templateUrl: 'views/account/users/activateuser.html',
+                         title: 'detail',
+                         controllerUrl: 'views/account/users/activateuser',
+                         allowAnonymous: true
+                     }
+                 },
             ];
 
             return routs;
