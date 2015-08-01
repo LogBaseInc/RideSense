@@ -36,6 +36,7 @@ define(['angular',
 			vm.docluster = true;
 			var livecarref;
 			var distancefbref;
+			var runningcarref;
 			vm.liverefs = [];
 			vm.istracking = false;
 
@@ -66,6 +67,7 @@ define(['angular',
 
 			 	spinner.show();
 				getlivecardata();
+				getRunningCarCount();
 				getDistance();
 
 				vm.map = { center: { latitude: 11, longitude: 77 }, zoom: 13 };
@@ -85,8 +87,6 @@ define(['angular',
 				  	}
 				  	else {
 				  		spinner.hide();
-				  		vm.activeCabs = 0;
-			 			vm.idleCabs = 0
 			 			vm.cars = {};
 			 			vm.cars.models = [];
 				  		setGoogleMaps(null,null)
@@ -113,6 +113,20 @@ define(['angular',
 						vm.cars.models.push(getLiveCarObject(childSnapshot.val(), childSnapshot.key(), vehiclenumber));
 						utility.applyscope($scope);
 					}
+				});
+		 	}
+
+		 	function getRunningCarCount() {
+		 		runningcarref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecount/running');
+				runningcarref.on("value", function(snapshot) {
+					if(snapshot.val())
+				  		vm.activeCabs =  snapshot.val();
+				  	else
+				  		vm.activeCabs = 0;
+				  	utility.applyscope($scope);
+
+				}, function (errorObject) {
+				  	console.log("The running count failed: " + errorObject.code);
 				});
 		 	}
 
@@ -204,8 +218,6 @@ define(['angular',
 		    };
 
 		 	function livecarsmodel(data) {
-			 	vm.activeCabs = 0;
-			 	vm.idleCabs = 0
 			 	var devicedetails = sessionservice.getAccountDevices();
 			 	vm.cars = {};
 			 	vm.cars.models =[];
@@ -225,11 +237,6 @@ define(['angular',
 
 		 	function getLiveCarObject(livecarobj, property, vehiclenumber) {
 		 		var isIdle = getIsIdle(livecarobj);
-		 		if(isIdle)
-		 			vm.idleCabs = vm.idleCabs + 1;
-		 		else
-		 			vm.activeCabs = vm.activeCabs + 1;
-		 		
 		 		return {
 				 	latitude: livecarobj.latitude,
 				 	longitude: livecarobj.longitude,
@@ -397,6 +404,13 @@ define(['angular',
 
 				if(distancefbref)
 					distancefbref.off();
+
+				if(runningcarref)
+					runningcarref.off();
+
+				for(var i = 0 ; i < vm.liverefs.length ; i++) {
+				  	vm.liverefs[i].off();
+				}
 			});
 		}
 	})();
