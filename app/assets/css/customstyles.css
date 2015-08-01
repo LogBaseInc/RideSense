@@ -422,7 +422,15 @@ hr {
 .logoimage {
     display:inline !important;
     margin-right:0px !important;
+    margin-bottom:4px !important;
+    height: 20px;
+}
+
+.logoimage-home {
+    display:inline !important;
+    margin-right:0px !important;
     margin-bottom:7px !important;
+    height: 30px;
 }
 
 .minheight637 {
