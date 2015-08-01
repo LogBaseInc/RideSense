@@ -1,6 +1,6 @@
 define([    
     '_',
-    'bootbox',
+    'moment',
     'directives',
     'googlemaps',
     'highcarts-src',

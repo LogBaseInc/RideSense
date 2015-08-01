@@ -1,4 +1,4 @@
-define(['angular',
+  define(['angular',
     'config.route',
     'views/services/loginservice'], function (angular, configroute) {
     (function () {

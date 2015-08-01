@@ -1,6 +1,7 @@
 define(['angular',
     'config.route',
-    'lib'], function (angular, configroute) {
+    'moment',
+    'lib'], function (angular, configroute, moment) {
     (function () {
 
     	var app = angular.module('rideSenseApp');
@@ -35,10 +36,8 @@ define(['angular',
 			var infowindow;
 			vm.docluster = true;
 			var livecarref;
-			var distancefbref;
-			vm.liverefs = [];
-			vm.istracking = false;
-
+			var distancefbref
+			;
 			activate();
 
 		 	vm.markersEvents = {
@@ -68,21 +67,19 @@ define(['angular',
 				getlivecardata();
 				getDistance();
 
-				vm.map = { center: { latitude: 11, longitude: 77 }, zoom: 13 };
+				vm.map = { center: { latitude: 11, longitude: 77 }, zoom: 14 };
 				navigator.geolocation.getCurrentPosition(currentPositionCallback);
 		 	}
 
 		 	function currentPositionCallback(position) {
-		 		vm.map = { center: { latitude: position.coords.latitude, longitude: position.coords.longitude }, zoom: vm.map.zoom };
+		 		vm.map = { center: { latitude: position.coords.latitude, longitude: position.coords.longitude }, zoom: 14 };
 		 	}
 
 		 	function getlivecardata() {
 		 		livecarref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars');
 				livecarref.once("value", function(snapshot) {
-					if(snapshot.val()) {
+					if(snapshot.val())
 				  		livecarsmodel(snapshot.val());
-				  		childAddedEvent();
-				  	}
 				  	else {
 				  		spinner.hide();
 				  		vm.activeCabs = 0;
@@ -100,19 +97,6 @@ define(['angular',
 				livecarref.on('child_removed', function(oldChildSnapshot) {
   					var carmodel = _.first(_.filter(vm.cars.models, function(car){ return car.id == oldChildSnapshot.key()}));
   					vm.cars.models.pop(carmodel);
-				});
-
-		 	}
-
-		 	function childAddedEvent() {
-		 		livecarref.on('child_added', function(childSnapshot) {
-					var devicedetails = sessionservice.getAccountDevices();
-			 		var vehiclenumber = devicedetails[childSnapshot.key()].vehiclenumber;
-			 		if(_.filter(vm.carlist, function(car) { return car.name == vehiclenumber}).length == 0) {
-						vm.carlist.push({name : vehiclenumber});
-						vm.cars.models.push(getLiveCarObject(childSnapshot.val(), childSnapshot.key(), vehiclenumber));
-						utility.applyscope($scope);
-					}
 				});
 		 	}
 
@@ -162,8 +146,7 @@ define(['angular',
 		 	}
 
 		 	vm.carsearched = function($item, $model, $label) {
-			 	setGoogleMaps($item.latitude, $item.longitude, 15);
-			 	utility.closekeyboard($('#txtcarsearch'));
+			 	setGoogleMaps($item.latitude, $item.longitude);
 			}
 
 			vm.showDragMarker = function() {
@@ -207,21 +190,52 @@ define(['angular',
 			 	vm.activeCabs = 0;
 			 	vm.idleCabs = 0
 			 	var devicedetails = sessionservice.getAccountDevices();
-			 	vm.cars = {};
-			 	vm.cars.models =[];
-			 	vm.carlist =[];
+			 	var isinitail = vm.cars === undefined;
+			 	if(isinitail) {
+				 	vm.cars = {};
+				 	vm.cars.models =[];
+				 	vm.carlist =[];
 
-			 	for(property in data) {
-			 		if(property != undefined) {
-				 		var livecarobj  = data[property];
-				 		var vehiclenumber = devicedetails[property].vehiclenumber;
-						vm.carlist.push({name : vehiclenumber});
-						vm.cars.models.push(getLiveCarObject(livecarobj, property, vehiclenumber));
-					 }
-				 	utility.applyscope($scope);
-				 	setGoogleMaps(null, null);
+				 	for(property in data) {
+				 		if(property != undefined) {
+					 		var livecarobj  = data[property];
+					 		var vehiclenumber = devicedetails[property].vehiclenumber;
+							vm.carlist.push({name : vehiclenumber});
+							vm.cars.models.push(getLiveCarObject(livecarobj, property, vehiclenumber));
+						 }
+					 	utility.applyscope($scope);
+					 	setGoogleMaps(null, null);
+					}
 				}
-			}
+			 	else {
+				 	for(property in data) {
+				 		if(property != undefined) {
+					 		var livecarobj  = data[property];
+					 		var vehiclenumber = devicedetails[property].vehiclenumber;
+
+						 	var cardetail =  _.first(_.filter(vm.cars.models, function(carmodel){ return carmodel.title == vehiclenumber}));
+						 	if(cardetail) {
+						 		var isIdle = getIsIdle(livecarobj);
+
+							 	cardetail.latitude = livecarobj.latitude;
+							 	cardetail.longitude = livecarobj.longitude;
+							 	cardetail.time = getTimeStamp(livecarobj.locationtime),
+							 	cardetail.isIdle = isIdle;
+							 	if(cardetail.isIdle === false)
+								 	cardetail.options.labelContent = vehiclenumber;
+							 	cardetail.options.labelClass = ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
+							   	cardetail.options.icon = (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
+							   	cardetail.options.labelAnchor = ((isIdle && vm.dragMarker) ? '20 80' : '0 0')
+						 	}
+						 	else {
+						 		vm.carlist.push({name : vehiclenumber});
+							 	vm.cars.models.push(getLiveCarObject(livecarobj, property, vehiclenumber));
+						 	}
+						}
+		 				utility.applyscope($scope);
+		 			}
+	 			}
+		 	}
 
 		 	function getLiveCarObject(livecarobj, property, vehiclenumber) {
 		 		var isIdle = getIsIdle(livecarobj);
@@ -268,14 +282,14 @@ define(['angular',
 
 				var service = new google.maps.DistanceMatrixService();
 				service.getDistanceMatrix(
-			    {
-				    origins: origins,
-				    destinations: [dest1],
-				    travelMode: google.maps.TravelMode.DRIVING,
-				    unitSystem: google.maps.UnitSystem.METRIC,
-				    avoidHighways: false,
-				    avoidTolls: false
-			    }, callback);
+				   {
+				     origins: origins,
+				     destinations: [dest1],
+				     travelMode: google.maps.TravelMode.DRIVING,
+				     unitSystem: google.maps.UnitSystem.METRIC,
+				     avoidHighways: false,
+				     avoidTolls: false
+				   }, callback);
 			}
 
 			function callback(response, status) {
@@ -312,12 +326,12 @@ define(['angular',
 				utility.applyscope($scope);
 			}
 
-		 	function setGoogleMaps(lat, lng, zoom){
+		 	function setGoogleMaps(lat, lng){
 				vm.showmaps =true;
 		       	uiGmapGoogleMapApi.then(function(maps) {
 		       		maps.visualRefresh = true;
 		       		if(lat != null && lng != null)
-				   		vm.map = { center: { latitude: lat, longitude: lng }, zoom: zoom ? zoom : vm.map.zoom };
+				   		vm.map = { center: { latitude: lat, longitude: lng }, zoom: vm.map.zoom };
 				   	infowindow = new google.maps.InfoWindow({
 			  			content: ''
 					});
@@ -334,62 +348,50 @@ define(['angular',
 			uiGmapIsReady.promise(1).then(function(instances) {
 			   	directionsService = new google.maps.DirectionsService();
 			   	mapinstance = instances[0].map;
+				setMapCenterOfAllMarkers();
 
 			  	google.maps.event.addListener(mapinstance, 'bounds_changed', function() {
 			  		var zoomLevel = mapinstance.getZoom();
-			  		vm.istracking = zoomLevel >= 14;
-
 				  	if(zoomLevel >= 16) 
 				  		vm.docluster = false;
 				  	else
 				  		vm.docluster = true;
 
-				  	for(var i = 0 ; i < vm.liverefs.length ; i++) {
-				  		vm.liverefs[i].off();
-				  	}
-
-				  	vm.liverefs = [];
+				  	var livefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars');
+				  	livefbref.off();
 
 					if(zoomLevel >= 14) {
 					  	for (var i=0; i < vm.cars.models.length; i++) {
-						    if (mapinstance.getBounds().contains(new google.maps.LatLng(vm.cars.models[i].latitude, vm.cars.models[i].longitude))) {
-
+						    if (mapinstance.getBounds().contains(new google.maps.LatLng(vm.cars.models[i].latitude, vm.cars.models[i].longitude)))
+						    {
 								var fbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars/'+vm.cars.models[i].id);
-								if(vm.liverefs.indexOf(fbref) < 0 ) {
-									vm.liverefs.push(fbref);
-									fbref.on("value", function(snapshot) {
-										updatemarker(snapshot.val(), snapshot.key());
-									}, function (errorObject) {
-									  	console.log("The live car read failed: " + errorObject.code);
-									});
-								}					    
+								fbref.on("value", function(snapshot) {
+									var livecarobj = snapshot.val();
+									if(livecarobj) {
+										var cardetail =  _.first(_.filter(vm.cars.models, function(carmodel){ return carmodel.id == snapshot.key()}));
+									 	if(cardetail) {
+									 		var isIdle = getIsIdle(livecarobj);
+
+										 	cardetail.latitude = livecarobj.latitude;
+										 	cardetail.longitude = livecarobj.longitude;
+										 	cardetail.time = getTimeStamp(livecarobj.locationtime),
+										 	cardetail.isIdle = isIdle;
+										 	if(cardetail.isIdle === false)
+											 	cardetail.options.labelContent = cardetail.title;
+										 	cardetail.options.labelClass = ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
+										   	cardetail.options.icon = (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
+										   	cardetail.options.labelAnchor = ((isIdle && vm.dragMarker) ? '20 80' : '0 0')
+									 	}
+									  	utility.applyscope($scope);
+								  	}
+								}, function (errorObject) {
+								  	console.log("The live car read failed: " + errorObject.code);
+								});					    
 							} 
 						}
 					}
-					utility.applyscope($scope);
 		  		});
 			});
-			
-			function updatemarker(livecarobj, key) {
-				if(livecarobj) {
-					//console.log(key);
-					var cardetail =  _.first(_.filter(vm.cars.models, function(carmodel){ return carmodel.id == key}));
-				 	if(cardetail) {
-				 		var isIdle = getIsIdle(livecarobj);
-
-					 	cardetail.latitude = livecarobj.latitude;
-					 	cardetail.longitude = livecarobj.longitude;
-					 	cardetail.time = getTimeStamp(livecarobj.locationtime),
-					 	cardetail.isIdle = isIdle;
-					 	if(cardetail.isIdle === false)
-						 	cardetail.options.labelContent = cardetail.title;
-					 	cardetail.options.labelClass = ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
-					   	cardetail.options.icon = (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
-					   	cardetail.options.labelAnchor = ((isIdle && vm.dragMarker) ? '20 80' : '0 0')
-				 	}
-				  	utility.applyscope($scope);
-				}
-			}
 
 			$scope.$on('$destroy', function iVeBeenDismissed() {
 				if(livecarref)

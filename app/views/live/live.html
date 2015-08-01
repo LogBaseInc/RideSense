@@ -2,7 +2,7 @@
 	<div data-ng-if="vm.showmaps" class="livemapsearch">
 		<google-places data-ng-show="vm.locationsearch">
 		</google-places>
-		<input data-ng-show="vm.carsearch" type="text" class="input-block-level livecarsearch" placeholder="Search car..." data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars.models | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html"
+		<input data-ng-show="vm.carsearch" id="txtcarsearch" type="text" class="input-block-level livecarsearch" placeholder="Search car..." data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars.models | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html"
 		typeahead-on-select="vm.carsearched($item, $model, $label)"/>
 		<div class="carselectdiv">
 			<div class="carselect">
@@ -32,7 +32,10 @@
 		</div>
 
 		<div class="tm-live-summary">
-		    <p class="tm-live-today">Today</p> 
+		    <p class="tm-live-today">Today
+		    	<img data-ng-if="vm.istracking" style="float:right" src="assets/images/green_dot.png">
+		    	<img data-ng-if="!vm.istracking" style="float:right" src="assets/images/reddot.png">
+			</p> 
 				<h1 class="tm-live-distance">{{vm.distanceCovered}} 
 					<small class="tm-overlay-unit">km 
 						<span data-ng-show="vm.isUP" class="glyphicon glyphicon-arrow-up"></span>

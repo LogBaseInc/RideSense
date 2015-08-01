@@ -168,11 +168,20 @@ define(['angular',
                      }
                  },
                  {
-                     url: '/user/activate/:accountId/:email',
+                     url: '/user/activate/:accountId?/:email?',
                      config: {
                          templateUrl: 'views/account/users/activateuser.html',
                          title: 'detail',
                          controllerUrl: 'views/account/users/activateuser',
+                         allowAnonymous: true
+                     }
+                 },
+                 {
+                     url: '/account/delete/:email',
+                     config: {
+                         templateUrl: 'views/account/delete/deleteaccount.html',
+                         title: 'detail',
+                         controllerUrl: 'views/account/delete/deleteaccount',
                          allowAnonymous: true
                      }
                  },

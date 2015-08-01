@@ -11,7 +11,8 @@ define(['angular', 'config.route'], function (angular, configroute) {
                 login: login,
                 resetpasswordlink : resetpasswordlink,
                 signup : signup,
-                changepassword : changepassword
+                changepassword : changepassword,
+                removeuser : removeuser
             };
             return service;
 
@@ -65,6 +66,20 @@ define(['angular', 'config.route'], function (angular, configroute) {
                   email: email,
                   oldPassword: oldpassword,
                   newPassword: newpassword
+                }, function(error) {
+                  if (error) 
+                     return dfd.reject(error);
+                  else 
+                     return dfd.resolve();
+                });
+                return dfd.promise;
+            }
+
+            function removeuser(email, password) {
+                var dfd = $q.defer();
+                firebase.removeUser({
+                  email: email,
+                  password: password,
                 }, function(error) {
                   if (error) 
                      return dfd.reject(error);

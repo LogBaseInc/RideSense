@@ -2,8 +2,8 @@ define(['angular',
     'config.route'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('accountdetail', ['$scope', '$location', 'config', 'notify', 'spinner', 'sessionservice', accountdetail]);
-        function accountdetail($scope, $location, config, notify, spinner, sessionservice) {
+        configroute.register.controller('accountdetail', ['$scope', '$location', 'config', 'notify', 'spinner', 'sessionservice', 'utility', accountdetail]);
+        function accountdetail($scope, $location, config, notify, spinner, sessionservice, utility) {
             var submitted = false;
             var vm = this;
 
@@ -23,7 +23,7 @@ define(['angular',
                 spinner.show();
                 accountref.once("value", function(snapshot) {
                     vm.accountname = snapshot.val();
-                    sessionservice.applyscope($scope);
+                    utility.applyscope($scope);
                 }, function (errorObject) {
                     console.log("The account name read failed: " + errorObject.code);
                 });
@@ -33,7 +33,7 @@ define(['angular',
                     if(vm.address == null)
                         vm.address = {};
                     spinner.hide();
-                    sessionservice.applyscope($scope);
+                    utility.applyscope($scope);
                 }, function (errorObject) {
                     console.log("The address read failed: " + errorObject.code);
                 });

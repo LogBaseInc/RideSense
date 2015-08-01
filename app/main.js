@@ -1,5 +1,5 @@
 require.config({
-    urlArgs: '2.8',
+    urlArgs: '3.2',
     waitSeconds: 0,
     paths: {
         angular: '../bower_components/angular/angular',
@@ -17,10 +17,10 @@ require.config({
         'googlemaps' : '../bower_components/angular-google-maps/dist/angular-google-maps',
         'highcarts-src': 'scripts/highcharts.src',
         'highcharts' : '../bower_components/highcharts-ng/dist/highcharts-ng',
-        'moment' :'../bower_components/moment/moment',
-        bootbox: '../bower_components/bootbox/bootbox',
+        'moment' :'scripts/moment',
         'bootstrap-datepicker': 'scripts/bootstrap-datepicker',
         'directives': 'views/directives/directives',
+        'utility' : 'views/component/utility'
     },
     shim: {
         angular: {

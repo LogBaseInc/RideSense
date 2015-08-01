@@ -3,9 +3,9 @@ define(['angular'], function () {
         'use strict';
 
         var controllerId = 'shell';
-        angular.module('rideSenseApp').controller(controllerId, ['$rootScope', '$scope', '$location', 'config', 'notify', 'sessionservice', shell]);
+        angular.module('rideSenseApp').controller(controllerId, ['$rootScope', '$scope', '$location', 'config', 'notify', 'sessionservice', 'utility', shell]);
 
-        function shell($rootScope, $scope, $location, config, notify, sessionservice) {
+        function shell($rootScope, $scope, $location, config, notify, sessionservice, utility) {
             var vm = this;
             vm.loadSpinner = false;
             vm.isloggedIn = sessionservice.isLoggedIn();
@@ -17,7 +17,7 @@ define(['angular'], function () {
             vm.notnet = false;
             vm.online = false;
             vm.logout = logout;
-            vm.accountname = sessionservice.getAccountName();
+            vm.accountname = utility.getAccountName();
             vm.isAdmin = sessionservice.getRole();
             var timer;
 
@@ -38,8 +38,8 @@ define(['angular'], function () {
                 var accountnamefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/name');
                 accountnamefbref.on("value", function(snapshot) {
                     vm.accountname = snapshot.val();
-                    sessionservice.setAccountName(vm.accountname);
-                    sessionservice.applyscope($scope);
+                    utility.setAccountName(vm.accountname);
+                    utility.applyscope($scope);
                 }, function (errorObject) {
                     console.log("The account name read failed: " + errorObject.code);
                 });
@@ -72,7 +72,7 @@ define(['angular'], function () {
                     }
 
                     vm.alerts = data === null ? {} : data;
-                    sessionservice.applyscope($scope);
+                    utility.applyscope($scope);
 
                 }, function (errorObject) {
                     console.log("The alerts read failed: " + errorObject.code);
@@ -124,7 +124,7 @@ define(['angular'], function () {
                 vm.reconnect = false;
                 vm.notnet = false;
                 vm.online = true;
-                sessionservice.applyscope($scope);
+                utility.applyscope($scope);
             }
 
             function isOffline () {
@@ -132,12 +132,12 @@ define(['angular'], function () {
                 vm.offline = true;
                 vm.reconnect = false;
                 vm.notnet = true;
-                sessionservice.applyscope($scope);
+                utility.applyscope($scope);
 
                 setTimeout(function(){
                     vm.reconnect = true;
                     vm.notnet = false;
-                    sessionservice.applyscope($scope);
+                    utility.applyscope($scope);
                 }, 2000)
             };
 

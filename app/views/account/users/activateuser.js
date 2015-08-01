@@ -3,11 +3,12 @@ define(['angular',
     'views/services/loginservice'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('activateuser', ['$rootScope', '$routeParams', '$scope', '$location', 'config', 'notify', 'spinner', 'sessionservice', 'loginservice', activateuser]);
-        function activateuser($rootScope, $routeParams, $scope, $location, config, notify, spinner, sessionservice, loginservice) {
+        configroute.register.controller('activateuser', ['$rootScope', '$routeParams', '$scope', '$location', 'config', 'notify', 'spinner', 'sessionservice', 'loginservice', 'utility', activateuser]);
+        function activateuser($rootScope, $routeParams, $scope, $location, config, notify, spinner, sessionservice, loginservice, utility) {
             var submitted = false;
             var vm = this;
             var accountId;
+            vm.isuserdeleted = false;
             vm.repeatpwderror= false;
 
             Object.defineProperty(vm, 'canactivate', {
@@ -22,8 +23,29 @@ define(['angular',
 
             function activate() {
                 sessionservice.clear();
-                vm.email = sessionservice.getDecodeString($routeParams.email);
-                accountId = sessionservice.getDecodeString($routeParams.accountId);
+                if($routeParams.email != null && $routeParams.email != undefined && $routeParams.accountId != null && $routeParams.accountId != undefined) {
+                    vm.email = utility.getDecodeString($routeParams.email);
+                    accountId = utility.getDecodeString($routeParams.accountId);
+                
+                    var ref = new Firebase(config.firebaseUrl+'accounts/'+accountId + '/users/' +$routeParams.email);
+                    ref.once("value", function(snapshot) {
+                        if(snapshot.val() != null) {
+                            vm.userdetail = snapshot.val();
+                            vm.isuserdeleted = false;
+                        }
+                        else {
+                            vm.isuserdeleted = true;
+                            notify.error("Invitation removed. Please contact administrator");
+                        }
+                        utility.applyscope($scope);
+                    }, function (errorObject) {
+                        console.log("The users read failed: " + errorObject.code);
+                    });
+                }
+                else {
+                    vm.isuserdeleted = true;
+                    notify.error("Activation link is broken");
+                }
             }
 
             function canactivate() {
@@ -38,24 +60,27 @@ define(['angular',
                             vm.repeatpwderror = false;
                     }
                 }
-                return $scope.signupform.$valid && !submitted && !vm.repeatpwderror;
+                return $scope.signupform.$valid && !submitted && !vm.repeatpwderror && !vm.isuserdeleted;
             }
 
             vm.activate = function () {
                 submitted = true;
                 spinner.show();
-                loginservice.signup('kalaivanisrec@gmail.com', vm.password).then(signupcompleted, signupfailed)
+                loginservice.signup(vm.email, vm.password).then(signupcompleted, signupfailed)
             }
 
             function signupcompleted(userData) {
                 var usersref = new Firebase(config.firebaseUrl+'users/'+userData.uid+'/');
-                usersref.set(accountId);
+                var useracc = {};
+                useracc.account = accountId;
+                useracc.email = vm.email;
+                usersref.set(useracc);
 
-                var userref = new Firebase(config.firebaseUrl+'accounts/'+accountId + '/users/' +$routeParams.email+'/joined');
-                userref.set(true);
-
-                var userref1 = new Firebase(config.firebaseUrl+'accounts/'+accountId + '/users/' +$routeParams.email +'/joinedon');
-                userref1.set(new Date().getTime());
+                var userref = new Firebase(config.firebaseUrl+'accounts/'+accountId + '/users/' +$routeParams.email);
+                vm.userdetail.joined = true;
+                vm.userdetail.joinedon = new Date().getTime();
+                vm.userdetail.uid = userData.uid;
+                userref.set(vm.userdetail);
 
                 spinner.hide();
                 submitted = false;

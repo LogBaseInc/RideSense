@@ -77,12 +77,18 @@
 		</form>
 		<div>
 		 	</br>
-		 	<center>
+		 	<center data-ng-hide="vm.isdelete">
 	            <button data-ng-hide="vm.isDeviceEdit" type="button" class="btn btn-primary" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Add</button>
 	            <button data-ng-show="vm.isDeviceEdit" type="button" class="btn btn-primary" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Update</button>
 	            <a type="button" class="btn btn-default"  href="#/account/devices">Cancel</a>
 	           	<button data-ng-show="vm.isDeviceEdit" type="button" class="btn btn-default" ng-click="vm.deletedevice();">Delete</button>
 	        </center>
-        </div>
+        	<center data-ng-show="vm.isdelete">
+        		<span class="errortext">Device will be deleted permanently, do you want to delete it? </span>
+        		<br/>
+        		<button style="margin-top:10px" type="button" class="btn btn-default" ng-click="vm.deletecancel();">No</button>
+	           	<button style="margin-top:10px" type="button" class="btn btn-default" ng-click="vm.deleteConfirm();">Yes</button>
+        	</center>
+    	</div>
 	</div>
 </div>

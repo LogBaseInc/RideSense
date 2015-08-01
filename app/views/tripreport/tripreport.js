@@ -2,8 +2,8 @@ define(['angular',
     'config.route'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('tripreport', ['$rootScope', '$scope', 'config', 'uiGmapGoogleMapApi', 'spinner','sessionservice', tripreport]);
-        function tripreport($rootScope, $scope, config, uiGmapGoogleMapApi, spinner, sessionservice) {
+        configroute.register.controller('tripreport', ['$rootScope', '$scope', 'config', 'uiGmapGoogleMapApi', 'spinner','sessionservice', 'utility', tripreport]);
+        function tripreport($rootScope, $scope, config, uiGmapGoogleMapApi, spinner, sessionservice, utility) {
             $rootScope.routeSelection = 'report';
             var vm= this;
             vm.pathsource =[];
@@ -33,7 +33,7 @@ define(['angular',
                 vm.datetime = data.datetime;
                 vm.showmap= true;  
                 $rootScope.$emit('pathsource', {path:vm.pathsource, brake:vm.brakesource, speedbrake:vm.speedbrakesource});
-                sessionservice.applyscope($scope);
+                utility.applyscope($scope);
                     
                 var geocoder = new google.maps.Geocoder();
                 var latlng = new google.maps.LatLng(vm.pathsource[0].latitude, vm.pathsource[1].longitude);
@@ -42,7 +42,7 @@ define(['angular',
                         if (results[1]) {
                             var strt = results[1].formatted_address;
                             vm.startloc = strt.substring(0,strt.indexOf(','));
-                            sessionservice.applyscope($scope);
+                            utility.applyscope($scope);
                         } 
                     } 
                 });
@@ -53,7 +53,7 @@ define(['angular',
                         if (results[1]) {
                             var stop = results[1].formatted_address;
                             vm.stoploc = stop.substring(0,stop.indexOf(','));
-                            sessionservice.applyscope($scope);
+                            utility.applyscope($scope);
                         } 
                     } 
                 });

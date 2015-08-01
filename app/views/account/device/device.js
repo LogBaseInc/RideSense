@@ -4,13 +4,14 @@ define(['angular',
     'views/services/mobileuuidservice'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('device', ['$scope', '$bootbox', '$location', 'config', 'spinner', 'notify', 'sessionservice', 'mobileuuidservice', device]);
-        function device($scope, $bootbox, $location, config, spinner, notify, sessionservice, mobileuuidservice) {
+        configroute.register.controller('device', ['$scope', '$location', 'config', 'spinner', 'notify', 'sessionservice', 'mobileuuidservice', 'utility', device]);
+        function device($scope, $location, config, spinner, notify, sessionservice, mobileuuidservice, utility) {
             var submitted = false;
             var vm = this;
             vm.isDeviceEdit = false;
             vm.devicetype = 'stick';
             var devicesfberef;
+            vm.isdelete = false;
 
             Object.defineProperty(vm, 'canBuy', {
                 get: canBuy
@@ -23,7 +24,7 @@ define(['angular',
             activate();
 
             function activate(){
-                vm.device = sessionservice.getDeviceSelected();
+                vm.device = utility.getDeviceSelected();
                 if(vm.device == null) { 
                     vm.device = {};
                     vm.device.type = 'stick';
@@ -118,33 +119,37 @@ define(['angular',
             }
 
             vm.deletedevice = function() {
-                 $bootbox.confirm("This will delete the '"+vm.device.devicenumber+"' device and its data, do you want to continue?", function (result) {
-                    if (result === true) {
-                        submitted = true;
-                        spinner.show();
+                vm.isdelete = true;
+            }
 
-                        var livecarsfberef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars/'+vm.device.devicenumber+'/');
-                        livecarsfberef.remove();
+            vm.deletecancel = function() {
+                vm.isdelete = false;
+            }
 
-                        var devicefberef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/devices/'+vm.device.devicenumber+'/');
-                        devicefberef.remove();
+            vm.deleteConfirm = function () {
+                submitted = true;
+                spinner.show();
 
-                        var devicesfberef = new Firebase(config.firebaseUrl+'devices/'+vm.device.devicenumber+'/');
-                        devicesfberef.remove();
+                var livecarsfberef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars/'+vm.device.devicenumber+'/');
+                livecarsfberef.remove();
 
-                        var actvityfberef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/devices/'+vm.device.devicenumber+'/');
-                        actvityfberef.remove();
+                var devicefberef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/devices/'+vm.device.devicenumber+'/');
+                devicefberef.remove();
 
-                        var tripfberef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/trips/devices/'+vm.device.devicenumber+'/');
-                        tripfberef.remove();
+                var devicesfberef = new Firebase(config.firebaseUrl+'devices/'+vm.device.devicenumber+'/');
+                devicesfberef.remove();
 
-                        submitted = false;
-                        spinner.show();
+                var actvityfberef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/devices/'+vm.device.devicenumber+'/');
+                actvityfberef.remove();
 
-                        notify.success('Device deleted successfully');
-                        $location.path('/account/devices');
-                    }
-                });
+                var tripfberef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/trips/devices/'+vm.device.devicenumber+'/');
+                tripfberef.remove();
+
+                submitted = false;
+                spinner.show();
+
+                notify.success('Device deleted successfully');
+                $location.path('/account/devices');
             }
 
             $scope.$on('$destroy', function iVeBeenDismissed() {

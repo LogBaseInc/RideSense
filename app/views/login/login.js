@@ -2,8 +2,8 @@ define(['angular',
     'config.route', 
     'views/services/loginservice'], function (angular, configroute) {
         (function () {
-            configroute.register.controller('login', ['$rootScope', '$scope', '$location', 'config', 'spinner', 'notify', 'sessionservice','loginservice', login]);
-            function login($rootScope, $scope, $location, config, spinner, notify, sessionservice, loginservice) {
+            configroute.register.controller('login', ['$rootScope', '$scope', '$location', 'config', 'spinner', 'notify', 'sessionservice','loginservice', 'utility', login]);
+            function login($rootScope, $scope, $location, config, spinner, notify, sessionservice, loginservice, utility) {
                 var vm = this, submitted = false;
                 vm.logindiv = true;
                 vm.signupdiv = false;
@@ -45,7 +45,16 @@ define(['angular',
                 function getAccountId(data) {
                     var ref1 = new Firebase(config.firebaseUrl+'users/'+data.uid+'/');
                     ref1.once("value", function(snapshot) {
-                        loginCompleted(data, snapshot.val());   
+                        if(snapshot.val() != null && snapshot.val().account) {
+                            loginCompleted(data, snapshot.val().account);
+                        }
+                        else {
+                            spinner.hide();
+                            submitted = false;
+                            notify.error('Not linked with any account');
+                            utility.applyscope($scope);
+                            $location.path('/account/delete/'+vm.userName);
+                        }
                     }, function (errorObject) {
                         notify.error('Something went wrong, please try again later');
                     });
@@ -59,7 +68,7 @@ define(['angular',
                     sessionservice.setSession(data, accountId);
                     $rootScope.$emit('alertcount');
                     $location.path('/live');    
-                    sessionservice.applyscope($scope);     
+                    utility.applyscope($scope);     
                 }
 
                 function loginfailed(error) { 
@@ -114,9 +123,12 @@ define(['angular',
                 }
 
                 function signupcompleted(userData) {
-                    uuid =  sessionservice.generateUUID();
+                    uuid =  utility.generateUUID();
                     var usersref = new Firebase(config.firebaseUrl+'users/'+userData.uid+'/');
-                    usersref.set( "account" + uuid);
+                    var useracc = {};
+                    useracc.account = 'account'+uuid;
+                    useracc.email = vm.newuser.email;
+                    usersref.set(useracc);
 
                     var accountref = new Firebase(config.firebaseUrl+'accounts/account'+uuid);
                     var accountjson = '{"email":"'+ vm.newuser.email + '","name" : "'+vm.newuser.accountname+'","timezone" : "'+getTimeZone()+'"}';

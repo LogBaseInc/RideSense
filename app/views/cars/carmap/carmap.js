@@ -1,11 +1,10 @@
 define(['angular',
     'config.route',
-    'moment',
-    'lib'], function (angular, configroute, moment) {
+    'lib'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('carmap', ['$compile', '$rootScope', '$scope', '$location', 'config', 'spinner', 'uiGmapIsReady', 'uiGmapGoogleMapApi', 'sessionservice', carmap]);
-        function carmap($compile, $rootScope, $scope, $location, config, spinner, uiGmapIsReady, uiGmapGoogleMapApi, sessionservice) {
+        configroute.register.controller('carmap', ['$compile', '$rootScope', '$scope', '$location', 'config', 'spinner', 'uiGmapIsReady', 'uiGmapGoogleMapApi', 'sessionservice', 'utility', carmap]);
+        function carmap($compile, $rootScope, $scope, $location, config, spinner, uiGmapIsReady, uiGmapGoogleMapApi, sessionservice, utility) {
         	$rootScope.routeSelection = 'live'
 	        var vm = this;
 		 	vm.distanceCovered = 0;
@@ -13,6 +12,7 @@ define(['angular',
 			var mapinstance;
 			var infowindow;
 			var ref;
+			var distanceref;
 
 			activate();
 
@@ -21,11 +21,27 @@ define(['angular',
 		 		if($rootScope.selecteddevice) {
 			 		$rootScope.tripdetails = true;
 				 	spinner.show();
+				 	getCarDistance();
 					getlivecardata();
 				}
 				else {
                     $location.path('/cars');
                 }
+		 	}
+
+		 	function getCarDistance() {
+		 		var date = moment(new Date()).format('YYYYMMDD');
+		 		distanceref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/devices/'+$rootScope.selecteddevice+'/daily/'+date);
+		 		distanceref.on("value", function(snapshot) {
+					var data = snapshot.val();
+					if(data) {
+						vm.distanceCovered = data.distance.toFixed(2);
+						utility.applyscope($scope);
+					}
+
+				}, function (errorObject) {
+				  	console.log("The distance read failed: " + errorObject.code);
+				});
 		 	}
 
 		 	function getlivecardata() {
@@ -37,7 +53,7 @@ define(['angular',
 						vm.status = data.running ? 'Running' : 'Idle';
 						setGoogleMaps();
 						setMarker();
-						sessionservice.applyscope($scope);
+						utility.applyscope($scope);
 					}
 
 				}, function (errorObject) {
@@ -102,6 +118,8 @@ define(['angular',
 			$scope.$on('$destroy', function iVeBeenDismissed() {
                 if(ref)
                     ref.off();
+                if(distanceref)
+                	distanceref.off();
             });
 		}
 	})();

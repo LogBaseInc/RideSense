@@ -4,8 +4,8 @@ define(['angular',
     'views/services/triphistory'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('tripdetail', ['$rootScope', '$location', '$scope', 'config', 'notify', 'spinner', 'uiGmapIsReady', 'sessionservice', 'triphistory', tripdetail]);
-        function tripdetail($rootScope, $location, $scope, config, notify, spinner, uiGmapIsReady, sessionservice, triphistory) {
+        configroute.register.controller('tripdetail', ['$rootScope', '$location', '$scope', 'config', 'notify', 'spinner', 'uiGmapIsReady', 'triphistory', 'utility', tripdetail]);
+        function tripdetail($rootScope, $location, $scope, config, notify, spinner, uiGmapIsReady, triphistory, utility) {
             var vm= this;
             vm.pathsource =[];
             vm.showmap= false;
@@ -52,7 +52,7 @@ define(['angular',
                          strokeWeight: 4
                     });
 
-                    sessionservice.applyscope($scope);
+                    utility.applyscope($scope);
 
                     uiGmapIsReady.promise(1).then(function(instances) {
                         var mapinstance = instances[0].map;

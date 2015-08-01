@@ -1,9 +1,9 @@
 define(['angular',
-    'config.route','moment'], function (angular, configroute, moment) {
+    'config.route'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('devices', ['$rootScope','$scope', '$location', 'config', 'spinner', 'sessionservice', devices]);
-        function devices($rootScope, $scope, $location, config, spinner, sessionservice) {
+        configroute.register.controller('devices', ['$rootScope','$scope', '$location', 'config', 'spinner', 'sessionservice', 'utility', devices]);
+        function devices($rootScope, $scope, $location, config, spinner, sessionservice, utility) {
             var vm = this;
 
             activate();
@@ -42,16 +42,16 @@ define(['angular',
                 }
 
                 spinner.hide();($scope);
-                sessionservice.applyscope($scope);
+                utility.applyscope($scope);
             }
 
             vm.buydevice = function(){
-                sessionservice.setDeviceSelected(null);
+                utility.setDeviceSelected(null);
                 $location.path('/account/device');
             }
 
             vm.editdevice = function(index){
-                sessionservice.setDeviceSelected(vm.devicesdetails[index]);
+                utility.setDeviceSelected(vm.devicesdetails[index]);
                 $location.path('/account/device');
             }
         }

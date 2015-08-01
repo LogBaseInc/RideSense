@@ -1,11 +1,10 @@
 define(['angular',
     'config.route',
-    'moment',
-    'lib'], function (angular, configroute, moment) {
+    'lib'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('cardetails', ['$rootScope', '$routeParams' ,'$scope', '$location', 'config', 'spinner', 'sessionservice', cardetails]);
-        function cardetails($rootScope, $routeParams, $scope, $location, config, spinner, sessionservice) {
+        configroute.register.controller('cardetails', ['$rootScope', '$routeParams' ,'$scope', '$location', 'config', 'spinner', 'sessionservice', 'utility', cardetails]);
+        function cardetails($rootScope, $routeParams, $scope, $location, config, spinner, sessionservice, utility) {
             var vm = this;
             vm.distanceData = [];
             vm.showallcars = true;
@@ -16,11 +15,13 @@ define(['angular',
             var allcaractivityref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/daily');
             var selectedcarref;
             var carLiveRef = ""
+            vm.isdatesupport = false;
 
             activate();
 
             function activate() {
                 $rootScope.routeSelection = 'cars';
+                isDateFiledSupported();
 
                 if($rootScope.tripdetails == false) {
                     $rootScope.selecteddate = null;
@@ -53,14 +54,30 @@ define(['angular',
                     vm.selecteddate  = $rootScope.selecteddate;
                 }
                 else {
-                    vm.selecteddate = moment(new Date()).format('DD/MM/YYYY');
+                    setTodayDate();
                     $rootScope.selecteddate  = vm.selecteddate;
                 }
             }
 
+            function isDateFiledSupported(){
+                var datefield=document.createElement("input")
+                datefield.setAttribute("type", "date")
+                if (datefield.type != "date"){ //if browser doesn't support input type="date", initialize date picker widget:
+                   vm.isdatesupport = false;
+                }
+                else
+                   vm.isdatesupport = true;
+            }
+
+            function setTodayDate() {
+                vm.selecteddate = vm.isdatesupport ? new Date() : moment(new Date()).format('DD/MM/YYYY');
+            }
+
             vm.carsearched = function($item, $model, $label) {
-                spinner.show(); 
-                vm.selecteddate = moment(new Date()).format('DD/MM/YYYY');
+                spinner.show();
+                utility.closekeyboard($('#txtcarsearch'));
+
+                setTodayDate();
                 $rootScope.selecteddate  = vm.selecteddate;
 
                 vm.showallcars = false;
@@ -85,8 +102,14 @@ define(['angular',
             });
 
             vm.datechanged = function (date) {
+                if(date == null) {
+                    setTodayDate();
+                    date = vm.selecteddate;
+                }
+                else 
+                    vm.selecteddate = date;
+
                 $rootScope.selecteddate = date
-                vm.selecteddate = date;
                 getTrips(vm.selectedcar.devicenumber);
             }
 
@@ -133,11 +156,11 @@ define(['angular',
                                     if(sublocality == null)
                                         sublocality = _.first(_.filter(results[0].address_components, function(address){ return address.types[0].indexOf('route') >= 0}));
                                     vm.carlocation = sublocality.long_name;
-                                    sessionservice.applyscope($scope);
+                                    utility.applyscope($scope);
                                 }
                             }
                         });
-                        sessionservice.applyscope($scope);
+                        utility.applyscope($scope);
                     }
                     else {
                         vm.havelivedata = false;
@@ -224,7 +247,7 @@ define(['angular',
                     }
 
                     spinner.hide(); 
-                    sessionservice.applyscope($scope);
+                    utility.applyscope($scope);
                 });
             }
             
@@ -270,7 +293,7 @@ define(['angular',
 
                 distanceChartConfig();
                 spinner.hide();
-                sessionservice.applyscope($scope);
+                utility.applyscope($scope);
             }
 
             function distanceChartConfig(){
@@ -318,8 +341,12 @@ define(['angular',
             }
 
             function getDateRef() {
-                var parts = vm.selecteddate.split('/');
-                return moment(new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10))).format("YYYYMMDD");
+                if(vm.isdatesupport)
+                    return moment(vm.selecteddate).format("YYYYMMDD");
+                else {
+                    var parts = vm.selecteddate.split('/');
+                    return moment(new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10))).format("YYYYMMDD");
+                }
             }
 
             $scope.$on('$destroy', function iVeBeenDismissed() {

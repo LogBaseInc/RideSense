@@ -1,9 +1,9 @@
 define(['angular',
-    'config.route','moment'], function (angular, configroute, moment) {
+    'config.route'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('users', ['$rootScope','$scope', '$location', 'config', 'spinner', 'sessionservice', users]);
-        function users($rootScope, $scope, $location, config, spinner, sessionservice) {
+        configroute.register.controller('users', ['$rootScope','$scope', '$location', 'config', 'spinner', 'sessionservice', 'utility', users]);
+        function users($rootScope, $scope, $location, config, spinner, sessionservice, utility) {
             var vm = this;
             vm.users = [];
 
@@ -24,23 +24,23 @@ define(['angular',
             	vm.users = [];
                 for(var property in data) {
                     vm.users.push({
-                        email : sessionservice.getDecodeString(property),
+                        email : utility.getDecodeString(property),
                         admin: data[property].admin ? 'Admin' : 'Not admin',
                         status: data[property].joined ? 'Joined' : 'Invited',
                         joinedon : data[property].joined ? moment(data[property].joinedon).format('MMM DD, YYYY') : ''
                     });
                 }
                 spinner.hide();
-                sessionservice.applyscope($scope);
+                utility.applyscope($scope);
             }
 
             vm.adduser = function(){
-                sessionservice.setUserSelected(null);
+                utility.setUserSelected(null);
                 $location.path('/account/user');
             }
 
              vm.edituser = function (index) {
-                sessionservice.setUserSelected(vm.users[index]);
+                utility.setUserSelected(vm.users[index]);
                 $location.path('/account/user');
             }
         }

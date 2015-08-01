@@ -1,17 +1,16 @@
 define(['angular',
     'config.route',
-    'moment',
-    'lib'], function (angular, configroute, moment) {
+    'lib'], function (angular, configroute) {
     (function () {
-        configroute.register.controller('alerts', ['$rootScope', '$scope', '$location', 'config', 'spinner', 'notify', 'sessionservice', alerts]);
-        function alerts($rootScope, $scope, $location, config, spinner, notify, sessionservice) {
+        configroute.register.controller('alerts', ['$rootScope', '$scope', '$location', 'config', 'spinner', 'notify', 'sessionservice', 'utility', alerts]);
+        function alerts($rootScope, $scope, $location, config, spinner, notify, sessionservice, utility) {
             $rootScope.routeSelection = 'alerts';
             var vm = this;
             vm.showclosed = false;
             vm.alertsdata = null;
             vm.alertsummarydata= {};
             var submitted = false;
-            var alertslocation = sessionservice.getAlertsLocation();
+            var alertslocation = utility.getAlertsLocation();
 			var firebaseref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/alerts');
 			var mobilefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/mobile');
 
@@ -32,7 +31,7 @@ define(['angular',
 				  		vm.alertsdata = [];
 				  		vm.openalerts  = [];
 				  		vm.closedalerts = [];
-				  		sessionservice.applyscope($scope);
+				  		utility.applyscope($scope);
 				  	}
 				  		
 				}, function (errorObject) {
@@ -52,7 +51,7 @@ define(['angular',
 
 		 	function setMobileNumber (data) {
 		 		vm.mobilenumber = data;
-		 		sessionservice.applyscope($scope);
+		 		utility.applyscope($scope);
 		 	}
 
 		 	function setAlerts(data) {
@@ -111,7 +110,7 @@ define(['angular',
 
 		 		setAlertSummaryData();
 		 		spinner.hide();
-		 		sessionservice.applyscope($scope);
+		 		utility.applyscope($scope);
 		 	}
 
 		 	function getAlertText(alertType) {
@@ -147,12 +146,12 @@ define(['angular',
 		                    	location : alertobject.location,
 		                    	address : alertobject.address
 		                    });
-		                    sessionservice.setAlertsLocation(alertslocation);
-							sessionservice.applyscope($scope);		                }
+		                    utility.setAlertsLocation(alertslocation);
+							utility.applyscope($scope);		                }
 		            }
 		            else {
 		            	alertobject.location = 'Calculating...';
-		            	sessionservice.applyscope($scope);
+		            	utility.applyscope($scope);
 		            	console.log(status);
 		            }
 	            });
@@ -182,7 +181,7 @@ define(['angular',
 				else
 				    notify.success('Mobile number saved successfully');
 			  	
-			  	sessionservice.applyscope($scope);
+			  	utility.applyscope($scope);
 			};
 		
 		 	function setAlertSummaryData() {
