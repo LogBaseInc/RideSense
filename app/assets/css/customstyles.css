@@ -43,7 +43,7 @@ body, .tm-partials, .tm-live-map {
 }
 
 .tm-heading {
-    font-weight: bold;
+    font-weight: 500;
 }
 
 hr {

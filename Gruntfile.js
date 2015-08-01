@@ -58,8 +58,7 @@ module.exports = function (grunt) {
                         '<%= tempDir %>/app/assets/css/bootstrap.min.css',
                         '<%= tempDir %>/app/assets/css/datepicker.css',
                         '<%= tempDir %>/app/assets/css/toaster.min.css',
-                        '<%= tempDir %>/app/assets/css/offline-theme-default.css',
-                        '<%= tempDir %>/app/assets/css/RobotoSlab.css']
+                        '<%= tempDir %>/app/assets/css/offline-theme-default.css']
                 }
             }
         },

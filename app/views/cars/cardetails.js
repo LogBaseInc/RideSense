@@ -126,6 +126,11 @@ define(['angular',
                     $rootScope.selectedcar = "";
                     if(carLiveRef != "")
                         carLiveRef.off();
+                    
+                    vm.trips = [];
+                    vm.tripsBy3 = [];
+                    vm.tripsplit = [];
+
                     getAllCarDistanceDetails();
                 }
             }

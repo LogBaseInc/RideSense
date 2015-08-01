@@ -1,5 +1,6 @@
 define(['angular',
-    'config.route'], function (angular, configroute) {
+    'config.route',
+    'lib'], function (angular, configroute) {
     (function () {
 
         configroute.register.controller('devices', ['$rootScope','$scope', '$location', 'config', 'spinner', 'sessionservice', 'utility', devices]);

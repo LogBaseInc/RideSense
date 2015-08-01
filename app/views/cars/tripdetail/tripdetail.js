@@ -13,16 +13,29 @@ define(['angular',
             activate()
 
             function activate() {
+                utility.scrollToTop();
+                
                 $rootScope.routeSelection = 'cars';
                 $rootScope.tripdetails = true;
                 if($rootScope.selectedtrip) {
-                    vm.selecteddate = $rootScope.selecteddate;
+                    setSelectedDate();
                     vm.selectedtrip = $rootScope.selectedtrip;
                     getTripHistory();
                 }
                 else {
                     $location.path('/cars');
                 }
+            }
+
+            function setSelectedDate(){
+                var datefield=document.createElement("input")
+                datefield.setAttribute("type", "date")
+                if (datefield.type != "date"){ //if browser doesn't support input type="date", initialize date picker widget:
+                   vm.selecteddate = $rootScope.selecteddate;
+                }
+                else {
+                   vm.selecteddate = moment($rootScope.selecteddate).format('DD/MM/YYYY');
+               }
             }
 
             function getTripHistory() {

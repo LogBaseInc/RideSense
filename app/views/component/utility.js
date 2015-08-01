@@ -19,7 +19,8 @@ define(['angular'], function (angular) {
                 getUserSelected : getUserSelected,
                 setAccountName : setAccountName,
                 getAccountName : getAccountName,
-                closekeyboard : closekeyboard
+                closekeyboard : closekeyboard,
+                scrollToTop : scrollToTop
             };
             
             function applyscope($scope) {
@@ -104,7 +105,11 @@ define(['angular'], function (angular) {
                     element.blur(); 
                     element.removeAttr('readonly');
                     element.removeAttr('disabled');
-                }, 10);
+                }, 100);
+            }
+
+            function scrollToTop() {
+                $("html, body").animate({ scrollTop: 0 }, "fast");
             }
          }
     })();
