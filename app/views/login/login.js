@@ -36,10 +36,12 @@ define(['angular',
                     sessionservice.clear();
                 }
 
-                vm.login = function () {             
-                     spinner.show();
-                     submitted= true;
-                     loginservice.login(vm.userName, vm.password).then(getAccountId, loginfailed)
+                vm.login = function () {
+                    if(vm.canLogin) {             
+                        spinner.show();
+                        submitted= true;
+                        return loginservice.login(vm.userName, vm.password).then(getAccountId, loginfailed);
+                    }
                 };
 
                 function getAccountId(data) {

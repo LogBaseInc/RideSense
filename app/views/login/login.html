@@ -32,7 +32,7 @@
 
                                 <div class="form-group" data-ng-class="{ 'has-error': loginform.txtPassword.$invalid && loginform.txtPassword.$touched }">
                                     <span class="block input-icon input-icon-right">
-                                        <input type="password" class="form-control" id="txtPassword" data-ng-click="vm.hide();" name="txtPassword" data-ng-model="vm.password" required placeholder="Password">
+                                        <input type="password" class="form-control" id="txtPassword" data-ng-click="vm.hide();" name="txtPassword" data-ng-model="vm.password" required placeholder="Password" ng-enter="vm.login()">
                                     </span>
                                     <div data-ng-messages="loginform.txtPassword.$error" data-ng-if="vm.interacted(loginform.txtPassword)" class="error-messages">
                                         <div ng-message="required">Password required</div>
