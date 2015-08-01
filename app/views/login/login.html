@@ -2,11 +2,13 @@
     <div class="col-sm-10 col-sm-offset-1">
         <div class="login-container">
             <div class="center">
+                <br/>
                 <h1>
                     <img class="logoimage" style="height:30px" src = "assets/images/logo.png"></img>
-                    <span class="red">Stick</span>
+                    <span class="white">Stick</span>
                 </h1>
-                <h4 class="blue lighter" id="id-company-text">© LogBase</h4>
+                <h4 class="white">Tracking Simplified.</h4>
+                <br/>
             </div>
 
             <div class="space-6"></div>
@@ -17,7 +19,7 @@
                         <div class="widget-body">
                             <div class="widget-main"> 
                                 <h4 class="header blue lighter bigger">
-                                    Please Enter Your Information
+                                    Sign in to Stick Dashboard
                                 </h4>                          
                                 <div class="space-6"></div>
                                 <div class="form-group" data-ng-class="{ 'has-error': loginform.txtUsername.$invalid && loginform.txtUsername.$touched }">
@@ -25,8 +27,8 @@
                                         <input type="email" class="form-control" id="txtUsername" data-ng-click="vm.hide();" name="txtUsername" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" data-ng-model="vm.userName" required placeholder="Username">
                                     </span>
                                     <div data-ng-messages="loginform.txtUsername.$error" data-ng-if="vm.interacted(loginform.txtUsername)" class="error-messages">
-                                        <div ng-message="required">User name required</div>
-                                        <div ng-message="pattern">Enter a valid email id</div>
+                                        <div ng-message="required">Username required</div>
+                                        <div ng-message="pattern">Enter a valid Email ID</div>
                                     </div>
                                 </div>
 
@@ -40,10 +42,10 @@
                                 </div>
 
                                 <div class="space"></div>
-                                <center class="marginbottom10"><span ng-show="vm.success==false" class="errortext">The email or password you entered is incorrect!</span></center>
+                                <center class="marginbottom10"><span ng-show="vm.success==false" class="errortext">The email or password you entered is incorrect.</span></center>
                                 <div class="clearfix">                                        
                                     <button type="button" class="width-35 pull-right btn btn-sm btn-primary" data-ng-disabled="!vm.canLogin" data-ng-click="vm.login()">
-                                        <span class="bigger-110">Login</span>
+                                        <span class="bigger-110">Sign In</span>
                                     </button>
                                 </div>
                                 <div class="space-4"></div>
@@ -58,7 +60,7 @@
 
                             <div>
                                 <a href="" class="user-signup-link" data-ng-click="vm.signuplinkclicked()">
-                                    I want to register
+                                    I am a new user
                                     <i class="ace-icon glyphicon glyphicon-arrow-right"></i>
                                 </a>
                             </div>
@@ -78,7 +80,7 @@
 
                                 <div class="space-6"></div>
                                 <p>
-                                    Enter your email and to receive instructions
+                                    Password retrieval instructions will be sent to your email.
                                 </p>
 
                                 <div class="form-group" data-ng-class="{ 'has-error': forgotpassform.txtuseremail.$invalid && forgotpassform.txtuseremail.$touched }">
@@ -86,14 +88,14 @@
                                         <input type="email" class="form-control" placeholder="Email" data-ng-model="vm.useremail" name="txtuseremail" required ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/">
                                     </span>
                                     <div data-ng-messages="forgotpassform.txtuseremail.$error" data-ng-if="vm.interacted(forgotpassform.txtuseremail)" class="error-messages">
-                                        <div ng-message="required">User name required</div>
-                                        <div ng-message="pattern">Enter a valid email id</div>
+                                        <div ng-message="required">Username required</div>
+                                        <div ng-message="pattern">Enter a valid Email ID</div>
                                     </div>
                                 </div>
 
                                 <div class="clearfix">
                                     <button type="button" class="width-35 pull-right btn btn-sm btn-danger" data-ng-click="vm.forgotpassword()" data-ng-disabled="!vm.canResetPassword">
-                                        <span class="bigger-110">Send Me!</span>
+                                        <span class="bigger-110">Submit</span>
                                     </button>
                                 </div>
                             </data-ng-ifv>
@@ -118,7 +120,7 @@
                             </h4>
 
                             <div class="space-6"></div>
-                            <p> Enter your details to begin: </p>
+                            <!--<p> Enter your details to begin: </p>-->
 
                             <div class="form-group" data-ng-class="{ 'has-error': signupform.textaccountname.$invalid && signupform.textaccountname.$touched }">
                                 <span class="block input-icon input-icon-right">
@@ -134,8 +136,8 @@
                                     <input type="text" class="form-control" data-ng-model="vm.newuser.email" placeholder="Username" name="textnewemail" required ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/">
                                 </span>
                                 <div data-ng-messages="signupform.textnewemail.$error" data-ng-if="vm.interacted(signupform.textnewemail)" class="error-messages">
-                                    <div ng-message="required">User name required</div>
-                                    <div ng-message="pattern">Enter a valid email id</div>
+                                    <div ng-message="required">Username required</div>
+                                    <div ng-message="pattern">Enter a valid Email ID</div>
                                 </div>
                             </div>
 

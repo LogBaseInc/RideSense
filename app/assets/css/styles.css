@@ -2,7 +2,8 @@
   background-color: #1D2024;
 }
 .light-login {
-  background: #dfe0e2 url(images/pattern.jpg) repeat;
+  background: #dfe0e2 url(images/banner.jpg);
+  background-size:cover;
 }
 .login-layout .main-content {
   margin-left: 0!important;
@@ -47,6 +48,9 @@
 }
 .blue {
   color: #478fca!important;
+}
+.white {
+  color: White!important;
 }
 h4 {
   font-size: 18px !important;
