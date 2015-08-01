@@ -37,7 +37,8 @@ define(['angular',
                 }
 
                 vm.login = function () {
-                    if(vm.canLogin) {             
+                    if(vm.canLogin) {    
+                        utility.closekeyboard($('#txtPassword'));    
                         spinner.show();
                         submitted= true;
                         return loginservice.login(vm.userName, vm.password).then(getAccountId, loginfailed);
