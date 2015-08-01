@@ -1,18 +1,32 @@
 <div data-ng-controller="live as vm">
-	<div data-ng-if="vm.showmaps" class="livemapsearch">
+	<div data-ng-if="vm.showmaps" class="input-group livemapsearch">
+		<!--
 		<google-places data-ng-show="vm.locationsearch">
 		</google-places>
-		<input data-ng-show="vm.carsearch" id="txtcarsearch" type="text" class="input-block-level livecarsearch" placeholder="Search car..." data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars.models | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html"
-		typeahead-on-select="vm.carsearched($item, $model, $label)"/>
+		<div class="input-group input-block-level">
+			<input data-ng-show="vm.carsearch" id="txtcarsearch" type="text" class="input-block-level livecarsearch" placeholder="Search Car or Driver" data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars.models | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html"
+			typeahead-on-select="vm.carsearched($item, $model, $label)"/>
+		</div>
+		-->
+		<!--
 		<div class="carselectdiv">
 			<div class="carselect">
 				<button ng-class="{ 'btn btn-primary': vm.islocationsearhced, 'btn btn-default': !vm.islocationsearhced}" class="searchfilter" data-ng-click="vm.searchOptionChanged('location')" style="margin-right:-3px"><i class="glyphicon glyphicon-map-marker"></i></button>
 				<button ng-class="{ 'btn btn-primary': !vm.islocationsearhced, 'btn btn-default': vm.islocationsearhced}" data-ng-click="vm.searchOptionChanged('car')"><img style="width:18px" src="assets/images/car-front.png"></img></button>
 			</div>
 		</div>
+		-->
+		<google-places data-ng-show="vm.locationsearch">
+		</google-places>
+        <input type="text" class="form-control" placeholder="Search by Vehicle or Driver" data-ng-show="vm.carsearch" id="txtcarsearch" data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars.models | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html"
+			typeahead-on-select="vm.carsearched($item, $model, $label)" />
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-default" data-ng-click="vm.searchOptionChanged('location')"><span class="glyphicon glyphicon-map-marker"></span></button>
+		  <button type="button" class="btn btn-default" data-ng-click="vm.searchOptionChanged('car')"><span class="glyphicon glyphicon-user"></span></button>
+        </div><!-- /btn-group -->
 	</div>
 
-	<div class="container-fluid margintop30" data-ng-if="vm.showmaps">
+	<div class="container-fluid" data-ng-if="vm.showmaps">
 		<div class="row">
 			<div class="tm-live-map">
 				<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom'>
@@ -26,16 +40,18 @@
 	<div data-ng-if="vm.showmaps">
 		<div class="tm-location-marker">
 		    <a href="" data-ng-click="vm.showDragMarker()">
-				<img data-ng-hide="vm.dragMarker" src="assets/images/user-marker.png"></img>
-				<img data-ng-show="vm.dragMarker" src="assets/images/user-marker-remove.png"></img>
+				<img class="tm-user-marker" data-ng-hide="vm.dragMarker" src="assets/images/user-marker2.png"></img>
+				<img class="tm-user-marker" data-ng-show="vm.dragMarker" src="assets/images/user-marker2-remove.png"></img>
 			</a>
 		</div>
 
 		<div class="tm-live-summary">
 		    <p class="tm-live-today">Today
+		    	<!--
 		    	<img data-ng-if="vm.istracking" style="float:right" src="assets/images/green_dot.png">
 		    	<img data-ng-if="!vm.istracking" style="float:right" src="assets/images/reddot.png">
-			</p> 
+		    	-->
+			</p>
 				<h1 class="tm-live-distance">{{vm.distanceCovered}} 
 					<small class="tm-overlay-unit">km 
 						<span data-ng-show="vm.isUP" class="glyphicon glyphicon-arrow-up"></span>
@@ -43,6 +59,10 @@
 					</small>
 				</h1>
 			<h4>{{vm.activeCabs}} <small class="tm-overlay-unit">running</small> | {{vm.cars.models.length - vm.activeCabs}} <small class="tm-overlay-unit">idle</small></h4>
+			<div data-ng-if="!vm.istracking">
+				<hr class="tm-light-margin"/>
+				<small>Zoom in for live tracking.</small>
+			</div>
 		</div>
 	</div>
 </div>
@@ -50,6 +70,6 @@
 <script type="text/ng-template" id="typeaheadElement.html">
   <a class="typeheadanchor blackcolor">
    <img src="assets/images/car-front.png" style="margin-top:-4px" class="typeheadimage"></img>
-      <span>{{match.label}}</span>
+      &nbsp;&nbsp;<span>{{match.label}}</span>
   </a>
 </script>

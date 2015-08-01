@@ -422,11 +422,11 @@ hr {
 .logoimage {
     display:inline !important;
     margin-right:0px !important;
-    margin-bottom:4px !important;
+    margin-bottom:2px !important;
     height: 20px;
 }
 
-.logoimage-home {
+.logoimage-home {livemapsearch
     display:inline !important;
     margin-right:0px !important;
     margin-bottom:7px !important;
@@ -445,9 +445,14 @@ hr {
     font-weight:bold
 }
 
+/*
 .livemapsearch {
     border: 1px solid rgba(128, 128, 128, 0.34); 
     border-radius: 4px;
+}*/
+
+livemapsearch {
+    border: 1px solid rgba(128, 128, 128, 0.34); 
 }
 
 .livecarsearch {
@@ -503,6 +508,14 @@ hr {
     margin-right: -2px;
 }
 
+.tm-user-marker {
+    height: 50px;
+}
+
+.tm-light-margin {
+    margin-bottom: 5px !important;
+    margin-top: 0px !important;
+}
 
 
 

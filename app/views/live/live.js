@@ -206,7 +206,7 @@ define(['angular',
 			       latitude: 1000000000,
 			       longitude: 1000000000
 			    },
-		     	options: { draggable: true, icon: 'assets/images/user-marker-small.png' },
+		     	options: { draggable: true, icon: 'assets/images/user-marker2-small.png' },
 		     	events: {
 				        dragend: function (marker, eventName, args) {
 				        var lat = marker.getPosition().lat();
