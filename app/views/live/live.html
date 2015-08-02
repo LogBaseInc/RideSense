@@ -1,5 +1,5 @@
 <div data-ng-controller="live as vm">
-	<div data-ng-if="vm.showmaps" class="input-group livemapsearch">
+	<div data-ng-if="vm.showmaps" class="input-group input-group-lg livemapsearch">
 		<!--
 		<google-places data-ng-show="vm.locationsearch">
 		</google-places>
@@ -18,11 +18,11 @@
 		-->
 		<google-places data-ng-show="vm.locationsearch">
 		</google-places>
-        <input type="text" class="form-control" placeholder="Search by Vehicle or Driver" data-ng-show="vm.carsearch" id="txtcarsearch" data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars.models | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html"
+        <input type="text" class="form-control tm-search-text tm-no-outline" placeholder="Search by user" data-ng-show="vm.carsearch" id="txtcarsearch" data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars.models | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html"
 			typeahead-on-select="vm.carsearched($item, $model, $label)" />
         <div class="input-group-btn">
-          <button type="button" class="btn btn-default" data-ng-click="vm.searchOptionChanged('location')"><span class="glyphicon glyphicon-map-marker"></span></button>
-		  <button type="button" class="btn btn-default" data-ng-click="vm.searchOptionChanged('car')"><span class="glyphicon glyphicon-user"></span></button>
+          <button type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.searchOptionChanged('location')"><span class="glyphicon glyphicon-map-marker"></span></button>
+		  <button type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.searchOptionChanged('car')"><span class="glyphicon glyphicon-user"></span></button>
         </div><!-- /btn-group -->
 	</div>
 
@@ -69,7 +69,10 @@
 
 <script type="text/ng-template" id="typeaheadElement.html">
   <a class="typeheadanchor blackcolor">
+   <!--
    <img src="assets/images/car-front.png" style="margin-top:-4px" class="typeheadimage"></img>
+   -->
+   <span class="glyphicon glyphicon-user"></span>
       &nbsp;&nbsp;<span>{{match.label}}</span>
   </a>
 </script>

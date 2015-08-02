@@ -426,7 +426,7 @@ hr {
     height: 20px;
 }
 
-.logoimage-home {livemapsearch
+.logoimage-home {
     display:inline !important;
     margin-right:0px !important;
     margin-bottom:7px !important;
@@ -517,6 +517,11 @@ livemapsearch {
     margin-top: 0px !important;
 }
 
+.tm-search-text {
+    font-size: 15px !important;
+}
 
-
+.tm-no-outline {
+    outline: none !important;
+}
 
