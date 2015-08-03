@@ -307,7 +307,7 @@ define(['angular',
                         chart: {
                             type: 'column',
                             zoomType: 'x',
-                            //backgroundColor: 'WhiteSmoke',
+                            backgroundColor: '#EFEBE9',
                             marginBottom: 50,
                             events: {
                             load: function (event) {
@@ -340,7 +340,7 @@ define(['angular',
                     },
                     loading: false,
                     size: {
-                        height: 200
+                        height: 175
                     }
                 };
             }
