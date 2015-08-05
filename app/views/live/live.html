@@ -36,7 +36,7 @@
 					<span data-ng-hide="vm.isUP" class="glyphicon glyphicon-arrow-down"></span>
 				</small>
 			</h1>
-			<h4>{{vm.activeCabs}} <small class="tm-overlay-unit">running</small> | {{vm.cars.models.length - vm.activeCabs}} <small class="tm-overlay-unit">idle</small></h4>
+			<h4>{{vm.activeCabs}} <small class="tm-overlay-unit">running</small> | {{vm.activeCabs >=0 ? vm.cars.models.length - vm.activeCabs : vm.cars.models.length}} <small class="tm-overlay-unit">idle</small></h4>
 			<div data-ng-if="!vm.istracking">
 				<hr class="tm-light-margin"/>
 				<small>Zoom in for live tracking.</small>

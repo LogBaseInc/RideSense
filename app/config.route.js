@@ -159,7 +159,7 @@ define(['angular',
                      }
                  },
                  {
-                     url: '/account/user',
+                     url: '/account/collabroter',
                      config: {
                          templateUrl: 'views/account/users/user.html',
                          title: 'detail',

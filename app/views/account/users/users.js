@@ -39,12 +39,12 @@ define(['angular',
 
             vm.adduser = function(){
                 utility.setUserSelected(null);
-                $location.path('/account/user');
+                $location.path('/account/collabroter');
             }
 
              vm.edituser = function (index) {
                 utility.setUserSelected(vm.users[index]);
-                $location.path('/account/user');
+                $location.path('/account/collabroter');
             }
         }
     })();

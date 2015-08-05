@@ -1,8 +1,8 @@
 <div data-ng-controller="user as vm">
 	<div class="col-xs-12">
 		<form class="form-horizontal" name="userform">
-			<h4 data-ng-hide="vm.isEdit">Add user</h4>
-			<h4 data-ng-show="vm.isEdit">Edit user</h4>
+			<h5 class="tm-heading" data-ng-hide="vm.isEdit"><span class="glyphicon glyphicon-chevron-right"></span>Add Collabroter</h5>
+			<h5 class="tm-heading" data-ng-show="vm.isEdit"><span class="glyphicon glyphicon-chevron-right"></span>Edit Collabroter</h4>
 			<br/>
 			
 			<div class="form-group zeromargin" data-ng-class="{ 'has-error': userform.txtUsername.$invalid && userform.txtUsername.$touched }">
