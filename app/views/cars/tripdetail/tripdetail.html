@@ -1,15 +1,21 @@
 <div data-ng-controller="tripdetail as vm">
 	<div class="tm-live-map">
 		<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom'>
+			<ui-gmap-marker coords="vm.startmarker.coords" options="vm.startmarker.options" events="vm.startmarker.events" idkey="vm.startmarker.id"></ui-gmap-marker>
+			<ui-gmap-marker coords="vm.endmarker.coords" options="vm.endmarker.options" events="vm.endmarker.events" idkey="vm.endmarker.id"></ui-gmap-marker>
 		</ui-gmap-google-map>
 	</div>
 	
 	<div data-ng-if="vm.showmap" class="tm-live-summary">
-		<h3 style="margin-top:0px"> <span class="redtext">{{vm.selectedtrip.vehiclenumber}}</span>
-		<span> | {{vm.selectedtrip.distance}} Km</span></h3>
-    	<span>{{vm.selecteddate}} {{vm.selectedtrip.starttime}} > {{vm.selecteddate}} {{vm.selectedtrip.endtime}}</span>
-    	<br/>
-    	<span>{{vm.selectedtrip.startlocation}} > {{vm.selectedtrip.endlocation}}</span>
+		<p class="tm-live-today">{{vm.selectedtrip.vehiclenumber}}</p> 
+		<h1 class="tm-live-distance">{{vm.selectedtrip.distance}}
+			<small class="tm-overlay-unit">km </small>
+		</h1>
+    	<p class="tm-overlay-unit">{{vm.selecteddate}} {{vm.selectedtrip.starttime}} > {{vm.selecteddate}} {{vm.selectedtrip.endtime}}</p>
+    	<!--<span>{{vm.selectedtrip.startlocation}} > {{vm.selectedtrip.endlocation}}</span>-->
+    	<button type="button" class="btn btn-default btn-xs" style="background-color:rgba(204, 204, 204, 0.52)" data-ng-click="vm.gotoactivity()">
+			<i class="glyphicon glyphicon-arrow-left"></i> Back to activity
+		</button>
 	</div>
 </div>
 	

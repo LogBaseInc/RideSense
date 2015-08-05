@@ -24,6 +24,9 @@ body, .tm-partials, .tm-live-map {
     width: 100%;
     font-family: 'Roboto Slab' !important;
 }
+a {
+    text-decoration: none !important;
+}
 
 .navbar {
     margin-bottom: 0px;
@@ -112,18 +115,6 @@ hr {
     font-size: 12px;
     font-weight: bold;
 }
-
-.tm-marker-label-distance {
-    font-style: italic;
-    margin-top: 5px;
-    font-size: 12px;
-    background-color: white;
-    padding-left: 2px;
-    padding-right: 2px;
-    color : #5090C1 !important;
-    font-weight: bold;
-}
-
 
 .glyphicon-arrow-up {
     color: #689F38;
@@ -397,13 +388,13 @@ hr {
 }
 
 .typeheadanchor {
-    background-color: white !important; 
     padding-left: 5px !important; 
     border-top: 1px solid rgba(128, 128, 128, 0.38) !important; 
     padding-top: 10px !important; 
     height : 40px !important; 
     font-size: 13px !important; 
-    width: 100%
+    width: 100%;
+    cursor: pointer;
 }
 
 .typeheadimage {
@@ -445,13 +436,7 @@ hr {
     font-weight:bold
 }
 
-/*
 .livemapsearch {
-    border: 1px solid rgba(128, 128, 128, 0.34); 
-    border-radius: 4px;
-}*/
-
-livemapsearch {
     border: 1px solid rgba(128, 128, 128, 0.34); 
 }
 
@@ -524,4 +509,34 @@ livemapsearch {
 .tm-no-outline {
     outline: none !important;
 }
+
+div.callout {
+    background-color: white;
+    position: relative;
+    color: gray;
+    padding: 10px;
+    border-radius: 3px;
+    box-shadow: 0px 0px 20px #999;
+    margin: 25px;
+    border: 1px solid white;
+    z-index : 1;
+    font-size: 12px;
+    color : black !important;
+}
+
+.callout::before {
+    content: "";
+    width: 0px;
+    height: 0px;
+    border: 2.8em solid transparent;
+    position: absolute;
+}
+
+.callout.top::before {
+    left: -20px;
+    top: 14px;
+    border-right: 10px solid white;
+    z-index : -1;
+}
+
 

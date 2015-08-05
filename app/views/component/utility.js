@@ -17,8 +17,10 @@ define(['angular'], function (angular) {
                 getDeviceSelected : getDeviceSelected,
                 setUserSelected : setUserSelected,
                 getUserSelected : getUserSelected,
-                setAccountName : setAccountName,
-                getAccountName : getAccountName,
+                setTripDate : setTripDate,
+                getTripDate : getTripDate,
+                getTripSelected : getTripSelected,
+                setTripSelected : setTripSelected,
                 closekeyboard : closekeyboard,
                 scrollToTop : scrollToTop
             };
@@ -51,8 +53,6 @@ define(['angular'], function (angular) {
             function getEncodeString (text) {
                 return  Base64.encode(text);
             }
-
-            
 
             function setAlertsLocation(data) {
                 sessionStorage.setItem('alertlocation', angular.toJson(data, true));
@@ -90,12 +90,26 @@ define(['angular'], function (angular) {
                 return selecteduser                
             }
 
-            function setAccountName(name) {
-                sessionStorage.setItem('accountname', name);
+            function setTripDate(date) {
+                sessionStorage.setItem('tripdate', date);
             }
 
-            function getAccountName() {
-                return sessionStorage.getItem('accountname');
+            function getTripDate() {
+                var date = sessionStorage.getItem('tripdate');
+                if(date)
+                    date = new Date(date);
+                return date;
+            }
+
+            function getTripSelected() {
+                var selecteddtrip = sessionStorage.getItem('selecteddtrip');
+                if (selecteddtrip)
+                    selecteddtrip = angular.fromJson(selecteddtrip);
+                return selecteddtrip                
+            }
+
+            function setTripSelected(trip) {
+                sessionStorage.setItem('selecteddtrip', (trip != null ? angular.toJson(trip, true) : null));
             }
 
             function closekeyboard(element) {

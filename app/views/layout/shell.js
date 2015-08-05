@@ -17,13 +17,15 @@ define(['angular'], function () {
             vm.notnet = false;
             vm.online = false;
             vm.logout = logout;
-            vm.accountname = utility.getAccountName();
+            vm.accountname = sessionservice.getAccountName();
             vm.isAdmin = sessionservice.getRole();
             var timer;
 
             activate();
 
             function activate() { 
+                checkIfLoggedIn();
+
                 checkinternetstatus();
                 readalerts();
                 checkexpiry();
@@ -38,7 +40,7 @@ define(['angular'], function () {
                 var accountnamefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/name');
                 accountnamefbref.on("value", function(snapshot) {
                     vm.accountname = snapshot.val();
-                    utility.setAccountName(vm.accountname);
+                    sessionservice.setAccountName(vm.accountname);
                     utility.applyscope($scope);
                 }, function (errorObject) {
                     console.log("The account name read failed: " + errorObject.code);
@@ -179,18 +181,26 @@ define(['angular'], function () {
                 }
             });
 
-            // $scope.$on('$routeChangeStart', function (event, next, current) {
-            //     var isAnonymous = false;
-            //     if (next.$$route && next.$$route.allowAnonymous)
-            //         isAnonymous = next.$$route.allowAnonymous;
-            //     //alert(isAnonymous +' '+ vm.isLoggedIn)
-            //     if (!isAnonymous && !vm.isLoggedIn) {
-            //         event.preventDefault();
-            //         $rootScope.$evalAsync(function () {
-            //             $location.path('/login');
-            //         });
-            //     }
-            // });
+            $rootScope.$on('$routeChangeStart', function (event, next, current) {
+                vm.isloggedIn = sessionservice.isLoggedIn();
+                var isAnonymous = false;
+                if (next.$$route && next.$$route.allowAnonymous)
+                    isAnonymous = next.$$route.allowAnonymous;
+                if (!isAnonymous && vm.isloggedIn == 'false') {
+                    event.preventDefault();
+                    $rootScope.$evalAsync(function () {
+                        $location.path('/login');
+                    });
+                 }
+            });
+
+            function checkIfLoggedIn() {
+                var isactivate = $location.$$path.indexOf('/user/activate') >=0 ;
+                var islogin = $location.$$path.indexOf('login') >=0 ;
+                if(vm.isloggedIn == 'false' && !isactivate && !islogin) {
+                    $location.path('/login');
+                }
+            }
         }
     })();
 });

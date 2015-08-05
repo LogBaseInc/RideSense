@@ -27,8 +27,6 @@ define(['angular', 'config.route'], function (angular, configroute) {
                   dfd.reject(error);
                 else
                   dfd.resolve(authData);
-              },{
-                remember: "sessionOnly"                  
               });
               return dfd.promise;
             }

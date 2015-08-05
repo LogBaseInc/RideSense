@@ -33,7 +33,13 @@ define(['angular',
 
                 activate();
                 function activate(){
-                    sessionservice.clear();
+                    spinner.hide();
+                    if(sessionservice.isLoggedIn() == 'true') {
+                        $location.path('/live');
+                    }
+                    else {
+                        sessionservice.clear();
+                    }
                 }
 
                 vm.login = function () {

@@ -15,62 +15,64 @@ define(['angular', 'utility'], function (angular) {
                 getSessionExpiry : getSessionExpiry,
                 getaccountId : getaccountId,
                 getDevices : getDevices,
-                getRole : getRole
+                getRole : getRole,
+                setAccountName : setAccountName,
+                getAccountName : getAccountName,
             };
             
             function getDevices() {
                 var ref = new Firebase(config.firebaseUrl+'accounts/'+getaccountId()+'/devices');
                 ref.on("value", function(snapshot) {
-                    sessionStorage.setItem('devices', angular.toJson(snapshot.val(), true));
+                    localStorage.setItem('devices', angular.toJson(snapshot.val(), true));
                 }, function (errorObject) {
                     console.log("The devices read failed: " + errorObject.code);
                 });
             }
 
             function clear() {
-                sessionStorage.clear();
-                /*sessionStorage.setItem('loginstatus', false);
-                userIdentity = null;
+                localStorage.clear();
+                localStorage.setItem('loginstatus', 'false');
+                /*userIdentity = null;
                 $rootScope.$emit('login:status', {isloggedIn:false});
-                sessionStorage.setItem('accountid', null);
-                sessionStorage.setItem('devices', null);
-                sessionStorage.setItem('useridentity', null);
-                sessionStorage.setItem('selecteddevice', null);
-                sessionStorage.setItem('accountname', null);
-                sessionStorage.setItem('role', true);*/
+                localStorage.setItem('accountid', null);
+                localStorage.setItem('devices', null);
+                localStorage.setItem('useridentity', null);
+                localStorage.setItem('selecteddevice', null);
+                localStorage.setItem('accountname', null);
+                localStorage.setItem('role', true);*/
 
                 $('body').addClass('login-layout light-login');
             }
            
             function isLoggedIn() {
-                return sessionStorage.getItem('loginstatus');
+                return localStorage.getItem('loginstatus');
             }
 
             function setSession(authdata, accountId) {
                 userIdentity = authdata;
-                sessionStorage.setItem('loginstatus', true);
-                sessionStorage.setItem('useridentity', angular.toJson(userIdentity, true));
-                sessionStorage.setItem('accountid', accountId);
+                localStorage.setItem('loginstatus', 'true');
+                localStorage.setItem('useridentity', angular.toJson(userIdentity, true));
+                localStorage.setItem('accountid', accountId);
                 getDevices();
                 setRole();
-                $rootScope.$emit('login:status', {isloggedIn:true});
+                $rootScope.$emit('login:status', {isloggedIn:'true'});
                 $('body').removeClass('login-layout light-login');
             }
 
             function getaccountId() {
-                return  sessionStorage.getItem('accountid');
+                return  localStorage.getItem('accountid');
             }
 
             function getSession() {
                 var session = null;
-                var user = sessionStorage.getItem('useridentity');
+                var user = localStorage.getItem('useridentity');
                 if (user)
                     session = angular.fromJson(user);                
                 return session
             }
 
             function getSessionExpiry() {
-                var user = sessionStorage.getItem('useridentity');
+                var user = localStorage.getItem('useridentity');
                 if(user)
                     return angular.fromJson(user).expires;
                 else
@@ -78,7 +80,7 @@ define(['angular', 'utility'], function (angular) {
             }
 
             function getAccountDevices() {
-                var devices = sessionStorage.getItem('devices');
+                var devices = localStorage.getItem('devices');
                 if (devices)
                     devices = angular.fromJson(devices);                
                 return (devices == null ? [] : devices);
@@ -90,7 +92,7 @@ define(['angular', 'utility'], function (angular) {
                     var adminfbref = new Firebase(config.firebaseUrl+'accounts/'+getaccountId()+'/users/'+username+'/admin');
                     adminfbref.once("value", function(snapshot) {
                         var isadmin = snapshot.val() != null ? snapshot.val() : true;
-                        sessionStorage.setItem('role', isadmin);
+                        localStorage.setItem('role', isadmin);
                         $rootScope.$emit('login:role', {role: isadmin});
 
                     }, function(errorObject) {
@@ -101,15 +103,24 @@ define(['angular', 'utility'], function (angular) {
 
             function getEncodedusername() {
                 var session = null;
-                var user = sessionStorage.getItem('useridentity');
+                var user = localStorage.getItem('useridentity');
                 if (user)
                     session = angular.fromJson(user);                
                 return session != null ? utility.getEncodeString(session.password.email) : null;
             }
 
             function getRole() {
-                var role = sessionStorage.getItem('role');
+                var role = localStorage.getItem('role');
                 return role != null ? (role == 'true' ? true : false) : true;
+            }
+
+
+            function setAccountName(name) {
+                localStorage.setItem('accountname', name);
+            }
+
+            function getAccountName() {
+                return localStorage.getItem('accountname');
             }
          }
     })();

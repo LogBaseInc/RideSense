@@ -23,46 +23,32 @@ define(['angular',
                 $rootScope.routeSelection = 'cars';
                 isDateFiledSupported();
 
-                if($rootScope.tripdetails == false) {
-                    $rootScope.selecteddate = null;
-                    $rootScope.selectedcar = null;
-                }
-
-                setSelectedDate();
-
                 if($routeParams.selectedcar) {
                     vm.showallcars = false;
-                    $rootScope.selectedcar = $routeParams.selectedcar;
                     vm.carsearchselected = $routeParams.selectedcar;
-                }
-                else if($rootScope.selectedcar) {
-                    vm.showallcars = false;
-                    vm.carsearchselected = $rootScope.selectedcar;
                 }
                 else {
                     vm.showallcars = true;
                     getAllCarDistanceDetails();
                 }
 
-                $rootScope.tripdetails = false;
+                setSelectedDate();
+
                 getCarList();
                 vm.totalcars = Object.keys(sessionservice.getAccountDevices()).length;
             }
 
             function setSelectedDate() {
-                if($rootScope.selecteddate) {
-                    vm.selecteddate  = $rootScope.selecteddate;
-                }
-                else {
+                if(vm.showallcars == false && utility.getTripDate()) 
+                    vm.selecteddate  = utility.getTripDate();
+                else
                     setTodayDate();
-                    $rootScope.selecteddate  = vm.selecteddate;
-                }
             }
 
             function isDateFiledSupported(){
                 var datefield=document.createElement("input")
                 datefield.setAttribute("type", "date")
-                if (datefield.type != "date"){ //if browser doesn't support input type="date", initialize date picker widget:
+                if (datefield.type != "date") { //if browser doesn't support input type="date"
                    vm.isdatesupport = false;
                 }
                 else
@@ -78,14 +64,13 @@ define(['angular',
                 utility.closekeyboard($('#txtcarsearch'));
 
                 setTodayDate();
-                $rootScope.selecteddate  = vm.selecteddate;
 
                 vm.showallcars = false;
                 vm.selectedcar = $item;
-                $rootScope.selectedcar = $item.vehiclenumber;
                 vm.totalDistance = 0;
                 allcaractivityref.off("value");
-                vm.carlocation = 'Locating...'
+                vm.carlocation = 'Locating...';
+
                 getCarLiveData();
                 getCarDistanceDetail(vm.selectedcar.devicenumber);
                 getTrips(vm.selectedcar.devicenumber);
@@ -108,22 +93,21 @@ define(['angular',
                 }
                 else 
                     vm.selecteddate = date;
-
-                $rootScope.selecteddate = date
                 getTrips(vm.selectedcar.devicenumber);
             }
 
             vm.tripClicked = function (trip) {
-                $rootScope.selectedtrip = trip;
-                $location.path('/car/trip');
+                utility.setTripSelected(trip);
+                utility.setTripDate(vm.selecteddate);
+                $location.path('/car/trip/'+vm.selectedcar.vehiclenumber);
             }
 
             vm.clearcar = function() {
                 if(vm.showallcars == false) {
                     vm.showallcars = true;
                     vm.carsearchselected = null;
-                    $rootScope.selecteddate = "";
-                    $rootScope.selectedcar = "";
+                    utility.setTripDate(null);
+
                     if(carLiveRef != "")
                         carLiveRef.off();
                     
@@ -138,8 +122,8 @@ define(['angular',
             vm.gotoCarDetail = function () {
                 if(carLiveRef != "")
                     carLiveRef.off();
-                $rootScope.selecteddevice = vm.selectedcar.devicenumber;
-                $location.path('/car/detail');
+                utility.setTripDate(vm.selecteddate);
+                $location.path('/car/detail/'+vm.selectedcar.devicenumber+'/'+vm.selectedcar.vehiclenumber);
             }
 
             function getCarLiveData(){
@@ -191,16 +175,13 @@ define(['angular',
                         type : 'Car'
                     };
 
-                    if($rootScope.selectedcar == devices[property].vehiclenumber) {
+                    if(vm.carsearchselected == devices[property].vehiclenumber) {
                         vm.selectedcar = cardetail;
                         getCarLiveData();
                         getCarDistanceDetail(vm.selectedcar.devicenumber);
                     }
-
-                    if($rootScope.selecteddate) {
-                        vm.selecteddate = $rootScope.selecteddate;
+                    if(vm.showallcars == false)
                         getTrips(vm.selectedcar.devicenumber);
-                    }
 
                     vm.cars.push(cardetail);
                     vm.cars.push({
@@ -235,7 +216,11 @@ define(['angular',
                                 startlocation : data[property].startaddress,
                                 endlocation : data[property].endaddress,
                                 vehiclenumber : vm.selectedcar.vehiclenumber,
-                                devicenumber : devicenumber
+                                devicenumber : devicenumber,
+                                startlatitude : data[property].startlatitude,
+                                startlongitude : data[property].startlongitude,
+                                endlatitude : data[property].endlatitude,
+                                endlongitude : data[property].endlongitude,
                             };
                             vm.trips.push(tripdetail);
                             vm.tripsplit.push(tripdetail);

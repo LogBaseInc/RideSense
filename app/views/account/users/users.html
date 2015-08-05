@@ -1,18 +1,12 @@
 <div data-ng-controller="users as vm">
-	<div class="col-xs-12 mydevicespace" data-ng-show="vm.users.length > 0">
-		<h4 class="displayline">Users</h4>
-		<a href="" data-ng-click="vm.adduser()"><img class="marginleft5" src="assets/images/plus.png"></img></a>
+    <div class="input-group input-group-lg livemapsearch">
+		<input type="text" class="form-control tm-search-text tm-no-outline fullwidth" placeholder="Search email / role / status" data-ng-model="search" />
+	    <div class="input-group-btn">
+	    	<button type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.adduser()"><span class="glyphicon glyphicon-plus"></span></button>
+	    </div>
 	</div>
-	<div class="form-group col-xs-12" data-ng-show="vm.users.length > 0">
-        <div class="input-group blueborder">
-            <input type="text" class="form-control" placeholder="Search email / role / status" id="inputGroup" data-ng-model="search"/>
-            <span class="input-group-addon">
-                <i class="glyphicon glyphicon-search"></i>
-            </span>
-        </div>
-    </div>
-    
-	<div class="col-xs-12 fullwidth">
+    <br/>
+	<div class="col-xs-12 fullwidth zeropadding">
 		<div class="tm-alerts-summary devicelistbox" data-ng-repeat="user in vm.users | filter:search">
 			<div class="marginleft10" data-ng-click="vm.edituser($index)">
 				<h4>{{user.email}}</h4>
@@ -26,8 +20,7 @@
 			</div>
 		</div>
 	</div>
-
-	<div class="col-xs-12" data-ng-show="vm.users.length == 0">
-		<center style="margin-top:200px">No users available. Click <a href="" class="marginright5" data-ng-click="vm.adduser()"><img class="marginleft5" src="assets/images/plus.png"></img></a>to add new user</center>
+	<div class="col-xs-12" data-ng-show="vm.shownousers">
+		<center>No collabroters available. Click + on the search bar to add new.</center>
 	</div>
 </div>

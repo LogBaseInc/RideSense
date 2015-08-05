@@ -12,7 +12,7 @@ define(['angular',
             var userfberef;
             vm.emailsused = [];
             var accountId = sessionservice.getaccountId();
-            var accountname = utility.getAccountName();
+            var accountname = sessionservice.getAccountName();
 
             Object.defineProperty(vm, 'canAdd', {
                 get: canAdd
@@ -117,7 +117,7 @@ define(['angular',
                 submitted = false;
                 spinner.hide();
                 notify.success('User updated successfully');
-                $location.path('/account/users');
+                $location.path('/account/detail');
             }
 
             vm.deleteuser = function() {
@@ -144,7 +144,7 @@ define(['angular',
                     ubmitted = true;
                     spinner.hide();
                     notify.success('User deleted successfully');
-                    $location.path('/account/users');
+                    $location.path('/account/detail');
                 }
                 else {
                     notify.error('Something went wrong, please try after some time');
@@ -155,7 +155,7 @@ define(['angular',
                 submitted = false;
                 spinner.hide();
                 notify.success('User added successfully. Invite email send');
-                $location.path('/account/users');
+                $location.path('/account/detail');
             }
 
             function sendUserInviteEmailFailed() {

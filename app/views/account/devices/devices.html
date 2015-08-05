@@ -1,17 +1,11 @@
 <div data-ng-controller="devices as vm">
-	<div class="col-xs-12 mydevicespace" data-ng-show="vm.devices.length > 0">
-		<h4 class="displayline">My Devices</h3>
-		<a href="" data-ng-click="vm.buydevice()"><img class="marginleft5" src="assets/images/plus.png"></img></a>
+	<div class="input-group input-group-lg livemapsearch" data-ng-show="vm.devices.length > 0">
+		<input type="text" class="form-control tm-search-text tm-no-outline fullwidth" placeholder="Search car number / device number / driver name" data-ng-model="search" />
+	    <div class="input-group-btn">
+	    	<button type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.buydevice()"><span class="glyphicon glyphicon-plus"></span></button>
+	    </div>
 	</div>
-	<div class="form-group col-xs-12" data-ng-show="vm.devices.length > 0">
-        <div class="input-group blueborder">
-            <input type="text" class="form-control" placeholder="Search car number / device number / driver name" id="inputGroup" data-ng-model="search">
-            <span class="input-group-addon">
-                <i class="glyphicon glyphicon-search"></i>
-            </span>
-        </div>
-    </div>
-    
+    <br/>
 	<div class="col-xs-12 fullwidth">
 		<div class="tm-alerts-summary devicelistbox" data-ng-repeat="device in vm.devices | filter:search">
 			<div class="marginleft10" data-ng-click="vm.editdevice($index)">

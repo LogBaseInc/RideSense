@@ -1,12 +1,14 @@
 define(['angular',
-    'config.route'], function (angular, configroute) {
+    'config.route',
+    'lib'], function (angular, configroute) {
     (function () {
 
         configroute.register.controller('users', ['$rootScope','$scope', '$location', 'config', 'spinner', 'sessionservice', 'utility', users]);
         function users($rootScope, $scope, $location, config, spinner, sessionservice, utility) {
             var vm = this;
             vm.users = [];
-
+            vm.shownousers =
+             false;
             activate();
 
             function activate(){
@@ -30,6 +32,7 @@ define(['angular',
                         joinedon : data[property].joined ? moment(data[property].joinedon).format('MMM DD, YYYY') : ''
                     });
                 }
+                vm.shownousers = vm.users.length <=0 ;
                 spinner.hide();
                 utility.applyscope($scope);
             }

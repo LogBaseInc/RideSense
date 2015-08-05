@@ -3,8 +3,8 @@ define(['angular',
     'lib'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('carmap', ['$compile', '$rootScope', '$scope', '$location', 'config', 'spinner', 'uiGmapIsReady', 'uiGmapGoogleMapApi', 'sessionservice', 'utility', carmap]);
-        function carmap($compile, $rootScope, $scope, $location, config, spinner, uiGmapIsReady, uiGmapGoogleMapApi, sessionservice, utility) {
+        configroute.register.controller('carmap', ['$compile', '$rootScope', '$scope', '$routeParams', '$location', 'config', 'spinner', 'uiGmapIsReady', 'uiGmapGoogleMapApi', 'sessionservice', 'utility', carmap]);
+        function carmap($compile, $rootScope, $scope, $routeParams, $location, config, spinner, uiGmapIsReady, uiGmapGoogleMapApi, sessionservice, utility) {
         	$rootScope.routeSelection = 'live'
 	        var vm = this;
 		 	vm.distanceCovered = 0;
@@ -18,20 +18,15 @@ define(['angular',
 
 		 	function activate(){
 		 		$rootScope.routeSelection = 'cars';
-		 		if($rootScope.selecteddevice) {
-			 		$rootScope.tripdetails = true;
-				 	spinner.show();
-				 	getCarDistance();
-					getlivecardata();
-				}
-				else {
-                    $location.path('/cars');
-                }
+		 		$rootScope.tripdetails = true;
+			 	spinner.show();
+			 	getCarDistance();
+				getlivecardata();
 		 	}
 
 		 	function getCarDistance() {
 		 		var date = moment(new Date()).format('YYYYMMDD');
-		 		distanceref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/devices/'+$rootScope.selecteddevice+'/daily/'+date);
+		 		distanceref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/devices/'+$routeParams.devicenumber+'/daily/'+date);
 		 		distanceref.on("value", function(snapshot) {
 					var data = snapshot.val();
 					if(data) {
@@ -45,7 +40,7 @@ define(['angular',
 		 	}
 
 		 	function getlivecardata() {
-		 		ref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars/'+$rootScope.selecteddevice);
+		 		ref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars/'+$routeParams.devicenumber);
 				ref.on("value", function(snapshot) {
 					var data = snapshot.val();
 					if(data) {
@@ -68,7 +63,14 @@ define(['angular',
 				       latitude: vm.cardetail.latitude,
 				       longitude: vm.cardetail.longitude
 				    },
-			     	options: { draggable: false, icon: (vm.cardetail.running ? 'assets/images/car-moving.png' : 'assets/images/car-parked.png')},
+			     	options: { 
+			     		draggable: false, 
+			     		icon: (vm.cardetail.running ? 'assets/images/car-moving.png' : 'assets/images/car-parked.png'),
+		     		  	labelContent: $routeParams.carnumber,
+                        labelAnchor: '22 0',
+                        labelClass: 'tm-marker-label',
+                        labelVisible: true
+			     	},
 			     	events: {
 				        click: function (marker, eventName, args) {
 						    var latlng = new google.maps.LatLng(vm.marker.coords.latitude, vm.marker.coords.longitude);
@@ -91,6 +93,10 @@ define(['angular',
 			    };
 			}
 
+			vm.gotoActivity = function() {
+				$location.path('/cars/'+$routeParams.carnumber);
+			}
+
 			function getTimeStamp(unixtimestamp){
 				return moment((unixtimestamp)).fromNow();
 		 	}
@@ -110,10 +116,6 @@ define(['angular',
 			    directionsService = new google.maps.DirectionsService();
 			    mapinstance = instances[0].map;
     		});
-
-    		$rootScope.$on('search:location', function (event, data) {
-			    setGoogleMaps(data.lat, data.lng, 15);
-			});
 
 			$scope.$on('$destroy', function iVeBeenDismissed() {
                 if(ref)

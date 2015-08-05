@@ -33,7 +33,7 @@
 	            <button data-ng-hide="vm.isEdit" type="button" class="btn btn-primary" ng-click="vm.adduser();" data-ng-disabled="!vm.canAdd">Add</button>
 	            <button data-ng-show="vm.isEdit" type="button" class="btn btn-primary" ng-click="vm.edituser();" data-ng-disabled="!vm.canAdd">Update</button>
 	            <button data-ng-show="vm.isEdit" type="button" class="btn btn-default" ng-click="vm.resendemail();">Resend email</button>
-	            <a type="button" class="btn btn-default"  data-ng-disabled="!vm.canAdd" href="#/account/users">Cancel</a>
+	            <a type="button" class="btn btn-default"  data-ng-disabled="!vm.canAdd" href="#/account/detail">Cancel</a>
 	           	<button data-ng-show="vm.isEdit" type="button" class="btn btn-default" data-ng-disabled="!vm.canAdd" ng-click="vm.deleteuser();">Delete</button>
 	        </center>
 	        <center data-ng-show="vm.isdelete">

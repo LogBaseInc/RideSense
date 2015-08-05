@@ -1,5 +1,6 @@
 define(['angular',
-    'config.route'], function (angular, configroute) {
+    'config.route',
+    'views/account/users/users'], function (angular, configroute) {
     (function () {
 
         configroute.register.controller('accountdetail', ['$scope', '$location', 'config', 'notify', 'spinner', 'sessionservice', 'utility', accountdetail]);

@@ -193,7 +193,7 @@ define(['angular',
 				 	for(var i=0; i<idleCarlist.length; i++){
 						idleCarlist[i].options.labelContent = idleCarlist[i].title;
 						idleCarlist[i].options.labelClass = 'tm-marker-label';
-						idleCarlist[i].options.labelAnchor = '0 0'
+						idleCarlist[i].options.labelAnchor = '22 0'
 					}
 					idleCarlist=[];
 					clearRoutes();
@@ -246,9 +246,9 @@ define(['angular',
 				 	time : getTimeStamp(livecarobj.locationtime),
 				 	options: {
 					   	labelContent: vehiclenumber, 
-					   	labelClass: ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
+					   	labelClass: ((isIdle && vm.dragMarker) ? 'tm-overlay-unit' : 'tm-marker-label'),
 					   	icon: (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
-					   	labelAnchor: ((isIdle && vm.dragMarker) ? '20 60' : '0 0')
+					   	labelAnchor: ((isIdle && vm.dragMarker) ? '60 125' : '22 0')
 					}
 				}
 			}
@@ -292,30 +292,29 @@ define(['angular',
 						if(element.status == 'OK' && element.distance.value <= 5000) {
 							var distance = element.distance.text;
 							var duration = element.duration.text;
-							idleCarlist[i].options.labelContent = idleCarlist[i].title + '<div>'+distance + ' | '+duration +'</div>';
-							idleCarlist[i].options.labelClass = 'tm-marker-label-distance';
-							idleCarlist[i].options.labelAnchor = '20 60';
+							idleCarlist[i].options.labelContent = '<div class="callout top">'+idleCarlist[i].title + '<br/>'+distance + ' | '+duration +'</div>';
+							idleCarlist[i].options.labelClass = 'tm-overlay-unit';
+							idleCarlist[i].options.labelAnchor = '60 125';
 						}
 						else if(element.status == 'OK' && element.distance.value > 5000) {
 							var distance = element.distance.text;
 							var duration = element.duration.text;
-							idleCarlist[i].options.labelContent = idleCarlist[i].title + '<div>> 5 km</div>';
-							idleCarlist[i].options.labelClass = 'tm-marker-label-distance';
-							idleCarlist[i].options.labelAnchor = '20 60';
+							idleCarlist[i].options.labelContent = '<div class="callout top">'+idleCarlist[i].title + '<br/>> 5 km</div>';
+							idleCarlist[i].options.labelClass = 'tm-overlay-unit';
+							idleCarlist[i].options.labelAnchor = '60 125';
 						}
 						else if (element.status == 'ZERO_RESULTS') {
-							idleCarlist[i].options.labelContent = idleCarlist[i].title + '<div>Not found</div>';
-							idleCarlist[i].options.labelClass = 'tm-marker-label-distance';
-							idleCarlist[i].options.labelAnchor = '20 60';
+							idleCarlist[i].options.labelContent = '<div class="callout top">'+idleCarlist[i].title + '<br/>Not found</div>';
+							idleCarlist[i].options.labelClass = 'tm-overlay-unit';
+							idleCarlist[i].options.labelAnchor = '60 125';
 						}
 						else {
 							idleCarlist[i].options.labelContent = idleCarlist[i].title;
 							idleCarlist[i].options.labelClass = 'tm-marker-label';
-							idleCarlist[i].options.labelAnchor = '0 0'
+							idleCarlist[i].options.labelAnchor = '22 0'
 						}
 					}
 				}
-				notify.success('Distance and time updated');
 				utility.applyscope($scope);
 			}
 
@@ -390,9 +389,9 @@ define(['angular',
 					 	cardetail.isIdle = isIdle;
 					 	if(cardetail.isIdle === false)
 						 	cardetail.options.labelContent = cardetail.title;
-					 	cardetail.options.labelClass = ((isIdle && vm.dragMarker) ? 'tm-marker-label-distance' : 'tm-marker-label'),
+					 	cardetail.options.labelClass = ((isIdle && vm.dragMarker) ? 'tm-overlay-unit' : 'tm-marker-label'),
 					   	cardetail.options.icon = (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
-					   	cardetail.options.labelAnchor = ((isIdle && vm.dragMarker) ? '20 80' : '0 0')
+					   	cardetail.options.labelAnchor = ((isIdle && vm.dragMarker) ? '60 125' : '22 0')
 				 	}
 				  	utility.applyscope($scope);
 				}

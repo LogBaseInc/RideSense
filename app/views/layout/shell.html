@@ -18,7 +18,7 @@
 		    </div>
 
             <div class="main-content zeropadding">
-            	<nav class="navbar navbar-default marginbottom0" data-ng-show="vm.isloggedIn">
+            	<nav class="navbar navbar-default marginbottom0" data-ng-show="vm.isloggedIn == 'true'">
 			      <div class="container-fluid">
 			        <div class="navbar-header">
 			          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
@@ -40,7 +40,6 @@
 			              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{vm.accountname}}<span class="caret"></span></a>
 			              <ul class="dropdown-menu" role="menu">
 			                <li data-ng-if="vm.isAdmin"><a href="#/account/devices">Manage devices</a></li>
-			                <li data-ng-if="vm.isAdmin"><a href="#/account/users" style="margin-top:5px">Manage users</a></li>
 			                <li data-ng-if="vm.isAdmin"><a href="#/account/detail" style="margin-top:5px">Edit your account</a></li>
 			                <li data-ng-if="vm.isAdmin" class="divider"></li>
 			                <li><a href="" data-ng-click="vm.logout()">Sign Out</a></li>

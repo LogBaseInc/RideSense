@@ -51,6 +51,15 @@ define(['angular',
                      }
                  },
                  {
+                     url: '/user/activate/:accountId?/:email?',
+                     config: {
+                         templateUrl: 'views/account/users/activateuser.html',
+                         title: 'detail',
+                         controllerUrl: 'views/account/users/activateuser',
+                         allowAnonymous: true
+                     }
+                 },
+                 {
                      url: '/account/devices',
                      config: {
                          templateUrl: 'views/account/devices/devices.html',
@@ -132,7 +141,7 @@ define(['angular',
                      }
                  },
                  {
-                     url: '/car/trip',
+                     url: '/car/trip/:carnumber',
                      config: {
                          templateUrl: 'views/cars/tripdetail/tripdetail.html',
                          title: 'trip',
@@ -141,20 +150,11 @@ define(['angular',
                      }
                  },
                  {
-                     url: '/car/detail',
+                     url: '/car/detail/:devicenumber/:carnumber',
                      config: {
                          templateUrl: 'views/cars/carmap/carmap.html',
                          title: 'detail',
                          controllerUrl: 'views/cars/carmap/carmap',
-                         allowAnonymous: false
-                     }
-                 },
-                 {
-                     url: '/account/users',
-                     config: {
-                         templateUrl: 'views/account/users/users.html',
-                         title: 'detail',
-                         controllerUrl: 'views/account/users/users',
                          allowAnonymous: false
                      }
                  },
@@ -165,15 +165,6 @@ define(['angular',
                          title: 'detail',
                          controllerUrl: 'views/account/users/user',
                          allowAnonymous: false
-                     }
-                 },
-                 {
-                     url: '/user/activate/:accountId?/:email?',
-                     config: {
-                         templateUrl: 'views/account/users/activateuser.html',
-                         title: 'detail',
-                         controllerUrl: 'views/account/users/activateuser',
-                         allowAnonymous: true
                      }
                  },
                  {

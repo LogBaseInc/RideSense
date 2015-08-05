@@ -1,7 +1,7 @@
 <div data-ng-controller="accountdetail as vm">
-	<div class="col-xs-12">
+	<div class="col-xs-12 col-md-6">
 		<form class="form-horizontal" name="accountform">
-			<h4>Account details</h4>
+			<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Account Details</h5>
 			</br>
 			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textaccountname.$invalid && accountform.textaccountname.$touched }">
 				<label class="col-md-3 control-label">Account name</label>
@@ -12,9 +12,6 @@
                     </div>
             	</div>
 			</div>
-			</br>
-			<h4>Contact Address</h4>
-			</br>
 			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textname.$invalid && accountform.textname.$touched }">
 				<label class="col-md-3 control-label">Name</label>
 				<div class="col-md-6">
@@ -46,11 +43,15 @@
 			</div>
 		</form>
 		<div>
-		 	</br>
 		 	<center>
 	            <button type="button" class="btn btn-primary" ng-click="vm.update();" data-ng-disabled="!vm.canupdate">Update</button>
 	            <a type="button" class="btn btn-default" href="#/account/changepassword">Change password</a>
 	        </center>
         </div>
+        <br/>
+    </div>
+	<div class="col-xs-12 col-md-6">
+        <h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Collabroters</h5>
+        <div data-ng-include="'views/account/users/users.html'"></div>
 	</div>
 </div>
