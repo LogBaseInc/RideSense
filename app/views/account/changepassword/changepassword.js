@@ -1,10 +1,11 @@
   define(['angular',
     'config.route',
+    'lib',
     'views/services/loginservice'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('changepassword', ['$rootScope', '$scope', '$location', 'config', 'notify', 'spinner', 'sessionservice', 'loginservice', changepassword]);
-        function changepassword($rootScope, $scope, $location, config, notify, spinner, sessionservice, loginservice) {
+        configroute.register.controller('changepassword', ['$rootScope', '$scope', '$location', 'config', 'notify', 'spinner', 'sessionservice', 'loginservice', 'utility', changepassword]);
+        function changepassword($rootScope, $scope, $location, config, notify, spinner, sessionservice, loginservice, utility) {
             var submitted = false;
             var email = ""
             var vm = this;
@@ -25,7 +26,7 @@
                 accountemailfbref.once("value", function(snapshot) {
                     email = snapshot.val();
                 }, function (errorObject) {
-                    console.log("The account name read failed: " + errorObject.code);
+                    utility.errorlog("The account name read failed: " , errorObject);
                 });
             }
 

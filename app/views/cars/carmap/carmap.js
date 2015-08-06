@@ -35,7 +35,7 @@ define(['angular',
 					}
 
 				}, function (errorObject) {
-				  	console.log("The distance read failed: " + errorObject.code);
+				  	utility.errorlog("The distance read failed: " , errorObject);
 				});
 		 	}
 
@@ -52,7 +52,7 @@ define(['angular',
 					}
 
 				}, function (errorObject) {
-				  	console.log("The livecars read failed: " + errorObject.code);
+				  	utility.errorlog("The livecars read failed: " , errorObject);
 				});
 		 	}
 

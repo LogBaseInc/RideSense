@@ -1,5 +1,5 @@
 require.config({
-    urlArgs: '3.5',
+    urlArgs: '3.8',
     waitSeconds: 0,
     paths: {
         angular: '../bower_components/angular/angular',
@@ -20,7 +20,8 @@ require.config({
         'moment' :'scripts/moment',
         'bootstrap-datepicker': 'scripts/bootstrap-datepicker',
         'directives': 'views/directives/directives',
-        'utility' : 'views/component/utility'
+        'utility' : 'views/component/utility',
+        'loggly' : '../bower_components/angular-loggly-logger/angular-loggly-logger'
     },
     shim: {
         angular: {
@@ -47,6 +48,7 @@ require.config({
             exports: 'Spinner'
         },
         'toaster': ['angular','angular-animate'],
+        'loggly': ['angular'],
     },
 });
 

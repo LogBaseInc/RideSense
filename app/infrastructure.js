@@ -8,5 +8,6 @@ define([
     'jquery',
     'ui-bootstrap',
     'spinner',
-    'toaster'
+    'toaster',
+    'loggly'
 ], function () { });

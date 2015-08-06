@@ -11,7 +11,7 @@ define(['angular',
                 libraries: 'weather,geometry,visualization'
             });
         });
-
+        
         configroute.register.controller('live', ['$compile', '$rootScope', '$scope', 'config', 'notify', 'spinner', 'uiGmapIsReady', 'uiGmapGoogleMapApi', 'sessionservice', 'utility', live]);
         function live($compile, $rootScope, $scope, config, notify, spinner, uiGmapIsReady, uiGmapGoogleMapApi, sessionservice, utility) {
         $rootScope.routeSelection = 'live'
@@ -94,7 +94,7 @@ define(['angular',
 				  	}
 
 				}, function (errorObject) {
-				  	console.log("The livecars read failed: " + errorObject.code);
+				  	utility.errorlog("The livecars read failed: " , errorObject);
 				});
 
 				livecarref.on('child_removed', function(oldChildSnapshot) {
@@ -126,7 +126,7 @@ define(['angular',
 				  	utility.applyscope($scope);
 
 				}, function (errorObject) {
-				  	console.log("The running count failed: " + errorObject.code);
+				  	utility.errorlog("The running count failed: " , errorObject);
 				});
 		 	}
 
@@ -140,7 +140,7 @@ define(['angular',
 				  	vm.previousdaydistance = snapshot.val() != null ? snapshot.val().distance : 0; 
 					getCurrentdayDistance();
 				}, function (errorObject) {
-				  	console.log("The previous day distance read failed: " + errorObject.code);
+				  	utility.errorlog("The previous day distance read failed: " , errorObject);
 				});
 		 	}
 
@@ -156,7 +156,7 @@ define(['angular',
 
 				  	utility.applyscope($scope);
 				}, function (errorObject) {
-				  	console.log("The current day distance read failed: " + errorObject.code);
+				  	utility.errorlog("The current day distance read failed: " , errorObject);
 				});
 		 	}
 			
@@ -366,7 +366,7 @@ define(['angular',
 									fbref.on("value", function(snapshot) {
 										updatemarker(snapshot.val(), snapshot.key());
 									}, function (errorObject) {
-									  	console.log("The live car read failed: " + errorObject.code);
+									  	utility.errorlog("The live car read failed: " , errorObject);
 									});
 								}					    
 							} 
@@ -378,7 +378,6 @@ define(['angular',
 			
 			function updatemarker(livecarobj, key) {
 				if(livecarobj) {
-					//console.log(key);
 					var cardetail =  _.first(_.filter(vm.cars.models, function(carmodel){ return carmodel.id == key}));
 				 	if(cardetail) {
 				 		var isIdle = getIsIdle(livecarobj);

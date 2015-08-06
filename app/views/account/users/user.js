@@ -47,7 +47,7 @@ define(['angular',
                         vm.emailsused.push(accounts[property].email);
                     }
                 }, function (errorObject) {
-                    console.log("The users read failed: " + errorObject.code);
+                    utility.errorlog("The users read failed: ",errorObject);
                 });
             }
 
@@ -57,7 +57,7 @@ define(['angular',
                     vm.userdetail = snapshot.val();
                     utility.applyscope($scope);
                 }, function (errorObject) {
-                    console.log("The users read failed: " + errorObject.code);
+                    utility.errorlog("The users read failed: " , errorObject);
                 });
             }
 

@@ -43,7 +43,6 @@ define(['angular'], function () {
                     sessionservice.setAccountName(vm.accountname);
                     utility.applyscope($scope);
                 }, function (errorObject) {
-                    console.log("The account name read failed: " + errorObject.code);
                 });
 
                 readalerts();
@@ -77,7 +76,7 @@ define(['angular'], function () {
                     utility.applyscope($scope);
 
                 }, function (errorObject) {
-                    console.log("The alerts read failed: " + errorObject.code);
+                    //utility.errorlog("The alerts read failed: " , errorObject);
                 });
             }
 
@@ -101,12 +100,12 @@ define(['angular'], function () {
                 sessionservice.clear();
                 vm.isloggedIn = false;
                 vm.loadSpinner = false;
-                $location.path('/login');
                 var ref = new Firebase(config.firebaseUrl);
                 ref.unauth();
                 ref.off();
                 if(timer !=undefined && timer != null)
                     clearTimeout(timer);
+                $location.path('/login');
             }
 
             $rootScope.$on('spinner:toggle', function (event, data) {
@@ -170,6 +169,7 @@ define(['angular'], function () {
                 if(sessionservice.isLoggedIn() == 'true') {
                     if(new Date() > new Date((sessionservice.getSessionExpiry())*1000)) {
                         notify.warning('Session expired. Please login');
+                        utility.applyscope($scope);
                         logout();
                     }
                 }

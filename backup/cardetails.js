@@ -16,6 +16,7 @@ define(['angular',
             var selectedcarref;
             var carLiveRef = ""
             vm.isdatesupport = false;
+            vm.totaldistanceof30days = 0;
 
             activate();
 
@@ -156,7 +157,7 @@ define(['angular',
                     }
 
                 }, function (errorObject) {
-                    console.log("The livecars read failed: " + errorObject.code);
+                    utility.errorlog("The livecars read failed: " , errorObject);
                 });
 
             }
@@ -261,8 +262,9 @@ define(['angular',
                 vm.distanceData.categories = [];
                 vm.distanceData.data = [];
                 vm.distanceData.date = [];
+                vm.totaldistanceof30days = 0;
 
-                for(var i = 30 ; i >= 0; i --) {
+                for(var i = 29 ; i >= 0; i --) {
                     var newdate = new Date();
                     newdate.setDate(newdate.getDate() - i);
                     var categoryDate = moment(new Date(newdate)).format('YYYYMMDD');
@@ -276,6 +278,7 @@ define(['angular',
                     var dateIndex = vm.distanceData.date.indexOf(property);
                     if(dateIndex >= 0) {
                         vm.distanceData.data[dateIndex] = !isNaN(data[property].distance) ? parseFloat(data[property].distance.toFixed(2)) : 0;
+                        vm.totaldistanceof30days = vm.totaldistanceof30days + vm.distanceData.data[dateIndex];
                     }
 
                     if(todaysdate == property) { vm.totalDistance = !isNaN(data[property].distance) ? data[property].distance.toFixed(2) : 0}
@@ -292,7 +295,7 @@ define(['angular',
                         chart: {
                             type: 'column',
                             zoomType: 'x',
-                            backgroundColor: '#EFEBE9',
+                            backgroundColor: 'white',
                             marginBottom: 50,
                             events: {
                             load: function (event) {

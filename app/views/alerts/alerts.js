@@ -35,13 +35,13 @@ define(['angular',
 				  	}
 				  		
 				}, function (errorObject) {
-				  	console.log("The alerts read failed: " + errorObject.code);
+				  	utility.errorlog("The alerts read failed: " , errorObject);
 				});
 
 				mobilefbref.once("value", function(snapshot) {
 				  	setMobileNumber(snapshot.val());
 				}, function (errorObject) {
-				  	console.log("The mobile number read failed: " + errorObject.code);
+				  	utility.errorlog("The mobile number read failed: " , errorObject);
 				});
 		 	}
 
@@ -152,7 +152,6 @@ define(['angular',
 		            else {
 		            	alertobject.location = 'Calculating...';
 		            	utility.applyscope($scope);
-		            	console.log(status);
 		            }
 	            });
 		 	}

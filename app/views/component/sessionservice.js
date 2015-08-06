@@ -25,22 +25,12 @@ define(['angular', 'utility'], function (angular) {
                 ref.on("value", function(snapshot) {
                     localStorage.setItem('devices', angular.toJson(snapshot.val(), true));
                 }, function (errorObject) {
-                    console.log("The devices read failed: " + errorObject.code);
                 });
             }
 
             function clear() {
                 localStorage.clear();
                 localStorage.setItem('loginstatus', 'false');
-                /*userIdentity = null;
-                $rootScope.$emit('login:status', {isloggedIn:false});
-                localStorage.setItem('accountid', null);
-                localStorage.setItem('devices', null);
-                localStorage.setItem('useridentity', null);
-                localStorage.setItem('selecteddevice', null);
-                localStorage.setItem('accountname', null);
-                localStorage.setItem('role', true);*/
-
                 $('body').addClass('login-layout light-login');
             }
            
@@ -96,7 +86,6 @@ define(['angular', 'utility'], function (angular) {
                         $rootScope.$emit('login:role', {role: isadmin});
 
                     }, function(errorObject) {
-                        console.log("The admin role read failed: " + errorObject.code);
                     });
                 }
             }

@@ -3,3 +3,7 @@ dist
 .tmp
 .sass-cache
 bower_components
+
+app/views/cars/cardetails.js
+
+app/views/cars/cardetails.html

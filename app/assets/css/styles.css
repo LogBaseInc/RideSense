@@ -2,9 +2,14 @@
   background-color: #1D2024;
 }
 .light-login {
-  background: #dfe0e2 url(images/banner.jpg);
-  background-size:cover;
+  background: #dfe0e2 url('images/banner.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
 }
+
 .login-layout .main-content {
   margin-left: 0!important;
   margin-right: 0!important;
@@ -113,10 +118,7 @@ h4 {
 .login-layout .login-box .widget-main {
   padding-bottom: 16px;
 }
-.login-layout .widget-box .widget-main {
-  padding: 16px 36px 36px;
-  background: #F7F7F7;
-}
+
 .widget-main {
   padding: 12px;
 }
@@ -334,4 +336,29 @@ input:focus{
 
 select:focus {
     outline: none
-};
+}
+
+@media screen and (min-width: 370px) {
+    .logindiv {
+        width:365px; 
+        margin: 0 auto; 
+        text-align: left!important;
+    }
+
+    .login-layout .widget-box .widget-main {
+      padding: 16px 36px 36px;
+      background: #F7F7F7;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .logindiv {
+        width: 320px; 
+        margin: 0 auto; 
+        text-align: left!important;
+    }
+
+    .login-layout .widget-box .widget-main {
+      background: #F7F7F7;
+    }
+}

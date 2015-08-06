@@ -18,7 +18,7 @@ define(['angular',
                 ref.once("value", function(snapshot) {
                     getUsers(snapshot.val());
                 }, function (errorObject) {
-                    console.log("The users read failed: " + errorObject.code);
+                    utility.errorlog("The users read failed: " , errorObject);
                 });
             }
 

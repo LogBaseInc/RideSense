@@ -12,7 +12,12 @@ define(['angular',
             app.$templateCache = $templateCache;
         }]);
 
-        
+        app.config( function( LogglyLoggerProvider ) {
+            LogglyLoggerProvider.inputToken('437c82a2-019f-4d20-858a-7dda1dd5a134')
+                                .includeUrl(true)
+                                .includeTimestamp(true)
+                                .sendConsoleErrors(true)
+        });
 
         // Configure the routes and route resolvers
         app.config(['$routeProvider', 'routes', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$httpProvider', routeConfigurator]);

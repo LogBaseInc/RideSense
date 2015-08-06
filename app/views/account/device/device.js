@@ -64,7 +64,7 @@ define(['angular',
                         else
                             vm.isdeviceavailable = false;
                     }, function (errorObject) {
-                        console.log("The device read failed: " + errorObject.code);
+                        utility.errorlog("The device read failed: " ,errorObject);
                     });
                 }
                 else {

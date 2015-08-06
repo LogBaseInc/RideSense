@@ -19,7 +19,7 @@ define(['angular',
                     setPath(snapshot.val());
                 }, 
                 function (errorObject) {
-                    console.log("The read failed: " + errorObject.code);
+                    utility.errorlog("The read failed: " , errorObject);
                 }
             );
 

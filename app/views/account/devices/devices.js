@@ -16,7 +16,7 @@ define(['angular',
                 ref.once("value", function(snapshot) {
                     getDevices(snapshot.val());
                 }, function (errorObject) {
-                    console.log("The livecars read failed: " + errorObject.code);
+                    utility.errorlog("The livecars read failed: " ,errorObject);
                 });
             }
 

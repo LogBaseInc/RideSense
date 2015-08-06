@@ -26,7 +26,7 @@ define(['angular',
                     vm.accountname = snapshot.val();
                     utility.applyscope($scope);
                 }, function (errorObject) {
-                    console.log("The account name read failed: " + errorObject.code);
+                    utility.errorlog("The account name read failed: ", errorObject);
                 });
                 
                 addressref.once("value", function(snapshot) {
@@ -36,7 +36,7 @@ define(['angular',
                     spinner.hide();
                     utility.applyscope($scope);
                 }, function (errorObject) {
-                    console.log("The address read failed: " + errorObject.code);
+                    utility.errorlog("The address read failed: ", errorObject);
                 });
             }
 

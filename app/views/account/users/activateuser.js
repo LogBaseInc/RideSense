@@ -39,7 +39,7 @@ define(['angular',
                         }
                         utility.applyscope($scope);
                     }, function (errorObject) {
-                        console.log("The users read failed: " + errorObject.code);
+                        utility.errorlog("The users read failed: " , errorObject);
                     });
                 }
                 else {
