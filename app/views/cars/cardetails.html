@@ -1,0 +1,112 @@
+<div data-ng-controller="cardetails as vm">
+
+	<div class="input-group input-group-lg livemapsearch">
+		<input type="text" class="form-control tm-search-text tm-no-outline fullwidth" placeholder="Search activity by user" id="txtcarsearch" data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html" typeahead-on-select="vm.carsearched($item, $model, $label)" data-ng-change="vm.carsearchedchanged()" />
+	    <div class="input-group-btn">
+	    	<button type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.clearcar()"><span class="glyphicon glyphicon-remove"></span></button>
+	    </div>
+	</div>
+
+	<div class="container-fluid">
+		<div class="row beige-bg">
+			<div class="col-xs-12 col-md-4" data-ng-hide="vm.showallcars">
+				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> User Summary for {{vm.selectedcar.vehiclenumber}}</h5>
+				<br/>
+				<h4>{{vm.selectedcar.drivername}} <small>| {{vm.selectedcar.drivermobile}}</small></h4>
+				<h4>{{vm.totalDistance}} km <small> today.</small></h4>
+				<div data-ng-show="vm.havelivedata">
+					<h4 data-ng-if="vm.carrunning"><small>Currently running @ {{vm.carlocation}}.</small></h4>
+					<h4 data-ng-if="!vm.carrunning"><small>Currently idle @ {{vm.carlocation}}.</small></h4>
+					<button type="button" class="btn btn-info btn-xs" data-ng-click="vm.gotoCarDetail()">
+						View on Map <span class="glyphicon glyphicon-arrow-right"></span>
+					</button>
+				</div>
+				<hr/>
+			</div>
+			<div class="col-xs-12 col-md-4" data-ng-show="vm.showallcars">
+				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Today's Activity</h5>
+				<br/>
+				<h4>{{vm.totalDistance}} km <small>total distance tracked.</small></h4>
+				<h4>{{(vm.totaldistanceof30days/30) | number : 2}} km/day <small>average distance of last 30 days.</small></h4>
+				<h4>{{vm.totalcars}} <small>users currently active.</small></h4>
+				<hr/>
+			</div>
+			<div class="col-xs-12 col-md-8" data-ng-if="vm.distanceData.data.length > 0" >
+				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Distance Metrics</h5>
+				<br/>
+				<highchart config="vm.distanceConfig"></highchart>
+			</div>
+		</div> <!-- row -->
+
+		<div class="row" data-ng-show="vm.showallcars">
+			<div class="col-xs-12">
+				<br/><br/>
+				<p class="text-muted"><span class="glyphicon glyphicon-star-empty"></span> Trips can be viewed from user's activity, after you search for the user.</p>
+				<br/>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="row col-xs-12" data-ng-hide="vm.showallcars">
+				<br>
+				<div>
+					<br/>
+					<h5 class="col-xs-1 tm-heading tripsheading"><span class="glyphicon glyphicon-chevron-right"></span> Trips</h5>
+					<input data-ng-if="vm.isdatesupport" id="tripdate" type="date" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)">
+					<div data-ng-if="!vm.isdatesupport" class="col-xs-1 form-group width170">
+			            <div class='input-group date' lb-datepicker>
+			                <input type='text' class="form-control" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)"/>
+			                <span class="input-group-addon">
+			                    <span class="glyphicon glyphicon-calendar"></span>
+			                </span>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+		    <div class="col-xs-12">
+			    <div data-ng-repeat="tripdetail in vm.tripsBy3">
+			    	<div class="row">
+			        	<div data-ng-repeat="trip in tripdetail.trips">
+							<div class="col-xs-12 col-md-4 tm-card-wrap ng-scope">
+								<div class="col-md-12 tripdetail" ng-click="vm.tripClicked(trip)">
+									<div class="row">
+										<div class="col-xs-8">
+											<h4 class="ng-binding">{{trip.starttime}} > {{trip.endtime}}</h4>
+										</div>
+										<div class="col-xs-4">
+											<h4 class="text-right">{{trip.distance}} Km</h4>
+										</div>
+									</div>
+									<div class="space-6"></div>
+									<div class="row">
+										<div class="col-xs-12 col-md-12">
+											<span class="ng-binding"> {{trip.startlocation}} > {{trip.endlocation}}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>   
+			</div>     
+			<div class="col-xs-12" data-ng-show="!vm.showallcars && vm.trips.length==0">
+				<br/>
+				<p class="text-muted"><span class="glyphicon glyphicon-star-empty"></span>No trips available for {{vm.selecteddate | date }}.</p>
+				<br/>
+			</div>
+		</div> <!-- row -->
+	</div> <!--container -->
+</div>
+
+<script type="text/ng-template" id="typeaheadElement.html">
+  <a class="typeheadanchor" style="height: 54px !important">
+    <i data-ng-show="match.model.type == 'Car'" class="glyphicon glyphicon-user" style="color:gray"></i>
+    <i data-ng-show="match.model.type == 'Driver'" class="glyphicon glyphicon-user" style="color:gray"></i>
+      &nbsp;&nbsp;<span class="blackcolor">{{match.label}}</span>
+      <br/>
+      <small style="color:gray">
+      	<span data-ng-show="match.model.type == 'Driver'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User Name</span>
+      	<span data-ng-show="match.model.type == 'Car'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vehicle ID</span>
+      </small>
+  </a>
+</script>
