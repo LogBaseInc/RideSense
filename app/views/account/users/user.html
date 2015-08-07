@@ -1,8 +1,8 @@
 <div data-ng-controller="user as vm">
 	<div class="col-xs-12">
 		<form class="form-horizontal" name="userform">
-			<h5 class="tm-heading" data-ng-hide="vm.isEdit"><span class="glyphicon glyphicon-chevron-right"></span>Add Collabroter</h5>
-			<h5 class="tm-heading" data-ng-show="vm.isEdit"><span class="glyphicon glyphicon-chevron-right"></span>Edit Collabroter</h5>
+			<h5 class="tm-heading" data-ng-hide="vm.isEdit"><span class="glyphicon glyphicon-chevron-right"></span>Add Collaborators</h5>
+			<h5 class="tm-heading" data-ng-show="vm.isEdit"><span class="glyphicon glyphicon-chevron-right"></span>Edit Collaborators</h5>
 			<br/>
 			
 			<div class="form-group zeromargin" data-ng-class="{ 'has-error': userform.txtUsername.$invalid && userform.txtUsername.$touched }">
@@ -10,7 +10,7 @@
 				<div class="col-md-6">
                     <input type="email" class="form-control" id="txtUsername" name="txtUsername" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" data-ng-model="vm.userName" required placeholder="Email" ng-readonly="vm.isEdit">
                     <div data-ng-if="vm.useralreadyinvited == true">
-                    	<i class="glyphicon glyphicon-remove errortext"></i><span class="marginleft5 errortext">User already invited</span>
+                    	<i class="glyphicon glyphicon-remove errortext"></i><span class="marginleft5 errortext">This Email has been already invited</span>
                     </div>
                     <div data-ng-messages="userform.txtUsername.$error" data-ng-if="vm.interacted(userform.txtUsername, true)" class="error-messages">
                         <div ng-message="required">Email required</div>
@@ -30,14 +30,14 @@
 		<div>
 		 	<br/>
 		 	<center data-ng-hide="vm.isdelete">
-	            <button data-ng-hide="vm.isEdit" type="button" class="btn btn-primary" ng-click="vm.adduser();" data-ng-disabled="!vm.canAdd">Add</button>
-	            <button data-ng-show="vm.isEdit" type="button" class="btn btn-primary" ng-click="vm.edituser();" data-ng-disabled="!vm.canAdd">Update</button>
-	            <button data-ng-show="vm.isEdit" type="button" class="btn btn-default" ng-click="vm.resendemail();">Resend email</button>
+	            <button data-ng-hide="vm.isEdit" type="button" class="btn btn-primary" ng-click="vm.adduser();" data-ng-disabled="!vm.canAdd">Add Collaborators</button>
+	            <button data-ng-show="vm.isEdit" type="button" class="btn btn-primary" ng-click="vm.edituser();" data-ng-disabled="!vm.canAdd">Update Collaborators</button>
+	            <button data-ng-show="vm.isEdit" type="button" class="btn btn-default" ng-click="vm.resendemail();">Resend Email</button>
 	            <a type="button" class="btn btn-default"  data-ng-disabled="!vm.canAdd" href="#/account/detail">Cancel</a>
-	           	<button data-ng-show="vm.isEdit" type="button" class="btn btn-default" data-ng-disabled="!vm.canAdd" ng-click="vm.deleteuser();">Delete</button>
+	           	<button data-ng-show="vm.isEdit" type="button" class="btn btn-default" data-ng-disabled="!vm.canAdd" ng-click="vm.deleteuser();">Remove Collaborators</button>
 	        </center>
 	        <center data-ng-show="vm.isdelete">
-        		<span class="errortext">User will be deleted permanently, do you want to delete it? </span>
+        		<span class="errortext">Collaborators will be removed permanently, do you want to continue? </span>
         		<br/>
         		<button style="margin-top:10px" type="button" class="btn btn-default" data-ng-disabled="!vm.canAdd" ng-click="vm.deletecancel();">No</button>
 	           	<button style="margin-top:10px" type="button" class="btn btn-default" data-ng-disabled="!vm.canAdd" ng-click="vm.deleteconfirm();">Yes</button>
