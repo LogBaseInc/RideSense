@@ -11,6 +11,9 @@ define(['angular',
             vm.showmap= false;
             var mapinstance;
             var infowindow;
+            vm.mapOptions = {
+                disableDefaultUI:true,    
+            }
 
             activate()
 
@@ -103,6 +106,7 @@ define(['angular',
                         infowindow = new google.maps.InfoWindow({
                             content: ''
                         });
+                        vm.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
                     });
                 }
                 else {

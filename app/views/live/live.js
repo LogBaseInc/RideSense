@@ -27,6 +27,7 @@ define(['angular',
 							      averageCenter : true,
 							      ignoreHidden : true,
 								};
+			
 	 		var idleCarlist = [];
 			var directionsDisplays = [];
 			var directionsService;
@@ -39,6 +40,9 @@ define(['angular',
 			var runningcarref;
 			vm.liverefs = [];
 			vm.istracking = false;
+			vm.mapOptions = {
+				disableDefaultUI:true,    
+			}
 
 			activate();
 
@@ -176,8 +180,8 @@ define(['angular',
 		 	}
 
 		 	vm.carsearched = function($item, $model, $label) {
+		 		utility.closekeyboard($('#txtcarsearch'));
 			 	setGoogleMaps($item.latitude, $item.longitude, 15);
-			 	utility.closekeyboard($('#txtcarsearch'));
 			}
 
 			vm.showDragMarker = function() {
@@ -196,7 +200,6 @@ define(['angular',
 						idleCarlist[i].options.labelAnchor = '22 0'
 					}
 					idleCarlist=[];
-					clearRoutes();
 			 	}
 		 	}
 
@@ -340,7 +343,8 @@ define(['angular',
 			uiGmapIsReady.promise(1).then(function(instances) {
 			   	directionsService = new google.maps.DirectionsService();
 			   	mapinstance = instances[0].map;
-
+				vm.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
+			   	
 			  	google.maps.event.addListener(mapinstance, 'bounds_changed', function() {
 			  		var zoomLevel = mapinstance.getZoom();
 			  		vm.istracking = zoomLevel >= 14;

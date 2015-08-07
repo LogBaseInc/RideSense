@@ -2,21 +2,22 @@ define(['angular',
     'config.route',
     'lib'], function (angular, configroute) {
     (function () {
-
         configroute.register.controller('cardetails', ['$rootScope', '$routeParams' ,'$scope', '$location', 'config', 'spinner', 'sessionservice', 'utility', cardetails]);
         function cardetails($rootScope, $routeParams, $scope, $location, config, spinner, sessionservice, utility) {
             var vm = this;
-            vm.distanceData = [];
-            vm.showallcars = true;
+            var currentmonth;
             var todaysdate = '';
-            vm.totalDistance = 0;
-            vm.totalcars = 0;
-            vm.selectedcar = {};
             var allcaractivityref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/daily');
             var selectedcarref;
             var carLiveRef = ""
+
+            vm.distanceData = [];
+            vm.showallcars = true;
+            vm.totalDistance = 0;
+            vm.totalcars = 0;
+            vm.selectedcar = {};
             vm.isdatesupport = false;
-            vm.totaldistanceof30days = 0;
+            vm.averagedistance = 0;
 
             activate();
 
@@ -34,6 +35,12 @@ define(['angular',
                 }
 
                 setSelectedDate();
+                var month  = new Date().getMonth();
+                var year = new Date().getFullYear();
+                vm.currentdate = moment(new Date(year, month, 1)).format('MMM DD, YYYY');
+                month = month + 1;
+                currentmonth = year.toString()+""+(month.toString().length ==1 ? "0"+ month.toString() : month.toString());
+
 
                 getCarList();
                 vm.totalcars = Object.keys(sessionservice.getAccountDevices()).length;
@@ -262,7 +269,7 @@ define(['angular',
                 vm.distanceData.categories = [];
                 vm.distanceData.data = [];
                 vm.distanceData.date = [];
-                vm.totaldistanceof30days = 0;
+                vm.averagedistance = 0;
 
                 for(var i = 29 ; i >= 0; i --) {
                     var newdate = new Date();
@@ -278,10 +285,21 @@ define(['angular',
                     var dateIndex = vm.distanceData.date.indexOf(property);
                     if(dateIndex >= 0) {
                         vm.distanceData.data[dateIndex] = !isNaN(data[property].distance) ? parseFloat(data[property].distance.toFixed(2)) : 0;
-                        vm.totaldistanceof30days = vm.totaldistanceof30days + vm.distanceData.data[dateIndex];
                     }
 
-                    if(todaysdate == property) { vm.totalDistance = !isNaN(data[property].distance) ? data[property].distance.toFixed(2) : 0}
+                    if(vm.showallcars == false) {
+                        if(todaysdate == property) { vm.totalDistance = !isNaN(data[property].distance) ? data[property].distance : 0}
+                    }
+                    else {
+                        if(property.indexOf(currentmonth) == 0) {
+                            vm.totalDistance = vm.totalDistance + (!isNaN(data[property].distance) ? data[property].distance : 0);
+                        }
+                    }
+                }
+
+                if(vm.totalDistance > 0) {
+                    var curerntday = new Date().getDate();;
+                    vm.averagedistance = (vm.totalDistance / curerntday);
                 }
 
                 distanceChartConfig();

@@ -12,7 +12,7 @@
 	<div class="container-fluid" data-ng-if="vm.showmaps">
 		<div class="row">
 			<div class="tm-live-map">
-				<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom'>
+				<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom' options="vm.mapOptions">
 					<ui-gmap-marker data-ng-show="vm.dragMarker" coords="vm.marker.coords" options="vm.marker.options" events="vm.marker.events" idkey="vm.marker.id"></ui-gmap-marker>
 					<ui-gmap-markers models="vm.cars.models" coords="'self'" options="'options'" events="vm.markersEvents" doCluster="vm.docluster" clusterOptions="vm.clusterOptions"></ui-gmap-markers>
 				</ui-gmap-google-map>

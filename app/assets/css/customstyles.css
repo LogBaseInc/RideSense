@@ -446,9 +446,9 @@ hr {
     font-weight:bold
 }
 
-.livemapsearch {
+/*.livemapsearch {
     border: 1px solid rgba(128, 128, 128, 0.34); 
-}
+}*/
 
 .livecarsearch {
     border: 2px solid rgba(59, 153, 252, 0.68) !important;
@@ -556,6 +556,13 @@ div.callout {
    border-bottom-color: #D7CCC8 ;
    padding-bottom: 20px;
    padding-top: 20px;
+}
+
+.tripblock {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
 }
 
 

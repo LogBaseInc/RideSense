@@ -13,6 +13,9 @@ define(['angular',
 			var infowindow;
 			var ref;
 			var distanceref;
+			vm.mapOptions = {
+                disableDefaultUI:true,    
+            }
 
 			activate();
 
@@ -115,6 +118,7 @@ define(['angular',
             uiGmapIsReady.promise(1).then(function(instances) {
 			    directionsService = new google.maps.DirectionsService();
 			    mapinstance = instances[0].map;
+			    vm.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
     		});
 
 			$scope.$on('$destroy', function iVeBeenDismissed() {

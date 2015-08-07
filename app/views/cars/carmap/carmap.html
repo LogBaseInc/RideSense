@@ -2,7 +2,7 @@
 	<div class="container-fluid" data-ng-if="vm.showmaps">
 		<div class="row">
 			<div class="tm-live-map">
-				<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom'>
+				<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom' options="vm.mapOptions">
 					<ui-gmap-marker coords="vm.marker.coords" options="vm.marker.options" events="vm.marker.events" idkey="vm.marker.id"></ui-gmap-marker>
 				</ui-gmap-google-map>
 			</div>
