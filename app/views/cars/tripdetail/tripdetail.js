@@ -24,7 +24,7 @@ define(['angular',
                     getTripHistory();
                 }
                 else {
-                    vm.gotoactivity();
+                    $location.path('/cars/'+$routeParams.carnumber);
                 }
             }
 

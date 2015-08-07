@@ -43,7 +43,12 @@ define(['angular',
                 }
 
                 vm.login = function () {
-                    if(vm.canLogin) {    
+                    if(vm.canLogin) { 
+                        document.activeElement.blur();  
+                         Array.prototype.forEach.call(document.querySelectorAll('input, textarea'), function(it) { 
+                            it.blur(); 
+                        });
+     
                         utility.closekeyboard($('#txtPassword'));    
                         spinner.show();
                         submitted= true;

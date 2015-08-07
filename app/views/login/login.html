@@ -19,7 +19,7 @@
                             <div class="space-6"></div>
                             <div class="form-group" data-ng-class="{ 'has-error': loginform.txtUsername.$invalid && loginform.txtUsername.$touched }">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="email" class="form-control" id="txtUsername" data-ng-click="vm.hide();" name="txtUsername" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" data-ng-model="vm.userName" required placeholder="Username">
+                                    <input type="email" class="form-control" name="txtUsername" id="txtUsername" data-ng-click="vm.hide();" name="txtUsername" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" data-ng-model="vm.userName" required placeholder="Username">
                                 </span>
                                 <div data-ng-messages="loginform.txtUsername.$error" data-ng-if="vm.interacted(loginform.txtUsername)" class="error-messages">
                                     <div ng-message="required">Username required</div>
@@ -29,7 +29,7 @@
 
                             <div class="form-group" data-ng-class="{ 'has-error': loginform.txtPassword.$invalid && loginform.txtPassword.$touched }">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="password" class="form-control" id="txtPassword" data-ng-click="vm.hide();" name="txtPassword" data-ng-model="vm.password" required placeholder="Password" ng-enter="vm.login()">
+                                    <input type="password" class="form-control" name="txtPassword" id="txtPassword" data-ng-click="vm.hide();" name="txtPassword" data-ng-model="vm.password" required placeholder="Password" ng-enter="vm.login()">
                                 </span>
                                 <div data-ng-messages="loginform.txtPassword.$error" data-ng-if="vm.interacted(loginform.txtPassword)" class="error-messages">
                                     <div ng-message="required">Password required</div>

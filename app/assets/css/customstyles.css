@@ -15,6 +15,14 @@
         .error-messages.ng-inactive {
         }
 
+html{
+    height:100% !important;
+    min-height:100% !important;
+}
+body{
+    min-height:100% !important;
+}
+
 html {tm-marker-label
     height:92%;
 }
@@ -50,7 +58,7 @@ a {
 }
 
 hr {
-    border-color: LightGray;
+    border-color: LightGray !important;
 }
 
 
@@ -537,6 +545,15 @@ div.callout {
     top: 14px;
     border-right: 10px solid white;
     z-index : -1;
+}
+
+.beige-bg {
+   background-color: #EFEBE9 ;
+   border-bottom: Solid;
+   border-bottom-width: 1px;
+   border-bottom-color: #D7CCC8 ;
+   padding-bottom: 20px;
+   padding-top: 20px;
 }
 
 
