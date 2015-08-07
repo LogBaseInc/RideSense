@@ -1,6 +1,6 @@
 <div data-ng-controller="devices as vm">
 	<div class="input-group input-group-lg livemapsearch" data-ng-show="vm.devices.length > 0">
-		<input type="text" class="form-control tm-search-text tm-no-outline fullwidth" placeholder="Search car number / device number / driver name" data-ng-model="search" />
+		<input type="text" class="form-control tm-search-text tm-no-outline fullwidth" placeholder="Search Vehicle Id / Device number / Driver name" data-ng-model="search" />
 	    <div class="input-group-btn">
 	    	<button type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.buydevice()"><span class="glyphicon glyphicon-plus"></span></button>
 	    </div>
@@ -11,7 +11,9 @@
 			<div class="marginleft10" data-ng-click="vm.editdevice($index)">
 				<h4>{{device.devicenumber}}</h4>
 				<div class="margintop15">
-					<img class="heighth13" src="assets/images/car-front.png"></img><label class="marginleft5 fontsize13">{{device.displayvehiclenumber}}</label>
+					<img data-ng-if="device.vehicletype == 'car'" class="height17" src="assets/images/car-moving.png"></img>
+					<img data-ng-if="device.vehicletype == 'bike'" class="height17" src="assets/images/bike-moving.png"></img>
+					<label class="fontsize13">{{device.displayvehiclenumber}}</label>
 					<br/>
 					<span class="glyphicon glyphicon-user fontsize13"></span><label class="marginleft5 fontsize13">{{device.drivername}}</label>
 					<br/>

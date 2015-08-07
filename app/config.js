@@ -10,7 +10,7 @@ define(['angular'], function (angular) {
             firebaseUrl: 'https://logbasedev.firebaseIO.com/',
             apiUrl : 'http://stick-read-dev.logbase.io/api/',
             //hosturl : 'http://0.0.0.0:9000/#/'
-            hosturl : 'https://stickapp.azurewebsites.net/#/'
+            hosturl : 'http://stickapp.azurewebsites.net/#/'
         };
 
         app.value('config', config);

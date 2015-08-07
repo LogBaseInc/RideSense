@@ -28,16 +28,21 @@ define(['angular',
                 if(vm.device == null) { 
                     vm.device = {};
                     vm.device.type = 'stick';
+                    vm.device.vehicletype = 'car';
                     vm.isDeviceEdit = false;
                 }
                 else {
                     vm.isDeviceEdit = true;
+                    if(vm.device.vehicletype == null || vm.device.vehicletype == undefined)
+                        vm.device.vehicletype = 'car';
                 }
 
                 if(vm.device.type == 'stick')
                     vm.isStick = true;
                 else
                     vm.isStick = false;
+
+                setVehicleType();
             }
 
             function canBuy(){
@@ -52,6 +57,18 @@ define(['angular',
                     vm.isStick = false;
                     vm.device.devicenumber = '';
                 }
+            }
+
+            vm.selectVehicleType = function(vehicletype) {
+                vm.device.vehicletype = vehicletype;
+                setVehicleType();
+            }
+
+            function setVehicleType() {
+                if(vm.device.vehicletype == 'car')
+                    vm.isCar = true;
+                else
+                    vm.isCar = false;
             }
 
             vm.deviceIdCheck = function () {
@@ -103,9 +120,20 @@ define(['angular',
                 accountfberef.set(accountnumber);
 
                 var devicefberef = new Firebase(config.firebaseUrl+'accounts/'+accountnumber+'/devices/'+vm.device.devicenumber+'/');
-                var devicejson = '{"vehiclenumber":"'+vm.device.vehiclenumber+ '","type":"' + vm.devicetype + '","drivername":"' + vm.device.drivername +'","driverid":"' 
-                                  + vm.device.driverid +'","drivermobile":' + vm.device.drivermobile+ ',"addedon":' + new Date().getTime() +'}';
-                devicefberef.set(angular.fromJson(devicejson));
+
+                var deviceobj = {};
+                deviceobj.vehiclenumber = vm.device.vehiclenumber;
+                deviceobj.type = vm.devicetype;
+                deviceobj.drivername  = vm.device.drivername;
+                deviceobj.driverid = vm.device.driverid;
+                deviceobj.drivermobile = vm.device.drivermobile;
+                deviceobj.addedon = new Date().getTime();
+                deviceobj.vehicletype = vm.device.vehicletype;
+
+
+                //var devicejson = '{"vehiclenumber":"'+vm.device.vehiclenumber+ '","type":"' + vm.devicetype + '","drivername":"' + vm.device.drivername +'","driverid":"' + vm.device.driverid +'","drivermobile":' + vm.device.drivermobile+ ',"addedon":' + new Date().getTime() +'}';
+                
+                devicefberef.set(deviceobj);
 
                 submitted = false;
                 spinner.show();

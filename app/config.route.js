@@ -137,7 +137,7 @@ define(['angular',
                      }
                  },
                  {
-                     url: '/cars/:selectedcar?',
+                     url: '/activity/:selectedcar?',
                      config: {
                          templateUrl: 'views/cars/cardetails.html',
                          title: 'cars',
@@ -146,7 +146,7 @@ define(['angular',
                      }
                  },
                  {
-                     url: '/car/trip/:carnumber',
+                     url: '/activity/trip/:carnumber',
                      config: {
                          templateUrl: 'views/cars/tripdetail/tripdetail.html',
                          title: 'trip',
@@ -155,7 +155,7 @@ define(['angular',
                      }
                  },
                  {
-                     url: '/car/detail/:devicenumber/:carnumber',
+                     url: '/activity/detail/:devicenumber/:carnumber',
                      config: {
                          templateUrl: 'views/cars/carmap/carmap.html',
                          title: 'detail',

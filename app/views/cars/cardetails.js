@@ -22,7 +22,7 @@ define(['angular',
             activate();
 
             function activate() {
-                $rootScope.routeSelection = 'cars';
+                $rootScope.routeSelection = 'activity';
                 isDateFiledSupported();
 
                 if($routeParams.selectedcar) {
@@ -107,7 +107,7 @@ define(['angular',
             vm.tripClicked = function (trip) {
                 utility.setTripSelected(trip);
                 utility.setTripDate(vm.selecteddate);
-                $location.path('/car/trip/'+vm.selectedcar.vehiclenumber);
+                $location.path('/activity/trip/'+vm.selectedcar.vehiclenumber);
             }
 
             vm.clearcar = function() {
@@ -131,7 +131,7 @@ define(['angular',
                 if(carLiveRef != "")
                     carLiveRef.off();
                 utility.setTripDate(vm.selecteddate);
-                $location.path('/car/detail/'+vm.selectedcar.devicenumber+'/'+vm.selectedcar.vehiclenumber);
+                $location.path('/activity/detail/'+vm.selectedcar.devicenumber+'/'+vm.selectedcar.vehiclenumber);
             }
 
             function getCarLiveData(){
@@ -270,6 +270,7 @@ define(['angular',
                 vm.distanceData.data = [];
                 vm.distanceData.date = [];
                 vm.averagedistance = 0;
+                vm.totalDistance = 0;
 
                 for(var i = 29 ; i >= 0; i --) {
                     var newdate = new Date();

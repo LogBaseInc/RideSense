@@ -19,7 +19,7 @@ define(['angular',
 
             function activate() {
                 utility.scrollToTop();
-                $rootScope.routeSelection = 'cars';
+                $rootScope.routeSelection = 'activity';
 
                 if(utility.getTripSelected()) {
                     setSelectedDate();
@@ -27,7 +27,7 @@ define(['angular',
                     getTripHistory();
                 }
                 else {
-                    $location.path('/cars/'+$routeParams.carnumber);
+                    $location.path('/activity/'+$routeParams.carnumber);
                 }
             }
 
@@ -106,7 +106,6 @@ define(['angular',
                         infowindow = new google.maps.InfoWindow({
                             content: ''
                         });
-                        vm.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
                     });
                 }
                 else {
@@ -122,7 +121,7 @@ define(['angular',
             }
 
             vm.gotoactivity = function(){
-                $location.path('/cars/'+$routeParams.carnumber);
+                $location.path('/activity/'+$routeParams.carnumber);
             }
         }
     })();

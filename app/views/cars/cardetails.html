@@ -13,7 +13,7 @@
 				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> User Summary for {{vm.selectedcar.vehiclenumber}}</h5>
 				<br/>
 				<h4>{{vm.selectedcar.drivername}} <small>| {{vm.selectedcar.drivermobile}}</small></h4>
-				<h4>{{vm.totalDistance}} km <small> today.</small></h4>
+				<h4>{{vm.totalDistance | number : 2}} km <small> today.</small></h4>
 				<div data-ng-show="vm.havelivedata">
 					<h4 data-ng-if="vm.carrunning"><small>Currently running @ {{vm.carlocation}}.</small></h4>
 					<h4 data-ng-if="!vm.carrunning"><small>Currently idle @ {{vm.carlocation}}.</small></h4>

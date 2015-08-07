@@ -16,6 +16,17 @@ define(['angular',
         function live($compile, $rootScope, $scope, config, notify, spinner, uiGmapIsReady, uiGmapGoogleMapApi, sessionservice, utility) {
         $rootScope.routeSelection = 'live'
 	        var vm = this;
+	        var idleCarlist = [];
+			var directionsDisplays = [];
+			var directionsService;
+			var mapinstance;
+			var routecolor = ['red', 'green',  'purple', 'orange', 'blue'];
+			var infowindow;
+			var livecarref;
+			var distancefbref;
+			var runningcarref;
+			var devicedetails;
+
 		 	vm.distanceCovered = 0;
 		 	vm.showmaps =false;
 		 	vm.location = '';
@@ -27,17 +38,7 @@ define(['angular',
 							      averageCenter : true,
 							      ignoreHidden : true,
 								};
-			
-	 		var idleCarlist = [];
-			var directionsDisplays = [];
-			var directionsService;
-			var mapinstance;
-			var routecolor = ['red', 'green',  'purple', 'orange', 'blue'];
-			var infowindow;
 			vm.docluster = true;
-			var livecarref;
-			var distancefbref;
-			var runningcarref;
 			vm.liverefs = [];
 			vm.istracking = false;
 			vm.mapOptions = {
@@ -56,7 +57,7 @@ define(['angular',
 			                	var sublocality = _.first(_.filter(results[0].address_components, function(address){ return address.types[0].indexOf('sublocality') >= 0}));
 			                	if(sublocality == null)
 			                		sublocality = _.first(_.filter(results[0].address_components, function(address){ return address.types[0].indexOf('route') >= 0}));
-			          			var content = '<div id="infowindow_content"><span style="font-weight: bold;">'+sublocality.long_name+'</span><br>Last updated '+model.time+'<br><a style="margin-left:25%" href="#/cars/'+model.title+'"><img src="assets/images/more-details.png"></img></a></div>';
+			          			var content = '<div id="infowindow_content"><span style="font-weight: bold;">'+sublocality.long_name+'</span><br>Last updated '+model.time+'<br><a style="margin-left:25%" href="#/activity/'+model.title+'"><img src="assets/images/more-details.png"></img></a></div>';
 			          			var compiled = $compile(content)($scope);
 						        infowindow.setContent(compiled[0].innerHTML);
 						        infowindow.open( mapinstance , gMarker );
@@ -221,7 +222,7 @@ define(['angular',
 		    };
 
 		 	function livecarsmodel(data) {
-			 	var devicedetails = sessionservice.getAccountDevices();
+			 	devicedetails = sessionservice.getAccountDevices();
 			 	vm.cars = {};
 			 	vm.cars.models =[];
 			 	vm.carlist =[];
@@ -238,6 +239,11 @@ define(['angular',
 				}
 			}
 
+			function getVechileType(property) {
+				//devicedetails = sessionservice.getAccountDevices();
+				return devicedetails[property].vehicletype ? devicedetails[property].vehicletype : 'car';
+			}
+
 		 	function getLiveCarObject(livecarobj, property, vehiclenumber) {
 		 		var isIdle = getIsIdle(livecarobj);
 		 		return {
@@ -250,7 +256,7 @@ define(['angular',
 				 	options: {
 					   	labelContent: vehiclenumber, 
 					   	labelClass: ((isIdle && vm.dragMarker) ? 'tm-overlay-unit' : 'tm-marker-label'),
-					   	icon: (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
+					   	icon: utility.getVehicleImageUrl(getVechileType(property), isIdle),
 					   	labelAnchor: ((isIdle && vm.dragMarker) ? '60 125' : '22 0')
 					}
 				}
@@ -381,6 +387,7 @@ define(['angular',
 			});
 			
 			function updatemarker(livecarobj, key) {
+				devicedetails = sessionservice.getAccountDevices();
 				if(livecarobj) {
 					var cardetail =  _.first(_.filter(vm.cars.models, function(carmodel){ return carmodel.id == key}));
 				 	if(cardetail) {
@@ -393,7 +400,7 @@ define(['angular',
 					 	if(cardetail.isIdle === false)
 						 	cardetail.options.labelContent = cardetail.title;
 					 	cardetail.options.labelClass = ((isIdle && vm.dragMarker) ? 'tm-overlay-unit' : 'tm-marker-label'),
-					   	cardetail.options.icon = (isIdle ? 'assets/images/car-parked.png' : 'assets/images/car-moving.png'),
+					   	cardetail.options.icon = utility.getVehicleImageUrl(getVechileType(key), isIdle),
 					   	cardetail.options.labelAnchor = ((isIdle && vm.dragMarker) ? '60 125' : '22 0')
 				 	}
 				  	utility.applyscope($scope);

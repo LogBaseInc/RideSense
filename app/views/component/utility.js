@@ -23,7 +23,8 @@ define(['angular'], function (angular) {
                 setTripSelected : setTripSelected,
                 closekeyboard : closekeyboard,
                 scrollToTop : scrollToTop,
-                errorlog : errorlog
+                errorlog : errorlog,
+                getVehicleImageUrl : getVehicleImageUrl
             };
             
             function applyscope($scope) {
@@ -131,6 +132,19 @@ define(['angular'], function (angular) {
                 $log.error(message + errorObject ? errorObject.code : "");
                 if(errorObject && errorObject.code == 'PERMISSION_DENIED')
                     $rootScope.$emit('logout');
+            }
+
+            function getVehicleImageUrl(devicetype, isIdle) {
+                var imageUrl = ''
+                if(devicetype == 'car' && isIdle == true)
+                    imageUrl = 'assets/images/car-parked.png';
+                else if(devicetype == 'car' && isIdle == false)
+                    imageUrl = 'assets/images/car-moving.png';
+                else if(devicetype == 'bike' && isIdle == true)
+                    imageUrl = 'assets/images/bike-parked.png';
+                else if(devicetype == 'bike' && isIdle == false)
+                    imageUrl = 'assets/images/bike-moving.png';
+                return imageUrl;
             }
          }
     })();

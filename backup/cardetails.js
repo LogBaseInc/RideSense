@@ -100,7 +100,7 @@ define(['angular',
             vm.tripClicked = function (trip) {
                 utility.setTripSelected(trip);
                 utility.setTripDate(vm.selecteddate);
-                $location.path('/car/trip/'+vm.selectedcar.vehiclenumber);
+                $location.path('/activity/trip/'+vm.selectedcar.vehiclenumber);
             }
 
             vm.clearcar = function() {
@@ -124,7 +124,7 @@ define(['angular',
                 if(carLiveRef != "")
                     carLiveRef.off();
                 utility.setTripDate(vm.selecteddate);
-                $location.path('/car/detail/'+vm.selectedcar.devicenumber+'/'+vm.selectedcar.vehiclenumber);
+                $location.path('/activity/detail/'+vm.selectedcar.devicenumber+'/'+vm.selectedcar.vehiclenumber);
             }
 
             function getCarLiveData(){

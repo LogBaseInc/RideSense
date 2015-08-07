@@ -20,7 +20,7 @@ define(['angular',
 			activate();
 
 		 	function activate(){
-		 		$rootScope.routeSelection = 'cars';
+		 		$rootScope.routeSelection = 'activity';
 		 		$rootScope.tripdetails = true;
 			 	spinner.show();
 			 	getCarDistance();
@@ -60,6 +60,8 @@ define(['angular',
 		 	}
 
 		 	function setMarker() {
+		 		var devicedetails = sessionservice.getAccountDevices();
+		 		var vehicletype = devicedetails[$routeParams.devicenumber].vehicletype ? devicedetails[$routeParams.devicenumber].vehicletype : 'car';
 			 	vm.marker = {
 				    id: 1,
 				     coords: {
@@ -68,7 +70,7 @@ define(['angular',
 				    },
 			     	options: { 
 			     		draggable: false, 
-			     		icon: (vm.cardetail.running ? 'assets/images/car-moving.png' : 'assets/images/car-parked.png'),
+			     		icon: utility.getVehicleImageUrl(vehicletype, !vm.cardetail.running),
 		     		  	labelContent: $routeParams.carnumber,
                         labelAnchor: '22 0',
                         labelClass: 'tm-marker-label',
@@ -97,7 +99,7 @@ define(['angular',
 			}
 
 			vm.gotoActivity = function() {
-				$location.path('/cars/'+$routeParams.carnumber);
+				$location.path('/activity/'+$routeParams.carnumber);
 			}
 
 			function getTimeStamp(unixtimestamp){
