@@ -1,4 +1,5 @@
 <div data-ng-controller="device as vm">
+	<!--
 	<div class="col-xs-12">
 		<form class="form-horizontal" name="deviceform">
 			<h5 class="tm-heading" data-ng-hide="vm.isDeviceEdit"><span class="glyphicon glyphicon-chevron-right"></span> Add Device</h5>
@@ -107,6 +108,121 @@
         		<button style="margin-top:10px" type="button" class="btn btn-default" ng-click="vm.deletecancel();">No</button>
 	           	<button style="margin-top:10px" type="button" class="btn btn-default" ng-click="vm.deleteConfirm();">Yes</button>
         	</center>
+    	</div>
+	</div>
+	-->
+	<div class="col-xs-12">
+		<br/>
+		<form class="form-horizontal" name="deviceform">
+			<h5 class="tm-heading" data-ng-hide="vm.isDeviceEdit"><span class="glyphicon glyphicon-chevron-right"></span> Add User</h5>
+			<h5 class="tm-heading" data-ng-show="vm.isDeviceEdit"><span class="glyphicon glyphicon-chevron-right"></span> Edit User</h5>
+			<br/>
+
+			<div class="form-group zeromargin">
+				<label class="col-md-3 control-label">User Device Type</label>
+				<div ng-disabled="vm.isDeviceEdit" class="col-md-6 devicetype">
+                    <button ng-disabled="vm.isDeviceEdit" ng-class="{ 'btn btn-primary': vm.isStick, 'btn btn-default': !vm.isStick}" style=
+                    "width:110px; border: 0px;  border-radius: 0px;" data-ng-click="vm.selectDeviceType('stick')">Stick</button>
+					<button ng-disabled="vm.isDeviceEdit" style=" border: 0px; border-radius: 0px; width: 110.5px;" ng-class="{ 'btn btn-primary': !vm.isStick, 'btn btn-default': vm.isStick}" data-ng-click="vm.selectDeviceType('stickmobile')">Stick Mobile</button>
+            	</div>	
+			</div>
+			<div class="form-group zeromargin">
+				<label class="col-md-3 control-label">Choose an Avatar</label>
+        		<div class="col-md-6 devicetype">
+                    <button ng-class="{ 'btn btn-primary': vm.isCar, 'btn btn-default': !vm.isCar}" style=
+                    "width:110px; border: 0px;  border-radius: 0px;" data-ng-click="vm.selectVehicleType('car')"><img src="assets/images/car-moving.png" style="height:30px"></img></button>
+					<button style=" border: 0px; border-radius: 0px; width: 110.5px;" ng-class="{ 'btn btn-primary': !vm.isCar, 'btn btn-default': vm.isCar}" data-ng-click="vm.selectVehicleType('bike')"><img src="assets/images/bike-moving.png" style="height:30px"></img></button>
+            	</div>	
+			</div>
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textvehiclenumber.$invalid && deviceform.textvehiclenumber.$touched }">
+				<label class="col-md-3 control-label">User ID</label>
+				<div class="col-md-6">
+					<input type="text" class="form-control" placeholder="Enter a Username or a Vehicle ID" name="textvehiclenumber" data-ng-model="vm.device.vehiclenumber" required>
+                    <div data-ng-messages="deviceform.textvehiclenumber.$error" data-ng-if="vm.interacted(deviceform.textvehiclenumber)" class="error-messages">
+                        <div ng-message="required">User ID required</div>
+                    </div>
+            	</div>
+			</div>
+			<div data-ng-if="vm.isStick" class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdevicenumber.$invalid && deviceform.textdevicenumber.$touched }">
+				<label class="col-md-3 control-label">Stick Device ID</label>
+				<div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Your Stick Device ID" name="textdevicenumber" data-ng-model="vm.device.devicenumber" required ng-readonly="vm.isDeviceEdit" ng-blur="vm.deviceIdCheck()">
+                    <div data-ng-if="vm.isdeviceavailable">
+                    	<i class="glyphicon glyphicon-ok green"></i><span class="marginleft5" style="color:green">Device ID is available</span>
+                    </div>
+                     <div data-ng-if="vm.isdeviceavailable == false">
+                    	<i class="glyphicon glyphicon-remove errortext"></i><span class="marginleft5 errortext">This Device ID already is use</span>
+                    </div>
+                    <div data-ng-messages="deviceform.textdevicenumber.$error" data-ng-if="vm.interacted(deviceform.textdevicenumber, true)" class="error-messages">
+                        <div ng-message="required">Device ID is required</div>
+                    </div>
+            	</div>
+			</div>
+			<div data-ng-if="!vm.isStick" class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdrivercontactnumber.$invalid && deviceform.textdrivercontactnumber.$touched }">
+				<label class="col-md-3 control-label">User's mobile number</label>
+				<div class="col-md-6">
+					<div class="input-group">
+	         			<div class="input-group-btn">
+	    					<button disabled="true" type="button" class="btn btn-default tm-no-outline">+91</button>
+	    				</div>
+						<input type="text" class="form-control" placeholder="User's mobile number" name="textdrivercontactnumber" data-ng-model="vm.device.drivermobile" required ng-pattern="/^[0-9]*$/" minlength="10" maxlength="10">
+					</div>
+                    <div data-ng-messages="deviceform.textdrivercontactnumber.$error" data-ng-if="vm.interacted(deviceform.textdrivercontactnumber)" class="error-messages">
+                        <div ng-message="required">User's mobile number required</div>
+                        <div ng-message="pattern">Enter a valid mobile number</div>
+                        <div ng-message="minlength">Enter a valid mobile number</div>
+                    </div>
+            	</div>
+			</div>
+			
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdrivername.$invalid && deviceform.textdrivername.$touched }">
+				<label class="col-md-3 control-label">Driver Name</label>
+				<div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Driver Name (Optional)" name="textdrivername" data-ng-model="vm.device.drivername" required ng-pattern="/^[a-zA-Z .]*$/">
+                    <div data-ng-messages="deviceform.textdrivername.$error" data-ng-if="vm.interacted(deviceform.textdrivername)" class="error-messages">
+                        <div ng-message="required">Driver name required</div>
+                        <div ng-message="pattern">Enter only alphabets</div>
+                    </div>
+            	</div>
+			</div>
+			<div class="form-group zeromargin">
+				<label class="col-md-3 control-label">Driver's License ID</label>
+				<div class="col-md-6">
+                    <input type="text" class="form-control" placeholder="Driver's License ID (Optional)" name="textdriverid" data-ng-model="vm.device.driverid">
+            	</div>
+			</div>
+			<div data-ng-if="vm.isStick" class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdrivercontactnumber.$invalid && deviceform.textdrivercontactnumber.$touched }">
+				<label class="col-md-3 control-label">User's Mobile Number</label>
+				<div class="col-md-6">
+					 <div class="input-group">
+	         			<div class="input-group-btn">
+	    					<button disabled="true" type="button" class="btn btn-default tm-no-outline">+91</button>
+	    				</div>
+						<input type="text" class="form-control" placeholder="User's mobile number (Optional)" name="textdrivercontactnumber" data-ng-model="vm.device.drivermobile" required ng-pattern="/^[0-9]*$/" minlength="10" maxlength="10">
+					</div>
+                    <div data-ng-messages="deviceform.textdrivercontactnumber.$error" data-ng-if="vm.interacted(deviceform.textdrivercontactnumber)" class="error-messages">
+                        <div ng-message="required">User's mobile number is required</div>
+                        <div ng-message="pattern">Enter a valid mobile number</div>
+                        <div ng-message="minlength">Enter a valid mobile number</div>
+                    </div>
+            	</div>
+			</div>
+		</form>
+		<div>
+		 	</br>
+		 	<center data-ng-hide="vm.isdelete">
+	            <button data-ng-hide="vm.isDeviceEdit" type="button" class="btn btn-primary" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Add User</button>
+	            <button data-ng-show="vm.isDeviceEdit" type="button" class="btn btn-primary" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Update User</button>
+	            <a type="button" class="btn btn-default"  href="#/account/devices">Cancel</a>
+	           	<button data-ng-show="vm.isDeviceEdit" type="button" class="btn btn-default" ng-click="vm.deletedevice();">Delete User</button>
+	        </center>
+        	<center data-ng-show="vm.isdelete">
+        		<span class="errortext">User will be deleted permanently, do you want to delete it? </span>
+        		<br/>
+        		<button style="margin-top:10px" type="button" class="btn btn-default" ng-click="vm.deletecancel();">No</button>
+	           	<button style="margin-top:10px" type="button" class="btn btn-default" ng-click="vm.deleteConfirm();">Yes</button>
+        	</center>
+        	<br/>
     	</div>
 	</div>
 </div>
