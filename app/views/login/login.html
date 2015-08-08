@@ -97,8 +97,7 @@
 
                             <div class="toolbar center">
                                 <a href="" class="back-to-login-link" data-ng-click="vm.backtologinclicked()">
-                                    <i class="ace-icon glyphicon glyphicon-arrow-left"></i>
-                                    Back to login
+                                    Back to login <i class="ace-icon glyphicon glyphicon-arrow-right"></i>
                                 </a>
                             </div>
                         </div>
@@ -156,7 +155,7 @@
 
                             <div class="form-group" data-ng-class="{ 'has-error': signupform.chkagreement.$invalid && signupform.chkagreement.$touched }">
                                 <input type="checkbox" class="ace" name="chkagreement" required data-ng-model="vm.newuser.agreed">
-                                <span class="lbl">
+                                &nbsp;<span class="lbl">
                                     I accept the
                                     <a href="">User Agreement</a>
                                 </span>
