@@ -57,7 +57,7 @@ define(['angular',
 			                	var sublocality = _.first(_.filter(results[0].address_components, function(address){ return address.types[0].indexOf('sublocality') >= 0}));
 			                	if(sublocality == null)
 			                		sublocality = _.first(_.filter(results[0].address_components, function(address){ return address.types[0].indexOf('route') >= 0}));
-			          			var content = '<div id="infowindow_content"><span style="font-weight: bold;">'+sublocality.long_name+'</span><br>Last updated '+model.time+'<br><a style="margin-left:25%" href="#/activity/'+model.title+'"><img src="assets/images/more-details.png"></img></a></div>';
+			          			var content = '<div id="infowindow_content"><span style="font-weight: bold;">'+sublocality.long_name+'</span><p>Last updated '+model.time+'.</p><a class="btn btn-xs btn-info" style="margin-left:25%" href="#/activity/'+model.title+'">Go to Activity <i class="glyphicon glyphicon-arrow-right"></i></a></div>';
 			          			var compiled = $compile(content)($scope);
 						        infowindow.setContent(compiled[0].innerHTML);
 						        infowindow.open( mapinstance , gMarker );
