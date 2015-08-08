@@ -7,12 +7,14 @@ define(['angular',
         function carmap($compile, $rootScope, $scope, $routeParams, $location, config, spinner, uiGmapIsReady, uiGmapGoogleMapApi, sessionservice, utility) {
         	$rootScope.routeSelection = 'live'
 	        var vm = this;
-		 	vm.distanceCovered = 0;
-		 	vm.showmaps =false;
-			var mapinstance;
+	        var mapinstance;
 			var infowindow;
 			var ref;
 			var distanceref;
+			vm.isUP = true;
+			
+		 	vm.distanceCovered = 0;
+		 	vm.showmaps =false;
 			vm.mapOptions = {
                 disableDefaultUI:true,    
             }
@@ -23,8 +25,22 @@ define(['angular',
 		 		$rootScope.routeSelection = 'activity';
 		 		$rootScope.tripdetails = true;
 			 	spinner.show();
-			 	getCarDistance();
+			 	getDistance();
 				getlivecardata();
+		 	}
+
+		 	function getDistance() {
+				var newdate = new Date();
+				newdate.setDate(newdate.getDate() - 1);
+				var previousday = moment(new Date(newdate)).format('YYYYMMDD');
+
+				var pdistancefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/devices/'+$routeParams.devicenumber+'/daily/'+previousday);
+				pdistancefbref.once("value", function(snapshot) {
+				  	vm.previousdaydistance = snapshot.val() != null ? snapshot.val().distance : 0; 
+					getCarDistance();
+				}, function (errorObject) {
+				  	utility.errorlog("The previous day distance read failed: " , errorObject);
+				});
 		 	}
 
 		 	function getCarDistance() {
@@ -34,6 +50,11 @@ define(['angular',
 					var data = snapshot.val();
 					if(data) {
 						vm.distanceCovered = data.distance.toFixed(2);
+						
+						var distancex =  vm.previousdaydistance / 24;
+				  		var time = moment().format("HH.mm");
+				  		vm.isUP = vm.distanceCovered >= (distancex * time);
+
 						utility.applyscope($scope);
 					}
 
@@ -49,7 +70,8 @@ define(['angular',
 					if(data) {
 						vm.cardetail = data;
 						vm.status = data.running ? 'Running' : 'Idle';
-						setGoogleMaps();
+						if(vm.showmaps == false)
+							setGoogleMaps();
 						setMarker();
 						utility.applyscope($scope);
 					}

@@ -13,7 +13,10 @@
 		<div class="tm-live-summary">
 		    <p class="tm-live-today">Today</p> 
 			<h1 class="tm-live-distance">{{vm.distanceCovered}} 
-				<small class="tm-overlay-unit">km </small>
+				<small class="tm-overlay-unit">km 
+					<span data-ng-if="vm.isUP == true" class="glyphicon glyphicon-arrow-up"></span>
+					<span data-ng-if="vm.isUP == false" class="glyphicon glyphicon-arrow-down"></span>
+				</small>
 			</h1>
 			<p class="tm-overlay-unit">Currently {{vm.status}}</p>
 			<button type="button" class="btn btn-info btn-xs" style="background-color:rgba(204, 204, 204, 0.52)" data-ng-click="vm.gotoActivity()">
