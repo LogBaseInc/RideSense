@@ -1,29 +1,44 @@
 <div data-ng-controller="devices as vm">
-	<div class="input-group input-group-lg livemapsearch" data-ng-show="vm.devices.length > 0">
+	<div class="input-group input-group-lg livemapsearch">
 		<input type="text" class="form-control tm-search-text tm-no-outline fullwidth" placeholder="Search user" data-ng-model="search" />
 	    <div class="input-group-btn">
 	    	<button type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.buydevice()"><span class="glyphicon glyphicon-plus"></span></button>
 	    </div>
 	</div>
     <br/>
-	<div class="col-xs-12 fullwidth">
-		<div class="tm-alerts-summary devicelistbox" data-ng-repeat="device in vm.devices | filter:search">
-			<div class="marginleft10" data-ng-click="vm.editdevice($index)">
-				<h4>{{device.devicenumber}}</h4>
-				<div class="margintop15">
-					<img data-ng-if="device.vehicletype == 'car'" class="height17" src="assets/images/car-moving.png"></img>
-					<img data-ng-if="device.vehicletype == 'bike'" class="height17" src="assets/images/bike-moving.png"></img>
-					<label style="margin-left:3px" class="fontsize13">{{device.displayvehiclenumber}}</label>
-					<br/>
-					<span class="glyphicon glyphicon-user fontsize13"></span><label class="marginleft5 fontsize13">{{device.drivername}}</label>
-					<br/>
-					<span class="glyphicon glyphicon-calendar fontsize13"></span><label class="marginleft5 fontsize13">{{device.boughton}}</label>
+	<div class="col-xs-12 tripblock">
+		<div data-ng-repeat="device in vm.devices | filter:search">
+			<div class="col-xs-12 col-md-4 tm-card-wrap ng-scope">
+				<div class="col-md-12 tripdetail tripblock deviceslist" ng-click="vm.editdevice($index)">
+					<div class="row tripblock">
+						<div class="col-xs-7">
+							<h4 class="ng-binding" style="margin-top:0px;padding-top:0px">
+								<img style="margin-top:-4px; margin-left:-4px;" class="height40" data-ng-if="device.vehicletype == 'car'" src="assets/images/car_unselected.png"></img>
+								<img style="margin-top:-4px; margin-left:-4px;" class="height40" data-ng-if="device.vehicletype == 'bike'" src="assets/images/bike_unselected.png"></img>
+								<img style="margin-top:-4px; margin-left:-4px;" class="height40" data-ng-if="device.vehicletype == 'other'" src="assets/images/other_unselected.png"></img>
+								{{device.displayvehiclenumber}}
+							</h4>
+						</div>
+						<div class="col-xs-5">
+							<h4 class="text-right" style="margin-top:0px;padding-top:0px">{{device.boughton}}</h4>
+						</div>
+					</div>
+					<div class="space-6"></div>
+						<div class="row tripblock">
+							<div class="col-xs-8">
+								<h5 class="ng-binding text-muted zeropadding zeromargin">{{device.devicenumber}}</h5>
+							</div>
+							<div class="col-xs-4">
+								<h5 class="text-right text-muted zeropadding zeromargin">{{device.type == 'stick' ? 'Stick' : 'Stick Mobile'}}</h5>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
+		<br/>
+	</div> 
 
 	<div class="col-xs-12" data-ng-show="vm.devices.length == 0">
-		<center style="margin-top:200px">No devices available. Click <a href="" class="marginright5" data-ng-click="vm.buydevice()"><img class="marginleft5" src="assets/images/plus.png"></img></a>to add new device</center>
+		<center style="margin-top:150px">No user available. Click the + icon at the top corner to add user.</center>
 	</div>
 </div>

@@ -578,6 +578,27 @@ div.callout {
     border-radius: 4px !important;
 }
 
-.height17{
-    height: 17px !important;
+.height21{
+    height: 21px !important;
+}
+
+.deviceslist {
+    min-height:110px !important; 
+    max-height:110px !important;
+}
+
+.height40 {
+    height: 40px !important;
+}
+
+.marginleft20 {
+    margin-left: 20px
+}
+
+.blackcolortext {
+    color: black !important
+}
+
+.cursorpointer {
+    cursor: pointer;
 }

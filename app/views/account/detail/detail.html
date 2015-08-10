@@ -1,31 +1,28 @@
+<br/>
 <div data-ng-controller="accountdetail as vm">
 	<div class="col-xs-12 col-md-6">
 		<form class="form-horizontal" name="accountform">
 			<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Account Details</h5>
 			</br>
+			<div class="form-group zeromargin">
+				<label class="col-md-3 control-label">Account email</label>
+				<div class="col-md-8">
+					<input type="text" class="form-control" placeholder="Account email" data-ng-model="vm.email" ng-readonly="true">
+            	</div>
+			</div>
 			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textaccountname.$invalid && accountform.textaccountname.$touched }">
 				<label class="col-md-3 control-label">Account name</label>
-				<div class="col-md-6">
+				<div class="col-md-8">
                     <input type="text" class="form-control" placeholder="Account name" name="textaccountname" data-ng-model="vm.accountname" required maxLength="50">
                     <div data-ng-messages="accountform.textaccountname.$error" data-ng-if="vm.interacted(accountform.textaccountname)" class="error-messages">
                         <div ng-message="required">Account name required</div>
                     </div>
             	</div>
 			</div>
-			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textname.$invalid && accountform.textname.$touched }">
-				<label class="col-md-3 control-label">Name</label>
-				<div class="col-md-6">
-					<input type="text" class="form-control" placeholder="Name" name="textname" data-ng-model="vm.address.name" required ng-pattern="/^[a-zA-Z .]*$/">
-                    <div data-ng-messages="accountform.textname.$error" data-ng-if="vm.interacted(accountform.textname)" class="error-messages">
-                        <div ng-message="required">Name required</div>
-                        <div ng-message="pattern">Enter only alphabets</div>
-                    </div>
-            	</div>
-			</div>
 			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textaddressline.$invalid && accountform.textaddressline.$touched }">
 				<label class="col-md-3 control-label">Address</label>
-				<div class="col-md-6">
-                    <textarea type="text" class="form-control addresstextarea" placeholder="Address line" name="textaddressline" data-ng-model="vm.address.addressline" required maxLength="300"> </textarea>
+				<div class="col-md-8">
+                    <textarea type="text" class="form-control addresstextarea" placeholder="Address line" name="textaddressline" data-ng-model="vm.address.addressline" required maxLength="300" style="resize:none"> </textarea>
                     <div data-ng-messages="accountform.textaddressline.$error" data-ng-if="vm.interacted(accountform.textaddressline)" class="error-messages">
                         <div ng-message="required">Address required</div>
                     </div>
@@ -33,7 +30,7 @@
 			</div>
 			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textcity.$invalid && accountform.textcity.$touched }">
 				<label class="col-md-3 control-label">City</label>
-				<div class="col-md-6">
+				<div class="col-md-8">
                     <input type="text" class="form-control" placeholder="City" name="textcity" data-ng-model="vm.address.city" required ng-pattern="/^[a-zA-Z]*$/">
                     <div data-ng-messages="accountform.textcity.$error" data-ng-if="vm.interacted(accountform.textcity)" class="error-messages">
                         <div ng-message="required">City required</div>

@@ -144,6 +144,8 @@ define(['angular'], function (angular) {
                     imageUrl = 'assets/images/bike-parked.png';
                 else if(devicetype == 'bike' && isIdle == false)
                     imageUrl = 'assets/images/bike-moving.png';
+                else if(devicetype == 'other')
+                     imageUrl = 'assets/images/otherlive.png';
                 return imageUrl;
             }
          }

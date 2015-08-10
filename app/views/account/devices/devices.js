@@ -6,6 +6,7 @@ define(['angular',
         configroute.register.controller('devices', ['$rootScope','$scope', '$location', 'config', 'spinner', 'sessionservice', 'utility', devices]);
         function devices($rootScope, $scope, $location, config, spinner, sessionservice, utility) {
             var vm = this;
+            vm.devices = [];
 
             activate();
 
@@ -27,9 +28,10 @@ define(['angular',
                     vm.devices.push({
                         devicenumber : property,
                         boughton: moment(data[property].addedon).format('MMM DD, YYYY'),
-                        displayvehiclenumber: data[property].vehiclenumber.length > 25 ? (data[property].vehiclenumber.substring(0,25)+" ...") : data[property].vehiclenumber,
-                        drivername : data[property].drivername,
-                        vehicletype : data[property].vehicletype ? data[property].vehicletype : 'car'
+                        displayvehiclenumber: data[property].vehiclenumber.length > 20 ? (data[property].vehiclenumber.substring(0,20)+"...") : data[property].vehiclenumber,
+                        vehicletype : data[property].vehicletype ? data[property].vehicletype : 'car',
+                        vehiclenumber: data[property].vehiclenumber,
+                        type : data[property].type ? data[property].type : 'stick',
                     });
 
                     vm.devicesdetails.push({
@@ -39,7 +41,7 @@ define(['angular',
                         driverid : data[property].driverid,
                         drivermobile : data[property].drivermobile,
                         vehiclenumber: data[property].vehiclenumber,
-                        type : data[property].type ? data[property].type : 'stick',
+                        type : (data[property].type != null && data[property].type != undefined) ? data[property].type : 'stick',
                         vehicletype : data[property].vehicletype ? data[property].vehicletype : 'car',
                     });
                 }

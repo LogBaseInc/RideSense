@@ -12,7 +12,7 @@
 			<div class="col-xs-12 col-md-4" data-ng-hide="vm.showallcars">
 				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> User Summary for {{vm.selectedcar.vehiclenumber}}</h5>
 				<hr/>
-				<h4>{{vm.selectedcar.drivername}} <small>| {{vm.selectedcar.drivermobile}}</small></h4>
+				<h4>{{vm.selectedcar.drivername}} <small><span data-ng-if="vm.selectedcar.drivername && vm.selectedcar.drivermobile">|</span> {{vm.selectedcar.drivermobile}}</small></h4>
 				<h4>{{vm.totalDistance | number : 2}} km <small> today.</small></h4>
 				<div data-ng-show="vm.havelivedata">
 					<h4 data-ng-if="vm.carrunning"><small>Currently running @ {{vm.carlocation}}.</small></h4>
@@ -93,7 +93,7 @@
 			</div>     
 			<div class="col-xs-12" data-ng-show="!vm.showallcars && vm.trips.length==0">
 				<br/>
-				<p class="text-muted"><!--<span class="glyphicon glyphicon-star-empty">--></span>No trips available for {{vm.selecteddate | date }}.</p>
+				<p class="text-muted"></span>No trips available for {{vm.selecteddate | date }}.</p>
 				<br/>
 			</div>
 		</div> <!-- row -->
@@ -107,8 +107,8 @@
       &nbsp;&nbsp;<span class="blackcolor">{{match.label}}</span>
       <br/>
       <small style="color:gray">
-      	<span data-ng-show="match.model.type == 'Driver'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User Name</span>
-      	<span data-ng-show="match.model.type == 'Car'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vehicle ID</span>
+      	<span data-ng-show="match.model.type == 'Driver'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Driver Name</span>
+      	<span data-ng-show="match.model.type == 'Car'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User ID</span>
       </small>
   </a>
 </script>

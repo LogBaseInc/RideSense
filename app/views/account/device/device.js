@@ -42,7 +42,6 @@ define(['angular',
                 else
                     vm.isStick = false;
 
-                setVehicleType();
             }
 
             function canBuy(){
@@ -50,8 +49,8 @@ define(['angular',
             }
 
             vm.selectDeviceType = function(devicetype) {
-                vm.devicetype = devicetype;
-                if(vm.devicetype == 'stick')
+                vm.device.type = devicetype;
+                if(vm.device.type == 'stick')
                     vm.isStick = true;
                 else {
                     vm.isStick = false;
@@ -61,14 +60,6 @@ define(['angular',
 
             vm.selectVehicleType = function(vehicletype) {
                 vm.device.vehicletype = vehicletype;
-                setVehicleType();
-            }
-
-            function setVehicleType() {
-                if(vm.device.vehicletype == 'car')
-                    vm.isCar = true;
-                else
-                    vm.isCar = false;
             }
 
             vm.deviceIdCheck = function () {
@@ -80,6 +71,7 @@ define(['angular',
                             vm.isdeviceavailable = true;
                         else
                             vm.isdeviceavailable = false;
+                        utility.applyscope($scope);
                     }, function (errorObject) {
                         utility.errorlog("The device read failed: " ,errorObject);
                     });
@@ -87,6 +79,10 @@ define(['angular',
                 else {
                     vm.isdeviceavailable = null;
                 }
+            }
+
+            vm.hidedevicecheck = function () {
+                vm.isdeviceavailable = null;
             }
 
             vm.adddevice = function () {
@@ -123,15 +119,15 @@ define(['angular',
 
                 var deviceobj = {};
                 deviceobj.vehiclenumber = vm.device.vehiclenumber;
-                deviceobj.type = vm.devicetype;
-                deviceobj.drivername  = vm.device.drivername;
-                deviceobj.driverid = vm.device.driverid;
-                deviceobj.drivermobile = vm.device.drivermobile;
+                deviceobj.type = vm.device.type;
                 deviceobj.addedon = new Date().getTime();
                 deviceobj.vehicletype = vm.device.vehicletype;
-
-
-                //var devicejson = '{"vehiclenumber":"'+vm.device.vehiclenumber+ '","type":"' + vm.devicetype + '","drivername":"' + vm.device.drivername +'","driverid":"' + vm.device.driverid +'","drivermobile":' + vm.device.drivermobile+ ',"addedon":' + new Date().getTime() +'}';
+                if(vm.device.drivername != null && vm.device.drivername != undefined && vm.device.drivername != "")
+                    deviceobj.drivername  = vm.device.drivername;
+                if(vm.device.driverid != null && vm.device.driverid != undefined && vm.device.driverid != "")
+                    deviceobj.driverid = vm.device.driverid;
+                if(vm.device.drivermobile != null && vm.device.drivermobile != undefined && vm.device.drivermobile != "")
+                    deviceobj.drivermobile = vm.device.drivermobile;
                 
                 devicefberef.set(deviceobj);
 

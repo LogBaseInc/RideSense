@@ -17,13 +17,22 @@ define(['angular',
             };
 
             var accountref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/name');
+            var emailref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/email');
             var addressref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/address');
+
             activate();
 
             function activate(){
                 spinner.show();
                 accountref.once("value", function(snapshot) {
                     vm.accountname = snapshot.val();
+                    utility.applyscope($scope);
+                }, function (errorObject) {
+                    utility.errorlog("The account name read failed: ", errorObject);
+                });
+
+                emailref.once("value", function(snapshot) {
+                    vm.email = snapshot.val();
                     utility.applyscope($scope);
                 }, function (errorObject) {
                     utility.errorlog("The account name read failed: ", errorObject);
