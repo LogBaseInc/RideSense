@@ -6,39 +6,52 @@
 	    </div>
 	</div>
     <br/>
+
+	<div class="container-fluid">
+    <div class="row">
 	<div class="col-xs-12 tripblock">
 		<div data-ng-repeat="device in vm.devices | filter:search">
 			<div class="col-xs-12 col-md-4 tm-card-wrap ng-scope">
-				<div class="col-md-12 tripdetail tripblock deviceslist" ng-click="vm.editdevice($index)">
+				<div class="col-md-12 tripdetail tripblock stick-list" ng-click="vm.editdevice($index)">
 					<div class="row tripblock">
-						<div class="col-xs-7">
-							<h4 class="ng-binding" style="margin-top:0px;padding-top:0px">
+						<div class="col-xs-8">
+							<h4 class="ng-binding" style="margin-top:0px;padding-top:0px;margin-bottom:0px;">
 								<img style="margin-top:-4px; margin-left:-4px;" class="height40" data-ng-if="device.vehicletype == 'car'" src="assets/images/car_unselected.png"></img>
 								<img style="margin-top:-4px; margin-left:-4px;" class="height40" data-ng-if="device.vehicletype == 'bike'" src="assets/images/bike_unselected.png"></img>
 								<img style="margin-top:-4px; margin-left:-4px;" class="height40" data-ng-if="device.vehicletype == 'other'" src="assets/images/other_unselected.png"></img>
 								{{device.displayvehiclenumber}}
 							</h4>
 						</div>
+						<!--
 						<div class="col-xs-5">
-							<h4 class="text-right" style="margin-top:0px;padding-top:0px">{{device.boughton}}</h4>
+							<h5 class="text-right" >{{device.boughton}}</h5>
+						</div>
+						-->
+						<div class="col-xs-4">
+							<h5 class="text-right">{{device.type == 'stick' ? 'Stick' : 'Stick Mobile'}}</h5>
 						</div>
 					</div>
 					<div class="space-6"></div>
 						<div class="row tripblock">
-							<div class="col-xs-8">
+							<div class="col-xs-12">
 								<h5 class="ng-binding text-muted zeropadding zeromargin">{{device.devicenumber}}</h5>
 							</div>
+							<!--
 							<div class="col-xs-4">
 								<h5 class="text-right text-muted zeropadding zeromargin">{{device.type == 'stick' ? 'Stick' : 'Stick Mobile'}}</h5>
 							</div>
+							-->
 						</div>
 					</div>
 				</div>
 			</div>
-		<br/>
-	</div> 
+		</div>
+	</div>
+	<br/><br/> 
+	</div>
+	</div>
 
 	<div class="col-xs-12" data-ng-show="vm.devices.length == 0">
-		<center style="margin-top:150px">No user available. Click the + icon at the top corner to add user.</center>
+		<center style="margin-top:150px">No users being tracked. Click + to add a user.</center>
 	</div>
 </div>

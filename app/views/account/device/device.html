@@ -15,7 +15,7 @@
             	</div>	
 			</div>
 			<div class="form-group zeromargin">
-				<label class="col-md-3 control-label">Avatar Type</label>
+				<label class="col-md-3 control-label">Avatar</label>
 				<div class="col-md-6">
 					<a data-ng-show="vm.device.vehicletype=='car'" class="blackcolortext"><img src="assets/images/car_selected.png" class="height40"></img> Car</a>
 					<a data-ng-show="vm.device.vehicletype !='car'" class="blackcolortext cursorpointer" 
@@ -53,11 +53,11 @@
 				<label class="col-md-3 control-label">Stick Device ID</label>
 				<div class="col-md-6">
                     <input type="text" class="form-control" placeholder="Your Stick Device ID" name="textdevicenumber" data-ng-model="vm.device.devicenumber" required ng-readonly="vm.isDeviceEdit" ng-blur="vm.deviceIdCheck()" ng-change="vm.hidedevicecheck()">
-                    <div data-ng-if="vm.isdeviceavailable">
-                    	<i class="glyphicon glyphicon-ok green"></i><span class="marginleft5" style="color:green">Device ID is available</span>
+                    <div data-ng-if="vm.isdeviceavailable" style="padding-top:5px;">
+                    	<i class="glyphicon glyphicon-ok green"></i><span class="marginleft5" style="color:green;">&nbsp;Device ID is available</span>
                     </div>
-                     <div data-ng-if="vm.isdeviceavailable == false">
-                    	<i class="glyphicon glyphicon-remove errortext"></i><span class="marginleft5 errortext">This Device ID already is use</span>
+                     <div data-ng-if="vm.isdeviceavailable == false" style="padding-top:5px;">
+                    	<i class="glyphicon glyphicon-remove errortext"></i><span class="marginleft5 errortext">&nbsp;This Device ID already is use</span>
                     </div>
                     <div data-ng-messages="deviceform.textdevicenumber.$error" data-ng-if="vm.interacted(deviceform.textdevicenumber, true)" class="error-messages">
                         <div ng-message="required">Device ID is required</div>
@@ -117,8 +117,8 @@
 		<div>
 		 	</br>
 		 	<center data-ng-hide="vm.isdelete">
-	            <button data-ng-hide="vm.isDeviceEdit" type="button" class="btn btn-primary" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Add User</button>
-	            <button data-ng-show="vm.isDeviceEdit" type="button" class="btn btn-primary" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Update User</button>
+	            <button data-ng-hide="vm.isDeviceEdit" type="button" class="btn btn-default" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Add User</button>
+	            <button data-ng-show="vm.isDeviceEdit" type="button" class="btn btn-default" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Update User</button>
 	            <a type="button" class="btn btn-default"  href="#/account/devices">Cancel</a>
 	           	<button data-ng-show="vm.isDeviceEdit" type="button" class="btn btn-default" ng-click="vm.deletedevice();">Delete User</button>
 	        </center>

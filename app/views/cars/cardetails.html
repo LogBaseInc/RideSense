@@ -69,13 +69,13 @@
 			    	<div class="row tripblock">
 			        	<div data-ng-repeat="trip in tripdetail.trips">
 							<div class="col-xs-12 col-md-4 tm-card-wrap ng-scope">
-								<div class="col-md-12 tripdetail tripblock" ng-click="vm.tripClicked(trip)">
+								<div class="col-md-12 tripdetail tripblock stick-list" ng-click="vm.tripClicked(trip)">
 									<div class="row tripblock">
 										<div class="col-xs-8">
-											<h4 class="ng-binding">{{trip.starttime}} > {{trip.endtime}}</h4>
+											<h4 class="ng-binding" style="margin-top:0px;padding-top:0px;margin-bottom:0px;">{{trip.starttime}} > {{trip.endtime}}</h4>
 										</div>
 										<div class="col-xs-4">
-											<h4 class="text-right">{{trip.distance}} Km</h4>
+											<h4 class="text-right" style="margin-top:0px;padding-top:0px;margin-bottom:0px;">{{trip.distance}} Km</h4>
 										</div>
 									</div>
 									<div class="space-6"></div>

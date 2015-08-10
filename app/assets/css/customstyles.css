@@ -502,6 +502,15 @@ hr {
   cursor: pointer;
 }
 
+.tripdetail:hover {
+  border-bottom: Solid;
+  border-width: 2px;
+  border-color: LightCoral;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+}
+
 .searchfilter {
     width: 44px;
     margin-right: -2px;
@@ -582,9 +591,9 @@ div.callout {
     height: 21px !important;
 }
 
-.deviceslist {
-    min-height:110px !important; 
-    max-height:110px !important;
+.stick-list {
+    min-height:95px !important; 
+    max-height:95px !important;
 }
 
 .height40 {
