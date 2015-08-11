@@ -77,15 +77,9 @@ define(['angular',
 				getDistance();
 
 				vm.map = { center: { latitude: 11, longitude: 77 }, zoom: defaultzoom };
-				//document.addEventListener("deviceready", onDeviceReady, false);
 
 				navigator.geolocation.getCurrentPosition(currentPositionCallback);
 		 	}
-
-			/*function onDeviceReady() {
-				alert('getposition');
-			  navigator.geolocation.getCurrentPosition(currentPositionCallback);
-			}*/
 
 		 	function currentPositionCallback(position) {
 		 		vm.map = { center: { latitude: position.coords.latitude, longitude: position.coords.longitude }, zoom: defaultzoom };
@@ -267,7 +261,7 @@ define(['angular',
 					   	labelContent: vehiclenumber, 
 					   	labelClass: ((isIdle && vm.dragMarker) ? 'tm-callout' : 'tm-marker-label'),
 					   	icon: utility.getVehicleImageUrl(getVechileType(property), isIdle),
-					   	labelAnchor: ((isIdle && vm.dragMarker) ? '60 125' : '22 0')
+					   	labelAnchor: ((isIdle && vm.dragMarker) ? '40 100' : '22 0')
 					}
 				}
 			}
@@ -313,19 +307,19 @@ define(['angular',
 							var duration = element.duration.text;
 							idleCarlist[i].options.labelContent = '<div class="callout top">'+idleCarlist[i].title + '<br/>'+distance + ' | '+duration +'</div>';
 							idleCarlist[i].options.labelClass = 'tm-callout';
-							idleCarlist[i].options.labelAnchor = '60 125';
+							idleCarlist[i].options.labelAnchor = '40 100';
 						}
 						else if(element.status == 'OK' && element.distance.value > 5000) {
 							var distance = element.distance.text;
 							var duration = element.duration.text;
 							idleCarlist[i].options.labelContent = '<div class="callout top">'+idleCarlist[i].title + '<br/>> 5 km</div>';
 							idleCarlist[i].options.labelClass = 'tm-callout';
-							idleCarlist[i].options.labelAnchor = '60 125';
+							idleCarlist[i].options.labelAnchor = '40 100';
 						}
 						else if (element.status == 'ZERO_RESULTS') {
 							idleCarlist[i].options.labelContent = '<div class="callout top">'+idleCarlist[i].title + '<br/>Not found</div>';
 							idleCarlist[i].options.labelClass = 'tm-callout';
-							idleCarlist[i].options.labelAnchor = '60 125';
+							idleCarlist[i].options.labelAnchor = '40 100';
 						}
 						else {
 							idleCarlist[i].options.labelContent = idleCarlist[i].title;
@@ -416,7 +410,7 @@ define(['angular',
 						 	cardetail.options.labelContent = cardetail.title;
 					 	cardetail.options.labelClass = ((isIdle && vm.dragMarker) ? 'tm-callout' : 'tm-marker-label'),
 					   	cardetail.options.icon = utility.getVehicleImageUrl(getVechileType(key), isIdle),
-					   	cardetail.options.labelAnchor = ((isIdle && vm.dragMarker) ? '60 125' : '22 0')
+					   	cardetail.options.labelAnchor = ((isIdle && vm.dragMarker) ? '40 100' : '22 0')
 				 	}
 				  	utility.applyscope($scope);
 				}

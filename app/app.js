@@ -43,6 +43,11 @@ define(['angular',
             script.type = 'text/javascript';
             script.src = 'https://maps.google.com/maps/api/js?sensor=true&libraries=places&language=en-US&callback=scriptLoaded';
             document.body.appendChild(script);
+
+            var script1 = document.createElement('script');
+            script1.type = 'text/javascript';
+            script1.src = 'https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js';
+            document.body.appendChild(script1);
           } 
     })();
 });

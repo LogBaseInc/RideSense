@@ -22,17 +22,11 @@
             activate();
 
             function activate() {
-                var accountemailfbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/email');
-                accountemailfbref.once("value", function(snapshot) {
-                    email = snapshot.val();
-                }, function (errorObject) {
-                    utility.errorlog("The account name read failed: " , errorObject);
-                });
+                email = sessionservice.getSession().password.email;
             }
 
             function canchangepassword() {
-                if($scope.passform.$valid)
-                {
+                if($scope.passform.$valid) {
                     if(vm.password != null && vm.password != undefined &&
                        vm.repeatpassword != null && vm.repeatpassword != undefined)
                     {

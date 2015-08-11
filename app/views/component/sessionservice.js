@@ -11,6 +11,7 @@ define(['angular', 'utility'], function (angular) {
                 clear: clear,
                 isLoggedIn: isLoggedIn,
                 setSession: setSession,
+                getSession : getSession,
                 getAccountDevices : getAccountDevices,
                 getSessionExpiry : getSessionExpiry,
                 getaccountId : getaccountId,

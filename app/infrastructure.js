@@ -9,5 +9,5 @@ define([
     'ui-bootstrap',
     'spinner',
     'toaster',
-    'loggly'
+    'loggly',
 ], function () { });

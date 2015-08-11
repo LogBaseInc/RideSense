@@ -164,15 +164,6 @@ define(['angular',
                      }
                  },
                  {
-                     url: '/account/collabroter',
-                     config: {
-                         templateUrl: 'views/account/users/user.html',
-                         title: 'detail',
-                         controllerUrl: 'views/account/users/user',
-                         allowAnonymous: false
-                     }
-                 },
-                 {
                      url: '/account/delete/:email',
                      config: {
                          templateUrl: 'views/account/delete/deleteaccount.html',

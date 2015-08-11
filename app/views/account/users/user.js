@@ -3,8 +3,8 @@ define(['angular',
     'views/services/userservice'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('user', ['$scope', '$location', 'config', 'notify', 'spinner', 'sessionservice', 'userservice', 'utility', user]);
-        function user($scope, $location, config, notify, spinner, sessionservice, userservice, utility) {
+        configroute.register.controller('user', ['$rootScope', '$scope', '$location', 'config', 'notify', 'spinner', 'sessionservice', 'userservice', 'utility', user]);
+        function user($rootScope, $scope, $location, config, notify, spinner, sessionservice, userservice, utility) {
             var submitted = false;
             var vm = this;
             vm.isAdmin = true;
@@ -25,17 +25,31 @@ define(['angular',
             activate();
 
             function activate(){
+                $('input[type=checkbox][data-toggle^=toggle]').bootstrapToggle();
+
+                $(document).on('click.bs.toggle', 'div[data-toggle^=toggle]', function(e) {
+                    var $checkbox = $(this).find('input[type=checkbox]');
+                    setroleType($checkbox.prop('checked') ? 'admin' : 'notadmin');
+                });
+
+                $('#role-toggle').prop('checked', true).change();
+
                 getUsers();
-                var selecteduser =  utility.getUserSelected();
-                if(selecteduser) {
+                if($rootScope.userselected) {
                     vm.isEdit = true;
-                    vm.userName = selecteduser.email;
-                    vm.isAdmin = selecteduser.admin == 'Admin' ? true  : false;
-                    vm.isJoined = selecteduser.status == 'Joined' ? true : false;
+                    vm.userName = $rootScope.userselected.email;
+                    vm.isAdmin = $rootScope.userselected.admin == 'Admin' ? true  : false;
+                    vm.isJoined = $rootScope.userselected.status == 'Joined' ? true : false;
+                    $('#role-toggle').prop('checked', vm.isAdmin).change();
+                    
                     getUser();
                 }
-                else
+                else {
                     vm.isEdit = false;
+                    if($rootScope.useremail)
+                        vm.userName = $rootScope.useremail;
+                    $rootScope.useremail = null;
+                }
             }
 
             function getUsers(){
@@ -61,11 +75,12 @@ define(['angular',
                 });
             }
 
-            vm.roleType = function (type) {
+            function setroleType (type) {
                 if(type == 'admin')
                     vm.isAdmin = true;
                 else
                     vm.isAdmin = false;
+                utility.applyscope($scope);
             }
 
             function canAdd(){
@@ -73,7 +88,7 @@ define(['angular',
             }
 
             vm.adduser = function() {
-                if(vm.emailsused.indexOf(vm.userName) < 0) {
+                if(vm.emailsused.indexOf(vm.userName) < 0 && $scope.uservm.useremails.indexOf(vm.userName) < 0) {
                     submitted = true;
                     spinner.show();
                    
@@ -117,7 +132,7 @@ define(['angular',
                 submitted = false;
                 spinner.hide();
                 notify.success('User updated successfully');
-                $location.path('/account/detail');
+                vm.cancel();
             }
 
             vm.deleteuser = function() {
@@ -141,21 +156,26 @@ define(['angular',
                     userfberef = new Firebase(config.firebaseUrl+'accounts/'+accountId+'/users/'+userName);
                     userfberef.remove();
 
-                    ubmitted = true;
+                    submitted = true;
                     spinner.hide();
                     notify.success('User deleted successfully');
-                    $location.path('/account/detail');
+                    vm.cancel();
                 }
                 else {
                     notify.error('Something went wrong, please try after some time');
                 }
             }
 
+            vm.cancel = function () {
+                $scope.uservm.search = null;
+                $scope.uservm.showadduser = false;
+            }
+
             function sendUserInviteEmailCompleted() {
                 submitted = false;
                 spinner.hide();
                 notify.success('User added successfully. Invite email send');
-                $location.path('/account/detail');
+                vm.cancel();
             }
 
             function sendUserInviteEmailFailed() {

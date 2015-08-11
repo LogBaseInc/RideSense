@@ -1,21 +1,24 @@
 define(['angular',
     'config.route',
-    'lib'], function (angular, configroute) {
+    'lib',
+    'views/account/users/user'], function (angular, configroute) {
     (function () {
 
         configroute.register.controller('users', ['$rootScope','$scope', '$location', 'config', 'spinner', 'sessionservice', 'utility', users]);
         function users($rootScope, $scope, $location, config, spinner, sessionservice, utility) {
-            var vm = this;
-            vm.users = [];
-            vm.shownousers =
-             false;
+            var uservm = this;
+            uservm.users = [];
+            uservm.shownousers = false;
+            uservm.useremails = [];
+            var ref;
+
             activate();
 
             function activate(){
                 $rootScope.routeSelection = '';
             	spinner.show();
-                var ref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/users');
-                ref.once("value", function(snapshot) {
+                ref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/users');
+                ref.on("value", function(snapshot) {
                     getUsers(snapshot.val());
                 }, function (errorObject) {
                     utility.errorlog("The users read failed: " , errorObject);
@@ -23,29 +26,45 @@ define(['angular',
             }
 
             function getUsers(data){
-            	vm.users = [];
+            	uservm.users = [];
+                uservm.useremails = [];
+
                 for(var property in data) {
-                    vm.users.push({
-                        email : utility.getDecodeString(property),
+                    var email = utility.getDecodeString(property);
+                    
+                    uservm.users.push({
+                        email : email,
                         admin: data[property].admin ? 'Admin' : 'Not admin',
                         status: data[property].joined ? 'Joined' : 'Invited',
                         joinedon : data[property].joined ? moment(data[property].joinedon).format('MMM DD, YYYY') : ''
                     });
+
+                    uservm.useremails.push(email);
                 }
-                vm.shownousers = vm.users.length <=0 ;
+                uservm.shownousers = uservm.users.length <=0 ;
                 spinner.hide();
                 utility.applyscope($scope);
             }
 
-            vm.adduser = function(){
-                utility.setUserSelected(null);
-                $location.path('/account/collabroter');
+            uservm.adduser = function(){
+                if(uservm.search != null && uservm.search != undefined && uservm.search != "")
+                    $rootScope.useremail = uservm.search;
+                else
+                    $rootScope.useremail = null;
+
+                $rootScope.userselected = null;
+                uservm.showadduser = true;
             }
 
-             vm.edituser = function (index) {
-                utility.setUserSelected(vm.users[index]);
-                $location.path('/account/collabroter');
+            uservm.edituser = function (index) {
+                $rootScope.userselected = uservm.users[index]
+                uservm.showadduser = true;
             }
+
+            $scope.$on('$destroy', function iVeBeenDismissed() {
+                if(ref)
+                    ref.off();
+            });
         }
     })();
 });

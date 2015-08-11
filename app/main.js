@@ -21,7 +21,7 @@ require.config({
         'bootstrap-datepicker': 'scripts/bootstrap-datepicker',
         'directives': 'views/directives/directives',
         'utility' : 'views/component/utility',
-        'loggly' : '../bower_components/angular-loggly-logger/angular-loggly-logger'
+        'loggly' : '../bower_components/angular-loggly-logger/angular-loggly-logger',
     },
     shim: {
         angular: {

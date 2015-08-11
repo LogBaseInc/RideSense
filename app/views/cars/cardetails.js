@@ -139,7 +139,7 @@ define(['angular',
                     carLiveRef.off();
 
                 carLiveRef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars/'+vm.selectedcar.devicenumber);
-                carLiveRef.on("value", function(snapshot) {
+                carLiveRef.once("value", function(snapshot) {
                     var data = snapshot.val();
                     if(data) {
                         vm.havelivedata = true;

@@ -24,6 +24,7 @@ define(['angular',
             function getDevices(data){
             	vm.devices = [];
                 vm.devicesdetails = [];
+
                 for(var property in data) {
                     vm.devices.push({
                         devicenumber : property,
@@ -32,6 +33,7 @@ define(['angular',
                         vehicletype : data[property].vehicletype ? data[property].vehicletype : 'car',
                         vehiclenumber: data[property].vehiclenumber,
                         type : data[property].type ? data[property].type : 'stick',
+                        addedon : data[property].addedon,
                     });
 
                     vm.devicesdetails.push({
@@ -43,20 +45,29 @@ define(['angular',
                         vehiclenumber: data[property].vehiclenumber,
                         type : (data[property].type != null && data[property].type != undefined) ? data[property].type : 'stick',
                         vehicletype : data[property].vehicletype ? data[property].vehicletype : 'car',
+                        addedon : data[property].addedon
                     });
                 }
+                
+                vm.devices.sort(SortByDate);
+                vm.devicesdetails.sort(SortByDate);
 
-                spinner.hide();($scope);
+                spinner.hide();
                 utility.applyscope($scope);
             }
+
+            function SortByDate(a, b){
+              return ((a.addedon > b.addedon) ? -1 : ((a.addedon < b.addedon) ? 1 : 0));
+            }
+
 
             vm.buydevice = function(){
                 utility.setDeviceSelected(null);
                 $location.path('/account/device');
             }
 
-            vm.editdevice = function(index){
-                utility.setDeviceSelected(vm.devicesdetails[index]);
+            vm.editdevice = function(devicenumber){
+                utility.setDeviceSelected(_.first(_.filter(vm.devicesdetails, function(device){ return device.devicenumber == devicenumber})));
                 $location.path('/account/device');
             }
         }

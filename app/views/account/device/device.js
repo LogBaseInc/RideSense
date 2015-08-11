@@ -24,6 +24,8 @@ define(['angular',
             activate();
 
             function activate(){
+                $('input[type=checkbox][data-toggle^=toggle]').bootstrapToggle();
+
                 vm.device = utility.getDeviceSelected();
                 if(vm.device == null) { 
                     vm.device = {};
@@ -37,18 +39,31 @@ define(['angular',
                         vm.device.vehicletype = 'car';
                 }
 
-                if(vm.device.type == 'stick')
+                if(vm.device.type == 'stick') {
                     vm.isStick = true;
-                else
+                    $('#device-toggle').prop('checked', true).change();
+                }
+                else {
                     vm.isStick = false;
+                    $('#device-toggle').prop('checked', false).change();
+                }
 
+                if(vm.isDeviceEdit) {
+                     $('#device-toggle').prop('disabled', true).change();
+                }
+                else {
+                    $(document).on('click.bs.toggle', 'div[data-toggle^=toggle]', function(e) {
+                        var $checkbox = $(this).find('input[type=checkbox]');
+                        selectDeviceType($checkbox.prop('checked') ? 'stick' : 'stickmobile');
+                    });
+                }
             }
 
             function canBuy(){
                 return $scope.deviceform.$valid && !submitted && ((vm.isStick && vm.isdeviceavailable) || !vm.isStick || vm.isDeviceEdit) ;
             }
 
-            vm.selectDeviceType = function(devicetype) {
+            selectDeviceType = function(devicetype) {
                 vm.device.type = devicetype;
                 if(vm.device.type == 'stick')
                     vm.isStick = true;
@@ -56,6 +71,7 @@ define(['angular',
                     vm.isStick = false;
                     vm.device.devicenumber = '';
                 }
+                utility.applyscope($scope);
             }
 
             vm.selectVehicleType = function(vehicletype) {
@@ -120,8 +136,13 @@ define(['angular',
                 var deviceobj = {};
                 deviceobj.vehiclenumber = vm.device.vehiclenumber;
                 deviceobj.type = vm.device.type;
-                deviceobj.addedon = new Date().getTime();
                 deviceobj.vehicletype = vm.device.vehicletype;
+                
+                if(vm.isDeviceEdit)
+                    deviceobj.addedon = vm.device.addedon;
+                else
+                    deviceobj.addedon = new Date().getTime();
+
                 if(vm.device.drivername != null && vm.device.drivername != undefined && vm.device.drivername != "")
                     deviceobj.drivername  = vm.device.drivername;
                 if(vm.device.driverid != null && vm.device.driverid != undefined && vm.device.driverid != "")

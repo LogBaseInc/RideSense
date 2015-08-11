@@ -1,26 +1,45 @@
-<div data-ng-controller="users as vm">
-    <div class="input-group input-group-lg livemapsearch">
-		<input type="text" class="form-control tm-search-text tm-no-outline fullwidth" placeholder="Search email / role / status" data-ng-model="search" />
+<div data-ng-controller="users as uservm">
+	<br/>
+    <div class="input-group input-group-lg livemapsearch" data-ng-hide="uservm.showadduser">
+		<input type="text" class="form-control tm-search-text tm-no-outline fullwidth" placeholder="Enter email to add collaborator" data-ng-model="uservm.search" 
+		 />
 	    <div class="input-group-btn">
-	    	<button type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.adduser()"><span class="glyphicon glyphicon-plus"></span></button>
+	    	<button type="button" class="btn btn-default tm-no-outline" data-ng-click="uservm.adduser()"><span class="glyphicon glyphicon-plus"></span></button>
 	    </div>
 	</div>
     <br/>
-	<div class="col-xs-12 fullwidth zeropadding">
-		<div class="tm-alerts-summary devicelistbox" data-ng-repeat="user in vm.users | filter:search">
-			<div class="marginleft10" data-ng-click="vm.edituser($index)">
-				<h4>{{user.email}}</h4>
-				<div class="margintop15">
-					<span class="glyphicon glyphicon-user fontsize13"></span><label class="marginleft5 fontsize13">{{user.admin}}</label>
-					<br/>
-					<span class="glyphicon glyphicon-flash fontsize13"></span><label class="marginleft5 fontsize13">{{user.status}}</label>
-					<br/>
-					<span data-ng-if="user.status == 'Joined'" class="glyphicon glyphicon-calendar fontsize13"></span><label class="marginleft5 fontsize13">{{user.joinedon}}</label>
+	<div class="container-fluid" data-ng-hide="uservm.showadduser">
+	    <div class="row">
+			<div class="col-xs-12 tripblock">
+				<div data-ng-repeat="user in uservm.users">
+					<div class="col-xs-12 col-md-6 tm-card-wrap ng-scope">
+						<div class="col-md-12 tripdetail tripblock stick-list" ng-click="uservm.edituser($index)">
+							<div class="row tripblock">
+								<div class="col-xs-12">
+									<h4 class="ng-binding" style="margin-top:0px;padding-top:0px;margin-bottom:0px;">
+										{{user.email}}
+									</h4>
+								</div>
+							</div>
+							<div class="space-6"></div>
+							<div class="row tripblock">
+								<div class="col-xs-12">
+									<h5 class="ng-binding text-muted zeropadding zeromargin">{{user.admin}} | {{user.status}}</h5>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
+		<br/><br/> 
 	</div>
-	<div class="col-xs-12" data-ng-show="vm.shownousers">
-		<center>No Collaborators available. Click + on the search bar to add new.</center>
+
+	<div class="col-xs-12" data-ng-show="uservm.shownousers">
+		<center>No Collaborators available. Click + to add new.</center>
+	</div>
+
+	<div data-ng-if="uservm.showadduser">
+		<div data-ng-include="'views/account/users/user.html'"></div>
 	</div>
 </div>
