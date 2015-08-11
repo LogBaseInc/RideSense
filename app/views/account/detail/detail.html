@@ -5,9 +5,9 @@
 			<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Account Details</h5>
 			</br>
 			<div class="form-group zeromargin">
-				<label class="col-md-3 control-label">Account Email</label>
+				<label class="col-md-3 control-label">Account Owner</label>
 				<div class="col-md-8">
-					<input type="text" class="form-control" placeholder="Account email" data-ng-model="vm.email" ng-readonly="true">
+					<input type="text" class="form-control" placeholder="Account owner email" data-ng-model="vm.email" ng-readonly="true">
             	</div>
 			</div>
 			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textaccountname.$invalid && accountform.textaccountname.$touched }">
@@ -44,6 +44,8 @@
 	            <button type="button" class="btn btn-default" ng-click="vm.update();" data-ng-disabled="!vm.canupdate">Update</button>
 	            <a type="button" class="btn btn-default" href="#/account/changepassword">Change Password</a>
 	        </center>
+	        <br/>
+	        <hr/>
         </div>
         <br/>
     </div>

@@ -34,7 +34,7 @@ define(['angular',
                     
                     uservm.users.push({
                         email : email,
-                        admin: data[property].admin ? 'Admin' : 'Not admin',
+                        admin: data[property].admin ? 'Administrator' : 'Regular',
                         status: data[property].joined ? 'Joined' : 'Invited',
                         joinedon : data[property].joined ? moment(data[property].joinedon).format('MMM DD, YYYY') : ''
                     });

@@ -24,24 +24,30 @@
                     <!--<button ng-class="{ 'btn btn-primary': vm.isAdmin, 'btn btn-default': !vm.isAdmin}" style=
                     "width:110px; border: 0px;  border-radius: 0px;" data-ng-click="vm.roleType('admin')">Admin</button>
 					<button style=" border: 0px; border-radius: 0px; width: 110.5px;" ng-class="{ 'btn btn-primary': !vm.isAdmin, 'btn btn-default': vm.isAdmin}" data-ng-click="vm.roleType('notadmin')">Not Admin</button>-->
-					<input id="role-toggle" checked type="checkbox" data-toggle="toggle" data-on="Admin" data-off="Not Admin" data-onstyle="primary" data-offstyle="default">
+					<input id="role-toggle" checked type="checkbox" data-toggle="toggle" data-on="Administrator" data-off="Regular" data-onstyle="default" data-offstyle="default">
+					<br/><br/>
+            		<small class="text-muted">Administrators can add, remove users and manage the account.</small>
             	</div>	
+            	<div class="col-md-12">
+            		
+            	</div>
             </div>
 		</form>
 		<div>
 		 	<center data-ng-hide="vm.isdelete">
 	            <button data-ng-hide="vm.isEdit" type="button" class="btn btn-default margintop15" ng-click="vm.adduser();" data-ng-disabled="!vm.canAdd">Add Collaborator</button>
-	            <button data-ng-show="vm.isEdit" type="button" class="btn btn-default margintop15" ng-click="vm.edituser();" data-ng-disabled="!vm.canAdd">Update Collaborators</button>
+	            <button data-ng-show="vm.isEdit" type="button" class="btn btn-default margintop15" ng-click="vm.edituser();" data-ng-disabled="!vm.canAdd">Update Collaborator</button>
 	            <button data-ng-show="vm.isEdit" type="button" class="btn btn-default margintop15" ng-click="vm.resendemail();">Resend Email</button>
 	            <a type="button" class="btn btn-default margintop15" data-ng-click="vm.cancel()">Cancel</a>
 	           	<button data-ng-show="vm.isEdit" type="button" class="btn btn-default margintop15" data-ng-disabled="!vm.canAdd" ng-click="vm.deleteuser();">Remove Collaborators</button>
 	        </center>
 	        <center data-ng-show="vm.isdelete">
-        		<span class="errortext">Collaborators will be removed permanently, do you want to continue? </span>
+        		<span class="errortext">Collaborator will be removed permanently, do you want to continue? </span>
         		<br/>
         		<button type="button" class="btn btn-default margintop15" data-ng-disabled="!vm.canAdd" ng-click="vm.deletecancel();">No</button>
 	           	<button type="button" class="btn btn-default margintop15" data-ng-disabled="!vm.canAdd" ng-click="vm.deleteconfirm();">Yes</button>
         	</center>
+        	<br/><br/>
         </div>
 	</div>
 </div>

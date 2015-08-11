@@ -234,8 +234,8 @@ hr {
 }
 
 .btn-info:hover {
-    background-color: #D87373;
-    border-color: #D87373;
+    background-color: #D87373 !important;
+    border-color: #D87373 !important;
 }
 
 /* FOR CAR METRICS */
