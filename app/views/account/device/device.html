@@ -104,7 +104,7 @@
 					<div data-ng-if="vm.isStick" class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdrivercontactnumber.$invalid && deviceform.textdrivercontactnumber.$touched }">
 						<label class="col-md-3 control-label">User's Mobile Number</label>
 						<div class="col-md-6">
-								<input type="text" class="form-control" placeholder="User's mobile number (Optional)" name="textdrivercontactnumber" data-ng-model="vm.device.drivermobile" ng-pattern="/^[0-9+]*$/">
+								<input type="text" class="form-control" placeholder="Mobile Number with Country Code prefixed (Optional)" name="textdrivercontactnumber" data-ng-model="vm.device.drivermobile" ng-pattern="/^[0-9+]*$/">
 		                    <div data-ng-messages="deviceform.textdrivercontactnumber.$error" data-ng-if="vm.interacted(deviceform.textdrivercontactnumber)" class="error-messages">
 		                        <div ng-message="required">User's mobile number is required</div>
 		                        <div ng-message="pattern">Enter a valid mobile number</div>
@@ -141,9 +141,9 @@
 						<p>Users are what you track with Stick.</p>
 						<ul>
 							<li>Users carry a device which is either a physical Stick Device you bought or a Stick Mobile App.</li>
-							<li>You can also choose an Avatar for every user that will be used for live map view.</li>
-							<li>User ID is a user name that you choose to refer back to this user.</li>
 							<li>For Stick Device, the device ID is shipped along with the device. For Mobile App, this is auto generated.</li>
+							<li>You can choose an Avatar for every user that will be used by live map view.</li>
+							<li>User ID is a user name that you choose to refer back to this user.</li>
 						</ul>
 					</small>
 				</div>
