@@ -572,6 +572,18 @@ div.callout {
    padding-top: 20px;
 }
 
+.beige-bg-full-border {
+   background-color: #EFEBE9 ;
+   border-top: Solid;
+   border-top-width: 1px;
+   border-top-color: #D7CCC8 ;
+   border-bottom: Solid;
+   border-bottom-width: 1px;
+   border-bottom-color: #D7CCC8 ;
+   padding-bottom: 20px;
+   padding-top: 20px;
+}
+
 .tripblock {
     margin-left: 0px !important;
     margin-right: 0px !important;
