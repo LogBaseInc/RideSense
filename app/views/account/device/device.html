@@ -12,9 +12,6 @@
 					<div class="form-group zeromargin">
 						<label class="col-md-3 control-label">User Device Type</label>
 						<div ng-disabled="vm.isDeviceEdit" class="col-md-6">
-		                    <!--<button ng-disabled="vm.isDeviceEdit" ng-class="{ 'btn btn-primary': vm.isStick, 'btn btn-default': !vm.isStick}" style=
-		                    "width:110px; border: 0px;  border-radius: 0px;" data-ng-click="vm.selectDeviceType('stick')">Stick</button>
-							<button ng-disabled="vm.isDeviceEdit" style=" border: 0px; border-radius: 0px; width: 110.5px;" ng-class="{ 'btn btn-primary': !vm.isStick, 'btn btn-default': vm.isStick}" data-ng-click="vm.selectDeviceType('stickmobile')">Stick Mobile</button>-->
 							<input id="device-toggle" checked type="checkbox" data-toggle="toggle" data-on="Stick" data-off="Stick Mobile" data-onstyle="default" data-offstyle="default">
 		            	</div>	
 					</div>
@@ -80,16 +77,10 @@
 					<div data-ng-if="!vm.isStick" class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textcontactnumber.$invalid && deviceform.textcontactnumber.$touched }">
 						<label class="col-md-3 control-label">User's mobile number</label>
 						<div class="col-md-6">
-							<div class="input-group">
-			         			<div class="input-group-btn">
-			    					<button disabled="true" type="button" class="btn btn-default tm-no-outline">+91</button>
-			    				</div>
-								<input type="text" class="form-control" placeholder="User's mobile number" name="textcontactnumber" data-ng-model="vm.device.drivermobile" required ng-pattern="/^[0-9]*$/" minlength="10" maxlength="10">
-							</div>
+							<input type="text" class="form-control" placeholder="User's mobile number" name="textcontactnumber" data-ng-model="vm.device.drivermobile" required ng-pattern="/^[0-9+]*$/">
 		                    <div data-ng-messages="deviceform.textcontactnumber.$error" data-ng-if="vm.interacted(deviceform.textcontactnumber)" class="error-messages">
 		                        <div ng-message="required">User's mobile number required</div>
 		                        <div ng-message="pattern">Enter a valid mobile number</div>
-		                        <div ng-message="minlength">Enter a valid mobile number</div>
 		                    </div>
 		            	</div>
 					</div>
@@ -113,16 +104,10 @@
 					<div data-ng-if="vm.isStick" class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdrivercontactnumber.$invalid && deviceform.textdrivercontactnumber.$touched }">
 						<label class="col-md-3 control-label">User's Mobile Number</label>
 						<div class="col-md-6">
-							 <div class="input-group">
-			         			<div class="input-group-btn">
-			    					<button disabled="true" type="button" class="btn btn-default tm-no-outline">+91</button>
-			    				</div>
-								<input type="text" class="form-control" placeholder="User's mobile number (Optional)" name="textdrivercontactnumber" data-ng-model="vm.device.drivermobile" ng-pattern="/^[0-9]*$/" minlength="10" maxlength="10">
-							</div>
+								<input type="text" class="form-control" placeholder="User's mobile number (Optional)" name="textdrivercontactnumber" data-ng-model="vm.device.drivermobile" ng-pattern="/^[0-9+]*$/">
 		                    <div data-ng-messages="deviceform.textdrivercontactnumber.$error" data-ng-if="vm.interacted(deviceform.textdrivercontactnumber)" class="error-messages">
 		                        <div ng-message="required">User's mobile number is required</div>
 		                        <div ng-message="pattern">Enter a valid mobile number</div>
-		                        <div ng-message="minlength">Enter a valid mobile number</div>
 		                    </div>
 		            	</div>
 					</div>
@@ -165,5 +150,4 @@
 			</div>
 		</div>
 	</div>
-
 </div>

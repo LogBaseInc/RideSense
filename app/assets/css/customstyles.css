@@ -564,12 +564,12 @@ div.callout {
 }
 
 .beige-bg {
-   background-color: #EFEBE9 ;
-   border-bottom: Solid;
-   border-bottom-width: 1px;
-   border-bottom-color: #D7CCC8 ;
-   padding-bottom: 20px;
-   padding-top: 20px;
+   background-color: #EFEBE9 !important;
+   border-bottom: Solid !important;
+   border-bottom-width: 1px !important;
+   border-bottom-color: #D7CCC8 !important;
+   padding-bottom: 20px !important;
+   padding-top: 20px !important;
 }
 
 .beige-bg-full-border {

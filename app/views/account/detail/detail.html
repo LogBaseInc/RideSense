@@ -38,6 +38,16 @@
                     </div>
             	</div>
 			</div>
+			<div class="form-group zeromargin" data-ng-class="{ 'has-error': accountform.textcountry.$invalid && accountform.textcountry.$touched }">
+				<label class="col-md-3 control-label">Country</label>
+				<div class="col-md-8">
+                    <input type="text" class="form-control" placeholder="City" name="textcountry" data-ng-model="vm.address.country" required ng-pattern="/^[a-zA-Z]*$/">
+                    <div data-ng-messages="accountform.textcountry.$error" data-ng-if="vm.interacted(accountform.textcountry)" class="error-messages">
+                        <div ng-message="required">Country required</div>
+                        <div ng-message="pattern">Enter only alphabets</div>
+                    </div>
+            	</div>
+			</div>
 		</form>
 		<div>
 		 	<center>
