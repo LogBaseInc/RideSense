@@ -48,7 +48,7 @@ define(['angular',
 
             function setSelectedDate() {
                 if(vm.showallcars == false && utility.getTripDate()) 
-                    vm.selecteddate  = utility.getTripDate();
+                    vm.selecteddate = vm.isdatesupport ? utility.getTripDate() :  moment(utility.getTripDate()).format('DD/MM/YYYY');
                 else
                     setTodayDate();
             }
@@ -69,6 +69,7 @@ define(['angular',
 
             vm.carsearched = function($item, $model, $label) {
                 spinner.show();
+                utility.setTripDate(null);
                 utility.closekeyboard($('#txtcarsearch'));
 
                 setTodayDate();
@@ -101,6 +102,8 @@ define(['angular',
                 }
                 else 
                     vm.selecteddate = date;
+
+                utility.setTripDate(vm.selecteddate);
                 getTrips(vm.selectedcar.devicenumber);
             }
 
@@ -353,7 +356,7 @@ define(['angular',
             }
 
             function getDateRef() {
-                if(vm.isdatesupport)
+                if(vm.selecteddate.length == undefined)
                     return moment(vm.selecteddate).format("YYYYMMDD");
                 else {
                     var parts = vm.selecteddate.split('/');

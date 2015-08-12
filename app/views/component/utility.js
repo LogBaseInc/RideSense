@@ -98,9 +98,16 @@ define(['angular'], function (angular) {
 
             function getTripDate() {
                 var date = sessionStorage.getItem('tripdate');
-                if(date)
-                    date = new Date(date);
-                return date;
+                if(date != null && date != undefined && date != "null") {
+                    if(date.length > 10)
+                        return new Date(date);
+                    else {
+                        var parts = date.split('/');
+                        return new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
+                    }
+                }
+                else
+                    return null;
             }
 
             function getTripSelected() {
