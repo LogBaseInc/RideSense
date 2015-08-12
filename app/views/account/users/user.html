@@ -8,7 +8,7 @@
 			<div class="form-group zeromargin" data-ng-class="{ 'has-error': userform.txtUsername.$invalid && userform.txtUsername.$touched }">
 				<label class="col-md-3 control-label">Email</label>
 				<div class="col-md-6">
-                    <input type="email" class="form-control" id="txtUsername" name="txtUsername" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" data-ng-model="vm.userName" required placeholder="Email" ng-readonly="vm.isEdit">
+                    <input type="email" class="form-control" id="txtUsername" name="txtUsername" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" data-ng-model="vm.userName" required placeholder="Email ID to invite" ng-readonly="vm.isEdit">
                     <div data-ng-if="vm.useralreadyinvited == true">
                     	<i class="glyphicon glyphicon-remove errortext"></i><span class="marginleft5 errortext">This Email has been already invited</span>
                     </div>
@@ -26,7 +26,7 @@
 					<button style=" border: 0px; border-radius: 0px; width: 110.5px;" ng-class="{ 'btn btn-primary': !vm.isAdmin, 'btn btn-default': vm.isAdmin}" data-ng-click="vm.roleType('notadmin')">Not Admin</button>-->
 					<input id="role-toggle" checked type="checkbox" data-toggle="toggle" data-on="Administrator" data-off="Regular" data-onstyle="default" data-offstyle="default">
 					<br/><br/>
-            		<small class="text-muted">Administrators can add, remove users and manage the account.</small>
+            		<small class="text-muted">Only administrators can add, remove users and manage the account.</small>
             	</div>	
             	<div class="col-md-12">
             		
