@@ -6,7 +6,7 @@
 				<br/>
 				<form class="form-horizontal" name="deviceform">
 					<h5 class="tm-heading" data-ng-hide="vm.isDeviceEdit"><span class="glyphicon glyphicon-chevron-right"></span> Add User</h5>
-					<h5 class="tm-heading" data-ng-show="vm.isDeviceEdit"><span class="glyphicon glyphicon-chevron-right"></span> Edit User</h5>
+					<h5 class="tm-heading" data-ng-show="vm.isDeviceEdit"><span class="glyphicon glyphicon-chevron-right"></span> Update User</h5>
 					<br/>
 
 					<div class="form-group zeromargin">
@@ -118,10 +118,10 @@
 			            <button data-ng-hide="vm.isDeviceEdit" type="button" class="btn btn-default" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Add User</button>
 			            <button data-ng-show="vm.isDeviceEdit" type="button" class="btn btn-default" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Update User</button>
 			            <a type="button" class="btn btn-default"  href="#/account/devices">Cancel</a>
-			           	<button data-ng-show="vm.isDeviceEdit" type="button" class="btn btn-default" ng-click="vm.deletedevice();">Delete User</button>
+			           	<button data-ng-show="vm.isDeviceEdit" type="button" class="btn btn-default" ng-click="vm.deletedevice();">Remove User</button>
 			        </center>
 		        	<center data-ng-show="vm.isdelete">
-		        		<span class="errortext">User will be deleted permanently, do you want to delete it? </span>
+		        		<span class="errortext">User will be removed permanently, do you want to continue? </span>
 		        		<br/>
 		        		<button style="margin-top:10px" type="button" class="btn btn-default" ng-click="vm.deletecancel();">No</button>
 			           	<button style="margin-top:10px" type="button" class="btn btn-default" ng-click="vm.deleteConfirm();">Yes</button>
@@ -137,11 +137,11 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<small>
-						<h5><span class="glyphicon glyphicon-plus"></span> Adding a new user</h5>
+						<h5><span class="glyphicon glyphicon-star-empty"></span> Adding or updating users</h5>
 						<p>Users are what you track with Stick.</p>
 						<ul>
 							<li>Users carry a device which is either a physical Stick Device you bought or a Stick Mobile App.</li>
-							<li>You can also choose an Avatar for Users that will be used for Live map view.</li>
+							<li>You can also choose an Avatar for every user that will be used for live map view.</li>
 							<li>User ID is a user name that you choose to refer back to this user.</li>
 							<li>For Stick Device, the device ID is shipped along with the device. For Mobile App, this is auto generated.</li>
 						</ul>
