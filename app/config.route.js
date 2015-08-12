@@ -19,6 +19,17 @@ define(['angular',
                                 .sendConsoleErrors(true)
         });
 
+        app.config(function(IdleProvider, KeepaliveProvider) {
+            // configure Idle settings
+            IdleProvider.idle(3600); // in seconds - 1hour (3600)
+            IdleProvider.timeout(5); // in seconds
+            KeepaliveProvider.interval(2); // in seconds
+        })
+        app.run(function(Idle){
+            // start watching when the app runs. also starts the Keepalive service by default.
+            Idle.watch();
+        });
+
         // Configure the routes and route resolvers
         app.config(['$routeProvider', 'routes', '$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$httpProvider', routeConfigurator]);
 

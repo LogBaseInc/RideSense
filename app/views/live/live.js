@@ -81,6 +81,37 @@ define(['angular',
 				navigator.geolocation.getCurrentPosition(currentPositionCallback);
 		 	}
 
+
+		 	$scope.$on('IdleStart', function() {
+		        // the user appears to have gone idle
+		        console.log('IdleStart');
+		    });
+
+		    $scope.$on('IdleWarn', function(e, countdown) {
+		        // follows after the IdleStart event, but includes a countdown until the user is considered timed out
+		        // the countdown arg is the number of seconds remaining until then.
+		        // you can change the title or display a warning dialog from here.
+		        // you can let them resume their session by calling Idle.watch()
+		        console.log('IdleWarn');
+		    });
+
+		    $scope.$on('IdleTimeout', function() {
+		        // the user has timed out (meaning idleDuration + timeout has passed without any activity)
+		        // this is where you'd log them
+		        console.log('IdleTimeout');
+		        window.location.reload();
+		    });
+
+		    $scope.$on('IdleEnd', function() {
+		        // the user has come back from AFK and is doing stuff. if you are warning them, you can use this to hide the dialog
+		        console.log('IdleEnd');
+		    });
+
+		    $scope.$on('Keepalive', function() {
+		        // do something to keep the user's session alive
+		         //alert('Keepalive');
+		    });
+
 		 	function currentPositionCallback(position) {
 		 		vm.map = { center: { latitude: position.coords.latitude, longitude: position.coords.longitude }, zoom: defaultzoom };
 		 	}
@@ -355,9 +386,15 @@ define(['angular',
 			   	mapinstance = instances[0].map;
 				vm.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
 			   	setTracking();
+			   	var update_timeout = null;
 
-			  	google.maps.event.addListener(mapinstance, 'bounds_changed', function() {
-			  		setTracking();
+			   	//This event is fired when the map becomes idle after panning or zooming.
+			  	google.maps.event.addListener(mapinstance, 'idle', function() {
+			  		if(null)
+			  			clearTimeout(update_timeout);
+			  		update_timeout = setTimeout(function() {
+				        setTracking();
+				    }, 5000); 
 		  		});
 			});
 

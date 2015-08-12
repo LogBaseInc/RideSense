@@ -12,7 +12,8 @@ define(['angular',
              // 3rd Party Modules
              'ui.bootstrap',
              'toaster',
-             'logglyLogger'
+             'logglyLogger',
+             'ngIdle'
           ]);
 
           app.run(['$route', function ($route) {

@@ -1,5 +1,5 @@
 require.config({
-    urlArgs: '4.4',
+    urlArgs: '4.5',
     waitSeconds: 0,
     paths: {
         angular: '../bower_components/angular/angular',
@@ -22,6 +22,7 @@ require.config({
         'directives': 'views/directives/directives',
         'utility' : 'views/component/utility',
         'loggly' : '../bower_components/angular-loggly-logger/angular-loggly-logger',
+        'idle' : '../bower_components/ng-idle/angular-idle'
     },
     shim: {
         angular: {
@@ -49,6 +50,7 @@ require.config({
         },
         'toaster': ['angular','angular-animate'],
         'loggly': ['angular'],
+        'idle' : ['angular']
     },
 });
 

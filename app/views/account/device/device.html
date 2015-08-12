@@ -77,7 +77,7 @@
 					<div data-ng-if="!vm.isStick" class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textcontactnumber.$invalid && deviceform.textcontactnumber.$touched }">
 						<label class="col-md-3 control-label">User's mobile number</label>
 						<div class="col-md-6">
-							<input type="text" class="form-control" placeholder="User's mobile number" name="textcontactnumber" data-ng-model="vm.device.drivermobile" required ng-pattern="/^[0-9+]*$/">
+							<input type="text" class="form-control" placeholder="Mobile Number with Country Code prefixed" name="textcontactnumber" data-ng-model="vm.device.drivermobile" required ng-pattern="/^[0-9+]*$/">
 		                    <div data-ng-messages="deviceform.textcontactnumber.$error" data-ng-if="vm.interacted(deviceform.textcontactnumber)" class="error-messages">
 		                        <div ng-message="required">User's mobile number required</div>
 		                        <div ng-message="pattern">Enter a valid mobile number</div>
