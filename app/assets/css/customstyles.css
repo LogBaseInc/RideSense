@@ -100,7 +100,7 @@ hr {
     padding:10px;
     text-decoration: none; 
     position: fixed; 
-    bottom: 10px; 
+    bottom: 20px; 
     right: 10px; 
     border-radius: 5px; 
     z-index: 1;
@@ -112,7 +112,7 @@ hr {
     position: fixed; 
     z-index: 1;
     left: 10px;
-    bottom: 10px;
+    bottom: 20px;
 }
 
 .tm-live-today {
@@ -622,4 +622,15 @@ div.callout {
 
 .cursorpointer {
     cursor: pointer;
+}
+
+.copyrightdiv {
+    position: fixed;
+    bottom: 0px;
+    background: transparent;
+    color: gray;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 1;
+    right: 10px; 
 }

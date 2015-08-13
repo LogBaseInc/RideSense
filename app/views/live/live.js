@@ -2,15 +2,6 @@ define(['angular',
     'config.route',
     'lib'], function (angular, configroute) {
     (function () {
-
-    	var app = angular.module('rideSenseApp');
-		app.config(function(uiGmapGoogleMapApiProvider) {
-            uiGmapGoogleMapApiProvider.configure({
-                key: 'AIzaSyD0aOSSRwYlmV586w1uIPaOxGIV-6123LU',
-                v: '3.17',
-                libraries: 'weather,geometry,visualization'
-            });
-        });
         
         configroute.register.controller('live', ['$compile', '$rootScope', '$scope', 'config', 'notify', 'spinner', 'uiGmapIsReady', 'uiGmapGoogleMapApi', 'sessionservice', 'utility', live]);
         function live($compile, $rootScope, $scope, config, notify, spinner, uiGmapIsReady, uiGmapGoogleMapApi, sessionservice, utility) {
@@ -69,8 +60,10 @@ define(['angular',
 			 };
 
 		 	function activate(){
-		 		vm.islocationsearhced = true;
+		 		utility.setGoogleMapConfig();
 
+		 		vm.islocationsearhced = true;
+		 		
 			 	spinner.show();
 				getlivecardata();
 				getRunningCarCount();
@@ -80,37 +73,6 @@ define(['angular',
 
 				navigator.geolocation.getCurrentPosition(currentPositionCallback);
 		 	}
-
-
-		 	$scope.$on('IdleStart', function() {
-		        // the user appears to have gone idle
-		        console.log('IdleStart');
-		    });
-
-		    $scope.$on('IdleWarn', function(e, countdown) {
-		        // follows after the IdleStart event, but includes a countdown until the user is considered timed out
-		        // the countdown arg is the number of seconds remaining until then.
-		        // you can change the title or display a warning dialog from here.
-		        // you can let them resume their session by calling Idle.watch()
-		        console.log('IdleWarn');
-		    });
-
-		    $scope.$on('IdleTimeout', function() {
-		        // the user has timed out (meaning idleDuration + timeout has passed without any activity)
-		        // this is where you'd log them
-		        console.log('IdleTimeout');
-		        window.location.reload();
-		    });
-
-		    $scope.$on('IdleEnd', function() {
-		        // the user has come back from AFK and is doing stuff. if you are warning them, you can use this to hide the dialog
-		        console.log('IdleEnd');
-		    });
-
-		    $scope.$on('Keepalive', function() {
-		        // do something to keep the user's session alive
-		         //alert('Keepalive');
-		    });
 
 		 	function currentPositionCallback(position) {
 		 		vm.map = { center: { latitude: position.coords.latitude, longitude: position.coords.longitude }, zoom: defaultzoom };
@@ -381,7 +343,7 @@ define(['angular',
 		 		utility.applyscope($scope);
 			});
 
-			uiGmapIsReady.promise(1).then(function(instances) {
+			uiGmapIsReady.promise(1).then( function(instances) {
 			   	directionsService = new google.maps.DirectionsService();
 			   	mapinstance = instances[0].map;
 				vm.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
@@ -396,6 +358,9 @@ define(['angular',
 				        setTracking();
 				    }, 5000); 
 		  		});
+			}, function(error){
+				utility.errorlog(error);
+				window.location.reload();
 			});
 
 			function setTracking() {

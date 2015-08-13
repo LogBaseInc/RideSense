@@ -13,7 +13,7 @@ define(['angular',
              'ui.bootstrap',
              'toaster',
              'logglyLogger',
-             'ngIdle'
+             //'ngIdle'
           ]);
 
           app.run(['$route', function ($route) {

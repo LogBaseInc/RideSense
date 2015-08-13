@@ -158,7 +158,7 @@ define(['angular',
                     spinner.hide();
                     submitted = false;
                     notify.error(error.message)
-                    vm.newuser = null;s
+                    vm.newuser = null;
                     resetform($scope.signupform);
                 }
 

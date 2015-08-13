@@ -10,5 +10,5 @@ define([
     'spinner',
     'toaster',
     'loggly',
-    'idle'
+    //'idle'
 ], function () { });

@@ -22,6 +22,8 @@ define(['angular',
 			activate();
 
 		 	function activate(){
+		 		utility.setGoogleMapConfig();
+
 		 		$rootScope.routeSelection = 'activity';
 		 		$rootScope.tripdetails = true;
 			 	spinner.show();
@@ -143,7 +145,10 @@ define(['angular',
 			    directionsService = new google.maps.DirectionsService();
 			    mapinstance = instances[0].map;
 			    vm.mapOptions.mapTypeId = google.maps.MapTypeId.ROADMAP;
-    		});
+    		}, function(error){
+				utility.errorlog(error);
+				window.location.reload();
+			});
 
 			$scope.$on('$destroy', function iVeBeenDismissed() {
                 if(ref)

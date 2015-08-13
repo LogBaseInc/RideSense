@@ -18,7 +18,9 @@ define(['angular',
             activate()
 
             function activate() {
+                utility.setGoogleMapConfig();
                 utility.scrollToTop();
+                
                 $rootScope.routeSelection = 'activity';
 
                 if(utility.getTripSelected()) {
@@ -85,8 +87,7 @@ define(['angular',
                     }
 
                     var flightPlanCoordinates = [];
-                    for(var i=0; i<data.length; i++)
-                    {
+                    for(var i=0; i<data.length; i++) {
                         flightPlanCoordinates.push(new google.maps.LatLng(data[i].latitude, data[i].longitude));
                     }
 
@@ -98,6 +99,7 @@ define(['angular',
                          strokeWeight: 4
                     });
 
+
                     utility.applyscope($scope);
 
                     uiGmapIsReady.promise(1).then(function(instances) {
@@ -106,6 +108,9 @@ define(['angular',
                         infowindow = new google.maps.InfoWindow({
                             content: ''
                         });
+                    }, function(error){
+                        utility.errorlog(error);
+                        window.location.reload();
                     });
                 }
                 else {

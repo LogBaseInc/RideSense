@@ -24,7 +24,8 @@ define(['angular'], function (angular) {
                 closekeyboard : closekeyboard,
                 scrollToTop : scrollToTop,
                 errorlog : errorlog,
-                getVehicleImageUrl : getVehicleImageUrl
+                getVehicleImageUrl : getVehicleImageUrl,
+                setGoogleMapConfig : setGoogleMapConfig
             };
             
             function applyscope($scope) {
@@ -154,6 +155,17 @@ define(['angular'], function (angular) {
                 else if(devicetype == 'other')
                      imageUrl = 'assets/images/otherlive.png';
                 return imageUrl;
+            }
+
+            function setGoogleMapConfig() {
+                var app = angular.module('rideSenseApp');
+                app.config(function(uiGmapGoogleMapApiProvider) {
+                    uiGmapGoogleMapApiProvider.configure({
+                        key: 'AIzaSyD0aOSSRwYlmV586w1uIPaOxGIV-6123LU',
+                        v: '3.17',
+                        libraries: 'weather,geometry,visualization'
+                    });
+                });
             }
          }
     })();
