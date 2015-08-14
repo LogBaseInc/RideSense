@@ -137,8 +137,8 @@ define(['angular'], function (angular) {
             }
 
             function errorlog(message, errorObject) {
-                $log.error(message + errorObject ? errorObject.code : "");
-                if(errorObject && errorObject.code == 'PERMISSION_DENIED')
+                $log.error(message + ((errorObject != null && errorObject != undefined) ? errorObject.code : ""));
+                if(errorObject != null && errorObject != undefined && errorObject.code == 'PERMISSION_DENIED')
                     $rootScope.$emit('logout');
             }
 

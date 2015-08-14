@@ -353,7 +353,7 @@ hr {
 }
 
 .margintop15 {
-    margin-top: 15px
+    margin-top: 15px !important;
 }
 
 .heighth13 {
@@ -457,8 +457,7 @@ hr {
 .livecarsearch {
     border: 2px solid rgba(59, 153, 252, 0.68) !important;
     width:100%; 
-    position: 
-    relative; 
+    position: relative; 
     z-index:3;
 }
 
@@ -633,4 +632,10 @@ div.callout {
     font-weight: bold;
     z-index: 1;
     right: 10px; 
+}
+
+.navfixed {
+    /**position: fixed !important;
+    width: 100% !important;
+    z-index: 999 !important;*/
 }

@@ -18,21 +18,21 @@
 					<div class="form-group zeromargin">
 						<label class="col-md-3 control-label">Avatar</label>
 						<div class="col-md-6">
-							<a data-ng-show="vm.device.vehicletype=='car'" class="blackcolortext"><img src="assets/images/car_selected.png" class="height40"></img> Car</a>
+							<a data-ng-show="vm.device.vehicletype=='car'" class="blackcolortext"><img src="assets/images/car_selected.png" class="height40"></img><span class="marginleft5">Car</span></a>
 							<a data-ng-show="vm.device.vehicletype !='car'" class="blackcolortext cursorpointer" 
 							onmouseover="document.carunselected.src='assets/images/car_selected.png';"
 		         			onmouseout="document.carunselected.src='assets/images/car_unselected.png';" data-ng-click="vm.selectVehicleType('car')">
 		         				<img name="carunselected" src="assets/images/car_unselected.png" class="height40"></img><span class="marginleft5">Car</span>
 		         			</a>
 
-							<a data-ng-show="vm.device.vehicletype=='bike'" class="marginleft20 blackcolortext"><img src="assets/images/bike_selected.png" class="height40"></img> Bike</a>
+							<a data-ng-show="vm.device.vehicletype=='bike'" class="marginleft20 blackcolortext"><img src="assets/images/bike_selected.png" class="height40"></img><span class="marginleft5">Bike</span></a>
 							<a data-ng-show="vm.device.vehicletype !='bike'" class="marginleft20 blackcolortext cursorpointer" 
 							onmouseover="document.bikeunselected.src='assets/images/bike_selected.png';"
 		         			onmouseout="document.bikeunselected.src='assets/images/bike_unselected.png';" data-ng-click="vm.selectVehicleType('bike')">
 		         				<img name="bikeunselected" src="assets/images/bike_unselected.png" class="height40"></img><span class="marginleft5">Bike</span>
 		         			</a>
 
-							<a data-ng-show="vm.device.vehicletype=='other'" class="marginleft20 blackcolortext"><img src="assets/images/other_selected.png" class="height40"></img> Other</a>
+							<a data-ng-show="vm.device.vehicletype=='other'" class="marginleft20 blackcolortext"><img src="assets/images/other_selected.png" class="height40"></img><span class="marginleft5">Other</span></a>
 							<a data-ng-show="vm.device.vehicletype !='other'" class="marginleft20 blackcolortext cursorpointer" 
 							onmouseover="document.otherunselected.src='assets/images/other_selected.png';"
 		         			onmouseout="document.otherunselected.src='assets/images/other_unselected.png';" data-ng-click="vm.selectVehicleType('other')">

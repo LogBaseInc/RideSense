@@ -70,7 +70,6 @@ define(['angular',
 				getDistance();
 
 				vm.map = { center: { latitude: 11, longitude: 77 }, zoom: defaultzoom };
-
 				navigator.geolocation.getCurrentPosition(currentPositionCallback);
 		 	}
 
@@ -352,11 +351,18 @@ define(['angular',
 
 			   	//This event is fired when the map becomes idle after panning or zooming.
 			  	google.maps.event.addListener(mapinstance, 'idle', function() {
-			  		if(null)
+			  		var zoomLevel = mapinstance.getZoom();
+			  		if(zoomLevel >= 16) 
+				  		vm.docluster = false;
+				  	else
+				  		vm.docluster = true;
+
+			  		if(update_timeout)
 			  			clearTimeout(update_timeout);
+
 			  		update_timeout = setTimeout(function() {
 				        setTracking();
-				    }, 5000); 
+				    }, 2000); 
 		  		});
 			}, function(error){
 				utility.errorlog(error);
@@ -366,11 +372,6 @@ define(['angular',
 			function setTracking() {
 				var zoomLevel = mapinstance.getZoom();
 		  		vm.istracking = zoomLevel >= 14;
-
-			  	if(zoomLevel >= 16) 
-			  		vm.docluster = false;
-			  	else
-			  		vm.docluster = true;
 
 			  	for(var i = 0 ; i < vm.liverefs.length ; i++) {
 			  		vm.liverefs[i].off();
@@ -417,6 +418,18 @@ define(['angular',
 				  	utility.applyscope($scope);
 				}
 			}
+
+			/*function setMapCenterOfAllMarkers() {
+				if(vm.cars.models.length > 0) {
+					var bounds = new google.maps.LatLngBounds();
+					for(i=0;i<vm.cars.models.length;i++) {
+						bounds.extend(new google.maps.LatLng(vm.cars.models[i].latitude,vm.cars.models[i].longitude));
+					}
+					mapinstance.setCenter(bounds.getCenter());
+					mapinstance.fitBounds(bounds);
+					mapinstance.setZoom(mapinstance.getZoom() - 4);
+				}
+			}*/
 
 			$scope.$on('$destroy', function iVeBeenDismissed() {
 				if(livecarref)

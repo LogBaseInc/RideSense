@@ -6,7 +6,6 @@ define(['angular'], function (angular) {
         var app = angular.module('rideSenseApp');
 
         var config = {
-            docTitle: 'Ridesense::',
             firebaseUrl: 'https://logbasedev.firebaseIO.com/',
             apiUrl : 'http://stick-read-dev.logbase.io/api/',
             //hosturl : 'http://0.0.0.0:9000/#/'

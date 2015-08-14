@@ -60,28 +60,28 @@ define(['angular',
                  {
                      url: '/login',
                      config: {
-                         templateUrl: 'views/login/login.html',
-                         title: 'login',
-                         controllerUrl: 'views/login/login',
-                         allowAnonymous: true
+                        templateUrl: 'views/login/login.html',
+                        title: 'login',
+                        controllerUrl: 'views/login/login',
+                        allowAnonymous: true
                      }
                  },
                  {
                      url: '/user/activate/:accountId?/:email?',
                      config: {
-                         templateUrl: 'views/account/users/activateuser.html',
-                         title: 'detail',
-                         controllerUrl: 'views/account/users/activateuser',
-                         allowAnonymous: true
+                        templateUrl: 'views/account/users/activateuser.html',
+                        title: 'detail',
+                        controllerUrl: 'views/account/users/activateuser',
+                        allowAnonymous: true
                      }
                  },
                  {
                      url: '/account/devices',
                      config: {
-                         templateUrl: 'views/account/devices/devices.html',
-                         title: 'devices',
-                         controllerUrl: 'views/account/devices/devices',
-                         allowAnonymous: false
+                        templateUrl: 'views/account/devices/devices.html',
+                        title: 'devices',
+                        controllerUrl: 'views/account/devices/devices',
+                        allowAnonymous: false
                      }
                  },
                  {
