@@ -105,6 +105,7 @@ define(['angular'], function () {
                 ref.off();
                 if(timer !=undefined && timer != null)
                     clearTimeout(timer);
+                analytics.track('Logged Out');
                 $location.path('/login');
             }
 

@@ -78,11 +78,19 @@ define(['angular',
                     spinner.hide();
                     submitted = false;
                     vm.success = true;
-                    //vm.password = null;
                     sessionservice.setSession(data, accountId);
+                    loginanalytics(data, accountId);
                     $rootScope.$emit('alertcount');
                     $location.path('/live');    
                     utility.applyscope($scope);     
+                }
+
+                function loginanalytics(data, accountId) {
+                    analytics.track('Logged In'); 
+                    analytics.identify(data.uid, {
+                      email: data.password.email,
+                      accountid : accountId
+                    });
                 }
 
                 function loginfailed(error) { 

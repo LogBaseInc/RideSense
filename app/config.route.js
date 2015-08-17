@@ -47,7 +47,12 @@ define(['angular',
             routes.forEach(function (r) {
                 var definition = r.config;
                 $routeProvider.when(r.url, angularAMD.route(r.config));
-                definition.resolve = angular.extend(definition.resolve || {}, {});
+                definition.resolve = angular.extend(definition.resolve || {}, {
+                    analytics: function(segmentio) {
+                        return segmentio.load('3i9lFRjxny2TyjsKNeTGANpM2IE1TCFo');
+                        //return segmentio.load('eM99fUWXogz55Od6MiCpTK49oQmfbm5E'); Production
+                    }
+                });
                 $routeProvider.when(r.url, definition);
                 return $routeProvider;
             });
