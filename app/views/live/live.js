@@ -18,6 +18,7 @@ define(['angular',
 			var runningcarref;
 			var devicedetails;
 			var defaultzoom = 14;
+			var isunclusterallowed = true;
 
 		 	vm.distanceCovered = 0;
 		 	vm.showmaps =false;
@@ -60,6 +61,14 @@ define(['angular',
 			 };
 
 		 	function activate(){
+		 		
+		 		var ua = navigator.userAgent;
+				if( ua.indexOf("Android") >= 0 ) {
+				  var androidversion = parseFloat(ua.slice(ua.indexOf("Android")+8));
+				  if(androidversion < 5)
+				  	isunclusterallowed = false;
+				}
+
 		 		utility.setGoogleMapConfig();
 
 		 		vm.islocationsearhced = true;
@@ -351,11 +360,13 @@ define(['angular',
 
 			   	//This event is fired when the map becomes idle after panning or zooming.
 			  	google.maps.event.addListener(mapinstance, 'idle', function() {
-			  		var zoomLevel = mapinstance.getZoom();
-			  		if(zoomLevel >= 16) 
-				  		vm.docluster = false;
-				  	else
-				  		vm.docluster = true;
+			  		if(isunclusterallowed) {
+				  		var zoomLevel = mapinstance.getZoom();
+				  		if(zoomLevel >= 16) 
+					  		vm.docluster = false;
+					  	else
+					  		vm.docluster = true;
+					}
 
 			  		if(update_timeout)
 			  			clearTimeout(update_timeout);

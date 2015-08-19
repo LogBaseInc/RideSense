@@ -11,5 +11,4 @@ define([
     'toaster',
     'loggly',
     //'idle'
-    'segment'
 ], function () { });

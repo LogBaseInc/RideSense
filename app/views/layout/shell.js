@@ -195,6 +195,10 @@ define(['angular'], function () {
                  }
             });
 
+            $rootScope.$on('$routeChangeSuccess', function (event, next, current) {
+                analytics.page($location.$$path);
+            });
+
             function checkIfLoggedIn() {
                 var isactivate = $location.$$path.indexOf('/user/activate') >=0 ;
                 var islogin = $location.$$path.indexOf('login') >=0 ;

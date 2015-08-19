@@ -22,6 +22,7 @@
             activate();
 
             function activate() {
+                utility.scrollToTop();
                 email = sessionservice.getSession().password.email;
             }
 

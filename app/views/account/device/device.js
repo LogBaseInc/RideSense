@@ -24,6 +24,8 @@ define(['angular',
             activate();
 
             function activate(){
+                utility.scrollToTop();
+                
                 $('input[type=checkbox][data-toggle^=toggle]').bootstrapToggle();
 
                 vm.device = utility.getDeviceSelected();

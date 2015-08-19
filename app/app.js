@@ -14,7 +14,6 @@ define(['angular',
              'toaster',
              'logglyLogger',
              //'ngIdle'
-             'segmentio'
           ]);
 
           app.run(['$route', function ($route) {

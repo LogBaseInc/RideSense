@@ -22,6 +22,8 @@ define(['angular',
 			activate();
 
 		 	function activate(){
+		 		utility.scrollToTop();
+		 		
 		 		utility.setGoogleMapConfig();
 
 		 		$rootScope.routeSelection = 'activity';

@@ -22,6 +22,8 @@ define(['angular',
             }
 
             function getDevices(data){
+                utility.scrollToTop();
+                
             	vm.devices = [];
                 vm.devicesdetails = [];
 

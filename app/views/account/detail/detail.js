@@ -23,6 +23,8 @@ define(['angular',
             activate();
 
             function activate(){
+                utility.scrollToTop();
+                
                 spinner.show();
                 accountref.once("value", function(snapshot) {
                     vm.accountname = snapshot.val();

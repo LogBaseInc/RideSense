@@ -25,7 +25,9 @@ define(['angular',
                 });
             }
 
-            function getUsers(data){
+            function getUsers(data) {
+                utility.scrollToTop();
+
             	uservm.users = [];
                 uservm.useremails = [];
 

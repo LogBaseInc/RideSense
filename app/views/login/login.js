@@ -81,7 +81,7 @@ define(['angular',
                     sessionservice.setSession(data, accountId);
                     loginanalytics(data, accountId);
                     $rootScope.$emit('alertcount');
-                    $location.path('/live');    
+                    $location.path('/live1');    
                     utility.applyscope($scope);     
                 }
 
