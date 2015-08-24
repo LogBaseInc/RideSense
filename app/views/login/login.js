@@ -35,7 +35,7 @@ define(['angular',
                 function activate(){
                     spinner.hide();
                     if(sessionservice.isLoggedIn() == 'true') {
-                        $location.path('/live');
+                        $location.path('/detail');
                     }
                     else {
                         sessionservice.clear();
@@ -81,7 +81,7 @@ define(['angular',
                     sessionservice.setSession(data, accountId);
                     loginanalytics(data, accountId);
                     $rootScope.$emit('alertcount');
-                    $location.path('/live1');    
+                    $location.path('/detail');    
                     utility.applyscope($scope);     
                 }
 

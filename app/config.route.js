@@ -51,7 +51,7 @@ define(['angular',
                 $routeProvider.when(r.url, definition);
                 return $routeProvider;
             });
-            $routeProvider.otherwise({ redirectTo: '/login' });
+            $routeProvider.otherwise({ redirectTo: '/detail' });
         }
 
         // Define the routes 
@@ -184,12 +184,12 @@ define(['angular',
                      }
                  },
                  {
-                     url: '/live1',
+                     url: '/detail',
                      config: {
-                         templateUrl: 'views/live/liveempty.html',
+                         templateUrl: 'views/layout/decidepage.html',
                          title: 'live',
-                         controllerUrl: 'views/live/liveempty',
-                         allowAnonymous: false
+                         controllerUrl: 'views/layout/decidepage',
+                         allowAnonymous: true
                      }
                  },
             ];
