@@ -136,11 +136,13 @@
 
                             <div class="form-group" data-ng-class="{ 'has-error': signupform.textnewpwd.$invalid && signupform.textnewpwd.$touched }">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="password" class="form-control" placeholder="Password" name="textnewpwd" required minlength="8" data-ng-model="vm.newuser.password">
+                                    <input type="password" class="form-control" placeholder="Password" name="textnewpwd" required data-ng-model="vm.newuser.password">
+                                    <small class="text-muted">Minimum 8 characters and should have aleast one upper case letter and number</small>
+                                    <br/>
+                                    <ul id="strength" check-strength="vm.newuser.password"></ul>
                                 </span>
                                 <div data-ng-messages="signupform.textnewpwd.$error" data-ng-if="vm.interacted(signupform.textnewpwd)" class="error-messages">
                                     <div ng-message="required">Password required</div>
-                                    <div ng-message="minlength">Enter password with minimum 8 characters</div>
                                 </div>
                             </div>
 

@@ -192,6 +192,15 @@ define(['angular',
                          allowAnonymous: true
                      }
                  },
+                 {
+                     url: '/account/verify/:accountId?',
+                     config: {
+                         templateUrl: 'views/login/verifyemail.html',
+                         title: 'verifyemail',
+                         controllerUrl: 'views/login/verifyemail',
+                         allowAnonymous: true
+                     }
+                 },
             ];
 
             return routs;

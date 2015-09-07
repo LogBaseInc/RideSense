@@ -9,7 +9,8 @@ define(['angular',
             var vm = this;
             var accountId;
             vm.isuserdeleted = false;
-            vm.repeatpwderror= false;
+            vm.repeatpwderror = false;
+            vm.isPasswordGood = false;
 
             Object.defineProperty(vm, 'canactivate', {
                 get: canactivate
@@ -48,19 +49,22 @@ define(['angular',
                 }
             }
 
+            $rootScope.$on('passwordStrength', function(event, data) {
+                vm.isPasswordGood = data.isGood;
+            });
+
             function canactivate() {
-                if($scope.signupform.$valid)
-                {
+                if(vm.isPasswordGood) {
                     if(vm.password != null && vm.password != undefined &&
-                       vm.repeatpassword != null && vm.repeatpassword != undefined)
-                    {
+                       vm.repeatpassword != null && vm.repeatpassword != undefined) {
                         if(vm.password !== vm.repeatpassword)
                             vm.repeatpwderror = true;
                         else
                             vm.repeatpwderror = false;
+                        utility.applyscope($scope);
                     }
                 }
-                return $scope.signupform.$valid && !submitted && !vm.repeatpwderror && !vm.isuserdeleted;
+                return $scope.signupform.$valid && !submitted && !vm.repeatpwderror && !vm.isuserdeleted && vm.isPasswordGood;
             }
 
             vm.activate = function () {

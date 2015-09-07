@@ -9,7 +9,7 @@
 					<h5 class="tm-heading" data-ng-show="vm.isDeviceEdit"><span class="glyphicon glyphicon-chevron-right"></span> Update User</h5>
 					<br/>
 
-					<div class="form-group zeromargin">
+					<div class="form-group zeromargin" data-ng-if="vm.hideDeviceType">
 						<label class="col-md-3 control-label">User Device Type</label>
 						<div ng-disabled="vm.isDeviceEdit" class="col-md-6">
 							<input id="device-toggle" checked type="checkbox" data-toggle="toggle" data-on="Stick" data-off="Stick Mobile" data-onstyle="default" data-offstyle="default">
@@ -18,6 +18,13 @@
 					<div class="form-group zeromargin">
 						<label class="col-md-3 control-label">Avatar</label>
 						<div class="col-md-6">
+							<a data-ng-show="vm.device.vehicletype=='person'" class="blackcolortext"><img src="assets/images/person_selected.png" class="height40"></img><span class="marginleft5">Person</span></a>
+							<a data-ng-show="vm.device.vehicletype !='person'" class="blackcolortext cursorpointer" 
+							onmouseover="document.carunselected.src='assets/images/person_selected.png';"
+		         			onmouseout="document.carunselected.src='assets/images/person_unselected.png';" data-ng-click="vm.selectVehicleType('person')">
+		         				<img name="carunselected" src="assets/images/person_unselected.png" class="height40"></img><span class="marginleft5">Person</span>
+		         			</a>
+
 							<a data-ng-show="vm.device.vehicletype=='car'" class="blackcolortext"><img src="assets/images/car_selected.png" class="height40"></img><span class="marginleft5">Car</span></a>
 							<a data-ng-show="vm.device.vehicletype !='car'" class="blackcolortext cursorpointer" 
 							onmouseover="document.carunselected.src='assets/images/car_selected.png';"
@@ -42,11 +49,11 @@
 		        		
 					</div>
 					<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textvehiclenumber.$invalid && deviceform.textvehiclenumber.$touched }">
-						<label class="col-md-3 control-label">User ID</label>
+						<label class="col-md-3 control-label">User Name</label>
 						<div class="col-md-6">
 							<input type="text" class="form-control" placeholder="Enter a Username or a Vehicle ID" name="textvehiclenumber" data-ng-model="vm.device.vehiclenumber" required maxLength ="20">
 		                    <div data-ng-messages="deviceform.textvehiclenumber.$error" data-ng-if="vm.interacted(deviceform.textvehiclenumber)" class="error-messages">
-		                        <div ng-message="required">User ID required</div>
+		                        <div ng-message="required">User Name required</div>
 		                    </div>
 		            	</div>
 					</div>
@@ -113,12 +120,12 @@
 					</div>
 				</form>
 				<div>
-				 	</br>
 				 	<center data-ng-hide="vm.isdelete">
-			            <button data-ng-hide="vm.isDeviceEdit" type="button" class="btn btn-default" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Add User</button>
-			            <button data-ng-show="vm.isDeviceEdit" type="button" class="btn btn-default" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Update User</button>
-			            <a type="button" class="btn btn-default"  href="#/account/devices">Cancel</a>
-			           	<button data-ng-show="vm.isDeviceEdit" type="button" class="btn btn-default" ng-click="vm.deletedevice();">Remove User</button>
+			            <button data-ng-hide="vm.isDeviceEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Add User</button>
+			            <button data-ng-show="vm.isDeviceEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Update User</button>
+			            <button data-ng-show="vm.isDeviceEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.copyDeviceID();">Copy Device ID</button>
+			            <a type="button" class="margintop15 btn btn-default"  href="#/account/devices">Cancel</a>
+			           	<button data-ng-show="vm.isDeviceEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.deletedevice();">Remove User</button>
 			        </center>
 		        	<center data-ng-show="vm.isdelete">
 		        		<span class="errortext">User will be removed permanently, do you want to continue? </span>
@@ -140,8 +147,8 @@
 						<h5><span class="glyphicon glyphicon-star-empty"></span> Adding or updating users</h5>
 						<p>Users are what you track with Stick.</p>
 						<ul>
-							<li>Users carry a device which is either a physical Stick Device you bought or a Stick Mobile App.</li>
-							<li>For Stick Device, the device ID is shipped along with the device. For Mobile App, this is auto generated.</li>
+							<li data-ng-if="vm.hideDeviceType">Users carry a device which is either a physical Stick Device you bought or a Stick Mobile App.</li>
+							<li data-ng-if="vm.hideDeviceType">For Stick Device, the device ID is shipped along with the device. For Mobile App, this is auto generated.</li>
 							<li>You can choose an Avatar for every user that will be used by live map view.</li>
 							<li>User ID is a user name that you choose to refer back to this user.</li>
 						</ul>

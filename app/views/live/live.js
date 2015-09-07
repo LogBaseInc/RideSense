@@ -35,7 +35,7 @@ define(['angular',
 			vm.liverefs = [];
 			vm.istracking = false;
 			vm.mapOptions = {
-				disableDefaultUI:true,    
+				disableDefaultUI: !(utility.IsDesktop()),    
 			}
 
 			activate();
@@ -60,7 +60,9 @@ define(['angular',
 			    }
 			 };
 
-		 	function activate(){
+		 	function activate() {
+		 		vm.carsearch = true;
+		 		vm.locationsearch = false;
 		 		
 		 		var ua = navigator.userAgent;
 				if( ua.indexOf("Android") >= 0 ) {

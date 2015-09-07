@@ -12,6 +12,7 @@ define(['angular',
             vm.devicetype = 'stick';
             var devicesfberef;
             vm.isdelete = false;
+            vm.hideDeviceType = config.hideDeviceType;
 
             Object.defineProperty(vm, 'canBuy', {
                 get: canBuy
@@ -26,13 +27,13 @@ define(['angular',
             function activate(){
                 utility.scrollToTop();
                 
-                $('input[type=checkbox][data-toggle^=toggle]').bootstrapToggle();
+                //$('input[type=checkbox][data-toggle^=toggle]').bootstrapToggle();
 
                 vm.device = utility.getDeviceSelected();
                 if(vm.device == null) { 
                     vm.device = {};
-                    vm.device.type = 'stick';
-                    vm.device.vehicletype = 'car';
+                    vm.device.type = 'stickmobile';
+                    vm.device.vehicletype = 'person';
                     vm.isDeviceEdit = false;
                 }
                 else {
@@ -112,6 +113,18 @@ define(['angular',
                 else {
                    adddev(); 
                 }
+            }
+
+            vm.copyDeviceID = function () {
+                copyToClipboard(vm.device.devicenumber)   
+            }
+
+            function copyToClipboard(text) {
+                var $temp = $("<input>")
+                $("body").append($temp);
+                $temp.val(text).select();
+                document.execCommand("copy");
+                $temp.remove();
             }
 
             function getMobileUuidCompleted(data) {

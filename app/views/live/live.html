@@ -4,8 +4,8 @@
         <input type="text" class="form-control tm-search-text tm-no-outline" placeholder="Search by user" data-ng-show="vm.carsearch" id="txtcarsearch" data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars.models | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html"
 			typeahead-on-select="vm.carsearched($item, $model, $label)" />
         <div class="input-group-btn">
+        	<button type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.searchOptionChanged('car')"><span class="glyphicon glyphicon-user"></span></button>
 	        <button type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.searchOptionChanged('location')"><span class="glyphicon glyphicon-map-marker"></span></button>
-			<button type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.searchOptionChanged('car')"><span class="glyphicon glyphicon-user"></span></button>
         </div>
 	</div>
 

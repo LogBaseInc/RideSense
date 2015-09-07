@@ -10,6 +10,7 @@
             var email = ""
             var vm = this;
             vm.repeatpwderror= false;
+            vm.isPasswordGood = false;
 
             Object.defineProperty(vm, 'canchangepassword', {
                 get: canchangepassword
@@ -26,8 +27,12 @@
                 email = sessionservice.getSession().password.email;
             }
 
+            $rootScope.$on('passwordStrength', function(event, data) {
+                vm.isPasswordGood = data.isGood;
+            });
+
             function canchangepassword() {
-                if($scope.passform.$valid) {
+                if(vm.isPasswordGood) {
                     if(vm.password != null && vm.password != undefined &&
                        vm.repeatpassword != null && vm.repeatpassword != undefined)
                     {
@@ -37,7 +42,7 @@
                             vm.repeatpwderror = false;
                     }
                 }
-                return $scope.passform.$valid && !submitted && !vm.repeatpwderror;
+                return $scope.passform.$valid && !submitted && !vm.repeatpwderror && vm.isPasswordGood;
             }
 
             vm.changepassword = function () {

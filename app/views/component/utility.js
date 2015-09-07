@@ -25,7 +25,8 @@ define(['angular'], function (angular) {
                 scrollToTop : scrollToTop,
                 errorlog : errorlog,
                 getVehicleImageUrl : getVehicleImageUrl,
-                setGoogleMapConfig : setGoogleMapConfig
+                setGoogleMapConfig : setGoogleMapConfig,
+                IsDesktop : IsDesktop
             };
             
             function applyscope($scope) {
@@ -145,13 +146,17 @@ define(['angular'], function (angular) {
             function getVehicleImageUrl(devicetype, isIdle) {
                 var imageUrl = ''
                 if(devicetype == 'car' && isIdle == true)
-                    imageUrl = 'assets/images/car-parked.png';
+                    imageUrl = 'assets/images/car-moving.png';
                 else if(devicetype == 'car' && isIdle == false)
                     imageUrl = 'assets/images/car-moving.png';
                 else if(devicetype == 'bike' && isIdle == true)
                     imageUrl = 'assets/images/bike-parked.png';
                 else if(devicetype == 'bike' && isIdle == false)
                     imageUrl = 'assets/images/bike-moving.png';
+                else if(devicetype == 'person' && isIdle == true)
+                    imageUrl = 'assets/images/person_idle.png';
+                 else if(devicetype == 'person' && isIdle == false)
+                    imageUrl = 'assets/images/person_moving.png';
                 else if(devicetype == 'other')
                      imageUrl = 'assets/images/otherlive.png';
                 return imageUrl;
@@ -166,6 +171,13 @@ define(['angular'], function (angular) {
                         libraries: 'weather,geometry,visualization'
                     });
                 });
+            }
+
+            function IsDesktop() {
+                if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+                    return false;               
+                else
+                    return true;
             }
          }
     })();

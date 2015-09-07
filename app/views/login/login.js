@@ -1,9 +1,10 @@
 define(['angular',
     'config.route', 
-    'views/services/loginservice'], function (angular, configroute) {
+    'views/services/loginservice',
+    'views/services/userservice'], function (angular, configroute) {
         (function () {
-            configroute.register.controller('login', ['$rootScope', '$scope', '$location', 'config', 'spinner', 'notify', 'sessionservice','loginservice', 'utility', login]);
-            function login($rootScope, $scope, $location, config, spinner, notify, sessionservice, loginservice, utility) {
+            configroute.register.controller('login', ['$rootScope', '$scope', '$location', 'config', 'spinner', 'notify', 'sessionservice', 'loginservice', 'userservice', 'utility', login]);
+            function login($rootScope, $scope, $location, config, spinner, notify, sessionservice, loginservice, userservice, utility) {
                 var vm = this, submitted = false;
                 vm.logindiv = true;
                 vm.signupdiv = false;
@@ -14,6 +15,7 @@ define(['angular',
                 vm.success = true;
                 var uuid = null;
                 vm.backtologinclicked = backtologinclicked;
+                vm.isPasswordGood = false;
 
                 Object.defineProperty(vm, 'canLogin', {
                     get: canLogin
@@ -42,6 +44,10 @@ define(['angular',
                     }
                 }
 
+                $rootScope.$on('passwordStrength', function(event, data) {
+                    vm.isPasswordGood = data.isGood;
+                });
+
                 vm.login = function () {
                     if(vm.canLogin) { 
                         document.activeElement.blur();  
@@ -60,7 +66,10 @@ define(['angular',
                     var ref1 = new Firebase(config.firebaseUrl+'users/'+data.uid+'/');
                     ref1.once("value", function(snapshot) {
                         if(snapshot.val() != null && snapshot.val().account) {
-                            loginCompleted(data, snapshot.val().account);
+                            if(snapshot.val().emailverified === true)
+                                loginCompleted(data, snapshot.val().account);
+                            else
+                                emailNotVerified();
                         }
                         else {
                             spinner.hide();
@@ -72,6 +81,13 @@ define(['angular',
                     }, function (errorObject) {
                         notify.error('Something went wrong, please try again later');
                     });
+                }
+
+                function emailNotVerified() {
+                    spinner.hide();
+                    submitted = false;
+                    utility.applyscope($scope); 
+                    notify.error('Email is yet to be verified');
                 }
 
                 function loginCompleted(data, accountId) {
@@ -150,15 +166,19 @@ define(['angular',
                     var useracc = {};
                     useracc.account = 'account'+uuid;
                     useracc.email = vm.newuser.email;
+                    useracc.emailverified = false;
                     usersref.set(useracc);
 
+                    var url = config.hosturl+'account/verify/'+userData.uid;
+                    userservice.sendUserVerifyEmail(vm.newuser.email, vm.newuser.accountname, url);
+                    
                     var accountref = new Firebase(config.firebaseUrl+'accounts/account'+uuid);
                     var accountjson = '{"email":"'+ vm.newuser.email + '","name" : "'+vm.newuser.accountname+'","timezone" : "'+getTimeZone()+'"}';
                     accountref.set(angular.fromJson(accountjson));
 
                     spinner.hide();
                     submitted = false;
-                    notify.success('Registered successfully!');
+                    notify.success('Registered successfully. Email sent to your ID to verify the account');
                     backtologinclicked();
                 }
 
@@ -206,7 +226,7 @@ define(['angular',
                 }
 
                 function canSignup() {
-                    if($scope.signupform.$valid)
+                    if(vm.isPasswordGood)
                     {
                         if(vm.newuser.password != null && vm.newuser.password != undefined &&
                            vm.newuser.repeatpassword != null && vm.newuser.repeatpassword != undefined)
@@ -217,7 +237,7 @@ define(['angular',
                                 vm.repeatpwderror = false;
                         }
                     }
-                    return $scope.signupform.$valid && !submitted && !vm.repeatpwderror;
+                    return $scope.signupform.$valid && !submitted && !vm.repeatpwderror && vm.isPasswordGood;
                 }
                 
                 function resetform(form) {
