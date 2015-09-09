@@ -16,6 +16,8 @@ define(['angular',
                 var uuid = null;
                 vm.backtologinclicked = backtologinclicked;
                 vm.isPasswordGood = false;
+                vm.emailnotverified = false;
+                var accountdata = null;
 
                 Object.defineProperty(vm, 'canLogin', {
                     get: canLogin
@@ -30,6 +32,9 @@ define(['angular',
                 });
 
                 vm.interacted = function (field) {
+                    if(field.$dirty === true && vm.emailnotverified === true) {
+                        vm.emailnotverified = false;
+                    }
                     return submitted || field.$dirty;
                 };
 
@@ -49,6 +54,7 @@ define(['angular',
                 });
 
                 vm.login = function () {
+                     vm.emailnotverified = false;
                     if(vm.canLogin) { 
                         document.activeElement.blur();  
                          Array.prototype.forEach.call(document.querySelectorAll('input, textarea'), function(it) { 
@@ -69,7 +75,7 @@ define(['angular',
                             if(snapshot.val().emailverified === true)
                                 loginCompleted(data, snapshot.val().account);
                             else
-                                emailNotVerified();
+                                emailNotVerified(data.uid, snapshot.val().account);
                         }
                         else {
                             spinner.hide();
@@ -83,11 +89,18 @@ define(['angular',
                     });
                 }
 
-                function emailNotVerified() {
+                function emailNotVerified(uid, accountId) {
+                    accountdata = {};
+                    accountdata.uid = uid;
+                    accountdata.accountId = accountId;
+                    accountdata.email = vm.userName;
+
                     spinner.hide();
                     submitted = false;
+                    vm.password = null;
+                    vm.emailnotverified = true;
+                    resetform($scope.loginform);
                     utility.applyscope($scope); 
-                    notify.error('Email is yet to be verified');
                 }
 
                 function loginCompleted(data, accountId) {
@@ -188,6 +201,28 @@ define(['angular',
                     notify.error(error.message)
                     vm.newuser = null;
                     resetform($scope.signupform);
+                }
+
+                vm.resendVerificationEmail = function () {
+                    spinner.show();
+                    var ref1 = new Firebase(config.firebaseUrl+'accounts/'+accountdata.accountId+'/name');
+                    ref1.once("value", function(snapshot) {
+                        var url = config.hosturl+'account/verify/'+accountdata.uid;
+                        return userservice.sendUserVerifyEmail(accountdata.email, snapshot.val(), url).then(resendVerificationEmailCompleted, resendVerificationEmailFailed);                      
+                    }, function (errorObject) {
+                        resendVerificationEmailFailed();
+                    });
+                }
+
+                function resendVerificationEmailCompleted() {
+                    spinner.hide();
+                    vm.emailnotverified = false;
+                    notify.success("Verification email sent successfully");
+                }
+
+                function resendVerificationEmailFailed() {
+                    spinner.hide();
+                    notify.error('Something went wrong, please try again later');
                 }
 
                 function getTimeZone() {

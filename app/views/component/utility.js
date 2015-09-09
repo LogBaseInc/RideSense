@@ -146,7 +146,7 @@ define(['angular'], function (angular) {
             function getVehicleImageUrl(devicetype, isIdle) {
                 var imageUrl = ''
                 if(devicetype == 'car' && isIdle == true)
-                    imageUrl = 'assets/images/car-moving.png';
+                    imageUrl = 'assets/images/car-parked.png';
                 else if(devicetype == 'car' && isIdle == false)
                     imageUrl = 'assets/images/car-moving.png';
                 else if(devicetype == 'bike' && isIdle == true)

@@ -78,6 +78,7 @@ define(['angular',
                 var useracc = {};
                 useracc.account = accountId;
                 useracc.email = vm.email;
+                useracc.emailverified = true;
                 usersref.set(useracc);
 
                 var userref = new Firebase(config.firebaseUrl+'accounts/'+accountId + '/users/' +$routeParams.email);

@@ -38,6 +38,7 @@
 
                             <div class="space"></div>
                             <center class="marginbottom10"><span ng-show="vm.success==false" class="errortext">The email or password you entered is incorrect.</span></center>
+                            <center class="marginbottom10"><span ng-show="vm.emailnotverified" class="errortext">The email is yet to be verified. <a data-ng-click="vm.resendVerificationEmail()" style="cursor : pointer">Click here</a> to resend the verification email</span></center>
                             <div class="clearfix">                                        
                                 <button type="button" class="width-35 pull-right btn btn-sm btn-primary" data-ng-disabled="!vm.canLogin" data-ng-click="vm.login()">
                                     <span class="bigger-110">Sign In</span>
