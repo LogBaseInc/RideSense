@@ -13,12 +13,14 @@
                     var usersref = new Firebase(config.firebaseUrl+'users/'+$routeParams.accountId+'/emailverified');
                     usersref.set(true);
                     notify.success('Email verified successfully');
+                    spinner.hide();
+                    $rootScope.$emit('logout');
                 }
                 else {
                     notify.error('Link is broken');
+                    spinner.hide();
+                    $rootScope.$emit('logout');
                 }
-                spinner.hide();
-                $rootScope.$emit('logout');
             }
         }
     })();
