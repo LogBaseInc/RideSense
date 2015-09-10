@@ -8,7 +8,6 @@
             activate();
 
             function activate() {
-                $rootScope.$emit('logout');
                 spinner.show();
                 if($routeParams.accountId != null && $routeParams.accountId != undefined) {
                     var usersref = new Firebase(config.firebaseUrl+'users/'+$routeParams.accountId+'/emailverified');
@@ -19,7 +18,7 @@
                     notify.error('Link is broken');
                 }
                 spinner.hide();
-                $location.path('/login');
+                $rootScope.$emit('logout');
             }
         }
     })();
