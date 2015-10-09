@@ -4,7 +4,7 @@
 			<div class="form-group zeromargin" data-ng-class="{ 'has-error': userform.txtUsername.$invalid && userform.txtUsername.$touched }">
 				<label class="col-md-3 control-label">Email</label>
 				<div class="col-md-6">
-                    <input type="email" class="form-control" id="txtUsername" name="txtUsername" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" data-ng-model="vm.userName" required placeholder="Email ID to invite" ng-readonly="vm.isEdit">
+                    <input type="email" class="form-control" id="txtUsername" name="txtUsername" ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/" data-ng-model="vm.userName" required placeholder="Email ID to invite" ng-readonly="vm.isEdit">
                     <div data-ng-if="vm.useralreadyinvited == true">
                     	<i class="glyphicon glyphicon-remove errortext"></i><span class="marginleft5 errortext">This Email has been already invited</span>
                     </div>
