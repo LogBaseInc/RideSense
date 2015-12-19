@@ -90,7 +90,7 @@ define(['angular',
                     vm.clearcar();
             }
 
-            $rootScope.$on('cardetail:dateselected', function (event, data) {
+            $rootScope.$on('datepicker:dateselected', function (event, data) {
                 if(data.date.format('DD/MM/YYYY') != vm.selecteddate)
                     vm.datechanged(data.date.format('DD/MM/YYYY'));
             });

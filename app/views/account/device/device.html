@@ -51,7 +51,7 @@
 					<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textvehiclenumber.$invalid && deviceform.textvehiclenumber.$touched }">
 						<label class="col-md-3 control-label">User Name</label>
 						<div class="col-md-6">
-							<input type="text" class="form-control" placeholder="Enter a Username or a Vehicle ID" name="textvehiclenumber" data-ng-model="vm.device.vehiclenumber" required maxLength ="20">
+							<input type="text" class="form-control" placeholder="Enter a Username or a Vehicle ID" name="textvehiclenumber" data-ng-model="vm.device.vehiclenumber" required maxLength ="20" ng-readonly="vm.isDeviceEdit">
 		                    <div data-ng-messages="deviceform.textvehiclenumber.$error" data-ng-if="vm.interacted(deviceform.textvehiclenumber)" class="error-messages">
 		                        <div ng-message="required">User Name required</div>
 		                    </div>

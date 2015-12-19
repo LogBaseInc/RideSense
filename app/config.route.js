@@ -201,6 +201,33 @@ define(['angular',
                          allowAnonymous: true
                      }
                  },
+                 {
+                     url: '/orders',
+                     config: {
+                         templateUrl: 'views/orders/orders.html',
+                         title: 'orders',
+                         controllerUrl: 'views/orders/orders',
+                         allowAnonymous: true
+                     }
+                 },
+                 {
+                     url: '/order',
+                     config: {
+                         templateUrl: 'views/orders/order.html',
+                         title: 'orders',
+                         controllerUrl: 'views/orders/order',
+                         allowAnonymous: true
+                     }
+                 },
+                 {
+                     url: '/order/assignuser',
+                     config: {
+                         templateUrl: 'views/orders/assignuser.html',
+                         title: 'orders',
+                         controllerUrl: 'views/orders/assignuser',
+                         allowAnonymous: true,
+                     }
+                 },
             ];
 
             return routs;

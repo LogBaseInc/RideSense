@@ -1,0 +1,165 @@
+define(['angular',
+    'config.route',
+    'lib'], function (angular, configroute) {
+    (function () {
+        configroute.register.controller('orders', ['$rootScope', '$routeParams' ,'$scope', '$location', 'config', 'spinner', 'sessionservice', 'utility', orders]);
+        function orders($rootScope, $routeParams, $scope, $location, config, spinner, sessionservice, utility) {
+            var vm = this;
+            var todaysdate = '';
+            var unassignorderref = null;
+            vm.isdatesupport = false;
+            vm.orders = [];
+            vm.ordersBy3 =[];
+            var datefilter = "";
+            vm.istoday = false;
+            var accountdevices = sessionservice.getAccountDevices();
+            var isassignorderclickd = false;
+
+            activate();
+
+            function activate() {
+                $rootScope.routeSelection = 'orders';
+                isDateFiledSupported();
+                setTodayDate();
+
+                getUnAssignOrders();
+            }
+
+            function setTodayDate() {
+                vm.istoday = true;
+                todaysdate = vm.isdatesupport ? new Date() : moment(new Date()).format('DD/MM/YYYY');
+                vm.selecteddate = todaysdate;
+                datefilter = vm.selecteddate;
+            }
+
+            function getUnAssignOrders() {
+                spinner.show(); 
+                var date;
+                if(vm.isdatesupport == true)
+                    date = moment(vm.selecteddate).format('YYYYMMDD');
+                else
+                    date = new moment(vm.selecteddate, "DD/MM/YYYY").format('YYYYMMDD');
+
+                if(unassignorderref != null && unassignorderref != undefined) {
+                    unassignorderref.off()
+                }
+
+                unassignorderref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/unassignorders/'+date);
+                unassignorderref.on("value", function(snapshot) {
+                    vm.orders = [];
+                    vm.ordersBy3 = [];
+                    vm.ordersplit = [];
+
+                    var data = snapshot.val();
+                    for(orderprop in data) {
+                        var orderdetail = {};
+                        var orderinfo = data[orderprop];
+                        orderdetail.ordernumber = orderprop;
+                        orderdetail.name = orderinfo.name;
+                        orderdetail.address = orderinfo.address;
+                        orderdetail.amount = orderinfo.amount;
+                        orderdetail.time = orderinfo.time;
+                        orderdetail.deviceid = (orderinfo.deviceid != null && orderinfo.deviceid != undefined) ? orderinfo.deviceid : null;
+                        orderdetail.vehiclenumber = (orderinfo.deviceid != null && orderinfo.deviceid != undefined) ? accountdevices[orderinfo.deviceid].vehiclenumber : null;
+                        orderdetail.mobilenumber = orderinfo.mobilenumber;
+                        orderdetail.productdesc = orderinfo.productdesc;
+                        orderdetail.productname = orderinfo.productname;
+                        orderdetail.date = vm.selecteddate;
+                        var displayaddress = orderinfo.Name+", "+orderinfo.Address;
+                        orderdetail.displayaddress = displayaddress.length <= 85 ? displayaddress : (displayaddress.substring(0, 80) +"...");
+
+                        vm.orders.push(orderdetail);
+                        vm.ordersplit.push(orderdetail);
+                        if(vm.ordersplit.length == 3) {
+                            vm.ordersBy3.push({orders: vm.ordersplit});
+                            vm.ordersplit = [];
+                        }
+                    }
+
+                    if(vm.ordersplit.length > 0) {
+                        vm.ordersBy3.push({orders: vm.ordersplit});
+                        vm.ordersplit = [];
+                    }
+
+                    spinner.hide(); 
+                    utility.applyscope($scope);
+                });
+            }
+
+            function isDateFiledSupported(){
+                var datefield=document.createElement("input")
+                datefield.setAttribute("type", "date")
+                if (datefield.type != "date") { //if browser doesn't support input type="date"
+                   vm.isdatesupport = false;
+                }
+                else
+                   vm.isdatesupport = true;
+            }
+
+            $rootScope.$on('datepicker:dateselected', function (event, data) {
+                if(data.date.format('DD/MM/YYYY') != vm.selecteddate) {
+                    vm.selecteddate = data.date.format('DD/MM/YYYY');
+                    vm.datechanged(vm.selecteddate);
+                }
+            });
+
+            vm.datechanged = function (date) {
+                var isdatechanged = false;
+                if(datefilter != vm.selecteddate)
+                    isdatechanged = true;
+
+                if(date == null) {
+                    setTodayDate();
+                    date = vm.selecteddate;
+                }
+                else 
+                    vm.selecteddate = date;
+
+                datefilter = vm.selecteddate;
+                if(isdatechanged) {
+                    vm.orders = [];
+                    vm.ordersBy3 = [];
+                    vm.ordersplit = [];
+
+                    getUnAssignOrders();
+                }
+
+                if(Date.parse(todaysdate) == Date.parse(vm.selecteddate)) 
+                    vm.istoday = true;
+                else
+                    vm.istoday = false;
+            }
+
+            vm.orderClicked = function(order) {
+                if(isassignorderclickd == false) {
+                    $rootScope.selectedOrder = order;
+                    $location.path('/order');
+                    return false;
+                }
+                isassignorderclickd = false;
+            }
+
+            vm.assignorder = function(order){
+                isassignorderclickd = true;
+                $rootScope.selectedOrder = order;
+                $location.path('/order/assignuser');
+                return false;
+            }
+
+            vm.unassignorder = function(order) {
+                isassignorderclickd = true;
+                var deliverydate = moment(order.date).format('YYYYMMDD');
+                var ordersref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/orders/'+order.deviceid+"/"+deliverydate+"/"+order.ordernumber);
+                ordersref.remove();
+
+                var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/unassignorders/'+deliverydate+"/"+order.ordernumber+"/deviceid");
+                ordersref1.remove();
+                return false;
+            }
+
+            $scope.$on('$destroy', function iVeBeenDismissed() {
+               
+            });
+        }
+    })();
+});

@@ -170,7 +170,22 @@ define(['angular',
                 vm.signup = function() {
                     spinner.show();
                     submitted= true;
-                    loginservice.signup(vm.newuser.email, vm.newuser.password).then(signupcompleted, signupfailed)
+                    checkAccountName();
+                }
+
+                function checkAccountName() {
+                    var ref1 = new Firebase(config.firebaseUrl+'accountusers/'+vm.newuser.accountname.toLowerCase());
+                    ref1.once("value", function(snapshot) {
+                        if(snapshot.val() == null || snapshot.val() == undefined) {
+                            loginservice.signup(vm.newuser.email, vm.newuser.password).then(signupcompleted, signupfailed);
+                        }
+                        else{
+                            notify.error("Account name in use. Please enter different name");
+                            utility.applyscope($scope);
+                        }
+                    }, function (errorObject) {
+                        notify.error('Something went wrong, please try again later');
+                    });
                 }
 
                 function signupcompleted(userData) {
@@ -189,6 +204,10 @@ define(['angular',
                     var accountjson = '{"email":"'+ vm.newuser.email + '","name" : "'+vm.newuser.accountname+'","timezone" : "'+getTimeZone()+'"}';
                     accountref.set(angular.fromJson(accountjson));
 
+                    var accountuserref = new Firebase(config.firebaseUrl+'accountusers/'+vm.newuser.accountname.toLowerCase());
+                    var accountuserjson = '{"accountid":"account'+ uuid+'"}';
+                    accountuserref.set(angular.fromJson(accountuserjson));
+                    
                     spinner.hide();
                     submitted = false;
                     notify.success('Registered successfully. Email sent to your ID to verify the account');

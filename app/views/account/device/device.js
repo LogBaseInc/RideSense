@@ -106,13 +106,33 @@ define(['angular',
 
             vm.adddevice = function () {
                 if(vm.isDeviceEdit ==false && vm.isStick == false) {
-                    submitted = true;
-                    spinner.show();
-                    return mobileuuidservice.getMobileUuid(vm.device.drivermobile, sessionservice.getAccountName()).then(getMobileUuidCompleted, getMobileUuidFailed);
+                    checkUserName();
                 }
                 else {
                    adddev(); 
                 }
+            }
+
+            function registerdevice() {
+                submitted = true;
+                spinner.show();
+                return mobileuuidservice.getMobileUuid(vm.device.drivermobile, sessionservice.getAccountName()).then(getMobileUuidCompleted, getMobileUuidFailed);
+            }
+
+            function checkUserName() {
+                var ref1 = new Firebase(config.firebaseUrl+'accountusers/'+sessionservice.getAccountName().toLowerCase()+"/users/"+vm.device.vehiclenumber.toLowerCase());
+                ref1.once("value", function(snapshot) {
+                    if(snapshot.val() == null || snapshot.val() == undefined) {
+                        registerdevice();
+                        utility.applyscope($scope);
+                    }
+                    else{
+                        notify.error("User name in use. Please enter different name");
+                        utility.applyscope($scope);
+                    }
+                }, function (errorObject) {
+                    notify.error('Something went wrong, please try again later');
+                });
             }
 
             vm.copyDeviceID = function () {
@@ -167,6 +187,9 @@ define(['angular',
                 
                 devicefberef.set(deviceobj);
 
+                var accountuserref = new Firebase(config.firebaseUrl+'accountusers/'+sessionservice.getAccountName().toLowerCase()+"/users/"+vm.device.vehiclenumber.toLowerCase());
+                accountuserref.set(vm.device.devicenumber);
+
                 submitted = false;
                 spinner.show();
 
@@ -205,6 +228,9 @@ define(['angular',
                 var tripfberef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/trips/devices/'+vm.device.devicenumber+'/');
                 tripfberef.remove();
 
+                var accountuserref = new Firebase(config.firebaseUrl+'accountusers/'+sessionservice.getAccountName().toLowerCase()+"/users/"+vm.device.vehiclenumber.toLowerCase());
+                accountuserref.remove();
+                
                 submitted = false;
                 spinner.show();
 

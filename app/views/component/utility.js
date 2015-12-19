@@ -26,7 +26,10 @@ define(['angular'], function (angular) {
                 errorlog : errorlog,
                 getVehicleImageUrl : getVehicleImageUrl,
                 setGoogleMapConfig : setGoogleMapConfig,
-                IsDesktop : IsDesktop
+                IsDesktop : IsDesktop,
+                getTime1 : getTime1,
+                getTime2 : getTime2,
+                getTimeInMins : getTimeInMins
             };
             
             function applyscope($scope) {
@@ -178,6 +181,64 @@ define(['angular'], function (angular) {
                     return false;               
                 else
                     return true;
+            }
+
+             function getTime1(value) {
+                var hours1 = Math.floor(value / 60);
+                var minutes1 = value - (hours1 * 60);
+
+                if (hours1.length == 1) hours1 = '0' + hours1;
+                if (minutes1.length == 1) minutes1 = '0' + minutes1;
+                if (minutes1 == 0) minutes1 = '00';
+                if (hours1 >= 12) {
+                    if (hours1 == 12) {
+                        hours1 = hours1;
+                        minutes1 = minutes1 + " PM";
+                    } else {
+                        hours1 = hours1 - 12;
+                        minutes1 = minutes1 + " PM";
+                    }
+                } else {
+                    hours1 = hours1;
+                    minutes1 = minutes1 + " AM";
+                }
+                if (hours1 == 0) {
+                    hours1 = 12;
+                    minutes1 = minutes1;
+                }
+                return (hours1 + ':' + minutes1);
+            }
+
+            function getTime2(value) {
+                var hours2 = Math.floor(value / 60);
+                var minutes2 = value - (hours2 * 60);
+
+                  if (hours2.length == 1) hours2 = '0' + hours2;
+                  if (minutes2.length == 1) minutes2 = '0' + minutes2;
+                  if (minutes2 == 0) minutes2 = '00';
+                  if (hours2 >= 12) {
+                      if (hours2 == 12) {
+                          hours2 = hours2;
+                          minutes2 = minutes2 + " PM";
+                      } else if (hours2 == 24) {
+                          hours2 = 11;
+                          minutes2 = "59 PM";
+                      } else {
+                          hours2 = hours2 - 12;
+                          minutes2 = minutes2 + " PM";
+                      }
+                  } else {
+                      hours2 = hours2;
+                      minutes2 = minutes2 + " AM";
+                }
+                return (hours2 + ':' + minutes2);
+            }
+
+            function getTimeInMins(value) {
+                var timesplit = value.split(':');
+                var isPM = (timesplit[0]>=1 && timesplit[0]<12) && value.indexOf('PM')>=0;
+
+                return  (isPM ? ((12 + parseInt(timesplit[0])) *60) : (parseInt(timesplit[0]) *60)) + (parseFloat("0."+timesplit[1]) *60);
             }
          }
     })();

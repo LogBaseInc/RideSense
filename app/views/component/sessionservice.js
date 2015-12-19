@@ -19,6 +19,7 @@ define(['angular', 'utility'], function (angular) {
                 getRole : getRole,
                 setAccountName : setAccountName,
                 getAccountName : getAccountName,
+                getOrderTracking : getOrderTracking
             };
             
             function getDevices() {
@@ -78,6 +79,7 @@ define(['angular', 'utility'], function (angular) {
             }
 
             function setRole() {
+                setOrderTracking();
                 var username = getEncodedusername();
                 if(username) {
                     var adminfbref = new Firebase(config.firebaseUrl+'accounts/'+getaccountId()+'/users/'+username+'/admin');
@@ -89,6 +91,29 @@ define(['angular', 'utility'], function (angular) {
                     }, function(errorObject) {
                     });
                 }
+            }
+
+            function getOrderTracking() {
+                var ordertracking = localStorage.getItem('ordertracking');
+                if (ordertracking != null && ordertracking != undefined)
+                    return ordertracking == "true" ? true : false;
+                else
+                    return false;
+            }
+
+            function setOrderTracking() {
+                var ordertrackingref = new Firebase(config.firebaseUrl+'accounts/'+getaccountId()+"/"+'ordertracking');
+                ordertrackingref.once("value", function(snapshot) {
+                    var ordertracking = false;
+
+                    if(snapshot.val() != null && snapshot.val() == true) 
+                        ordertracking = true;
+                        
+                    localStorage.setItem('ordertracking', ordertracking);
+                    $rootScope.$emit('login:ordertracking', {ordertracking: ordertracking});
+
+                }, function(errorObject) {
+                });
             }
 
             function getEncodedusername() {

@@ -10,7 +10,7 @@ define(['angular',
             });
 
              element.on("dp.change", function (e) {
-                 $rootScope.$emit('cardetail:dateselected', {date: e.date == false ? moment(new Date()) : e.date});
+                 $rootScope.$emit('datepicker:dateselected', {date: e.date == false ? moment(new Date()) : e.date});
             });
 
         };
@@ -20,6 +20,35 @@ define(['angular',
         };
       }]);
 
+      configroute.register.directive("timeSlider", ["$rootScope", "utility", function ($rootScope, utility) {
+        var linkFn = function (scope, element, attr, ctrl) {
+            var timeoneinmins = utility.getTimeInMins(scope.timeone);
+            var timetwoinmins = utility.getTimeInMins(scope.timetwo);
+
+            element.slider({
+              range: true,
+              min: 0,
+              max: 1440,
+              step: 30,
+              values: [timeoneinmins, timetwoinmins],
+              slide: function (e, ui) {
+                  scope.timeone = utility.getTime1(ui.values[0]);
+                  scope.timetwo = utility.getTime2(ui.values[1]);
+                  utility.applyscope(scope);
+              }
+          });
+
+        };
+        return {
+            restrict: 'A',
+            link: linkFn,
+            scope: {
+              timeone: '=',
+              timetwo: '='
+            },
+        };
+      }]);
+      
       configroute.register.directive('googlePlaces', ['$rootScope', function($rootScope){
         return {
             restrict:'E',

@@ -1,0 +1,75 @@
+<div data-ng-controller="orders as vm">
+	<div class="input-group input-group-lg livemapsearch">
+		<input type="text" class="form-control tm-search-text tm-no-outline fullwidth" placeholder="Search order" data-ng-model="vm.search" 
+		 />
+	    <div class="input-group-btn">
+	    	<a type="button" class="btn btn-default tm-no-outline" href="#/order"><span class="glyphicon glyphicon-plus"></span></a>
+	    </div>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="row col-xs-12">
+				<div>
+					<br/>
+					<h5 class="col-xs-1 tm-heading tripsheading"><span class="glyphicon glyphicon-chevron-right"></span>Orders</h5>
+					<input data-ng-if="vm.isdatesupport" id="ordersdate" type="date" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)">
+					<div data-ng-if="!vm.isdatesupport" class="col-xs-1 form-group width170">
+			            <div class='input-group date' lb-datepicker>
+			                <input type='text' class="form-control" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)"/>
+			                <span class="input-group-addon">
+			                    <span class="glyphicon glyphicon-calendar"></span>
+			                </span>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+		    <div class="col-xs-12 tripblock">
+		    	<br/>
+			    <div data-ng-repeat="orderdetail in vm.ordersBy3">
+			    	<div class="row tripblock">
+			        	<div data-ng-repeat="order in orderdetail.orders">
+							<div class="col-xs-12 col-md-4 tm-card-wrap ng-scope">
+								<div class="col-md-12 tripdetail tripblock" ng-class="{'order-list': vm.istoday==true, 'stick-list': vm.istoday==false}" ng-click="vm.orderClicked(order)">
+									<div class="row tripblock">
+										<div class="col-xs-8">
+											<h4 class="ng-binding" style="margin-top:0px;padding-top:0px;margin-bottom:0px;"># {{order.ordernumber}}</h4>
+										</div>
+										<div class="col-xs-4">
+											<h4 class="text-right" style="margin-top:0px;padding-top:0px;margin-bottom:0px;">Rs. {{order.amount}}</h4>
+										</div>
+									</div>
+									<div class="space-6"></div>
+									<div class="row tripblock col-md-12">
+										<div class="col-xs-12">
+											<span class="ng-binding text-muted">{{order.name}} | {{order.time}}</span> <span data-ng-if="order.devicenumber"> > {{order.devicenumber}}/span>
+										</div>
+									</div>
+									<div class="space-6"></div>
+									<div class="row tripblock col-md-12" style="margin-top:10px" data-ng-if="vm.istoday==true && order.deviceid == null">
+										<div class="col-xs-12">
+											<button class="btn btn-default" style="float:right" data-ng-click="vm.assignorder(order)">Assign User</button>
+										</div>
+									</div>
+									<div class="row tripblock col-md-12" style="margin-top:10px" data-ng-if="vm.istoday==true && order.deviceid != null">
+										<div class="col-xs-8">
+											<span class="text-muted" data-ng-if="order.vehiclenumber">Assigned to {{order.vehiclenumber}}</span>
+										</div>
+										<div class="col-xs-4">
+											<button class="btn btn-default" style="float:right" data-ng-click="vm.unassignorder(order)">Unassign User</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>   
+				<br/>
+			</div>     
+			<div class="col-xs-12" data-ng-show="!vm.showallcars && vm.orders.length==0">
+				<br/>
+				<p class="text-muted"></span>No orders available for {{vm.selecteddate | date }}.</p>
+				<br/>
+			</div>
+		</div> <!-- row -->
+	</div> <!--container -->
+</div>

@@ -1,5 +1,5 @@
 require.config({
-    urlArgs: '5.5',
+    urlArgs: '6.0',
     waitSeconds: 0,
     paths: {
         angular: '../bower_components/angular/angular',
@@ -23,6 +23,7 @@ require.config({
         'utility' : 'views/component/utility',
         'loggly' : '../bower_components/angular-loggly-logger/angular-loggly-logger',
         //'idle' : '../bower_components/ng-idle/angular-idle'
+         'jqueryui' : 'scripts/jquery-ui'
     },
     shim: {
         angular: {
