@@ -55,7 +55,8 @@
 											<span class="text-muted" data-ng-if="order.vehiclenumber">Assigned to {{order.vehiclenumber}}</span>
 										</div>
 										<div class="col-xs-4">
-											<button class="btn btn-default" style="float:right" data-ng-click="vm.unassignorder(order)">Unassign User</button>
+											<button data-ng-if="order.status == null" class="btn btn-default" style="float:right" data-ng-click="vm.unassignorder(order)">Unassign User</button>
+											<span data-ng-if="order.status != null" style="float:right; color:coral" class="text-muted" data-ng-if="order.vehiclenumber">{{order.status}}</span>
 										</div>
 									</div>
 								</div>

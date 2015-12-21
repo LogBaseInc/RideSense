@@ -14,6 +14,8 @@ define(['angular',
             vm.istoday = false;
             var accountdevices = sessionservice.getAccountDevices();
             var isassignorderclickd = false;
+            var orderindex = [];
+            var assignedordersref = [];
 
             activate();
 
@@ -48,12 +50,26 @@ define(['angular',
                 unassignorderref.on("value", function(snapshot) {
                     vm.orders = [];
                     vm.ordersBy3 = [];
-                    vm.ordersplit = [];
+
+                    orderindex = [];
+                    for(var i = 0; i< assignedordersref.length; i++) {
+                        assignedordersref[i].off();
+                    }
+
+                    assignedordersref = [];
 
                     var data = snapshot.val();
                     for(orderprop in data) {
                         var orderdetail = {};
                         var orderinfo = data[orderprop];
+
+                        var timesplit = orderinfo.time.split('-');
+                        var ispm = false;
+                        if(timesplit[0].toLowerCase().indexOf('pm') >=0 && parseInt(timesplit[0]) >= 1 && parseInt(timesplit[0]) <= 11) {
+                            ispm = true;
+                        }
+
+                        orderdetail.timetosort = (isNaN(parseInt(timesplit[0])) ? 24 : (ispm ? (parseInt(timesplit[0])+12) : parseInt(timesplit[0])));
                         orderdetail.ordernumber = orderprop;
                         orderdetail.name = orderinfo.name;
                         orderdetail.address = orderinfo.address;
@@ -65,23 +81,64 @@ define(['angular',
                         orderdetail.productdesc = orderinfo.productdesc;
                         orderdetail.productname = orderinfo.productname;
                         orderdetail.date = vm.selecteddate;
+                        orderdetail.status = null;
                         var displayaddress = orderinfo.Name+", "+orderinfo.Address;
                         orderdetail.displayaddress = displayaddress.length <= 85 ? displayaddress : (displayaddress.substring(0, 80) +"...");
 
+                        orderindex[orderprop] = {};
+                        orderindex[orderprop].index  = vm.orders.length;
+
+                        if(Date.parse(todaysdate) == Date.parse(vm.selecteddate))
+                            setAssignedOrdersRef(orderdetail, date);
+
                         vm.orders.push(orderdetail);
-                        vm.ordersplit.push(orderdetail);
-                        if(vm.ordersplit.length == 3) {
-                            vm.ordersBy3.push({orders: vm.ordersplit});
-                            vm.ordersplit = [];
-                        }
                     }
 
-                    if(vm.ordersplit.length > 0) {
-                        vm.ordersBy3.push({orders: vm.ordersplit});
-                        vm.ordersplit = [];
+                    vm.orders.sort(SortByTime);
+                    for(var j=0 ; j < vm.orders.length ; j = j+3) {
+
+                        var orderssplit = [];
+                        orderssplit.push(vm.orders[j]);
+
+                        if((j+1) < vm.orders.length)
+                            orderssplit.push(vm.orders[j+1]);
+                        if((j+2) < vm.orders.length)
+                            orderssplit.push(vm.orders[j+2]);
+
+                        if(orderssplit.length > 0)
+                            vm.ordersBy3.push({orders: orderssplit});
                     }
 
                     spinner.hide(); 
+                    utility.applyscope($scope);
+                });
+            }
+
+            function SortByTime(a, b){
+                var a1 = parseInt(a.timetosort);
+                var b1 = parseInt(b.timetosort);
+
+                return ((b1 > a1) ? -1 : ((b1 < a1) ? 1 : 0));
+            }
+
+            function setAssignedOrdersRef(orderdetail, date) {
+                var ref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/orders/'+orderdetail.deviceid+'/'+date+'/'+orderdetail.ordernumber);
+                assignedordersref.push(ref);
+                ref.on("value", function(snapshot) {
+                    var data = snapshot.val();
+                    if(data != null) {
+                        if(data.Deliveredon != null && data.Deliveredon != undefined) 
+                            orderdetail.status = "Delivered"; 
+                        
+                        else if(data.Pickedon != null && data.Pickedon != undefined) 
+                            orderdetail.status = "Picked up"; 
+                        
+                        else 
+                            orderdetail.status = null;
+                    }
+                    else
+                        orderdetail.status = null;
+                                   
                     utility.applyscope($scope);
                 });
             }
@@ -158,7 +215,12 @@ define(['angular',
             }
 
             $scope.$on('$destroy', function iVeBeenDismissed() {
-               
+                for(var i = 0; i< assignedordersref.length; i++) {
+                    assignedordersref[i].off();
+                }
+
+                if(unassignorderref != null && unassignorderref != undefined)
+                    unassignorderref.off();
             });
         }
     })();
