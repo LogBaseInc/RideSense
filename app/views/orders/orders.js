@@ -75,8 +75,17 @@ define(['angular',
                         orderdetail.address = orderinfo.address;
                         orderdetail.amount = orderinfo.amount;
                         orderdetail.time = orderinfo.time;
-                        orderdetail.deviceid = (orderinfo.deviceid != null && orderinfo.deviceid != undefined) ? orderinfo.deviceid : null;
-                        orderdetail.vehiclenumber = (orderinfo.deviceid != null && orderinfo.deviceid != undefined) ? accountdevices[orderinfo.deviceid].vehiclenumber : null;
+                        orderdetail.deviceid = null;
+                        orderdetail.vehiclenumber = null;
+
+                        if(orderinfo.deviceid != null && orderinfo.deviceid != undefined) {
+                            var deviceinfo  = accountdevices[orderinfo.deviceid];
+                            if(deviceinfo != null && deviceinfo != undefined) {
+                                orderdetail.deviceid = orderinfo.deviceid;
+                                orderdetail.vehiclenumber = deviceinfo.vehiclenumber;
+                            }
+                        }
+                       
                         orderdetail.mobilenumber = orderinfo.mobilenumber;
                         orderdetail.productdesc = orderinfo.productdesc;
                         orderdetail.productname = orderinfo.productname;

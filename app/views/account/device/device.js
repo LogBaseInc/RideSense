@@ -231,6 +231,9 @@ define(['angular',
                 var accountuserref = new Firebase(config.firebaseUrl+'accountusers/'+sessionservice.getAccountName().toLowerCase()+"/users/"+vm.device.vehiclenumber.toLowerCase());
                 accountuserref.remove();
                 
+                var ordersref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/orders/'+vm.device.devicenumber);
+                ordersref.remove();
+
                 submitted = false;
                 spinner.show();
 
