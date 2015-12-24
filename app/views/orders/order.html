@@ -115,6 +115,7 @@
 			            <button data-ng-show="vm.isOrderEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.updateorder();" data-ng-disabled="!vm.canAdd">Update Order</button>
 			           	<button data-ng-show="vm.isOrderEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.deleteorder();">Remove Order</button>
 			           	<button type="button" class="margintop15 btn btn-default" ng-click="vm.cancel();">Canel</button>
+			           	<button type="button" class="margintop15 btn btn-default" data-ng-if="vm.order.status=='Delivered'" data-ng-click="vm.viewtrip()">View trip</button>
 			        </center>
 		        	<center data-ng-show="vm.isdelete">
 		        		<span class="errortext">Order will be removed permanently, do you want to continue? </span>

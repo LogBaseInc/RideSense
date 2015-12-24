@@ -29,7 +29,10 @@ define(['angular'], function (angular) {
                 IsDesktop : IsDesktop,
                 getTime1 : getTime1,
                 getTime2 : getTime2,
-                getTimeInMins : getTimeInMins
+                getTimeInMins : getTimeInMins,
+                getOrderSelected : getOrderSelected,
+                setOrderSelected : setOrderSelected,
+                getDateFromString : getDateFromString
             };
             
             function applyscope($scope) {
@@ -126,6 +129,17 @@ define(['angular'], function (angular) {
                 sessionStorage.setItem('selecteddtrip', (trip != null ? angular.toJson(trip, true) : null));
             }
 
+            function getOrderSelected() {
+                var selectedorder = sessionStorage.getItem('selectedorder');
+                if (selectedorder)
+                    selectedorder = angular.fromJson(selectedorder);
+                return selectedorder                
+            }
+
+            function setOrderSelected(order) {
+                sessionStorage.setItem('selectedorder', (order != null ? angular.toJson(order, true) : null));
+            }
+
             function closekeyboard(element) {
                 element.attr('readonly', 'readonly');
                 element.attr('disabled', 'true');
@@ -149,17 +163,17 @@ define(['angular'], function (angular) {
             function getVehicleImageUrl(devicetype, isIdle) {
                 var imageUrl = ''
                 if(devicetype == 'car' && isIdle == true)
-                    imageUrl = 'assets/images/car-parked.png';
+                    imageUrl = 'assets/images/car-moving.png';
                 else if(devicetype == 'car' && isIdle == false)
                     imageUrl = 'assets/images/car-moving.png';
                 else if(devicetype == 'bike' && isIdle == true)
-                    imageUrl = 'assets/images/bike-parked.png';
+                    imageUrl = 'assets/images/bike-moving.png';
                 else if(devicetype == 'bike' && isIdle == false)
                     imageUrl = 'assets/images/bike-moving.png';
-                else if(devicetype == 'person' && isIdle == true)
+                /*else if(devicetype == 'person' && isIdle == true)
                     imageUrl = 'assets/images/person_idle.png';
                  else if(devicetype == 'person' && isIdle == false)
-                    imageUrl = 'assets/images/person_moving.png';
+                    imageUrl = 'assets/images/person_moving.png';*/
                 else if(devicetype == 'other')
                      imageUrl = 'assets/images/otherlive.png';
                 return imageUrl;
@@ -232,6 +246,11 @@ define(['angular'], function (angular) {
                       minutes2 = minutes2 + " AM";
                 }
                 return (hours2 + ':' + minutes2);
+            }
+
+            function getDateFromString(date) {
+               var dsplit = date.split("/");
+               return new Date(dsplit[2],dsplit[1]-1,dsplit[0]); 
             }
 
             function getTimeInMins(value) {

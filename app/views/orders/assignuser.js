@@ -16,9 +16,10 @@ define(['angular',
             activate();
 
             function activate() {
-                if($rootScope.selectedOrder != null) {
+                if(utility.getOrderSelected() != null) {
                     $rootScope.routeSelection = 'orders';
-                    order = $rootScope.selectedOrder;
+                    order = utility.getOrderSelected();
+                    isDateFiledSupported();
                     vm.users = [];
                     var devices = sessionservice.getAccountDevices();
                     for(prop in devices){
@@ -30,6 +31,16 @@ define(['angular',
                 }
             }
 
+            function isDateFiledSupported(){
+                var datefield=document.createElement("input")
+                datefield.setAttribute("type", "date")
+                if (datefield.type != "date") { //if browser doesn't support input type="date"
+                   vm.isdatesupport = false;
+                }
+                else
+                   vm.isdatesupport = true;
+            }
+
             function canAdd(){
                 return !submitted && vm.selecteduser != null;
             }
@@ -38,7 +49,7 @@ define(['angular',
                submitted = true;
                spinner.show();
 
-               var deliverydate = moment(order.date).format('YYYYMMDD');
+               var deliverydate =  vm.isdatesupport ? moment(order.date).format('YYYYMMDD') : moment(utility.getDateFromString(order.date)).format('YYYYMMDD');
                var assignorders = {};
                assignorders.Name = order.name;
                assignorders.Address = order.address;

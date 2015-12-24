@@ -1,3 +1,4 @@
+
 define(['angular',
     'config.route',
     'lib'], function (angular, configroute) {
@@ -27,11 +28,31 @@ define(['angular',
                 getUnAssignOrders();
             }
 
-            function setTodayDate() {
-                vm.istoday = true;
+            function setTodayDate() {                    
                 todaysdate = vm.isdatesupport ? new Date() : moment(new Date()).format('DD/MM/YYYY');
-                vm.selecteddate = todaysdate;
-                datefilter = vm.selecteddate;
+
+                var selectedorder = utility.getOrderSelected();
+                if(selectedorder == null) {
+                    vm.istoday = true;
+                    vm.selecteddate = todaysdate;
+                    datefilter = vm.selecteddate;
+
+                    utility.setOrderSelected(null);
+                }
+                else {
+                    vm.selecteddate = vm.isdatesupport ? new Date(selectedorder.date) : moment(utility.getDateFromString(selectedorder.date)).format('DD/MM/YYYY');              
+                    datefilter = vm.selecteddate;
+
+                    setIsToday();
+                }
+            }
+
+            function setIsToday() {
+                if((vm.isdatesupport == false && todaysdate == vm.selecteddate) ||
+                   (vm.isdatesupport == true && moment(todaysdate).format('YYYYMMDD') == moment(vm.selecteddate).format('YYYYMMDD')))
+                    vm.istoday = true;
+                else
+                    vm.istoday = false; 
             }
 
             function getUnAssignOrders() {
@@ -40,7 +61,7 @@ define(['angular',
                 if(vm.isdatesupport == true)
                     date = moment(vm.selecteddate).format('YYYYMMDD');
                 else
-                    date = new moment(vm.selecteddate, "DD/MM/YYYY").format('YYYYMMDD');
+                    date = moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
 
                 if(unassignorderref != null && unassignorderref != undefined) {
                     unassignorderref.off()
@@ -97,8 +118,7 @@ define(['angular',
                         orderindex[orderprop] = {};
                         orderindex[orderprop].index  = vm.orders.length;
 
-                        if(Date.parse(todaysdate) == Date.parse(vm.selecteddate))
-                            setAssignedOrdersRef(orderdetail, date);
+                        setAssignedOrdersRef(orderdetail, date);
 
                         vm.orders.push(orderdetail);
                     }
@@ -136,14 +156,23 @@ define(['angular',
                 ref.on("value", function(snapshot) {
                     var data = snapshot.val();
                     if(data != null) {
-                        if(data.Deliveredon != null && data.Deliveredon != undefined) 
+                        orderdetail.pickedon = data.Pickedon;
+                        orderdetail.deliveredon = data.Deliveredon;
+
+                        if(data.Deliveredon != null && data.Deliveredon != undefined)
                             orderdetail.status = "Delivered"; 
                         
                         else if(data.Pickedon != null && data.Pickedon != undefined) 
                             orderdetail.status = "Picked up"; 
                         
-                        else 
+                        else
                             orderdetail.status = null;
+
+                        if(orderdetail.pickedon != null && orderdetail.pickedon != undefined &&
+                           orderdetail.deliveredon != null && orderdetail.deliveredon != undefined) {
+                            orderdetail.starttimestamp =  (moment(orderdetail.pickedon).unix())*1000;
+                            orderdetail.endtimestamp =  (moment(orderdetail.deliveredon).unix())*1000;
+                        }
                     }
                     else
                         orderdetail.status = null;
@@ -190,15 +219,17 @@ define(['angular',
                     getUnAssignOrders();
                 }
 
-                if(Date.parse(todaysdate) == Date.parse(vm.selecteddate)) 
-                    vm.istoday = true;
-                else
-                    vm.istoday = false;
+                setIsToday();
+            }
+
+            vm.addOrder = function() {
+                utility.setOrderSelected(null);
+                $location.path('/order');
             }
 
             vm.orderClicked = function(order) {
                 if(isassignorderclickd == false) {
-                    $rootScope.selectedOrder = order;
+                    utility.setOrderSelected(order);
                     $location.path('/order');
                     return false;
                 }
@@ -207,14 +238,14 @@ define(['angular',
 
             vm.assignorder = function(order){
                 isassignorderclickd = true;
-                $rootScope.selectedOrder = order;
+                utility.setOrderSelected(order);
                 $location.path('/order/assignuser');
                 return false;
             }
 
             vm.unassignorder = function(order) {
                 isassignorderclickd = true;
-                var deliverydate = moment(order.date).format('YYYYMMDD');
+                var deliverydate = vm.isdatesupport ? moment(order.date).format('YYYYMMDD') :  moment(utility.getDateFromString(order.date)).format('YYYYMMDD');
                 var ordersref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/orders/'+order.deviceid+"/"+deliverydate+"/"+order.ordernumber);
                 ordersref.remove();
 

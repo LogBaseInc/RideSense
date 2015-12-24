@@ -11,5 +11,5 @@ define([
     'toaster',
     'loggly',
     //'idle'
-    'jqueryui'
+    'jqueryui',
 ], function () { });

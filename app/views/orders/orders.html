@@ -3,7 +3,7 @@
 		<input type="text" class="form-control tm-search-text tm-no-outline fullwidth" placeholder="Search order" data-ng-model="vm.search" 
 		 />
 	    <div class="input-group-btn">
-	    	<a type="button" class="btn btn-default tm-no-outline" href="#/order"><span class="glyphicon glyphicon-plus"></span></a>
+	    	<a type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.addOrder()"><span class="glyphicon glyphicon-plus"></span></a>
 	    </div>
 	</div>
 	<div class="container-fluid">
@@ -50,12 +50,12 @@
 											<button class="btn btn-default" style="float:right" data-ng-click="vm.assignorder(order)">Assign User</button>
 										</div>
 									</div>
-									<div class="row tripblock col-md-12" style="margin-top:10px" data-ng-if="vm.istoday==true && order.deviceid != null">
+									<div class="row tripblock col-md-12" style="margin-top:10px" data-ng-if="order.deviceid != null">
 										<div class="col-xs-8">
 											<span class="text-muted" data-ng-if="order.vehiclenumber">Assigned to {{order.vehiclenumber}}</span>
 										</div>
 										<div class="col-xs-4">
-											<button data-ng-if="order.status == null" class="btn btn-default" style="float:right" data-ng-click="vm.unassignorder(order)">Unassign User</button>
+											<button data-ng-if="vm.istoday==true && order.status == null" class="btn btn-default" style="float:right" data-ng-click="vm.unassignorder(order)">Unassign User</button>
 											<span data-ng-if="order.status != null" style="float:right; color:coral" class="text-muted" data-ng-if="order.vehiclenumber">{{order.status}}</span>
 										</div>
 									</div>

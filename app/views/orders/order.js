@@ -23,23 +23,20 @@ define(['angular',
                 
                 isDateFiledSupported();
 
-                if($rootScope.selectedOrder != null) {
-                    vm.order = $rootScope.selectedOrder;
+                if(utility.getOrderSelected() != null) {
+                    vm.order = utility.getOrderSelected();
                     var timesplit = vm.order.time.split('-');
                     vm.time1 = timesplit[0];
                     vm.time2 = timesplit[1];
 
-                    $rootScope.selectedOrder = null;
                     vm.isOrderEdit = true;
-                    vm.selecteddate = vm.order.date;
+                    vm.selecteddate = vm.isdatesupport ? new Date(vm.order.date): moment(utility.getDateFromString(vm.order.date)).format('DD/MM/YYYY');
                 }
                 else {
                     vm.time1 = "10:00 AM"
                     vm.time2 = "12:00 PM"
                     setTodayDate();
                 }
-
-                isDateFiledSupported();
             }
 
             function canAdd(){
@@ -60,6 +57,13 @@ define(['angular',
                    vm.isdatesupport = true;
             }
 
+            $rootScope.$on('datepicker:dateselected', function (event, data) {
+                if(data.date.format('DD/MM/YYYY') != vm.selecteddate) {
+                    vm.selecteddate = data.date.format('DD/MM/YYYY');
+                    vm.datechanged(vm.selecteddate);
+                }
+            });
+
             vm.datechanged = function (date) {
                 if(date == null) {
                     setTodayDate();
@@ -73,7 +77,7 @@ define(['angular',
                 submitted = true;
                 spinner.show();
                 
-                vm.order.deliverydate = moment(vm.selecteddate).format('YYYYMMDD');
+                vm.order.deliverydate = vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
                 vm.order.time = vm.time1 + "-" + vm.time2;
                 checkOrderNumber();
             }
@@ -98,7 +102,7 @@ define(['angular',
             vm.updateorder = function() {
                 submitted = true;
                 spinner.show();
-                vm.order.deliverydate = moment(vm.selecteddate).format('YYYYMMDD');
+                vm.order.deliverydate = vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
 
                 var ordersref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/unassignorders/'+vm.order.deliverydate+"/"+vm.order.ordernumber);
                 ordersref.update({name: vm.order.name, mobilenumber: vm.order.mobilenumber, amount: vm.order.amount, time: vm.time1 + " - " + vm.time2, address: vm.order.address,
@@ -124,7 +128,7 @@ define(['angular',
             }
 
             vm.deleteconfirm = function() {
-                vm.order.deliverydate = moment(vm.selecteddate).format('YYYYMMDD');
+                vm.order.deliverydate = vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
 
                 submitted = true;
                 spinner.show();
@@ -141,10 +145,14 @@ define(['angular',
                 vm.cancel();
             }
 
+            vm.viewtrip = function() {
+                $location.path('/order/trip');
+            }
+
             vm.cancel = function() {
                 submitted = false;
                 spinner.hide();
-                 $window.history.back();
+                $location.path('/orders');
             }
         }
     })();
