@@ -86,37 +86,51 @@ define(['angular',
                var ordersref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/unassignorders/'+vm.order.deliverydate+"/"+vm.order.ordernumber);
                ordersref.once("value", function(snapshot) {
                     if(snapshot.val() == null) {
-                        ordersref.set(vm.order);
-                        vm.cancel();
+                        var geocoder = new google.maps.Geocoder();
+                        geocoder.geocode({ 'address': vm.order.address }, function (results, status) {
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                vm.order.lat = results[0].geometry.location.lat();
+                                vm.order.lng = results[0].geometry.location.lng();
+                            }
+                            ordersref.set(vm.order);
+                            vm.cancel();
+                            utility.applyscope($scope);
+                        });
                     }
                     else{
                         notify.error("Order number already exists");
                     }
-
-                    submitted = false;
-                    spinner.hide(); 
-                    utility.applyscope($scope);
                 });
             }
 
             vm.updateorder = function() {
                 submitted = true;
                 spinner.show();
-                vm.order.deliverydate = vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
 
-                var ordersref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/unassignorders/'+vm.order.deliverydate+"/"+vm.order.ordernumber);
-                ordersref.update({name: vm.order.name, mobilenumber: vm.order.mobilenumber, amount: vm.order.amount, time: vm.time1 + " - " + vm.time2, address: vm.order.address,
-                productname : vm.order.productname, productdesc: vm.order.productdesc});
+                var geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ 'address': vm.order.address }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        vm.order.lat = results[0].geometry.location.lat();
+                        vm.order.lng = results[0].geometry.location.lng();
+                    }
+                    
+                    vm.order.deliverydate = vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
 
-                if(vm.order.deviceid != null && vm.order.deviceid != undefined) {
-                    var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber);
-                    ordersref1.update({Name: vm.order.name, Mobile: vm.order.mobilenumber, Amount: vm.order.amount, Time: vm.time1 + " - " + vm.time2, Address: vm.order.address});
+                    var ordersref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/unassignorders/'+vm.order.deliverydate+"/"+vm.order.ordernumber);
+                    ordersref.update({name: vm.order.name, mobilenumber: vm.order.mobilenumber, amount: vm.order.amount, time: vm.time1 + " - " + vm.time2, address: vm.order.address,
+                    productname : vm.order.productname, productdesc: vm.order.productdesc, lat: vm.order.lat, lng: vm.order.lng});
 
-                    ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber+"/Items/0");
-                    ordersref1.update({Name: vm.order.productname, Description: vm.order.productdesc});
-                }
+                    if(vm.order.deviceid != null && vm.order.deviceid != undefined) {
+                        var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber);
+                        ordersref1.update({Name: vm.order.name, Mobile: vm.order.mobilenumber, Amount: vm.order.amount, Time: vm.time1 + " - " + vm.time2, Address: vm.order.address});
 
-                vm.cancel();
+                        ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber+"/Items/0");
+                        ordersref1.update({Name: vm.order.productname, Description: vm.order.productdesc});
+                    }
+
+                    vm.cancel();
+                    utility.applyscope($scope);
+                });
             }
 
             vm.deleteorder = function() {

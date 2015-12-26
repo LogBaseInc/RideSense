@@ -98,7 +98,8 @@ define(['angular',
                         orderdetail.time = orderinfo.time;
                         orderdetail.deviceid = null;
                         orderdetail.vehiclenumber = null;
-
+                        orderdetail.lat = orderinfo.lat;
+                        orderdetail.lng = orderinfo.lng;
                         if(orderinfo.deviceid != null && orderinfo.deviceid != undefined) {
                             var deviceinfo  = accountdevices[orderinfo.deviceid];
                             if(deviceinfo != null && deviceinfo != undefined) {
