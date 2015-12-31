@@ -181,6 +181,8 @@ define(['angular',
                         }
                         else{
                             notify.error("Account name in use. Please enter different name");
+                            spinner.hide();
+                            submitted = false;
                             utility.applyscope($scope);
                         }
                     }, function (errorObject) {
