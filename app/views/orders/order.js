@@ -91,6 +91,7 @@ define(['angular',
                             if (status == google.maps.GeocoderStatus.OK) {
                                 vm.order.lat = results[0].geometry.location.lat();
                                 vm.order.lng = results[0].geometry.location.lng();
+                                vm.order.locationtype = results[0].geometry.location_type;
                             }
                             ordersref.set(vm.order);
                             vm.cancel();
@@ -112,13 +113,14 @@ define(['angular',
                     if (status == google.maps.GeocoderStatus.OK) {
                         vm.order.lat = results[0].geometry.location.lat();
                         vm.order.lng = results[0].geometry.location.lng();
+                        vm.order.locationtype = results[0].geometry.location_type;
                     }
                     
                     vm.order.deliverydate = vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
 
                     var ordersref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/unassignorders/'+vm.order.deliverydate+"/"+vm.order.ordernumber);
                     ordersref.update({name: vm.order.name, mobilenumber: vm.order.mobilenumber, amount: vm.order.amount, time: vm.time1 + " - " + vm.time2, address: vm.order.address,
-                    productname : vm.order.productname, productdesc: vm.order.productdesc, lat: vm.order.lat, lng: vm.order.lng});
+                    productname : vm.order.productname, productdesc: vm.order.productdesc, lat: vm.order.lat, lng: vm.order.lng, locationtype : vm.order.locationtype});
 
                     if(vm.order.deviceid != null && vm.order.deviceid != undefined) {
                         var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber);
