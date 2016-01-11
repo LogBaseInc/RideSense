@@ -34,7 +34,7 @@ define(['angular',
 
             function getTripHistory() {
                 spinner.show();
-                return triphistory.getTripHistory(vm.selectedorder.vehiclenumber, 
+                return triphistory.getTripHistory(vm.selectedorder.deviceid, 
                     vm.selectedorder.starttimestamp, vm.selectedorder.endtimestamp).then(getTripHistoryCompleted, getTripHistoryFailed);
             }
 
