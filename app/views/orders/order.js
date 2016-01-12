@@ -77,6 +77,12 @@ define(['angular',
                 submitted = true;
                 spinner.show();
                 
+                if(vm.order.amount == null || vm.order.amount == undefined)
+                    vm.order.amount = 0;
+               
+                vm.order.productname = (vm.order.productname != null && vm.order.productname != undefined) ? vm.order.productname : "";
+                vm.order.productdesc = (vm.order.productdesc != null && vm.order.productdesc != undefined) ? vm.order.productdesc : "";
+
                 vm.order.deliverydate = vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
                 vm.order.time = vm.time1 + "-" + vm.time2;
                 checkOrderNumber();
@@ -88,11 +94,13 @@ define(['angular',
                     if(snapshot.val() == null) {
                         ordersref.set(vm.order);
                         vm.cancel();
-                        utility.applyscope($scope);
                     }
                     else{
                         notify.error("Order number already exists");
                     }
+                    submitted = false;
+                    spinner.hide();
+                    utility.applyscope($scope);
                 });
             }
 
@@ -101,17 +109,30 @@ define(['angular',
                 spinner.show();
                     
                 vm.order.deliverydate = vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
-
                 var ordersref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/unassignorders/'+vm.order.deliverydate+"/"+vm.order.ordernumber);
-                ordersref.update({name: vm.order.name, mobilenumber: vm.order.mobilenumber, amount: vm.order.amount, time: vm.time1 + " - " + vm.time2, address: vm.order.address,
-                productname : vm.order.productname, productdesc: vm.order.productdesc});
+
+                if(vm.order.amount == null || vm.order.amount == undefined || vm.order.amount == "")
+                    vm.order.amount = 0;
+
+                var updateorder = {
+                    name: vm.order.name, 
+                    mobilenumber: vm.order.mobilenumber, 
+                    amount: vm.order.amount, 
+                    time: vm.time1 + " - " + vm.time2, 
+                    address: vm.order.address,
+                    productname : (vm.order.productname != null && vm.order.productname != undefined) ? vm.order.productname : "",
+                    productdesc : (vm.order.productdesc != null && vm.order.productdesc != undefined) ? vm.order.productdesc : ""
+                };
+                    
+                ordersref.update(updateorder);
 
                 if(vm.order.deviceid != null && vm.order.deviceid != undefined) {
                     var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber);
                     ordersref1.update({Name: vm.order.name, Mobile: vm.order.mobilenumber, Amount: vm.order.amount, Time: vm.time1 + " - " + vm.time2, Address: vm.order.address});
 
                     ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber+"/Items/0");
-                    ordersref1.update({Name: vm.order.productname, Description: vm.order.productdesc});
+                    ordersref1.update({Name: ((vm.order.productname != null && vm.order.productname != undefined) ? vm.order.productname : ""), 
+                    Description: ((vm.order.productdesc != null && vm.order.productdesc != undefined) ? vm.order.productdesc : "")});
                 }
 
                 vm.cancel();
