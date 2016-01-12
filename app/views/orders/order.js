@@ -123,12 +123,13 @@ define(['angular',
                     productname : (vm.order.productname != null && vm.order.productname != undefined) ? vm.order.productname : "",
                     productdesc : (vm.order.productdesc != null && vm.order.productdesc != undefined) ? vm.order.productdesc : ""
                 };
-                    
+                
+                updateorder.time = updateorder.time.replace(/\s+/g, " ");  
                 ordersref.update(updateorder);
 
                 if(vm.order.deviceid != null && vm.order.deviceid != undefined) {
                     var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber);
-                    ordersref1.update({Name: vm.order.name, Mobile: vm.order.mobilenumber, Amount: vm.order.amount, Time: vm.time1 + " - " + vm.time2, Address: vm.order.address});
+                    ordersref1.update({Name: vm.order.name, Mobile: vm.order.mobilenumber, Amount: vm.order.amount, Time: updateorder.time, Address: vm.order.address});
 
                     ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber+"/Items/0");
                     ordersref1.update({Name: ((vm.order.productname != null && vm.order.productname != undefined) ? vm.order.productname : ""), 
