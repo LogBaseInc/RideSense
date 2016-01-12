@@ -33,8 +33,8 @@ define(['angular',
                     vm.selecteddate = vm.isdatesupport ? new Date(vm.order.date): moment(utility.getDateFromString(vm.order.date)).format('DD/MM/YYYY');
                 }
                 else {
-                    vm.time1 = "10:00 AM"
-                    vm.time2 = "12:00 PM"
+                    vm.time1 = "8:00 AM"
+                    vm.time2 = "6:00 PM"
                     setTodayDate();
                 }
             }
