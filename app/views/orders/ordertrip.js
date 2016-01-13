@@ -14,6 +14,7 @@ define(['angular',
             vm.mapOptions = {
                 disableDefaultUI:true,    
             }
+            vm.distance = 0;
 
             activate()
 
@@ -24,6 +25,10 @@ define(['angular',
                 $rootScope.routeSelection = 'orders';
 
                 vm.selectedorder = utility.getOrderSelected();
+                vm.date = moment(vm.selectedorder.pickedon).format('MMM DD YYYY');
+                vm.selectedorder.pickedon = moment(vm.selectedorder.pickedon).format('hh:mm A')
+                vm.selectedorder.deliveredon = moment(vm.selectedorder.deliveredon).format('hh:mm A')
+
                 if(vm.selectedorder) {
                     getTripHistory();
                 }
@@ -41,6 +46,12 @@ define(['angular',
             function getTripHistoryCompleted (data) {
                 spinner.hide();
                 if(data.length > 0) {
+                    vm.distance = 0;
+                    for(var i = 0 ;i<(data.length-1); i++) {
+                        vm.distance = vm.distance + (calcDistance(data[i].latitude, data[i].longitude, data[i+1].latitude, data[i+1].longitude));
+                    }
+                    vm.distance = vm.distance.toFixed(2);
+
                     vm.showmap= true;  
                     var centerindex = Math.floor(data.length/2);
                     vm.map = { center: { latitude: data[centerindex].latitude, longitude: data[centerindex].longitude }, zoom: 15 };
@@ -110,6 +121,25 @@ define(['angular',
 
             vm.gotoorder = function() {
                 $location.path('/order');
+            }
+
+            function calcDistance(lat1, lon1, lat2, lon2, unit) {
+                unit = "K";
+                var radlat1 = Math.PI * lat1/180
+                var radlat2 = Math.PI * lat2/180
+                var radlon1 = Math.PI * lon1/180
+                var radlon2 = Math.PI * lon2/180
+                var theta = lon1-lon2
+                var radtheta = Math.PI * theta/180
+                var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+                dist = Math.acos(dist)
+                dist = dist * 180/Math.PI
+                dist = dist * 60 * 1.1515
+                if (unit=="K") { dist = dist * 1.609344 }
+                if (unit=="N") { dist = dist * 0.8684 }
+                if(isNaN(dist))
+                    dist = 0;
+                return dist;
             }
         }
     })();
