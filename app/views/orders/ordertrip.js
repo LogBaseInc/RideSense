@@ -29,6 +29,22 @@ define(['angular',
                 vm.selectedorder.pickedon = moment(vm.selectedorder.pickedon).format('hh:mm A')
                 vm.selectedorder.deliveredon = moment(vm.selectedorder.deliveredon).format('hh:mm A')
 
+                var starttime = new Date(vm.date + " " +vm.selectedorder.pickedon);
+                var endtime = new Date(vm.date + " " +vm.selectedorder.deliveredon);
+                var diff =  Math.abs(new Date(endtime) - new Date(starttime));
+                var seconds = Math.floor(diff/1000); //ignore any left over units smaller than a second
+                var minutes = Math.floor(seconds/60); 
+                seconds = seconds % 60;
+                var hours = Math.floor(minutes/60);
+                minutes = minutes % 60;
+
+                if(hours > 0)
+                    vm.time = hours + " hrs" + " " + (minutes > 0 ? (minutes + " mins") : "");
+                else if(minutes > 0)
+                    vm.time = minutes + " mins";
+                else
+                    vm.time = seconds + " secs";
+
                 if(vm.selectedorder) {
                     getTripHistory();
                 }
@@ -50,7 +66,7 @@ define(['angular',
                     for(var i = 0 ;i<(data.length-1); i++) {
                         vm.distance = vm.distance + (calcDistance(data[i].latitude, data[i].longitude, data[i+1].latitude, data[i+1].longitude));
                     }
-                    vm.distance = vm.distance.toFixed(2);
+                    vm.distance = vm.distance.toFixed(0);
 
                     vm.showmap= true;  
                     var centerindex = Math.floor(data.length/2);

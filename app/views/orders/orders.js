@@ -32,6 +32,7 @@ define(['angular',
                 todaysdate = vm.isdatesupport ? new Date() : moment(new Date()).format('DD/MM/YYYY');
 
                 var selectedorder = utility.getOrderSelected();
+                utility.setOrderSelected(null);
                 if(selectedorder == null) {
                     vm.istoday = true;
                     vm.selecteddate = todaysdate;
