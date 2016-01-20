@@ -25,9 +25,7 @@ define(['angular',
                 $rootScope.routeSelection = 'orders';
 
                 vm.selectedorder = utility.getOrderSelected();
-                vm.date = moment(vm.selectedorder.pickedon).format('MMM DD YYYY');
-                vm.selectedorder.pickedon = moment(vm.selectedorder.pickedon).format('hh:mm A')
-                vm.selectedorder.deliveredon = moment(vm.selectedorder.deliveredon).format('hh:mm A')
+                vm.date = moment(vm.selectedorder.date).format('MMM DD YYYY');
 
                 var starttime = new Date(vm.date + " " +vm.selectedorder.pickedon);
                 var endtime = new Date(vm.date + " " +vm.selectedorder.deliveredon);

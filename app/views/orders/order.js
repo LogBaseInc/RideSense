@@ -8,9 +8,11 @@ define(['angular',
             var submitted = false;
             vm.order = {};
             vm.createtag = false;
+            vm.deletetags = false;
             vm.tagColors = [];
             vm.selectcolor = "badgeblue";
             var alltagsref = null;
+            vm.alltags = [];
             var accountid = sessionservice.getaccountId();
 
             Object.defineProperty(vm, 'canAdd', {
@@ -65,16 +67,21 @@ define(['angular',
                 alltagsref.on("value", function(snapshot) {
                     spinner.hide();
                     var tags  = snapshot.val();
-                    vm.unusedtags = [];                
+                    vm.unusedtags = [];  
+                    vm.alltags = [];              
                     for(prop in tags) {
+                        var taginfo = {
+                            tag: prop, 
+                            tagcolor : "badge"+tags[prop],
+                            opacity : 1
+                        };
+
                         if((_.filter(vm.tagsdetail, function(el){ return el.tag ==  prop})).length == 0) {  
-                            vm.unusedtags.push({
-                                tag: prop, 
-                                tagcolor : "badge"+tags[prop]
-                            });
+                            vm.unusedtags.push(taginfo);
                         }
+
+                        vm.alltags.push(taginfo);
                     }
-                    vm.unusedtags.push({tag : '+', tagcolor: 'addtag'});
                     utility.applyscope($scope);
                 }, 
                 function(errorObject) {
@@ -116,32 +123,67 @@ define(['angular',
             }
 
             vm.addtag = function(tag) {
-                if(tag.tag != "+") {
-                    vm.createtag = false;
-                    vm.unusedtags = _.reject(vm.unusedtags, function(el) { return el.tag === tag.tag; });
-                    vm.tagsdetail.push(tag);
-                }
-                else {
-                    vm.createtag = true;
-                }
-            }
-            vm.cancelCreateTag =  function() {
-               vm.createtag = false; 
-            }
-
-            vm.createNewTag = function() {
-                if(vm.tagName != null && vm.tagName != undefined) {
-                    var tagsref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/tags/'+vm.tagName);
-                    tagsref.set(vm.selectcolor.replace("badge",""));
-                }
                 vm.createtag = false;
-                vm.tagName = null;
-                vm.selectcolor = "badgeblue";
+                vm.unusedtags = _.reject(vm.unusedtags, function(el) { return el.tag === tag.tag; });
+                vm.tagsdetail.push(tag);
             }
 
             vm.removetag = function(tag) {
                 vm.tagsdetail = _.reject(vm.tagsdetail, function(el) { return el.tag === tag.tag; });
-                vm.unusedtags.unshift(tag);
+                vm.unusedtags.push(tag);
+            }
+
+            vm.createNewTag = function() {
+                if(vm.tagName != null && vm.tagName != undefined && vm.tagName != "") {
+                    var tagsref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/tags/'+ $.trim(vm.tagName));
+                    tagsref.set(vm.selectcolor.replace("badge",""));
+                    vm.createtag = false;
+                    vm.tagName = null;
+                    vm.selectcolor = "badgeblue";
+                }
+                else {
+                    notify.warning("Enter a name to create tag");
+                }
+            }
+
+            vm.deleteTags = function() {
+                var filter = _.filter(vm.alltags, function(el){ return el.opacity == 0.3 });
+                if(filter.length > 0) {
+                    var deletetags = _.pluck(filter, "tag");
+                    bootbox.confirm('Are you sure, you want to delete "'+deletetags.join(', ')+'"tags', function(result) {
+                        if(result == true) {
+                            for(var i=0; i <deletetags.length; i++) {
+                                var tagsref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/tags/'+deletetags[i]);
+                                tagsref.remove();
+
+                                vm.tagsdetail = _.reject(vm.tagsdetail, function(el) { return el.tag === deletetags[i];});
+                                if(vm.isOrderEdit == true) {
+                                    vm.order.tagsdetail = _.reject(vm.order.tagsdetail, function(el) { return el.tag === deletetags[i];});
+                                
+                                    var editorder = utility.getOrderSelected();
+                                    editorder.tagsdetail = vm.order.tagsdetail;
+                                    utility.setOrderSelected(editorder);
+                                }
+                            }
+                            vm.deletetags = false;
+                            utility.applyscope($scope);
+                        }
+                    });
+                }
+                else {
+                    notify.warning("Select any tag to delete");
+                }
+            }
+
+            vm.cancelDeleteTags = function() {
+                vm.deletetags = false;
+                clearSelectedTags();
+            }
+
+            function clearSelectedTags() {
+                for(var j=0; j< vm.alltags.length; j++) {
+                    vm.alltags[j].opacity = 1;
+                }
             }
 
             vm.selecttagcolor = function(tagcolor) {

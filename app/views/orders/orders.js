@@ -137,10 +137,13 @@ define(['angular',
                         if(orderinfo.tags != null && orderinfo.tags != undefined && orderinfo.tags != "") {
                             var tagspilit = orderinfo.tags.split(",");
                             for(var i = 0; i < tagspilit.length; i++) {
-                                orderdetail.tagsdetail.push({
-                                    tag: $.trim(tagspilit[i]), 
-                                    tagcolor : "badge"+tags[$.trim(tagspilit[i])]
-                                });
+                                var tag = $.trim(tagspilit[i]);
+                                if(tags[tag] != null && tags[tag] != undefined) {
+                                    orderdetail.tagsdetail.push({
+                                        tag: tag, 
+                                        tagcolor : "badge"+tags[tag]
+                                    });
+                                }
                             }
                         }
 
@@ -180,12 +183,12 @@ define(['angular',
 
                         if(data.Deliveredon != null && data.Deliveredon != undefined) {
                             orderdetail.status = "Delivered";
-                            orderdetail.pickedon = moment(data.Pickedon).format('HH:mm A');
-                            orderdetail.deliveredon = moment(data.Deliveredon).format('HH:mm A');
+                            orderdetail.pickedon = moment(data.Pickedon).format('hh:mm A');
+                            orderdetail.deliveredon = moment(data.Deliveredon).format('hh:mm A');
                         }
                         else if(data.Pickedon != null && data.Pickedon != undefined) {
                             orderdetail.status = "Picked up";
-                            orderdetail.pickedon = moment(data.Pickedon).format('HH:mm A');
+                            orderdetail.pickedon = moment(data.Pickedon).format('hh:mm A');
                         }
                         else
                             orderdetail.status = null;
@@ -294,7 +297,7 @@ define(['angular',
                         var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+deliverydate+"/"+order.ordernumber+"/deviceid");
                         ordersref1.remove();
                     }
-                })
+                });
             }
 
             vm.dropdownclicked = function(ordernumber) {

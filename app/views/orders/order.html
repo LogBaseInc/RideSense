@@ -121,51 +121,7 @@
 						</div>
 					</div>
 
-					<div class="form-group zeromargin">
-						<label class="col-md-3 control-label"></label>
-		                <div class="col-md-6">
-		                	<div class="newtagdiv">
-			                	<center style="margin-top:8px; margin-bottom:4px" data-ng-hide="vm.createtag">
-									<a data-ng-repeat="tag in vm.unusedtags" data-ng-click="vm.addtag(tag)" class="badge {{tag.tagcolor}}">{{tag.tag}}</a>
-								</center>
-								<div data-ng-show="vm.createtag">
-									<div class="pop-over-header">
-										<span class="pop-over-header-title">Create Tag</span>
-										<a href="" class="pop-over-header-close-btn" data-ng-click="vm.cancelCreateTag()">x</a>
-									</div>
-									<div class="row" style="margin-left:15px; margin-right:15px;">
-										<br/>
-										<div class="col-xs-12">
-											<form class="form-horizontal">
-												<div class="form-group zeromargin">
-													<label>Name</label>
-													<div>
-														<input type="text" class="form-control" placeholder="Name" name="textName" data-ng-model="vm.tagName">
-									                </div>
-												</div>
-											</form>
-										</div>
-										<div class="col-xs-12">
-											<form class="form-horizontal">
-												<div class="form-group zeromargin">
-													<label>Select Color</label>
-													<div>
-														<div data-ng-repeat="tagcolor in vm.tagColors" class="{{tagcolor.color}} tagcolor" data-ng-click="vm.selecttagcolor(tagcolor)">
-															<img data-ng-if="vm.selectcolor == tagcolor.color" src="assets/images/tick.png" class="tagtickimg"></img>
-														</div>
-									                </div>
-												</div>
-												<center>
-												 	<button type="button" class="margintop15 btn btn-default" style="margin-bottom:15px" data-ng-click="vm.createNewTag()">Create Tag</button>
-												</center>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
+					<div ng-include src="'views/orders/tagtmp.html'"> </div>
 				</form>
 				<div>
 				 	<center data-ng-hide="vm.isdelete">
