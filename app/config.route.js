@@ -220,15 +220,6 @@ define(['angular',
                      }
                  },
                  {
-                     url: '/order/assignuser',
-                     config: {
-                         templateUrl: 'views/orders/assignuser.html',
-                         title: 'orders',
-                         controllerUrl: 'views/orders/assignuser',
-                         allowAnonymous: true,
-                     }
-                 },
-                 {
                      url: '/order/trip',
                      config: {
                          templateUrl: 'views/orders/ordertrip.html',

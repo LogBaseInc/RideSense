@@ -247,7 +247,6 @@ define(['angular',
 			}
 
 			function getVechileType(property) {
-				//devicedetails = sessionservice.getAccountDevices();
 				return devicedetails[property].vehicletype ? devicedetails[property].vehicletype : 'car';
 			}
 
@@ -431,18 +430,6 @@ define(['angular',
 				  	utility.applyscope($scope);
 				}
 			}
-
-			/*function setMapCenterOfAllMarkers() {
-				if(vm.cars.models.length > 0) {
-					var bounds = new google.maps.LatLngBounds();
-					for(i=0;i<vm.cars.models.length;i++) {
-						bounds.extend(new google.maps.LatLng(vm.cars.models[i].latitude,vm.cars.models[i].longitude));
-					}
-					mapinstance.setCenter(bounds.getCenter());
-					mapinstance.fitBounds(bounds);
-					mapinstance.setZoom(mapinstance.getZoom() - 4);
-				}
-			}*/
 
 			$scope.$on('$destroy', function iVeBeenDismissed() {
 				if(livecarref)

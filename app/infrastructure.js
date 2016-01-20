@@ -12,4 +12,6 @@ define([
     'loggly',
     //'idle'
     'jqueryui',
+    'bootbox',
+    'ngbootbox'
 ], function () { });

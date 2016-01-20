@@ -1,5 +1,5 @@
 require.config({
-    urlArgs: '6.4',
+    urlArgs: '6.5',
     waitSeconds: 0,
     paths: {
         angular: '../bower_components/angular/angular',
@@ -23,7 +23,9 @@ require.config({
         'utility' : 'views/component/utility',
         'loggly' : '../bower_components/angular-loggly-logger/angular-loggly-logger',
         //'idle' : '../bower_components/ng-idle/angular-idle'
-         'jqueryui' : 'scripts/jquery-ui'
+        'jqueryui' : 'scripts/jquery-ui',
+        'bootbox' : 'scripts/bootbox',
+        'ngbootbox' : '../bower_components/ngBootbox/dist/ngBootbox'
     },
     shim: {
         angular: {
@@ -51,6 +53,7 @@ require.config({
         },
         'toaster': ['angular','angular-animate'],
         'loggly': ['angular'],
+        'ngbootbox': ['angular'],
         //'idle' : ['angular'],
     },
 });

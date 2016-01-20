@@ -10,13 +10,14 @@ define(['angular',
             var unassignorderref = null;
             vm.isdatesupport = false;
             vm.orders = [];
-            vm.ordersBy3 =[];
             var datefilter = "";
             vm.istoday = false;
             var accountdevices = sessionservice.getAccountDevices();
+            var accountid = sessionservice.getaccountId();
             var isassignorderclickd = false;
             var orderindex = [];
             var assignedordersref = [];
+            var tags = [];
 
             activate();
 
@@ -25,7 +26,27 @@ define(['angular',
                 isDateFiledSupported();
                 setTodayDate();
 
-                getUnAssignOrders();
+                getAllTags();
+
+                vm.users = [];
+                var devices = sessionservice.getAccountDevices();
+                for(prop in devices){
+                    vm.users.push({deviceid : prop, vehiclenumber: devices[prop].vehiclenumber});
+                }
+            }
+
+            function getAllTags() {
+                spinner.show();
+                var alltagsref = new Firebase(config.firebaseUrl+'accounts/'+accountid+"/"+'settings/tags');
+                alltagsref.once("value", function(snapshot) {
+                    if(snapshot.val() != null && snapshot.val() != undefined) {
+                        tags = snapshot.val();
+                    }
+                    getUnAssignOrders();
+                }, 
+                function(errorObject) {
+                    spinner.hide();
+                });
             }
 
             function setTodayDate() {                    
@@ -68,11 +89,9 @@ define(['angular',
                     unassignorderref.off()
                 }
 
-                unassignorderref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/unassignorders/'+date);
+                unassignorderref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+date);
                 unassignorderref.on("value", function(snapshot) {
                     vm.orders = [];
-                    vm.ordersBy3 = [];
-
                     orderindex = [];
                     for(var i = 0; i< assignedordersref.length; i++) {
                         assignedordersref[i].off();
@@ -108,10 +127,24 @@ define(['angular',
                                 orderdetail.vehiclenumber = deviceinfo.vehiclenumber;
                             }
                         }
-                       
                         orderdetail.mobilenumber = orderinfo.mobilenumber;
                         orderdetail.productdesc = orderinfo.productdesc;
                         orderdetail.productname = orderinfo.productname;
+                        orderdetail.notes = orderinfo.notes;
+                        
+                        orderdetail.tags = orderinfo.tags;
+                        orderdetail.tagsdetail = [];
+                        if(orderinfo.tags != null && orderinfo.tags != undefined && orderinfo.tags != "") {
+                            var tagspilit = orderinfo.tags.split(",");
+                            for(var i = 0; i < tagspilit.length; i++) {
+                                orderdetail.tagsdetail.push({
+                                    tag: $.trim(tagspilit[i]), 
+                                    tagcolor : "badge"+tags[$.trim(tagspilit[i])]
+                                });
+                            }
+                        }
+
+                        orderdetail.tagcolor =  "background-color:green !important";
                         orderdetail.date = vm.selecteddate;
                         orderdetail.status = null;
                         var displayaddress = orderinfo.Name+", "+orderinfo.Address;
@@ -126,20 +159,6 @@ define(['angular',
                     }
 
                     vm.orders.sort(SortByTime);
-                    for(var j=0 ; j < vm.orders.length ; j = j+3) {
-
-                        var orderssplit = [];
-                        orderssplit.push(vm.orders[j]);
-
-                        if((j+1) < vm.orders.length)
-                            orderssplit.push(vm.orders[j+1]);
-                        if((j+2) < vm.orders.length)
-                            orderssplit.push(vm.orders[j+2]);
-
-                        if(orderssplit.length > 0)
-                            vm.ordersBy3.push({orders: orderssplit});
-                    }
-
                     spinner.hide(); 
                     utility.applyscope($scope);
                 });
@@ -153,27 +172,28 @@ define(['angular',
             }
 
             function setAssignedOrdersRef(orderdetail, date) {
-                var ref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/orders/'+orderdetail.deviceid+'/'+date+'/'+orderdetail.ordernumber);
+                var ref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+orderdetail.deviceid+'/'+date+'/'+orderdetail.ordernumber);
                 assignedordersref.push(ref);
                 ref.on("value", function(snapshot) {
                     var data = snapshot.val();
                     if(data != null) {
-                        orderdetail.pickedon = data.Pickedon;
-                        orderdetail.deliveredon = data.Deliveredon;
 
-                        if(data.Deliveredon != null && data.Deliveredon != undefined)
-                            orderdetail.status = "Delivered"; 
-                        
-                        else if(data.Pickedon != null && data.Pickedon != undefined) 
-                            orderdetail.status = "Picked up"; 
-                        
+                        if(data.Deliveredon != null && data.Deliveredon != undefined) {
+                            orderdetail.status = "Delivered";
+                            orderdetail.pickedon = moment(data.Pickedon).format('HH:mm A');
+                            orderdetail.deliveredon = moment(data.Deliveredon).format('HH:mm A');
+                        }
+                        else if(data.Pickedon != null && data.Pickedon != undefined) {
+                            orderdetail.status = "Picked up";
+                            orderdetail.pickedon = moment(data.Pickedon).format('HH:mm A');
+                        }
                         else
                             orderdetail.status = null;
 
-                        if(orderdetail.pickedon != null && orderdetail.pickedon != undefined &&
-                           orderdetail.deliveredon != null && orderdetail.deliveredon != undefined) {
-                            orderdetail.starttimestamp =  (moment(orderdetail.pickedon).unix())*1000;
-                            orderdetail.endtimestamp =  (moment(orderdetail.deliveredon).unix())*1000;
+                        if(data.Pickedon != null && data.Pickedon != undefined &&
+                           data.Deliveredon != null && data.Deliveredon != undefined) {
+                            orderdetail.starttimestamp =  (moment(data.Pickedon).unix())*1000;
+                            orderdetail.endtimestamp =  (moment(data.Deliveredon).unix())*1000;
                         }
                     }
                     else
@@ -238,22 +258,69 @@ define(['angular',
                 isassignorderclickd = false;
             }
 
-            vm.assignorder = function(order){
-                isassignorderclickd = true;
-                utility.setOrderSelected(order);
-                $location.path('/order/assignuser');
-                return false;
+            vm.assignorder = function(order, user) {
+               submitted = true;
+               spinner.show();
+
+               var deliverydate =  vm.isdatesupport ? moment(order.date).format('YYYYMMDD') : moment(utility.getDateFromString(order.date)).format('YYYYMMDD');
+               var assignorders = {};
+               assignorders.Name = order.name;
+               assignorders.Address = order.address;
+               assignorders.Amount = order.amount;
+               assignorders.Mobile = order.mobilenumber;
+               assignorders.Time = order.time;
+               if(order.productname != null && order.productname != undefined) {
+                  assignorders.Items = [];
+                  assignorders.Items.push({Name: order.productname, Description: order.productdesc});
+               }
+               var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+user.deviceid+"/"+deliverydate+"/"+order.ordernumber);
+               ordersref.set(assignorders); 
+
+               var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+deliverydate+"/"+order.ordernumber);
+               ordersref1.update({deviceid : user.deviceid});
+
+               submitted = false;
+               spinner.hide();
             }
 
             vm.unassignorder = function(order) {
                 isassignorderclickd = true;
-                var deliverydate = vm.isdatesupport ? moment(order.date).format('YYYYMMDD') :  moment(utility.getDateFromString(order.date)).format('YYYYMMDD');
-                var ordersref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/orders/'+order.deviceid+"/"+deliverydate+"/"+order.ordernumber);
-                ordersref.remove();
+                bootbox.confirm("Are you sure, you want to unassign this user?", function(result) {
+                    if(result == true) {
+                        var deliverydate = vm.isdatesupport ? moment(order.date).format('YYYYMMDD') :  moment(utility.getDateFromString(order.date)).format('YYYYMMDD');
+                        var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+order.deviceid+"/"+deliverydate+"/"+order.ordernumber);
+                        ordersref.remove();
 
-                var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/unassignorders/'+deliverydate+"/"+order.ordernumber+"/deviceid");
-                ordersref1.remove();
-                return false;
+                        var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+deliverydate+"/"+order.ordernumber+"/deviceid");
+                        ordersref1.remove();
+                    }
+                })
+            }
+
+            vm.dropdownclicked = function(ordernumber) {
+                isassignorderclickd = true;
+                if($("#userdropdown"+ordernumber).hasClass('show') == true) {
+                    $("#userdropdown"+ordernumber).removeClass("show");
+                }
+                else {
+                    $(".dropdown-content").removeClass("show");
+                    $("#userdropdown"+ordernumber).addClass("show");
+                }
+                utility.applyscope($scope);
+            }
+
+            window.onclick = function(event) {
+              if (!event.target.matches('.dropbtn')) {
+
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                  var openDropdown = dropdowns[i];
+                  if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                  }
+                }
+              }
             }
 
             $scope.$on('$destroy', function iVeBeenDismissed() {

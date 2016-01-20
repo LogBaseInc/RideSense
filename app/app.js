@@ -8,6 +8,7 @@ define(['angular',
               // Angular modules 
              'ngRoute',         
              'ngMessages',
+             'ngBootbox',
 
              // 3rd Party Modules
              'ui.bootstrap',
