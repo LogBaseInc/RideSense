@@ -228,6 +228,15 @@ define(['angular',
                          allowAnonymous: true,
                      }
                  },
+                 {
+                     url: '/orders/upload',
+                     config: {
+                         templateUrl: 'views/orders/uploadorders.html',
+                         title: 'uploadorders',
+                         controllerUrl: 'views/orders/uploadorders',
+                         allowAnonymous: true,
+                     }
+                 },
             ];
 
             return routs;

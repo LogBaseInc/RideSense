@@ -5,4 +5,6 @@ define([
     'googlemaps',
     'highcarts-src',
     'highcharts',
+    'fileupload',
+    'xlxs',
 ], function () { });

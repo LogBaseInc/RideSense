@@ -25,7 +25,13 @@ require.config({
         //'idle' : '../bower_components/ng-idle/angular-idle'
         'jqueryui' : 'scripts/jquery-ui',
         'bootbox' : 'scripts/bootbox',
-        'ngbootbox' : '../bower_components/ngBootbox/dist/ngBootbox'
+        'ngbootbox' : '../bower_components/ngBootbox/dist/ngBootbox',
+        'fileupload' : '../bower_components/ng-file-upload/ng-file-upload.min',
+        'jszip' : 'scripts/jszip',
+        'jszip-deflate' : 'scripts/jszip-deflate',
+        'jszip-inflate' : 'scripts/jszip-inflate',
+        'jszip-load' : 'scripts/jszip-load',
+        'xlxs' : 'scripts/xlsx',
     },
     shim: {
         angular: {
@@ -54,7 +60,8 @@ require.config({
         'toaster': ['angular','angular-animate'],
         'loggly': ['angular'],
         'ngbootbox': ['angular'],
-        //'idle' : ['angular'],
+        'fileupload' : ['angular'],
+        'xlxs' : ['jszip', 'jszip-deflate', 'jszip-inflate','jszip-load']
     },
 });
 

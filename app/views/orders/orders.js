@@ -251,6 +251,10 @@ define(['angular',
                 utility.setOrderSelected(null);
                 $location.path('/order');
             }
+            
+            vm.uploadfile = function() {
+                $location.path('/orders/upload');
+            }
 
             vm.orderClicked = function(order) {
                 if(isassignorderclickd == false) {
