@@ -76,6 +76,15 @@
 		                   	<h5 class="text-muted">{{vm.token.createdon}}</h5>
 		            	</div>
 					</div>
+					<center data-ng-hide="vm.isdelete">
+		            	<button type="button" class="btn btn-default" ng-click="vm.isdelete = true;">Expire</button>
+		        	</center>
+		        	<center data-ng-show="vm.isdelete">
+		        		<span class="errortext">Token will be removed permanently, do you want to continue? </span>
+		        		<br/>
+		        		<button type="button" class="btn btn-default" style="margin-top:15px" ng-click="vm.isdelete = false;">No</button>
+			           	<button type="button" class="btn btn-default" style="margin-top:15px" ng-click="vm.deleteToken();">Yes</button>
+		        	</center>
 				</form>
 			</div>
 			<hr/>

@@ -9,7 +9,8 @@ define(['angular',
             var vm = this;
             var accountid = sessionservice.getaccountId();
             vm.token = {};
-
+            vm.isdelete = false;
+            
             Object.defineProperty(vm, 'canupdate', {
                 get: canupdate
             });
@@ -52,8 +53,13 @@ define(['angular',
                 });
 
                 tokenref.on("value", function(snapshot) {
-                    vm.token = snapshot.val();
-                    vm.token.createdon = moment(vm.token.createdon).format("MMM DD, YYYY hh:mm A");
+                    if(snapshot.val() != null) {
+                        vm.token = snapshot.val();
+                        vm.token.createdon = moment(vm.token.createdon).format("MMM DD, YYYY hh:mm A");
+                    }
+                    else {
+                       vm.token = null;  
+                    }
                     spinner.hide();
                     utility.applyscope($scope);
                 }, function (errorObject) {
@@ -72,6 +78,7 @@ define(['angular',
             }
 
             vm.getToken = function() {
+                vm.isdelete = false;
                 var token = utility.generateUUID();
                 var date = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
                 tokenref.set({id: token, createdon: date});
@@ -81,6 +88,14 @@ define(['angular',
                 data.accountId = accountid;
                 data.orderCount = {count: 0, date: moment(new Date()).format("YYYYMMDD")};
                 tokensref.set(data);
+            }
+
+            vm.deleteToken = function() {
+                vm.isdelete = false;
+                var tokensref = new Firebase(config.firebaseUrl+'tokens/'+vm.token.id);
+                tokensref.remove();
+
+                tokenref.remove();
             }
         }
     })();

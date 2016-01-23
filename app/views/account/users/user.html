@@ -37,8 +37,8 @@
 	        <center data-ng-show="vm.isdelete">
         		<span class="errortext">Collaborator will be removed permanently, do you want to continue? </span>
         		<br/>
-        		<button type="button" class="btn btn-default" style="margin-top:15px" data-ng-disabled="!vm.canAdd" ng-click="vm.deletecancel();">No</button>
-	           	<button type="button" class="btn btn-default" style="margin-top:15px" data-ng-disabled="!vm.canAdd" ng-click="vm.deleteconfirm();">Yes</button>
+        		<button type="button" class="btn btn-default" style="margin-top:15px" ng-click="vm.deletecancel();">No</button>
+	           	<button type="button" class="btn btn-default" style="margin-top:15px" ng-click="vm.deleteconfirm();">Yes</button>
         	</center>
         	<br/><br/>
         </div>
