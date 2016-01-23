@@ -54,7 +54,32 @@
 	        <br/>
 	        <hr/>
         </div>
-        <br/>
+		<div>  
+			<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Account Api Token</h5>
+			<br/>
+			<div data-ng-if="vm.token == null">
+				<center>
+	            	<button type="button" class="btn btn-default" ng-click="vm.getToken();">Get Token</button>
+	        	</center>
+			</div>
+			<div data-ng-if="vm.token != null && vm.token.id != null">
+				<form class="form-horizontal">
+					<div class="form-group zeromargin">
+						<label class="col-md-3 control-label">Token</label>
+						<div class="col-md-8">
+		                   	<h5 class="text-muted">{{vm.token.id}}</h5>
+		            	</div>
+					</div>
+					<div class="form-group zeromargin">
+						<label class="col-md-3 control-label">Generated on</label>
+						<div class="col-md-8">
+		                   	<h5 class="text-muted">{{vm.token.createdon}}</h5>
+		            	</div>
+					</div>
+				</form>
+			</div>
+			<hr/>
+		</div>
     </div>
 	<div class="col-xs-12 col-md-6">
         <h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Collaborators</h5>
