@@ -8,36 +8,41 @@
 	</div>
 
 	<div class="container-fluid">
-		<div class="row beige-bg">
-			<div class="col-xs-12 col-md-4" data-ng-hide="vm.showallcars">
-				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> User Summary for {{vm.selectedcar.vehiclenumber}}</h5>
-				<hr/>
-				<h4>{{vm.selectedcar.drivername}} <small><span data-ng-if="vm.selectedcar.drivername && vm.selectedcar.drivermobile">|</span> {{vm.selectedcar.drivermobile}}</small></h4>
-				<h4>{{vm.totalDistance | number : 2}} km <small> today.</small></h4>
-				<div data-ng-show="vm.havelivedata">
-					<h4 data-ng-if="vm.carrunning"><small>Currently running @ {{vm.carlocation}}.</small></h4>
-					<h4 data-ng-if="!vm.carrunning"><small>Currently idle @ {{vm.carlocation}}.</small></h4>
-					<button type="button" class="btn btn-info btn-xs" data-ng-click="vm.gotoCarDetail()">
-						View on Map <span class="glyphicon glyphicon-arrow-right"></span>
-					</button>
+			<!--Order activity-->
+			<div ng-include="'/views/orders/orderactivity.html'"> </div>	
+
+			<div class="row beige-bg" style="padding: 0px; margin-top:10px">
+				<div class="col-xs-12 col-md-4" data-ng-hide="vm.showallcars">
+					<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Distance Summary for {{vm.selectedcar.vehiclenumber}}</h5>
+					<small>{{vm.currentdate}} upto Now</small>
+					<hr/>
+					<h4>{{vm.selectedcar.drivername}} <small><span data-ng-if="vm.selectedcar.drivername && vm.selectedcar.drivermobile">|</span> {{vm.selectedcar.drivermobile}}</small></h4>
+					<h4>{{vm.totalDistance | number : 2}} km <small> today.</small></h4>
+					<div data-ng-show="vm.havelivedata">
+						<h4 data-ng-if="vm.carrunning"><small>Currently running @ {{vm.carlocation}}.</small></h4>
+						<h4 data-ng-if="!vm.carrunning"><small>Currently idle @ {{vm.carlocation}}.</small></h4>
+						<button type="button" class="btn btn-info btn-xs" data-ng-click="vm.gotoCarDetail()">
+							View on Map <span class="glyphicon glyphicon-arrow-right"></span>
+						</button>
+					</div>
+					<br/>
+					<br/>
 				</div>
-				<hr/>
+				<div class="col-xs-12 col-md-4" data-ng-show="vm.showallcars">
+					<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> This Month Distance Activity</h5>
+					<small>{{vm.currentdate}} upto Now</small>
+					<hr/>
+					<h4>{{vm.totalDistance | number : 2 }} km <small>total distance tracked.</small></h4>
+					<h4>{{(vm.averagedistance) | number : 2}} km / day <small>average distance.</small></h4>
+					<br/>
+					<br/>
+				</div>
+				<div class="col-xs-12 col-md-8" data-ng-if="vm.distanceData.data.length > 0" >
+					<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right" style="margin-left:-4px"></span> Distance Metrics</h5>
+					<br/>
+					<highchart config="vm.distanceConfig"></highchart>
+				</div>
 			</div>
-			<div class="col-xs-12 col-md-4" data-ng-show="vm.showallcars">
-				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> This Month Activity</h5>
-				<small>{{vm.currentdate}} upto Now</small>
-				<hr/>
-				<h4>{{vm.totalDistance | number : 2 }} km <small>total distance tracked.</small></h4>
-				<h4>{{(vm.averagedistance) | number : 2}} km/day <small>average distance.</small></h4>
-				<h4>{{vm.totalcars}} <small>users currently active.</small></h4>
-				<hr/>
-			</div>
-			<div class="col-xs-12 col-md-8" data-ng-if="vm.distanceData.data.length > 0" >
-				<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Distance Metrics</h5>
-				<br/>
-				<highchart config="vm.distanceConfig"></highchart>
-			</div>
-		</div> <!-- row -->
 
 		<div class="row" data-ng-show="vm.showallcars">
 			<div class="col-xs-12">

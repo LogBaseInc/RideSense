@@ -4,6 +4,7 @@ define([
     "angular-animate",
     "angular-route",
     'ngMessages',
+    'ngSanitize',
     "bootstrap",
     'jquery',
     'ui-bootstrap',

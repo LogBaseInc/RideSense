@@ -569,6 +569,9 @@ div.callout {
    border-bottom-color: #D7CCC8 !important;
    padding-bottom: 20px !important;
    padding-top: 20px !important;
+   border-top: Solid !important;
+   border-top-width: 1px !important;
+   border-top-color: #D7CCC8 !important;
 }
 
 .beige-bg-full-border {
@@ -836,11 +839,15 @@ ul#strength {
       top: -9999px !important;
       left: -9999px !important;
     }
-    
+
+    thead {
+        border: none !important;
+    }
+
     tr { 
-      border: 1px solid #ccc !important;
       cursor: pointer; 
       min-height: 334px;
+      border-radius: 4px;
     }
     
     td { 

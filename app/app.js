@@ -9,6 +9,7 @@ define(['angular',
              'ngRoute',         
              'ngMessages',
              'ngBootbox',
+             'ngSanitize',
 
              // 3rd Party Modules
              'ui.bootstrap',

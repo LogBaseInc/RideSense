@@ -103,10 +103,10 @@ define(['angular',
                      }
                  },
                  {
-                     url: '/live',
+                     url: '/tracking',
                      config: {
                          templateUrl: 'views/live/live.html',
-                         title: 'live',
+                         title: 'tracking',
                          controllerUrl: 'views/live/live',
                          allowAnonymous: false
                      }

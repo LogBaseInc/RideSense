@@ -8,6 +8,7 @@ require.config({
         'angular-route': '../bower_components/angular-route/angular-route',
         bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
         ngMessages: '../bower_components/angular-messages/angular-messages',
+        ngSanitize : '../bower_components/angular-sanitize/angular-sanitize.min',
         jquery: '../bower_components/jquery/dist/jquery',
         _: '../bower_components/underscore/underscore',
         'config.route': 'config.route',
@@ -42,6 +43,7 @@ require.config({
         'angular-animate': ['angular'],
         'angular-route': ['angular'],
         'ngMessages': ['angular'],
+        'ngSanitize': ['angular'],
         bootstrap: {
             deps: ["jquery"]
         },

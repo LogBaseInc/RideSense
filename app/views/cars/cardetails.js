@@ -1,6 +1,7 @@
 define(['angular',
     'config.route',
-    'lib'], function (angular, configroute) {
+    'lib', 
+    'views/orders/orderactivity'], function (angular, configroute) {
     (function () {
         configroute.register.controller('cardetails', ['$rootScope', '$routeParams' ,'$scope', '$location', 'config', 'spinner', 'sessionservice', 'utility', cardetails]);
         function cardetails($rootScope, $routeParams, $scope, $location, config, spinner, sessionservice, utility) {
@@ -32,6 +33,7 @@ define(['angular',
                 else {
                     vm.showallcars = true;
                     getAllCarDistanceDetails();
+                    emitToSelectedUser(null);
                 }
 
                 setSelectedDate();
@@ -83,11 +85,18 @@ define(['angular',
                 getCarLiveData();
                 getCarDistanceDetail(vm.selectedcar.devicenumber);
                 getTrips(vm.selectedcar.devicenumber);
+
+                emitToSelectedUser(vm.selectedcar);
             }
 
             vm.carsearchedchanged = function() {
-                if(vm.carsearchselected == null || vm.carsearchselected == '')
+                if(vm.carsearchselected == null || vm.carsearchselected == '') {
                     vm.clearcar();
+                }
+            }
+
+            function emitToSelectedUser(data){
+                $rootScope.$emit('activity:usersearched', {user:data});
             }
 
             $rootScope.$on('datepicker:dateselected', function (event, data) {
@@ -126,6 +135,7 @@ define(['angular',
                     vm.tripsBy3 = [];
                     vm.tripsplit = [];
 
+                    emitToSelectedUser(null);
                     getAllCarDistanceDetails();
                 }
             }
@@ -191,8 +201,10 @@ define(['angular',
                         getCarLiveData();
                         getCarDistanceDetail(vm.selectedcar.devicenumber);
                     }
-                    if(vm.showallcars == false)
+                    if(vm.showallcars == false) {
+                        emitToSelectedUser(vm.selectedcar);
                         getTrips(vm.selectedcar.devicenumber);
+                    }
 
                     vm.cars.push(cardetail);
                     vm.cars.push({

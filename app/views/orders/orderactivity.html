@@ -1,0 +1,21 @@
+<div class="row beige-bg" data-ng-controller="orderactivity as oavm" style="padding: 0px">
+	<div class="col-xs-12 col-md-4">
+		<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> {{oavm.headertext}}</h5>
+		<small>{{vm.currentdate}} upto Now</small>
+		<hr/>					
+		<h4 data-ng-if="vm.showallcars==false">{{vm.selectedcar.drivername}} <small><span data-ng-if="vm.selectedcar.drivername && vm.selectedcar.drivermobile">|</span> {{vm.selectedcar.drivermobile}}</small></h4>
+		<h4>{{oavm.totalorders}} <small>total orders.</small></h4>
+		<h4>{{oavm.avgorders}} / day <small>average orders.</small></h4>
+		<br/>
+		<br/>
+	</div>
+	<div class="col-xs-12 col-md-8" data-ng-if="oavm.ordersData.data.length > 0" >
+		<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right" style="margin-left:-4px"></span> Order Metrics</h5>
+		<br/>
+		<highchart config="oavm.ordersConfig"></highchart>
+	</div>
+</div>
+
+
+		
+
