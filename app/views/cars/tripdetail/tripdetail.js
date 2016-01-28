@@ -27,6 +27,23 @@ define(['angular',
                     setSelectedDate();
                     vm.selectedtrip = utility.getTripSelected();
                     getTripHistory();
+
+                    var starttime = new Date(vm.selecteddate + " " +vm.selectedtrip.starttime);
+                    var endtime = new Date(vm.selecteddate + " " +vm.selectedtrip.endtime);
+                    var diff =  Math.abs(new Date(endtime) - new Date(starttime));
+                    var seconds = Math.floor(diff/1000); //ignore any left over units smaller than a second
+                    var minutes = Math.floor(seconds/60); 
+                    seconds = seconds % 60;
+                    var hours = Math.floor(minutes/60);
+                    minutes = minutes % 60;
+
+                    if(hours > 0)
+                        vm.time = hours + " hrs" + " " + (minutes > 0 ? (minutes + " mins") : "");
+                    else if(minutes > 0)
+                        vm.time = minutes + " mins";
+                    else
+                        vm.time = seconds + " secs";
+
                 }
                 else {
                     $location.path('/activity/'+$routeParams.carnumber);

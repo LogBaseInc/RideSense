@@ -14,7 +14,7 @@ define(['angular',
         	vm.uploadorders = function() {
         		if(vm.selectedfile != null && vm.selectedfile != undefined) {
 	        		if(vm.selectedfile.name.indexOf(".xlsx") > 0) {
-	        			spinner.show();
+	        			/*spinner.show();
 	        			vm.buttondisabled = true;
 		        		var reader = new FileReader();
 		                reader.onload = function(readerEvt) {
@@ -24,7 +24,7 @@ define(['angular',
 		                    var obj = xlsx(base64);
 		                    parseExcelRows(obj);
 		                };
-		                reader.readAsBinaryString(vm.selectedfile);
+		                reader.readAsBinaryString(vm.selectedfile);*/
 		            }
 		            else {
 		            	notify.error("Upload only .xlsx file.")

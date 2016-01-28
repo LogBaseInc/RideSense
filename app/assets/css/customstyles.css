@@ -1036,3 +1036,32 @@ ul#strength {
     margin-top:6px;
     position: absolute;
 }
+
+.fileupload-buttonbar .btn, .fileupload-buttonbar .toggle {
+    margin-bottom: 5px;
+}
+
+.fileinput-button {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    height: 125px;
+    width: 100%;
+    border: 2px dashed gray;
+}
+
+.fileinput-button input {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    opacity: 0;
+    -ms-filter: 'alpha(opacity=0)';
+    font-size: 200px;
+    direction: ltr;
+    cursor: pointer;
+}
+
+.margintop5 {
+    margin-top: 5px;
+}
