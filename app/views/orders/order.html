@@ -31,7 +31,7 @@
 					<div class="form-group zeromargin" data-ng-class="{ 'has-error': orderform.textcustomeraddress.$invalid && orderform.textcustomeraddress.$touched }">
 						<label class="col-md-3 control-label">Customer address</label>
 						<div class="col-md-6">
-							<input type="text" class="form-control" placeholder="Enter a Customer Address" name="textcustomeraddress" data-ng-model="vm.order.address" required>
+							<textarea type="text" class="form-control" placeholder="Enter a Customer Address" name="textcustomeraddress" data-ng-model="vm.order.address" required></textarea>
 		                    <div data-ng-messages="orderform.textcustomeraddress.$error" data-ng-if="vm.interacted(orderform.textcustomeraddress)" class="error-messages">
 		                        <div ng-message="required">Customer address required</div>
 		                    </div>
@@ -90,17 +90,10 @@
 					</div>
 
 					<div class="form-group zeromargin">
-						<label class="col-md-3 control-label">Product name</label>
+						<label class="col-md-3 control-label">Items</label>
 						<div class="col-md-6">
-							<input type="text" class="form-control" placeholder="Enter a Product Name" name="textproductname" data-ng-model="vm.order.productname">
+							<textarea type="text" class="form-control" placeholder="Enter a Product Name" name="textproductname" data-ng-model="vm.items"></textarea>
 		                </div>
-					</div>
-
-					<div class="form-group zeromargin">
-						<label class="col-md-3 control-label">Product description</label>
-						<div class="col-md-6">
-							<input type="text" class="form-control" placeholder="Enter a Product Description" name="textproductdesc" data-ng-model="vm.order.productdesc">
-		            	</div>
 					</div>
 
 					<div class="form-group zeromargin">

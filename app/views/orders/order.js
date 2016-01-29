@@ -40,6 +40,15 @@ define(['angular',
 
                     vm.isOrderEdit = true;
                     vm.selecteddate = vm.isdatesupport ? new Date(vm.order.date): moment(utility.getDateFromString(vm.order.date)).format('DD/MM/YYYY');
+
+                    vm.items = vm.order.productname;
+                    if(vm.items != null && vm.items != undefined && vm.items != "" &&
+                       vm.order.productdesc != null && vm.order.productdesc != undefined && vm.order.productdesc != "") {
+                        vm.items = vm.items + ", " + vm.order.productdesc;
+                    }
+                    else {
+                       vm.items =  vm.order.productdesc;
+                    }
                 }
                 else {
                     vm.order.tagsdetail = [];
@@ -197,8 +206,8 @@ define(['angular',
                 if(vm.order.amount == null || vm.order.amount == undefined)
                     vm.order.amount = 0;
                
-                vm.order.productname = (vm.order.productname != null && vm.order.productname != undefined) ? vm.order.productname : "";
-                vm.order.productdesc = (vm.order.productdesc != null && vm.order.productdesc != undefined) ? vm.order.productdesc : "";
+                vm.order.productname = "";
+                vm.order.productdesc = (vm.items != null && vm.items != undefined) ? vm.items : "";
 
                 vm.order.deliverydate = vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
                 vm.order.time = vm.time1 + "-" + vm.time2;
@@ -237,6 +246,9 @@ define(['angular',
                 spinner.show();
                 setTags();
 
+                vm.order.productname = "";
+                vm.order.productdesc = (vm.items != null && vm.items != undefined) ? vm.items : "";
+                
                 vm.order.deliverydate = vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
                 var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+vm.order.deliverydate+"/"+vm.order.ordernumber);
 

@@ -3,13 +3,15 @@ define(['angular',
     'views/account/users/users'], function (angular, configroute) {
     (function () {
 
-        configroute.register.controller('accountdetail', ['$scope', '$location', 'config', 'notify', 'spinner', 'sessionservice', 'utility', accountdetail]);
-        function accountdetail($scope, $location, config, notify, spinner, sessionservice, utility) {
+        configroute.register.controller('accountdetail', ['$scope', '$location', '$http', 'config', 'notify', 'spinner', 'sessionservice', 'utility', accountdetail]);
+        function accountdetail($scope, $location, $http, config, notify, spinner, sessionservice, utility) {
             var submitted = false;
             var vm = this;
             var accountid = sessionservice.getaccountId();
             vm.token = {};
             vm.isdelete = false;
+            vm.urlisdelete = false;
+            vm.webhookurl = null;
             
             Object.defineProperty(vm, 'canupdate', {
                 get: canupdate
@@ -25,7 +27,7 @@ define(['angular',
 
             activate();
 
-            function activate(){
+            function activate() {
                 spinner.show();
                 accountref.once("value", function(snapshot) {
                     vm.accountname = snapshot.val();
@@ -65,6 +67,14 @@ define(['angular',
                 }, function (errorObject) {
                     utility.errorlog("The setting token read failed: ", errorObject);
                 });
+
+                var webhookUrlref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/webhook/url');
+                webhookUrlref.once("value", function(snapshot) {
+                    vm.webhookurl = snapshot.val();
+                    utility.applyscope($scope);
+                }, function (errorObject) {
+                    utility.errorlog("The Webhook URL read failed: ", errorObject);
+                });
             }
 
             function canupdate(){
@@ -96,6 +106,52 @@ define(['angular',
                 tokensref.remove();
 
                 tokenref.remove();
+            }
+
+            vm.saveWebhookUrl =function() {
+                spinner.show();
+                checkWebhook();
+            }
+
+            function checkWebhook () {
+                var testactivity = {};
+                testactivity.order = {};
+                testactivity.token = vm.token.id;
+                testactivity.activity = "TEST_ACTIVITY";
+                testactivity.time_ms = ((moment(new Date()).unix()) * 1000);
+                console.log(testactivity);
+
+                var req = {
+                    method: 'POST',
+                    url: vm.webhookurl,
+                    headers: {
+                       'Content-Type': 'application/json'
+                    },
+                    data: testactivity
+                }
+
+                $http(req).then(
+                function(){
+                    var webhookUrlref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/webhook/url');
+                    webhookUrlref.set(vm.webhookurl);
+                    spinner.hide();
+                    notify.success("Webhook URL saved successfully");
+                    utility.applyscope($scope);
+                }, 
+                function(error){
+                    spinner.hide();
+                    notify.error("Error while posting to Webhook URL. Provide a valid URL");
+                    utility.applyscope($scope);
+                });
+            }
+
+            vm.deleteWebhookUrl =function(form) {
+                var webhookUrlref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/webhook/url');
+                webhookUrlref.remove();
+                vm.webhookurl = null;
+                vm.urlisdelete = false;
+                form.$setPristine();
+                form.$setUntouched();
             }
         }
     })();

@@ -35,7 +35,6 @@
 							<th>Amount to collect </th>
 							<th>Address</th>	
 							<th>Items</th>
-							<th>Notes</th>
 							<th>Tags</th>
 							<th>Assigned to</th>
 						</tr>
@@ -48,7 +47,6 @@
 							<td>Rs. {{order.amount}}</td>
 							<td>{{order.address}}</td>
 							<td>{{order.productname}} {{order.productdesc}}</td>
-							<td> <div ng-bind-html="order.notes"></div></td>
 							<td>
 								<span data-ng-repeat="tag in order.tagsdetail"class="badge {{tag.tagcolor}}">{{tag.tag}}</span>
 							</td>
@@ -67,7 +65,7 @@
 								</div>
 								<div data-ng-if="order.status == null && vm.istoday==true">
 									<div class="dropdown" data-ng-if="order.deviceid == null">
-										<button class="btn btn-default dropbtn orderdisplaybtn" data-ng-click="vm.dropdownclicked(order.ordernumber)">Assign User</button>
+										<button class="btn btn-default dropbtn orderdisplaybtn" data-ng-click="vm.dropdownclicked(order.ordernumber)">Assigned</button>
 										   <div id="userdropdown{{order.ordernumber}}" class="dropdown-content">
 											    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)">{{user.vehiclenumber}}</a>
 										   </div>

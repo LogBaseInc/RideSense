@@ -362,3 +362,7 @@ select:focus {
       background: #F7F7F7;
     }
 }
+
+textarea {
+  min-height: 80px;
+}

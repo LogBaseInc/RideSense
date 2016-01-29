@@ -89,6 +89,41 @@
 			</div>
 			<hr/>
 		</div>
+		<div>  
+			<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Webhook URL</h5>
+			<br/>
+			<div data-ng-if="vm.token == null">
+				<center>
+		            <h5 class="text-muted">Generate account api token and then give webhook URL.</h5>
+	        	</center>
+			</div>
+
+			<div data-ng-if="vm.token != null && vm.token.id != null">
+				<form class="form-horizontal" name="urlform">
+					<div class="form-group zeromargin" data-ng-class="{ 'has-error': urlform.texturl.$invalid && urlform.texturl.$touched }">
+						<label class="col-md-3 control-label">Url</label>
+						<div class="col-md-8">
+                   			<input type="url" class="form-control" placeholder="Webhook URL" name="texturl" data-ng-model="vm.webhookurl" required>
+		                    <div data-ng-messages="urlform.texturl.$error" data-ng-if="vm.interacted(urlform.texturl)" class="error-messages">
+		                        <div ng-message="required">Valid Webhook URL is required</div>
+		                    </div>
+		            	</div>
+					</div>
+
+					<center data-ng-hide="vm.urlisdelete">
+						<button type="button" class="btn btn-default" ng-click="vm.saveWebhookUrl()" data-ng-disabled="vm.webhookurl == null || vm.webhookurl == undefined || vm.webhookurl == ''">Save</button>
+		            	<button type="button" class="btn btn-default" ng-click="vm.urlisdelete = true;" data-ng-disabled="vm.webhookurl == null || vm.webhookurl == undefined || vm.webhookurl == ''">Delete</button>
+		        	</center>
+		        	<center data-ng-show="vm.urlisdelete">
+		        		<span class="errortext">Webhook URL will be removed permanently, do you want to continue? </span>
+		        		<br/>
+		        		<button type="button" class="btn btn-default" style="margin-top:15px" ng-click="vm.urlisdelete = false;">No</button>
+			           	<button type="button" class="btn btn-default" style="margin-top:15px" ng-click="vm.deleteWebhookUrl(urlform);">Yes</button>
+		        	</center>
+				</form>
+			</div>
+			<hr/>
+		</div>
     </div>
 	<div class="col-xs-12 col-md-6">
         <h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Collaborators</h5>
