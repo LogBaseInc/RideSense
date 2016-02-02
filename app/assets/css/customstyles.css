@@ -913,7 +913,9 @@ ul#strength {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: #f8f8f8;
+    border-color: rgba(221, 221, 221, 0.36);
+    border-radius: 4px;
     min-width: 160px;
     overflow: auto;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -926,6 +928,7 @@ ul#strength {
     padding: 12px 16px;
     text-decoration: none;
     display: block;
+    border-bottom: 1px solid rgba(221, 221, 221, 0.36);
 }
 
 .dropdown a:hover {background-color: #f1f1f1}
@@ -1063,4 +1066,24 @@ ul#strength {
 
 .margintop5 {
     margin-top: 5px;
+}
+
+.orderfilter {
+    width: 250px;
+    display: inline;
+    margin-left:16px !important;
+    margin-top: 10px !important;
+}
+
+.unassgincolor {
+    color: LightCoral !important;
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+  @media only screen
+  and (max-width : 500px) {
+    .orderfilter {
+        width: 250px;
+        display: inline-block;
+    }
 }

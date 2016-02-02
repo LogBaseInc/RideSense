@@ -4,7 +4,7 @@
 		 />
 	    <div class="input-group-btn">
 	    	<a type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.addOrder()"><span class="glyphicon glyphicon-plus"></span></a>
-	    	<!--<a type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.uploadfile()"><span class="glyphicon glyphicon-file"></span></a>-->
+	    	<a type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.uploadfile()"><span class="glyphicon glyphicon-file"></span></a>
 	    </div>
 	</div>
 	<div class="container-fluid">
@@ -12,20 +12,32 @@
 			<div class="row col-xs-12">
 				<div>
 					<br/>
-						<h5 class="col-xs-1 tm-heading tripsheading"><span class="glyphicon glyphicon-chevron-right" style="margin-right:1px"></span>Orders</h5>
-						<input data-ng-if="vm.isdatesupport" id="ordersdate" type="date" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)">
-						<div data-ng-if="!vm.isdatesupport" class="col-xs-1 form-group width170">
-				            <div class='input-group date' lb-datepicker>
-				                <input type='text' class="form-control" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)"/>
-				                <span class="input-group-addon">
-				                    <span class="glyphicon glyphicon-calendar"></span>
-				                </span>
-				            </div>
+					<div>
+						<h5 class="tm-heading tripsheading" style="margin-left:14px;"><span class="glyphicon glyphicon-chevron-right" style="margin-right:1px"></span>Orders</h5>
+						<br/>
+						<div class="orderfilter" >
+							<h5 class="tm-heading tripsheading">Delivery date</h5>
+							<input class="width170" data-ng-if="vm.isdatesupport" id="ordersdate" type="date" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)">
+							<div data-ng-if="!vm.isdatesupport" class="width170">
+					            <div class='input-group date' lb-datepicker>
+					                <input type='text' class="form-control" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)"/>
+					                <span class="input-group-addon">
+					                    <span class="glyphicon glyphicon-calendar"></span>
+					                </span>
+					            </div>
+				       		 </div>
+				       	</div>
+				        <div class="orderfilter marginleft10">
+				        	<h5 class="tm-heading tripsheading">Tags</h5>
+				        	<select class="width170" style="height:35px;" ng-model="vm.selectedTag" ng-options="tag.value as tag.name for tag in vm.tagsoption" data-ng-change="vm.tagfilter()"></select>
 				        </div>
-				        <span style="margin-left:5px">Total orders : {{vm.orders.length}}<span>
+				        <div class="orderfilter marginleft10">
+				        	<span>Total orders : {{vm.filterOrders.length}}<span>
+				        </div>
+				    </div>
 			    </div>
 			</div>
-			<div class="col-xs-12" data-ng-if="vm.orders.length > 0">
+			<div class="col-xs-12" data-ng-if="vm.filterOrders.length > 0">
 				<table id="ordertable" name="ordertable">
 					<thead>
 						<tr class="cakebeecolor">
@@ -40,7 +52,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr data-ng-repeat="order in vm.orders | filter: vm.search" data-ng-click="vm.orderClicked(order)">
+						<tr data-ng-repeat="order in vm.filterOrders | filter: vm.search" data-ng-click="vm.orderClicked(order)">
 							<td>{{order.ordernumber}}</td>
 							<td><span>{{order.name}}</span><br/><span style="margin-top:5px;">{{order.mobilenumber}}</span></td>
 							<td>{{order.time}}</td>
@@ -53,8 +65,11 @@
 							<td>
 								<div data-ng-if="order.status != null">
 									<span>{{order.vehiclenumber}}</span> </br>
+									<div data-ng-if="order.status == 'Accepted'">
+										<small>Accepted @ {{order.acceptedon}}</small>
+									</div>
 									<div data-ng-if="order.status == 'Picked up'">
-										<small>{{order.pickedon}}</small>
+										<small>Picked @ {{order.pickedon}}</small>
 									</div>
 									<div data-ng-if="order.status == 'Delivered'">
 										<small>{{order.pickedon}} - {{order.deliveredon}}</small>
@@ -65,13 +80,16 @@
 								</div>
 								<div data-ng-if="order.status == null && vm.istoday==true">
 									<div class="dropdown" data-ng-if="order.deviceid == null">
-										<button class="btn btn-default dropbtn orderdisplaybtn" data-ng-click="vm.dropdownclicked(order.ordernumber)">Assigned</button>
+										<button class="btn btn-default dropbtn orderdisplaybtn" data-ng-click="vm.dropdownclicked(order.ordernumber)">Assign</button>
 										   <div id="userdropdown{{order.ordernumber}}" class="dropdown-content">
 											    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)">{{user.vehiclenumber}}</a>
 										   </div>
 									</div>
 									<div data-ng-if="order.deviceid != null">
-										<input type="button" data-ng-if="vm.istoday==true && order.status == null" class="btn btn-default orderdisplaybtn" style="margin-top:5px;" data-ng-click="vm.unassignorder(order)" value="{{order.vehiclenumber}}"></input>
+										<div data-ng-if="vm.istoday==true && order.status == null"  data-ng-click="vm.unassignorder(order)">
+												<span>{{order.vehiclenumber}}</span>
+												<i class="glyphicon glyphicon-remove unassgincolor marginleft10"></i>
+										</div>
 									</div>
 								</div>
 							</td>
@@ -79,9 +97,9 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="col-xs-12" data-ng-show="!vm.showallcars && vm.orders.length==0">
+			<div class="col-xs-12" data-ng-show="!vm.showallcars && vm.filterOrders.length==0">
 				<br/>
-				<p class="text-muted"></span>No orders available for {{vm.selecteddate | date }}.</p>
+				<p class="text-muted"></span>No orders available for selected filters.</p>
 				<br/>
 			</div>
 		</div> <!-- row -->

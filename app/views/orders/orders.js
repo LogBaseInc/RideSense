@@ -18,6 +18,8 @@ define(['angular',
             var orderindex = [];
             var assignedordersref = [];
             var tags = [];
+            vm.tagsoption = [];
+            vm.selectedTag = "All";
 
             activate();
 
@@ -41,6 +43,11 @@ define(['angular',
                 alltagsref.once("value", function(snapshot) {
                     if(snapshot.val() != null && snapshot.val() != undefined) {
                         tags = snapshot.val();
+                        vm.tagsoption = [];
+                        vm.tagsoption.push({name:"All", value:"All"});
+                        for(prop in tags) {
+                            vm.tagsoption.push({name:prop, value:prop});
+                        }
                     }
                     getUnAssignOrders();
                 }, 
@@ -162,6 +169,7 @@ define(['angular',
                     }
 
                     vm.orders.sort(SortByTime);
+                    vm.tagfilter();
                     spinner.hide(); 
                     utility.applyscope($scope);
                 });
@@ -189,6 +197,10 @@ define(['angular',
                         else if(data.Pickedon != null && data.Pickedon != undefined) {
                             orderdetail.status = "Picked up";
                             orderdetail.pickedon = moment(data.Pickedon).format('hh:mm A');
+                        }
+                        else if(data.Acceptedon != null && data.Acceptedon != undefined) {
+                            orderdetail.acceptedon = moment(data.Acceptedon).format('hh:mm A');
+                            orderdetail.status = "Accepted";
                         }
                         else
                             orderdetail.status = null;
@@ -242,9 +254,24 @@ define(['angular',
                     vm.ordersplit = [];
 
                     getUnAssignOrders();
+                    vm.tagfilter();
                 }
 
                 setIsToday();
+            }
+
+            vm.tagfilter = function() {
+                if(vm.selectedTag != "All")
+                    vm.filterOrders = _.filter(vm.orders, function(order){ 
+                        for(var i = 0; i < order.tagsdetail.length; i++) {
+                            if(order.tagsdetail[i].tag.toLowerCase() == vm.selectedTag.toLowerCase())
+                                return true;
+                        }
+                        return false;
+                    });
+                
+                else 
+                    vm.filterOrders = vm.orders;
             }
 
             vm.addOrder = function() {
