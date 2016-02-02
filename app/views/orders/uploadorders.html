@@ -32,4 +32,31 @@
 			</div>
 		</div>
 	</div>
+	<div class="beige-bg-full-border">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<small>
+						<h5><span class="glyphicon glyphicon-star-empty"></span> Uploading orders</h5>
+						<p>Instructions for Excel Upload</p>
+						<ul>
+							<li>Excel file with “.xlsx” extension is supported. No other formats are supported.</li>
+							<li>Please use the template attached here to upload the orders. <a href="https://stickstoragecp.blob.core.windows.net/rfid/UploadOrderTemplate.xlsx">Download template</a></li>
+							<li>All the column’s should be as shown in the template.</li>
+							<li>First row should be header.</li>
+							<li>Following fields are mandatory - id, customer name, customer address, mobile number, delivery date, delivery time.</li>
+							<li>Please don’t leave any fields empty. Use “-“ for all missing fields.</li>
+							<li>Tags can have multiple values. Separate the values using “,”</li>
+							<li>Delivery date should be in dd/mm/yyyy format (e.g.: 23/01/2016).</li>
+							<li>Delivery time time should in the format of “start time - end time”. Start time and end time should follow this format hh:mm AM/PM</li>
+							<li>Amount to collect, should be an integer. Don’t use currency symbols.</li>
+							<li>Customer mobile number is 10 digit number.</li>
+							<li>Order number is a unique identification of order. In case if the order number is repeated, order will be updated with the latest information.</li>
+							<li>Only first sheet in excel will be considered. And there should be atleast one order and maximum 100 orders.</li>
+						</ul>
+					</small>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

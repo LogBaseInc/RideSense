@@ -881,7 +881,7 @@ ul#strength {
     td:nth-of-type(5):before { content: "Address"; }
     td:nth-of-type(6):before { content: "Items"; }
     td:nth-of-type(7):before { content: "Tags"; }
-    td:nth-of-type(8):before { content: "Assigned to"; }
+    td:nth-of-type(8):before { content: "Status"; }
   }
   
   /* Smartphones (portrait and landscape) ----------- */
