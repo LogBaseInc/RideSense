@@ -53,7 +53,11 @@
 					</thead>
 					<tbody>
 						<tr data-ng-repeat="order in vm.filterOrders | filter: vm.search" data-ng-click="vm.orderClicked(order)">
-							<td>{{order.ordernumber}}</td>
+							<td data-ng-show="vm.orderidshow">
+								<span data-ng-if="order.url == null || order.url == undefined">{{order.ordernumber}}</span>
+								<a data-ng-if="order.url != null && order.url != undefined" href="{{order.url}}" target="_blank" data-ng-click="vm.linkClicked(order.url)">{{order.ordernumber}}</a>
+							</td>
+
 							<td><span>{{order.name}}</span><br/><span style="margin-top:5px;">{{order.mobilenumber}}</span></td>
 							<td>{{order.time}}</td>
 							<td>Rs. {{order.amount}}</td>

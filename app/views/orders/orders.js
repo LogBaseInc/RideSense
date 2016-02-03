@@ -21,6 +21,15 @@ define(['angular',
             vm.tagsoption = [];
             vm.selectedTag = "All";
 
+            vm.orderidshow = true;
+            vm.nameshow = true;
+            vm.deliverytimeshow = true;
+            vm.amountshow = true;
+            vm.addressshow = true;
+            vm.itemsshow = true;
+            vm.tagsshow = true;
+            vm.statusshow = true;
+
             activate();
 
             function activate() {
@@ -138,7 +147,7 @@ define(['angular',
                         orderdetail.productdesc = orderinfo.productdesc;
                         orderdetail.productname = orderinfo.productname;
                         orderdetail.notes = orderinfo.notes;
-                        
+                        orderdetail.url = orderinfo.url;
                         orderdetail.tags = orderinfo.tags;
                         orderdetail.tagsdetail = [];
                         if(orderinfo.tags != null && orderinfo.tags != undefined && orderinfo.tags != "") {
@@ -290,6 +299,10 @@ define(['angular',
                     return false;
                 }
                 isassignorderclickd = false;
+            }
+
+            vm.linkClicked = function(url) {
+                isassignorderclickd=true;
             }
 
             vm.assignorder = function(order, user) {
