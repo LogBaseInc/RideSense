@@ -1082,8 +1082,36 @@ ul#strength {
 /* Smartphones (portrait and landscape) ----------- */
   @media only screen
   and (max-width : 500px) {
+
+    .multiselectdiv {
+        float: left !important;
+    }
+
     .orderfilter {
         width: 250px;
         display: inline-block;
     }
+    .multiselect-parent > .dropdown-menu {
+        left: 0px !important;
+        float: left !important;
+    }
+}
+
+.multiselectdiv {
+    display: inline;
+    float: right;
+}
+
+.multiselect-parent > button {
+    width: 160px !important;
+}
+
+.multiselect-parent > .dropdown-menu {
+    overflow: hidden !important;
+    left: 0px !important;
+    width: 160px;
+}
+
+.dropdown-menu>li>a {
+    padding: 1px 12px !important;
 }

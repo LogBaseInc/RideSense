@@ -14,6 +14,7 @@ define(['angular',
             vm.istoday = false;
             var accountdevices = sessionservice.getAccountDevices();
             var accountid = sessionservice.getaccountId();
+            var userid = sessionservice.getSession().uid;
             var isassignorderclickd = false;
             var orderindex = [];
             var assignedordersref = [];
@@ -21,22 +22,23 @@ define(['angular',
             vm.tagsoption = [];
             vm.selectedTag = "All";
 
-            vm.orderidshow = true;
-            vm.nameshow = true;
-            vm.deliverytimeshow = true;
-            vm.amountshow = true;
-            vm.addressshow = true;
-            vm.itemsshow = true;
-            vm.tagsshow = true;
-            vm.statusshow = true;
+            vm.orderidshow = false;
+            vm.nameshow = false;
+            vm.deliverytimeshow = false;
+            vm.amountshow = false;
+            vm.addressshow = false;
+            vm.itemsshow = false;
+            vm.tagsshow = false;
+            vm.statusshow = false;
+            vm.selectedcolumns = [];
 
             activate();
-
             function activate() {
+                setColumnOptions();
                 $rootScope.routeSelection = 'orders';
+                getOrderColumns();
                 isDateFiledSupported();
                 setTodayDate();
-
                 getAllTags();
 
                 vm.users = [];
@@ -44,6 +46,86 @@ define(['angular',
                 for(prop in devices){
                     vm.users.push({deviceid : prop, vehiclenumber: devices[prop].vehiclenumber});
                 }
+            }
+
+            function getOrderColumns() {
+                var alltagsref = new Firebase(config.firebaseUrl+'users/'+userid+"/"+'settings/ordercolumns');
+                alltagsref.once("value", function(snapshot) {
+                    if(snapshot.val() != null && snapshot.val() != undefined) {
+                        vm.selectedcolumns = snapshot.val();
+                        for(var i =0 ; i < vm.selectedcolumns.length; i++) {
+                            setColumnVisibility(vm.selectedcolumns[i], true);
+                        }
+                    }
+                    else {
+                        vm.orderidshow = true;
+                        vm.nameshow = true;
+                        vm.deliverytimeshow = true;
+                        vm.amountshow = true;
+                        vm.addressshow = true;
+                        vm.itemsshow = true;
+                        vm.tagsshow = true;
+                        vm.statusshow = true;
+
+                       vm.selectedcolumns = [{id: "Order #"}, {id: "Customer name"}, {id: "Delivery time"}, {id: "Amount to collect"}, {id: "Address"}, {id: "Items"}, {id: "Tags"}, {id: "Status"}];
+                    }
+                    utility.applyscope($scope);
+                }, 
+                function(errorObject) {
+                });
+            }
+
+            function setColumnOptions() {
+                vm.columns = [
+                    {id: "Order #", label: "Order #"},
+                    {id: "Customer name", label: "Customer name"},
+                    {id: "Delivery time", label: "Delivery time"},
+                    {id: "Amount to collect", label: "Amount to collect"},
+                    {id: "Address", label: "Address"},
+                    {id: "Items", label: "Items"},
+                    {id: "Tags", label: "Tags"},
+                    {id: "Status", label: "Status"}];
+
+                vm.columnsselectsettings = {
+                    showCheckAll : false,
+                    showUncheckAll : false,
+                    scrollable : false,
+                    dynamicTitle : false,
+                    buttonDefaultText : "Selected fields"
+                };
+
+                vm.columnevents = {
+                    onItemSelect : function(item) {
+                        setColumnVisibility(item, true);
+                    },
+                    onItemDeselect : function(item) {
+                        setColumnVisibility(item, false);
+                    }
+                }
+            }
+
+            function setColumnVisibility(item, selected) {
+                if(item.id == "Order #")
+                    vm.orderidshow = selected;
+                else if(item.id == "Customer name")
+                    vm.nameshow = selected;
+                else if(item.id == "Delivery time")
+                    vm.deliverytimeshow = selected;
+                else if(item.id == "Amount to collect")
+                    vm.amountshow = selected;
+                else if(item.id == "Address")
+                    vm.addressshow = selected;
+                else if(item.id == "Items")
+                    vm.itemsshow = selected;
+                else if(item.id == "Tags")
+                    vm.tagsshow = selected;
+                else if(item.id == "Status")
+                    vm.statusshow = selected;
+
+                var ordercolumnsrf = new Firebase(config.firebaseUrl+'users/'+userid+'/settings/ordercolumns');
+                ordercolumnsrf.set(vm.selectedcolumns);
+
+                utility.applyscope($scope);
             }
 
             function getAllTags() {

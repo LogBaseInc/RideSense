@@ -34,6 +34,11 @@
 				        <div class="orderfilter marginleft10">
 				        	<span>Total orders : {{vm.filterOrders.length}}<span>
 				        </div>
+
+				        <div class="orderfilter marginleft10">
+				        	<div ng-dropdown-multiselect="" options="vm.columns" selected-model="vm.selectedcolumns" extra-settings="vm.columnsselectsettings" class="multiselectdiv" events="vm.columnevents" checkboxes="true"></div>
+				        </div>
+
 				    </div>
 			    </div>
 			</div>
@@ -41,14 +46,14 @@
 				<table id="ordertable" name="ordertable">
 					<thead>
 						<tr class="cakebeecolor">
-							<th>Order</th>
-							<th>Customer name</th>
-							<th>Delivery time</th>
-							<th>Amount to collect </th>
-							<th>Address</th>	
-							<th>Items</th>
-							<th>Tags</th>
-							<th>Status</th>
+							<th data-ng-show="vm.orderidshow">Order</th>
+							<th data-ng-show="vm.nameshow">Customer name</th>
+							<th data-ng-show="vm.deliverytimeshow">Delivery time</th>
+							<th data-ng-show="vm.amountshow">Amount to collect </th>
+							<th data-ng-show="vm.addressshow">Address</th>	
+							<th data-ng-show="vm.itemsshow">Items</th>
+							<th data-ng-show="vm.tagsshow">Tags</th>
+							<th data-ng-show="vm.statusshow">Status</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -58,15 +63,15 @@
 								<a data-ng-if="order.url != null && order.url != undefined" href="{{order.url}}" target="_blank" data-ng-click="vm.linkClicked(order.url)">{{order.ordernumber}}</a>
 							</td>
 
-							<td><span>{{order.name}}</span><br/><span style="margin-top:5px;">{{order.mobilenumber}}</span></td>
-							<td>{{order.time}}</td>
-							<td>Rs. {{order.amount}}</td>
-							<td>{{order.address}}</td>
-							<td>{{order.productname}} {{order.productdesc}}</td>
-							<td>
+							<td data-ng-show="vm.nameshow"><span>{{order.name}}</span><br/><span style="margin-top:5px;">{{order.mobilenumber}}</span></td>
+							<td data-ng-show="vm.deliverytimeshow">{{order.time}}</td>
+							<td data-ng-show="vm.amountshow">Rs. {{order.amount}}</td>
+							<td data-ng-show="vm.addressshow">{{order.address}}</td>
+							<td data-ng-show="vm.itemsshow">{{order.productname}} {{order.productdesc}}</td>
+							<td data-ng-show="vm.tagsshow">
 								<span data-ng-repeat="tag in order.tagsdetail"class="badge {{tag.tagcolor}}">{{tag.tag}}</span>
 							</td>
-							<td>
+							<td data-ng-show="vm.statusshow">
 								<div data-ng-if="order.status != null">
 									<span>{{order.vehiclenumber}}</span> </br>
 									<div data-ng-if="order.status == 'Accepted'">

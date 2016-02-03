@@ -1,5 +1,5 @@
 require.config({
-    urlArgs: '6.7',
+    urlArgs: '6.8',
     waitSeconds: 0,
     paths: {
         angular: '../bower_components/angular/angular',
@@ -33,6 +33,7 @@ require.config({
         'jszip-inflate' : 'scripts/jszip-inflate',
         'jszip-load' : 'scripts/jszip-load',
         'xlxs' : 'scripts/xlsx',
+        'multiselect' : '../bower_components/angularjs-dropdown-multiselect/src/angularjs-dropdown-multiselect'
     },
     shim: {
         angular: {
