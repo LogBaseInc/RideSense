@@ -1,7 +1,7 @@
 <div data-ng-controller="cardetails as vm">
 
 	<div class="input-group input-group-lg livemapsearch">
-		<input type="text" class="form-control tm-search-text tm-no-outline fullwidth" placeholder="Search activity by user" id="txtcarsearch" data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html" typeahead-on-select="vm.carsearched($item, $model, $label)" data-ng-change="vm.carsearchedchanged()" />
+		<input type="text" class="form-control tm-search-text tm-no-outline fullwidth" placeholder="Search activity by agent" id="txtcarsearch" data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html" typeahead-on-select="vm.carsearched($item, $model, $label)" data-ng-change="vm.carsearchedchanged()" />
 	    <div class="input-group-btn">
 	    	<button type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.clearcar()"><span class="glyphicon glyphicon-remove"></span></button>
 	    </div>
@@ -47,7 +47,7 @@
 		<div class="row" data-ng-show="vm.showallcars">
 			<div class="col-xs-12">
 				<br/><br/>
-				<p class="text-muted"><span class="glyphicon glyphicon-star-empty"></span> Trips can be viewed from user's activity, after you search for the user.</p>
+				<p class="text-muted"><span class="glyphicon glyphicon-star-empty"></span> Trips can be viewed from agents's activity, after you search for the agent.</p>
 				<br/>
 			</div>
 		</div>
@@ -113,7 +113,7 @@
       <br/>
       <small style="color:gray">
       	<span data-ng-show="match.model.type == 'Driver'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Driver Name</span>
-      	<span data-ng-show="match.model.type == 'Car'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User ID</span>
+      	<span data-ng-show="match.model.type == 'Car'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Agent ID</span>
       </small>
   </a>
 </script>

@@ -5,12 +5,12 @@
 			<div class="col-xs-12">
 				<br/>
 				<form class="form-horizontal" name="deviceform">
-					<h5 class="tm-heading" data-ng-hide="vm.isDeviceEdit"><span class="glyphicon glyphicon-chevron-right"></span> Add User</h5>
-					<h5 class="tm-heading" data-ng-show="vm.isDeviceEdit"><span class="glyphicon glyphicon-chevron-right"></span> Update User</h5>
+					<h5 class="tm-heading" data-ng-hide="vm.isDeviceEdit"><span class="glyphicon glyphicon-chevron-right"></span> Add Agent</h5>
+					<h5 class="tm-heading" data-ng-show="vm.isDeviceEdit"><span class="glyphicon glyphicon-chevron-right"></span> Update Agent</h5>
 					<br/>
 
 					<div class="form-group zeromargin" data-ng-if="vm.hideDeviceType">
-						<label class="col-md-3 control-label">User Device Type</label>
+						<label class="col-md-3 control-label">Agent Device Type</label>
 						<div ng-disabled="vm.isDeviceEdit" class="col-md-6">
 							<input id="device-toggle" checked type="checkbox" data-toggle="toggle" data-on="Stick" data-off="Stick Mobile" data-onstyle="default" data-offstyle="default">
 		            	</div>	
@@ -18,13 +18,7 @@
 					<div class="form-group zeromargin">
 						<label class="col-md-3 control-label">Avatar</label>
 						<div class="col-md-6">
-							<!--<a data-ng-show="vm.device.vehicletype=='person'" class="blackcolortext"><img src="assets/images/person_selected.png" class="height40"></img><span class="marginleft5 marginright20">Person</span></a>
-							<a data-ng-show="vm.device.vehicletype !='person'" class="blackcolortext cursorpointer" 
-							onmouseover="document.carunselected.src='assets/images/person_selected.png';"
-		         			onmouseout="document.carunselected.src='assets/images/person_unselected.png';" data-ng-click="vm.selectVehicleType('person')">
-		         				<img name="carunselected" src="assets/images/person_unselected.png" class="height40"></img><span class="marginleft5 marginright20">Person</span>
-		         			</a>-->
-
+					
 							<a data-ng-show="vm.device.vehicletype=='car'" class="blackcolortext"><img src="assets/images/car_selected.png" class="height40"></img><span class="marginleft5 marginright20">Car</span></a>
 							<a data-ng-show="vm.device.vehicletype !='car'" class="blackcolortext cursorpointer" 
 							onmouseover="document.carunselected.src='assets/images/car_selected.png';"
@@ -49,11 +43,11 @@
 		        		
 					</div>
 					<div class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textvehiclenumber.$invalid && deviceform.textvehiclenumber.$touched }">
-						<label class="col-md-3 control-label">User Name</label>
+						<label class="col-md-3 control-label">Agent Name</label>
 						<div class="col-md-6">
-							<input type="text" class="form-control" placeholder="Enter a Username or a Vehicle ID" name="textvehiclenumber" data-ng-model="vm.device.vehiclenumber" required maxLength ="20" ng-readonly="vm.isDeviceEdit">
+							<input type="text" class="form-control" placeholder="Enter a agent name or a Vehicle ID" name="textvehiclenumber" data-ng-model="vm.device.vehiclenumber" required maxLength ="20" ng-readonly="vm.isDeviceEdit">
 		                    <div data-ng-messages="deviceform.textvehiclenumber.$error" data-ng-if="vm.interacted(deviceform.textvehiclenumber)" class="error-messages">
-		                        <div ng-message="required">User Name required</div>
+		                        <div ng-message="required">Agent Name required</div>
 		                    </div>
 		            	</div>
 					</div>
@@ -82,11 +76,11 @@
 					</div>
 
 					<div data-ng-if="!vm.isStick" class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textcontactnumber.$invalid && deviceform.textcontactnumber.$touched }">
-						<label class="col-md-3 control-label">User's mobile number</label>
+						<label class="col-md-3 control-label">Agent's mobile number</label>
 						<div class="col-md-6">
 							<input type="text" class="form-control" placeholder="Mobile Number with Country Code prefixed" name="textcontactnumber" data-ng-model="vm.device.drivermobile" required ng-pattern="/^[0-9+]*$/">
 		                    <div data-ng-messages="deviceform.textcontactnumber.$error" data-ng-if="vm.interacted(deviceform.textcontactnumber)" class="error-messages">
-		                        <div ng-message="required">User's mobile number required</div>
+		                        <div ng-message="required">Agent's mobile number required</div>
 		                        <div ng-message="pattern">Enter a valid mobile number</div>
 		                    </div>
 		            	</div>
@@ -109,11 +103,11 @@
 		            	</div>
 					</div>
 					<div data-ng-if="vm.isStick" class="form-group zeromargin" data-ng-class="{ 'has-error': deviceform.textdrivercontactnumber.$invalid && deviceform.textdrivercontactnumber.$touched }">
-						<label class="col-md-3 control-label">User's Mobile Number</label>
+						<label class="col-md-3 control-label">Agent's Mobile Number</label>
 						<div class="col-md-6">
 								<input type="text" class="form-control" placeholder="Mobile Number with Country Code prefixed (Optional)" name="textdrivercontactnumber" data-ng-model="vm.device.drivermobile" ng-pattern="/^[0-9+]*$/">
 		                    <div data-ng-messages="deviceform.textdrivercontactnumber.$error" data-ng-if="vm.interacted(deviceform.textdrivercontactnumber)" class="error-messages">
-		                        <div ng-message="required">User's mobile number is required</div>
+		                        <div ng-message="required">Agent's mobile number is required</div>
 		                        <div ng-message="pattern">Enter a valid mobile number</div>
 		                    </div>
 		            	</div>
@@ -121,14 +115,14 @@
 				</form>
 				<div>
 				 	<center data-ng-hide="vm.isdelete">
-			            <button data-ng-hide="vm.isDeviceEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Add User</button>
-			            <button data-ng-show="vm.isDeviceEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Update User</button>
+			            <button data-ng-hide="vm.isDeviceEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Add Agent</button>
+			            <button data-ng-show="vm.isDeviceEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.adddevice();" data-ng-disabled="!vm.canBuy">Update Agent</button>
 			            <button data-ng-show="vm.isDeviceEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.copyDeviceID();">Copy Device ID</button>
 			            <a type="button" class="margintop15 btn btn-default"  href="#/account/devices">Cancel</a>
-			           	<button data-ng-show="vm.isDeviceEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.deletedevice();">Remove User</button>
+			           	<button data-ng-show="vm.isDeviceEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.deletedevice();">Remove Agent</button>
 			        </center>
 		        	<center data-ng-show="vm.isdelete">
-		        		<span class="errortext">User will be removed permanently, do you want to continue? </span>
+		        		<span class="errortext">Agent will be removed permanently, do you want to continue? </span>
 		        		<br/>
 		        		<button style="margin-top:10px" type="button" class="btn btn-default" ng-click="vm.deletecancel();">No</button>
 			           	<button style="margin-top:10px" type="button" class="btn btn-default" ng-click="vm.deleteConfirm();">Yes</button>
@@ -144,13 +138,13 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<small>
-						<h5><span class="glyphicon glyphicon-star-empty"></span> Adding or updating users</h5>
-						<p>Users are what you track with Stick.</p>
+						<h5><span class="glyphicon glyphicon-star-empty"></span> Adding or updating agents</h5>
+						<p>Agents are what you track with Stick.</p>
 						<ul>
-							<li data-ng-if="vm.hideDeviceType">Users carry a device which is either a physical Stick Device you bought or a Stick Mobile App.</li>
+							<li data-ng-if="vm.hideDeviceType">Agents carry a device which is either a physical Stick Device you bought or a Stick Mobile App.</li>
 							<li data-ng-if="vm.hideDeviceType">For Stick Device, the device ID is shipped along with the device. For Mobile App, this is auto generated.</li>
-							<li>You can choose an Avatar for every user that will be used by live map view.</li>
-							<li>User ID is a user name that you choose to refer back to this user.</li>
+							<li>You can choose an Avatar for every agent that will be used by live map view.</li>
+							<li>Agent ID is a user name that you choose to refer back to this agent.</li>
 						</ul>
 					</small>
 				</div>

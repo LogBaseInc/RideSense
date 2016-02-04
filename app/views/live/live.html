@@ -1,7 +1,7 @@
 <div data-ng-controller="live as vm">
 	<div data-ng-if="vm.showmaps" class="input-group input-group-lg livemapsearch">
 		<google-places data-ng-show="vm.locationsearch"></google-places>
-        <input type="text" class="form-control tm-search-text tm-no-outline" placeholder="Search by user" data-ng-show="vm.carsearch" id="txtcarsearch" data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars.models | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html"
+        <input type="text" class="form-control tm-search-text tm-no-outline" placeholder="Search by agent" data-ng-show="vm.carsearch" id="txtcarsearch" data-ng-model="vm.carsearchselected" typeahead="car as car.title for car in vm.cars.models | filter:{title:$viewValue}" typeahead-template-url="typeaheadElement.html"
 			typeahead-on-select="vm.carsearched($item, $model, $label)" />
         <div class="input-group-btn">
         	<button type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.searchOptionChanged('car')"><span class="glyphicon glyphicon-user"></span></button>
