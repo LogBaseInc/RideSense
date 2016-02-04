@@ -16,7 +16,7 @@
 						<h5 class="tm-heading tripsheading" style="margin-left:14px;"><span class="glyphicon glyphicon-chevron-right" style="margin-right:1px"></span>Orders</h5>
 						<br/>
 						<div class="orderfilter" >
-							<h5 class="tm-heading tripsheading">Delivery date</h5>
+							<h5 class="tm-heading tripsheading" style="margin-right:5px">Delivery date</h5>
 							<input class="width170" data-ng-if="vm.isdatesupport" id="ordersdate" type="date" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)">
 							<div data-ng-if="!vm.isdatesupport" class="width170">
 					            <div class='input-group date' lb-datepicker>
@@ -28,7 +28,7 @@
 				       		 </div>
 				       	</div>
 				        <div class="orderfilter marginleft10">
-				        	<h5 class="tm-heading tripsheading">Tags</h5>
+				        	<h5 class="tm-heading tripsheading" style="margin-right:5px">Tags</h5>
 				        	<select class="width170" style="height:35px;" ng-model="vm.selectedTag" ng-options="tag.value as tag.name for tag in vm.tagsoption" data-ng-change="vm.tagfilter()"></select>
 				        </div>
 				        <div class="orderfilter marginleft10">
