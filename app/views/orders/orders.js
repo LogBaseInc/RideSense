@@ -8,6 +8,7 @@ define(['angular',
             var vm = this;
             var todaysdate = '';
             var unassignorderref = null;
+            var devicesref = null;
             vm.isdatesupport = false;
             vm.orders = [];
             var datefilter = "";
@@ -40,12 +41,30 @@ define(['angular',
                 isDateFiledSupported();
                 setTodayDate();
                 getAllTags();
+                getDevices();
+            }
 
-                vm.users = [];
-                var devices = sessionservice.getAccountDevices();
-                for(prop in devices){
-                    vm.users.push({deviceid : prop, vehiclenumber: devices[prop].vehiclenumber});
-                }
+            function getDevices() {
+                devicesref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/devices');
+                devicesref.on("value", function(snapshot) {
+                    vm.users = [];
+                    if(snapshot.val() != null && snapshot.val() != undefined) {
+                        accountdevices = snapshot.val();
+                        for(prop in accountdevices){
+                            if(accountdevices[prop].activity != null && accountdevices[prop].activity != undefined) {
+                                if ((moment(accountdevices[prop].activity.date).format('DD/MM/YYYY') == moment(todaysdate).format('DD/MM/YYYY')) && accountdevices[prop].activity.login == true)
+                                    vm.users.push({deviceid : prop, vehiclenumber: accountdevices[prop].vehiclenumber});
+                            }
+                            else 
+                                vm.users.push({deviceid : prop, vehiclenumber: accountdevices[prop].vehiclenumber});
+                        }
+                        utility.applyscope($scope);
+                    }
+                    else {
+                       accountdevices = []; 
+                    }
+                }, function (errorObject) {
+                });
             }
 
             function getOrderColumns() {
@@ -398,6 +417,7 @@ define(['angular',
                assignorders.Amount = order.amount;
                assignorders.Mobile = order.mobilenumber;
                assignorders.Time = order.time;
+               assignorders.Notes = order.notes;
                if(order.productname != null && order.productname != undefined) {
                   assignorders.Items = [];
                   assignorders.Items.push({Name: order.productname, Description: order.productdesc});

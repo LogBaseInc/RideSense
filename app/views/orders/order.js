@@ -272,7 +272,7 @@ define(['angular',
 
                 if(vm.order.deviceid != null && vm.order.deviceid != undefined) {
                     var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber);
-                    ordersref1.update({Name: vm.order.name, Mobile: vm.order.mobilenumber, Amount: vm.order.amount, Time: updateorder.time, Address: vm.order.address});
+                    ordersref1.update({Name: vm.order.name, Mobile: vm.order.mobilenumber, Amount: vm.order.amount, Time: updateorder.time, Address: vm.order.address, Notes: vm.order.notes});
 
                     ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber+"/Items/0");
                     ordersref1.update({Name: ((vm.order.productname != null && vm.order.productname != undefined) ? vm.order.productname : ""), 
