@@ -7,7 +7,8 @@
 	    	<a type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.uploadfile()"><span class="glyphicon glyphicon-file"></span></a>
 	    </div>
 	</div>
-	<div class="container-fluid">
+	<div data-ng-if="vm.isdesktop == false" ng-include src="'views/orders/morders.html'"> </div>
+	<div data-ng-if="vm.isdesktop == true" class="container-fluid">
 		<div class="row">
 			<div class="row col-xs-12">
 				<div>
@@ -30,6 +31,10 @@
 				        <div class="orderfilter marginleft10">
 				        	<h5 class="tm-heading tripsheading" style="margin-right:5px">Tags</h5>
 				        	<select class="width170" style="height:35px;" ng-model="vm.selectedTag" ng-options="tag.value as tag.name for tag in vm.tagsoption" data-ng-change="vm.tagfilter()"></select>
+				        </div>
+				        <div class="orderfilter marginleft10">
+				        	<h5 class="tm-heading tripsheading" style="margin-right:5px">Status</h5>
+				        	<select class="width170" style="height:35px;" ng-model="vm.selectedStatus" ng-options="status.value as status.name for status in vm.statusoption" data-ng-change="vm.statusfilter()"></select>
 				        </div>
 				        <div class="orderfilter marginleft10">
 				        	<span>Total orders : {{vm.filterOrders.length}}<span>
@@ -69,36 +74,40 @@
 							<td data-ng-show="vm.addressshow">{{order.address}}</td>
 							<td data-ng-show="vm.itemsshow">{{order.productname}} {{order.productdesc}}</td>
 							<td data-ng-show="vm.tagsshow">
+								<span data-ng-if="order.status != null" class="badge badgestatus">{{order.status}}</span>
 								<span data-ng-repeat="tag in order.tagsdetail"class="badge {{tag.tagcolor}}">{{tag.tag}}</span>
 							</td>
 							<td data-ng-show="vm.statusshow">
 								<div data-ng-if="order.status != null">
-									<span>{{order.vehiclenumber}}</span> </br>
-									<div data-ng-if="order.status == 'Accepted'">
+									<div data-ng-if="vm.istoday == true && order.status == 'Yet to accept'" data-ng-click="vm.unassignorder(order)">
+										<span>{{order.vehiclenumber}}</span>
+										<i class="glyphicon glyphicon-remove unassgincolor marginleft10"></i>
+									</div>
+									<div data-ng-if="vm.istoday == false && order.status == 'Yet to accept'">
+										<span>{{order.vehiclenumber}}</span>
+									</div>
+									<div data-ng-if="order.status == 'Accepted'">									
+										<span>{{order.vehiclenumber}}</span> </br>
 										<small>Accepted @ {{order.acceptedon}}</small>
 									</div>
 									<div data-ng-if="order.status == 'Picked up'">
+										<span>{{order.vehiclenumber}}</span> </br>
 										<small>Picked @ {{order.pickedon}}</small>
 									</div>
 									<div data-ng-if="order.status == 'Delivered'">
+										<span>{{order.vehiclenumber}}</span> </br>
 										<small>{{order.pickedon}} - {{order.deliveredon}}</small>
 									</div>
 								</div>
 								<div data-ng-if="order.status == null && order.deviceid != null && vm.istoday==false">
 									<span>{{order.vehiclenumber}}</span> </br>
 								</div>
-								<div data-ng-if="order.status == null && vm.istoday==true">
+								<div data-ng-if="order.status == null && vm.istoday == true">
 									<div class="dropdown" data-ng-if="order.deviceid == null">
 										<button class="btn btn-default dropbtn orderdisplaybtn" data-ng-click="vm.dropdownclicked(order.ordernumber)">Assign</button>
 										   <div id="userdropdown{{order.ordernumber}}" class="dropdown-content">
 											    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)">{{user.vehiclenumber}}</a>
 										   </div>
-									</div>
-									<div data-ng-if="order.deviceid != null">
-										<div data-ng-if="vm.istoday==true && order.status == null"  data-ng-click="vm.unassignorder(order)">
-												<span>{{order.vehiclenumber}}</span>
-												<i class="glyphicon glyphicon-remove unassgincolor marginleft10"></i>
-										</div>
 									</div>
 								</div>
 							</td>
@@ -114,8 +123,3 @@
 		</div> <!-- row -->
 	</div> <!--container -->
 </div>
-
-<script type="text/ng-template" id="templateId">
-    <h1>Template heading</h1>
-    <p>Content goes here</p>
-</script>

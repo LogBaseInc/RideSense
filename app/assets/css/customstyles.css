@@ -397,6 +397,10 @@ hr {
     width:170px !important;
 }
 
+.width150 {
+    width:150px !important;
+}
+
 .hrborder {
     border-top: 1px solid rgba(6, 5, 5, 0.06); !important
 }
@@ -884,23 +888,7 @@ ul#strength {
     td:nth-of-type(8):before { content: "Status"; }
   }
   
-  /* Smartphones (portrait and landscape) ----------- */
-  @media only screen
-  and (min-device-width : 320px)
-  and (max-device-width : 480px) {
-    body { 
-      padding: 0 !important; 
-      margin: 0 !important; 
-      width: 320px !important; }
-    }
   
-  /* iPads (portrait and landscape) ----------- */
-  @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
-    body { 
-      width: 495px !important; 
-    }
-  }
-
 .dropbtn:hover, .dropbtn:focus {
     background-color: #3e8e41;
 }
@@ -969,6 +957,10 @@ ul#strength {
 
 .badgeblack {
     background-color: rgba(0,0,0,.6) !important
+}
+
+.badgestatus {
+    background-color: rgba(127, 67, 165, 0.6) !important
 }
 
 .tagsborder {
@@ -1114,4 +1106,9 @@ ul#strength {
 
 .dropdown-menu>li>a {
     padding: 1px 12px !important;
+}
+
+.drivername {
+    color:#337ab7;
+    font-weight: 500;
 }

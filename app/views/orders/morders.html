@@ -1,0 +1,76 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="row col-xs-12">
+			<div>
+				<div style="margin-top:5px">
+					<div class="orderfilter" style="display: inline !important">
+						<input class="width150" data-ng-if="vm.isdatesupport" id="ordersdate" type="date" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)">
+						<div data-ng-if="!vm.isdatesupport" class="width150">
+				            <div class='input-group date' lb-datepicker>
+				                <input type='text' class="form-control" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)"/>
+				                <span class="input-group-addon">
+				                    <span class="glyphicon glyphicon-calendar"></span>
+				                </span>
+				            </div>
+			       		 </div>
+			       	</div>
+			        <div class="orderfilter marginleft10"  style="display: inline !important">
+			        	<select class="width150" style="height:35px;" ng-model="vm.selectedStatus" ng-options="status.value as status.name for status in vm.statusoption" data-ng-change="vm.statusfilter()"></select>
+			        </div>
+			        <div class="orderfilter marginleft10" style="display: inline-block !important">
+			        	<span>{{vm.filterOrders.length}} orders<span>
+			        </div>
+			    </div>
+		    </div>
+		</div>
+		<div class="col-xs-12" data-ng-if="vm.filterOrders.length > 0">
+			<br/>
+			<div class="col-xs-12" data-ng-repeat="order in vm.filterOrders | filter: vm.search" style="border-top: 1px solid rgba(128, 128, 128, 0.33); padding: 10px;">
+				<span>{{order.ordernumber}} ( {{order.time }} )</span> 
+				<br/>
+				<span>{{order.name}}<i style="float:right" class="glyphicon glyphicon-pencil" data-ng-click="vm.orderClicked(order)"></i></span>
+				<br/>
+				<small>{{order.address}}</small>
+				<br/>
+				<br/>
+				<div data-ng-show="order.status != null" style="float:right">
+					<div data-ng-show="vm.istoday == true && order.status == 'Yet to accept'" data-ng-click="vm.unassignorder(order)">
+						<span class="drivername">{{order.vehiclenumber}}</span>
+						<i class="glyphicon glyphicon-remove unassgincolor marginleft10"></i>
+					</div>
+					<div data-ng-show="vm.istoday == false && order.status == 'Yet to accept'">
+						<span class="drivername">{{order.vehiclenumber}}</span>
+					</div>
+					<div data-ng-show="order.status == 'Accepted'">									
+						<span class="drivername">{{order.vehiclenumber}}</span> </br>
+						<small>Accepted @ {{order.acceptedon}}</small>
+					</div>
+					<div data-ng-show="order.status == 'Picked up'">
+						<span class="drivername">{{order.vehiclenumber}}</span> </br>
+						<small>Picked @ {{order.pickedon}}</small>
+					</div>
+					<div data-ng-show="order.status == 'Delivered'">
+						<span class="drivername">{{order.vehiclenumber}}</span> </br>
+						<small>{{order.pickedon}} - {{order.deliveredon}}</small>
+					</div>
+				</div>
+				<div data-ng-show="order.status == null && order.deviceid != null && vm.istoday==false" style="float:right">
+					<span class="drivername">{{order.vehiclenumber}}</span> </br>
+				</div>
+				<div data-ng-show="order.status == null && vm.istoday == true" style="float:right">
+					<div class="dropdown" data-ng-show="order.deviceid == null">
+						<button class="btn btn-default dropbtn orderdisplaybtn" data-ng-click="vm.dropdownclicked(order.ordernumber)">Assign</button>
+						   <div id="userdropdown{{order.ordernumber}}" class="dropdown-content">
+							    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)">{{user.vehiclenumber}}</a>
+						   </div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12" data-ng-show="!vm.showallcars && vm.filterOrders.length==0">
+			<br/>
+			<p class="text-muted"></span>No orders available for selected filters.</p>
+			<br/>
+		</div>
+	</div> <!-- row -->
+</div> <!--container -->

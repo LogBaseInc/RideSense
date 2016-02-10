@@ -22,6 +22,7 @@ define(['angular',
             var tags = [];
             vm.tagsoption = [];
             vm.selectedTag = "All";
+            vm.selectedStatus = "All";
 
             vm.orderidshow = false;
             vm.nameshow = false;
@@ -32,11 +33,25 @@ define(['angular',
             vm.tagsshow = false;
             vm.statusshow = false;
             vm.selectedcolumns = [];
+            vm.isdesktop = utility.IsDesktop();
+            vm.filterOrders = [];
 
             activate();
             function activate() {
                 setColumnOptions();
                 $rootScope.routeSelection = 'orders';
+
+                vm.tagsoption = [];
+                vm.tagsoption.push({name:"All", value:"All"});
+
+                vm.statusoption=[];
+                vm.statusoption.push({name:"All", value:"All"});
+                vm.statusoption.push({name:"Unassigned", value:"Unassigned"});
+                vm.statusoption.push({name:"Yet to accept", value:"Yet to accept"});
+                vm.statusoption.push({name:"Accepted", value:"Accepted"});
+                vm.statusoption.push({name:"Picked up", value:"Picked up"});
+                vm.statusoption.push({name:"Delivered", value:"Delivered"});
+
                 getOrderColumns();
                 isDateFiledSupported();
                 setTodayDate();
@@ -151,6 +166,7 @@ define(['angular',
                 spinner.show();
                 var alltagsref = new Firebase(config.firebaseUrl+'accounts/'+accountid+"/"+'settings/tags');
                 alltagsref.once("value", function(snapshot) {
+                    vm.tagsoption = [];
                     if(snapshot.val() != null && snapshot.val() != undefined) {
                         tags = snapshot.val();
                         vm.tagsoption = [];
@@ -298,7 +314,6 @@ define(['angular',
                 ref.on("value", function(snapshot) {
                     var data = snapshot.val();
                     if(data != null) {
-
                         if(data.Deliveredon != null && data.Deliveredon != undefined) {
                             orderdetail.status = "Delivered";
                             orderdetail.pickedon = moment(data.Pickedon).format('hh:mm A');
@@ -312,8 +327,9 @@ define(['angular',
                             orderdetail.acceptedon = moment(data.Acceptedon).format('hh:mm A');
                             orderdetail.status = "Accepted";
                         }
-                        else
-                            orderdetail.status = null;
+                        else {
+                            orderdetail.status = "Yet to accept";
+                        }
 
                         if(data.Pickedon != null && data.Pickedon != undefined &&
                            data.Deliveredon != null && data.Deliveredon != undefined) {
@@ -372,16 +388,32 @@ define(['angular',
 
             vm.tagfilter = function() {
                 if(vm.selectedTag != "All")
-                    vm.filterOrders = _.filter(vm.orders, function(order){ 
+                    vm.tagfilterOrders = _.filter(vm.orders, function(order){ 
                         for(var i = 0; i < order.tagsdetail.length; i++) {
                             if(order.tagsdetail[i].tag.toLowerCase() == vm.selectedTag.toLowerCase())
                                 return true;
                         }
                         return false;
                     });
-                
                 else 
-                    vm.filterOrders = vm.orders;
+                    vm.tagfilterOrders = vm.orders;
+
+                vm.statusfilter();
+            }
+
+            vm.statusfilter = function() {
+                if(vm.selectedStatus != "All")
+                    vm.filterOrders = _.filter(vm.tagfilterOrders, function(order){ 
+                        if(vm.selectedStatus != "Unassigned") {
+                            if(order.status != null && order.status != undefined && order.status.toLowerCase() == vm.selectedStatus.toLowerCase()) return true;
+                        }
+                        else {
+                            if(order.status == null || order.status == undefined) return true;
+                        }
+                        return false;
+                    });
+                else 
+                    vm.filterOrders = vm.tagfilterOrders;
             }
 
             vm.addOrder = function() {
@@ -417,7 +449,7 @@ define(['angular',
                assignorders.Amount = order.amount;
                assignorders.Mobile = order.mobilenumber;
                assignorders.Time = order.time;
-               assignorders.Notes = order.notes;
+               assignorders.Notes = (order.notes != null && order.notes != undefined) ? order.notes : "";
                if(order.productname != null && order.productname != undefined) {
                   assignorders.Items = [];
                   assignorders.Items.push({Name: order.productname, Description: order.productdesc});
