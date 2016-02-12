@@ -32,7 +32,9 @@ define(['angular'], function (angular) {
                 getTimeInMins : getTimeInMins,
                 getOrderSelected : getOrderSelected,
                 setOrderSelected : setOrderSelected,
-                getDateFromString : getDateFromString
+                getDateFromString : getDateFromString,
+                getSourcePincode : getSourcePincode,
+                setSourcePincode : setSourcePincode
             };
             
             function applyscope($scope) {
@@ -138,6 +140,18 @@ define(['angular'], function (angular) {
 
             function setOrderSelected(order) {
                 sessionStorage.setItem('selectedorder', (order != null ? angular.toJson(order, true) : null));
+            }
+
+            function getSourcePincode() {
+                var sourcepincode = sessionStorage.getItem('sourcepincode');
+                if (sourcepincode != null && sourcepincode != undefined)
+                    return sourcepincode;
+                else
+                    return null                
+            }
+
+            function setSourcePincode(pincode) {
+                sessionStorage.setItem('sourcepincode', pincode);
             }
 
             function closekeyboard(element) {

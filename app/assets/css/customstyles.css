@@ -964,9 +964,10 @@ ul#strength {
 }
 
 .tagsborder {
-    border: 1px solid #d5d5d5;
+    border: 1px solid rgba(211, 211, 211, 0.23);
     border-radius: 4px !important;
-    min-height: 34px;
+    min-height: 44px;
+    background: rgba(211, 211, 211, 0.23);
 }
 
 .unusedtagsborder {
@@ -1087,6 +1088,9 @@ ul#strength {
         left: 0px !important;
         float: left !important;
     }
+    .checkdist {
+        margin-top: -20px;
+    }
 }
 
 .multiselectdiv {
@@ -1111,4 +1115,12 @@ ul#strength {
 .drivername {
     color:#337ab7;
     font-weight: 500;
+}
+
+.sortorder:after {
+  content: '\25b2';
+}
+
+.sortorder.reverse:after {
+  content: '\25bc';
 }

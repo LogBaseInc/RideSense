@@ -14,7 +14,7 @@ define(['angular',
         	vm.uploadorders = function() {
         		if(vm.selectedfile != null && vm.selectedfile != undefined) {
 	        		if(vm.selectedfile.name.indexOf(".xlsx") > 0) {
-	        			/*spinner.show();
+	        			spinner.show();
 	        			vm.buttondisabled = true;
 		        		var reader = new FileReader();
 		                reader.onload = function(readerEvt) {
@@ -24,7 +24,7 @@ define(['angular',
 		                    var obj = xlsx(base64);
 		                    parseExcelRows(obj);
 		                };
-		                reader.readAsBinaryString(vm.selectedfile);*/
+		                reader.readAsBinaryString(vm.selectedfile);
 		            }
 		            else {
 		            	notify.error("Upload only .xlsx file.")
@@ -44,7 +44,7 @@ define(['angular',
 	        				var addcount = 0;
 	        				for(var j = 1; j < records.length; j++) {
 	        					var orderinfo = records[j];
-	        					if(orderinfo.length == 11 && 
+	        					if(orderinfo.length >= 11 && 
 	        					   orderinfo[0] != null && orderinfo[0] != undefined && orderinfo[0] != "" && orderinfo[0] != "-" && orderinfo[0].toString() != "NaN" &&
 	        					   orderinfo[1] != null && orderinfo[1] != undefined && orderinfo[1] != "" && orderinfo[1] != "-" && orderinfo[1].toString() != "NaN" &&
 	        					   orderinfo[2] != null && orderinfo[2] != undefined && orderinfo[2] != "" && orderinfo[2] != "-" && orderinfo[2].toString() != "NaN" &&
@@ -57,6 +57,7 @@ define(['angular',
 		        						addcount = addcount+1;
 
 			        					var order = {};
+                                        order.createdat = new Date().getTime();
 			        					order.ordernumber = orderinfo[0];
 			        					order.name = orderinfo[1];
 			        					order.address = orderinfo[2];

@@ -19,10 +19,10 @@
                             <div class="space-6"></div>
                             <div class="form-group" data-ng-class="{ 'has-error': loginform.txtUsername.$invalid && loginform.txtUsername.$touched }">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="text" class="form-control" name="txtUsername" id="txtUsername" data-ng-click="vm.hide();" name="txtUsername" ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/" data-ng-model="vm.userName" required placeholder="Username">
+                                    <input type="text" class="form-control" name="txtUsername" id="txtUsername" data-ng-click="vm.hide();" name="txtUsername" ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/" data-ng-model="vm.userName" required placeholder="Email ID">
                                 </span>
                                 <div data-ng-messages="loginform.txtUsername.$error" data-ng-if="vm.interacted(loginform.txtUsername)" class="error-messages">
-                                    <div ng-message="required">Username required</div>
+                                    <div ng-message="required">Email ID required</div>
                                     <div ng-message="pattern">Enter a valid Email ID</div>
                                 </div>
                             </div>
@@ -81,10 +81,10 @@
 
                                 <div class="form-group" data-ng-class="{ 'has-error': forgotpassform.txtuseremail.$invalid && forgotpassform.txtuseremail.$touched }">
                                     <span class="block input-icon input-icon-right">
-                                        <input type="email" class="form-control" placeholder="Email" data-ng-model="vm.useremail" name="txtuseremail" required ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/">
+                                        <input type="email" class="form-control" placeholder="Email ID" data-ng-model="vm.useremail" name="txtuseremail" required ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/">
                                     </span>
                                     <div data-ng-messages="forgotpassform.txtuseremail.$error" data-ng-if="vm.interacted(forgotpassform.txtuseremail)" class="error-messages">
-                                        <div ng-message="required">Username required</div>
+                                        <div ng-message="required">Email ID required</div>
                                         <div ng-message="pattern">Enter a valid Email ID</div>
                                     </div>
                                 </div>
@@ -127,10 +127,10 @@
 
                             <div class="form-group" data-ng-class="{ 'has-error': signupform.textnewemail.$invalid && signupform.textnewemail.$touched }">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="text" class="form-control" data-ng-model="vm.newuser.email" placeholder="Username" name="textnewemail" required ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/">
+                                    <input type="text" class="form-control" data-ng-model="vm.newuser.email" placeholder="Email ID" name="textnewemail" required ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/">
                                 </span>
                                 <div data-ng-messages="signupform.textnewemail.$error" data-ng-if="vm.interacted(signupform.textnewemail)" class="error-messages">
-                                    <div ng-message="required">Username required</div>
+                                    <div ng-message="required">Email ID required</div>
                                     <div ng-message="pattern">Enter a valid Email ID</div>
                                 </div>
                             </div>

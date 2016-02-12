@@ -37,7 +37,16 @@ define(['angular',
             vm.filterOrders = [];
 
             activate();
+            $scope.ordersort = function(predicate) {
+              $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+              $scope.predicate = predicate;
+            };
+
             function activate() {
+                $scope.predicate = 'time';
+                $scope.reverse = false;
+                
+
                 setColumnOptions();
                 $rootScope.routeSelection = 'orders';
 
@@ -175,6 +184,9 @@ define(['angular',
                             vm.tagsoption.push({name:prop, value:prop});
                         }
                     }
+                    else {
+                        vm.tagsoption.push({name:"All", value:"All"});
+                    }
                     getUnAssignOrders();
                 }, 
                 function(errorObject) {
@@ -244,6 +256,7 @@ define(['angular',
                         }
 
                         orderdetail.timetosort = (isNaN(parseInt(timesplit[0])) ? 24 : (ispm ? (parseInt(timesplit[0])+12) : parseInt(timesplit[0])));
+                        orderdetail.createdat = (orderinfo.createdat != null && orderinfo.createdat != undefined) ? getCreatedTime(orderinfo.createdat) : null;
                         orderdetail.ordernumber = orderprop;
                         orderdetail.name = orderinfo.name;
                         orderdetail.address = orderinfo.address;
@@ -264,7 +277,7 @@ define(['angular',
                         orderdetail.productdesc = orderinfo.productdesc;
                         orderdetail.productname = orderinfo.productname;
                         orderdetail.notes = orderinfo.notes;
-                        orderdetail.url = orderinfo.url;
+                        orderdetail.url = ((orderinfo.url != null && orderinfo.url != undefined && orderinfo.url != "") ? orderinfo.url : null);
                         orderdetail.tags = orderinfo.tags;
                         orderdetail.tagsdetail = [];
                         if(orderinfo.tags != null && orderinfo.tags != undefined && orderinfo.tags != "") {
@@ -299,6 +312,10 @@ define(['angular',
                     spinner.hide(); 
                     utility.applyscope($scope);
                 });
+            }
+
+            function getCreatedTime(unixtimestamp) {
+                return moment((unixtimestamp)).format("MMM DD, YYYY hh:mm a");
             }
 
             function SortByTime(a, b){

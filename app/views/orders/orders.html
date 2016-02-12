@@ -19,7 +19,7 @@
 						<div class="orderfilter" >
 							<h5 class="tm-heading tripsheading" style="margin-right:5px">Delivery date</h5>
 							<input class="width170" data-ng-if="vm.isdatesupport" id="ordersdate" type="date" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)">
-							<div data-ng-if="!vm.isdatesupport" class="width170">
+							<div data-ng-if="!vm.isdatesupport" class="width170" style="display: inline-block">
 					            <div class='input-group date' lb-datepicker>
 					                <input type='text' class="form-control" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)"/>
 					                <span class="input-group-addon">
@@ -51,18 +51,28 @@
 				<table id="ordertable" name="ordertable">
 					<thead>
 						<tr class="cakebeecolor">
-							<th data-ng-show="vm.orderidshow">Order</th>
-							<th data-ng-show="vm.nameshow">Customer name</th>
+							<th data-ng-show="vm.orderidshow" ng-click="ordersort('orderid')"> Order
+								<span class="sortorder" ng-show="predicate == 'orderid'" ng-class="{reverse:reverse}"></span>
+							</th>
+							<th data-ng-show="vm.nameshow" ng-click="ordersort('name')"> Customer name
+								<span class="sortorder" ng-show="predicate == 'name'" ng-class="{reverse:reverse}"></span>
+							</th>
 							<th data-ng-show="vm.deliverytimeshow">Delivery time</th>
-							<th data-ng-show="vm.amountshow">Amount to collect </th>
-							<th data-ng-show="vm.addressshow">Address</th>	
-							<th data-ng-show="vm.itemsshow">Items</th>
+							<th data-ng-show="vm.amountshow" ng-click="ordersort('amount')">Amount to collect 
+								<span class="sortorder" ng-show="predicate == 'amount'" ng-class="{reverse:reverse}"></span>
+							</th>
+							<th data-ng-show="vm.addressshow" ng-click="ordersort('address')">Address
+								<span class="sortorder" ng-show="predicate == 'address'" ng-class="{reverse:reverse}"></span>
+							</th>	
+							<th data-ng-show="vm.itemsshow" ng-click="ordersort('items')">Items
+								<span class="sortorder" ng-show="predicate == 'items'" ng-class="{reverse:reverse}"></span>
+							</th>
 							<th data-ng-show="vm.tagsshow">Tags</th>
 							<th data-ng-show="vm.statusshow">Status</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr data-ng-repeat="order in vm.filterOrders | filter: vm.search" data-ng-click="vm.orderClicked(order)">
+						<tr data-ng-repeat="order in vm.filterOrders | filter: vm.search | orderBy:predicate:reverse" data-ng-click="vm.orderClicked(order)">
 							<td data-ng-show="vm.orderidshow">
 								<span data-ng-if="order.url == null || order.url == undefined">{{order.ordernumber}}</span>
 								<a data-ng-if="order.url != null && order.url != undefined" href="{{order.url}}" target="_blank" data-ng-click="vm.linkClicked(order.url)">{{order.ordernumber}}</a>
@@ -87,15 +97,15 @@
 										<span>{{order.vehiclenumber}}</span>
 									</div>
 									<div data-ng-if="order.status == 'Accepted'">									
-										<span>{{order.vehiclenumber}}</span> </br>
+										<span>{{order.vehiclenumber}}</span> <br/>
 										<small>Accepted @ {{order.acceptedon}}</small>
 									</div>
 									<div data-ng-if="order.status == 'Picked up'">
-										<span>{{order.vehiclenumber}}</span> </br>
+										<span>{{order.vehiclenumber}}</span> <br/>
 										<small>Picked @ {{order.pickedon}}</small>
 									</div>
 									<div data-ng-if="order.status == 'Delivered'">
-										<span>{{order.vehiclenumber}}</span> </br>
+										<span>{{order.vehiclenumber}}</span> <br/>
 										<small>{{order.pickedon}} - {{order.deliveredon}}</small>
 									</div>
 								</div>

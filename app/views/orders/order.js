@@ -2,8 +2,8 @@ define(['angular',
     'config.route',
     'lib'], function (angular, configroute) {
     (function () {
-        configroute.register.controller('order', ['$rootScope', '$routeParams' ,'$scope', '$location', 'config', 'spinner', 'notify', 'sessionservice', 'utility', '$window', order]);
-        function order($rootScope, $routeParams, $scope, $location, config, spinner, notify, sessionservice, utility, $window) {
+        configroute.register.controller('order', ['$rootScope', '$routeParams' , '$http', '$scope', '$location', 'config', 'spinner', 'notify', 'sessionservice', 'utility', '$window', order]);
+        function order($rootScope, $routeParams, $http, $scope, $location, config, spinner, notify, sessionservice, utility, $window) {
             var vm = this;
             var submitted = false;
             vm.order = {};
@@ -14,6 +14,10 @@ define(['angular',
             var alltagsref = null;
             vm.alltags = [];
             var accountid = sessionservice.getaccountId();
+            vm.checkdistance = false;
+            vm.showdistance = false;
+            vm.spincode = utility.getSourcePincode();;
+            vm.country = "";
 
             Object.defineProperty(vm, 'canAdd', {
                 get: canAdd
@@ -23,14 +27,19 @@ define(['angular',
                 return submitted || field.$dirty;
             };
 
+            Object.defineProperty(vm, 'canCheckDist', {
+                get: canCheckDist
+            });
+
             activate();
 
             function activate() {
                 initializeUnusedTags();
                 $rootScope.routeSelection = 'orders';
                 vm.isOrderEdit = false;
-                
+
                 isDateFiledSupported();
+                getCountryName();
 
                 if(utility.getOrderSelected() != null) {
                     vm.order = utility.getOrderSelected();
@@ -52,12 +61,20 @@ define(['angular',
                 }
                 else {
                     vm.order.tagsdetail = [];
+                    vm.order.createdat = null;
                     vm.time1 = "8:00 AM"
                     vm.time2 = "6:00 PM"
                     setTodayDate();
                 }
                 vm.tagsdetail = vm.order.tagsdetail;
+
                 initializeTagColors();
+            }
+
+            function getCountryName() {
+                $.getJSON("http://freegeoip.net/json/", function (data) {
+                    vm.country = data.country_name;
+                });
             }
 
             function initializeTagColors() {
@@ -203,6 +220,8 @@ define(['angular',
                 submitted = true;
                 spinner.show();
                 
+                vm.order.createdat = new Date().getTime();
+                
                 if(vm.order.amount == null || vm.order.amount == undefined)
                     vm.order.amount = 0;
                
@@ -212,6 +231,61 @@ define(['angular',
                 vm.order.deliverydate = vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
                 vm.order.time = vm.time1 + "-" + vm.time2;
                 checkOrderNumber();
+            }
+
+            function canCheckDist() {
+                return (vm.spincode != null && vm.spincode != undefined && vm.dpincode != null && vm.dpincode != undefined);
+            }
+
+            vm.caldistance = function() {
+                vm.caldist = "";
+                vm.showdistance = "";
+                var origins = [];
+                origins.push(vm.spincode + " " +vm.country);
+
+                var destinations = [];
+                destinations.push(vm.dpincode + " " +vm.country);
+              
+                var service = new google.maps.DistanceMatrixService();
+                service.getDistanceMatrix(
+                {
+                    origins: origins,
+                    destinations: destinations,
+                    travelMode: google.maps.TravelMode.DRIVING,
+                    unitSystem: google.maps.UnitSystem.METRIC,
+                    avoidHighways: false,
+                    avoidTolls: false
+                }, function(response, status) {
+                    if(status == 'OK') {
+                        if(response.rows.length >0 && response.rows[0].elements.length > 0 && response.rows[0].elements[0].status == 'OK') {
+                            vm.caldist = response.rows[0].elements[0].distance.text;
+                            vm.caltime = response.rows[0].elements[0].duration.text;
+                            vm.showdistance = true;
+                        }
+                        else {
+                          notify.warning("No route found.")
+                          vm.showdistance = false;
+                        }
+                    }
+                    else {
+                        notify.error("Something went wrong, please try after some time");
+                        vm.showdistance = false;
+                    }
+
+                    utility.applyscope($scope);
+                });
+            }
+
+            vm.closecheckdistance = function() {
+                if(vm.spincode != null && vm.spincode != undefined) {
+                    utility.setSourcePincode(vm.spincode);
+                }
+                vm.checkdistance = false;
+                vm.showdistance = false;
+                vm.caldist = "";
+                vm.showdistance = "";
+                vm.spincode = utility.getSourcePincode();;
+                vm.dpincode = null;
             }
 
             function setTags() {

@@ -72,10 +72,10 @@ define(['angular',
                     var ref1 = new Firebase(config.firebaseUrl+'users/'+data.uid+'/');
                     ref1.once("value", function(snapshot) {
                         if(snapshot.val() != null && snapshot.val().account) {
-                            if(snapshot.val().emailverified === true)
+                            //if(snapshot.val().emailverified === true)
                                 loginCompleted(data, snapshot.val().account);
-                            else
-                                emailNotVerified(data.uid, snapshot.val().account);
+                            //else
+                                //emailNotVerified(data.uid, snapshot.val().account);
                         }
                         else {
                             spinner.hide();

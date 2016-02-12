@@ -92,29 +92,6 @@ define(['angular', 'utility'], function (angular) {
                 }
             }
 
-            /*function getOrderTracking() {
-                var ordertracking = localStorage.getItem('ordertracking');
-                if (ordertracking != null && ordertracking != undefined)
-                    return ordertracking == "true" ? true : false;
-                else
-                    return false;
-            }*/
-
-            /*function setOrderTracking() {
-                var ordertrackingref = new Firebase(config.firebaseUrl+'accounts/'+getaccountId()+"/"+'ordertracking');
-                ordertrackingref.once("value", function(snapshot) {
-                    var ordertracking = false;
-
-                    if(snapshot.val() != null && snapshot.val() == true) 
-                        ordertracking = true;
-                        
-                    localStorage.setItem('ordertracking', ordertracking);
-                    $rootScope.$emit('login:ordertracking', {ordertracking: ordertracking});
-
-                }, function(errorObject) {
-                });
-            }*/
-
             function getEncodedusername() {
                 var session = null;
                 var user = localStorage.getItem('useridentity');
