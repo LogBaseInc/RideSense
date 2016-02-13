@@ -54,21 +54,27 @@
 							<th data-ng-show="vm.orderidshow" ng-click="ordersort('orderid')"> Order
 								<span class="sortorder" ng-show="predicate == 'orderid'" ng-class="{reverse:reverse}"></span>
 							</th>
+
 							<th data-ng-show="vm.nameshow" ng-click="ordersort('name')"> Customer name
 								<span class="sortorder" ng-show="predicate == 'name'" ng-class="{reverse:reverse}"></span>
 							</th>
-							<th data-ng-show="vm.deliverytimeshow">Delivery time</th>
+							<th data-ng-show="vm.deliverytimeshow" ng-click="ordersort(null)">Delivery time</th>
+
 							<th data-ng-show="vm.amountshow" ng-click="ordersort('amount')">Amount to collect 
 								<span class="sortorder" ng-show="predicate == 'amount'" ng-class="{reverse:reverse}"></span>
 							</th>
+
 							<th data-ng-show="vm.addressshow" ng-click="ordersort('address')">Address
 								<span class="sortorder" ng-show="predicate == 'address'" ng-class="{reverse:reverse}"></span>
 							</th>	
+
 							<th data-ng-show="vm.itemsshow" ng-click="ordersort('items')">Items
 								<span class="sortorder" ng-show="predicate == 'items'" ng-class="{reverse:reverse}"></span>
-							</th>
-							<th data-ng-show="vm.tagsshow">Tags</th>
-							<th data-ng-show="vm.statusshow">Status</th>
+							</th>	
+
+							<th data-ng-show="vm.tagsshow" ng-click="ordersort(null)">Tags</th>
+
+							<th data-ng-show="vm.statusshow" ng-click="ordersort(null)">Status</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -84,7 +90,6 @@
 							<td data-ng-show="vm.addressshow">{{order.address}}</td>
 							<td data-ng-show="vm.itemsshow">{{order.productname}} {{order.productdesc}}</td>
 							<td data-ng-show="vm.tagsshow">
-								<span data-ng-if="order.status != null" class="badge badgestatus">{{order.status}}</span>
 								<span data-ng-repeat="tag in order.tagsdetail"class="badge {{tag.tagcolor}}">{{tag.tag}}</span>
 							</td>
 							<td data-ng-show="vm.statusshow">

@@ -38,15 +38,20 @@ define(['angular',
 
             activate();
             $scope.ordersort = function(predicate) {
-              $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
-              $scope.predicate = predicate;
+                if(predicate != null) {
+                    $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+                    $scope.predicate = predicate;
+                }
+                else {
+                    $scope.predicate = null;
+                    $scope.reverse = false;
+                }
             };
 
             function activate() {
-                $scope.predicate = 'time';
+                $scope.predicate = null;
                 $scope.reverse = false;
                 
-
                 setColumnOptions();
                 $rootScope.routeSelection = 'orders';
 

@@ -12,10 +12,9 @@
 
 					<br/>
 					<div class="form-group zeromargin" data-ng-class="{ 'has-error': orderform.textordernumber.$invalid && orderform.textordernumber.$touched }">
-						<label class="col-md-3 control-label">Order number</label>
+						<label class="col-md-3 control-label">Order number<span style="margin-left:5px">*</span></label>
 						<div class="col-md-6">
-							<input type="text" class="form-control" style="width:94%; display: inline" placeholder="Enter a Order Number" name="textordernumber" data-ng-model="vm.order.ordernumber" required ng-readonly="vm.isOrderEdit">
-							<span style="margin-left:5px; display: inline">*</span>
+							<input type="text" class="form-control" placeholder="Enter a Order Number" name="textordernumber" data-ng-model="vm.order.ordernumber" required ng-readonly="vm.isOrderEdit">
 		                    <div data-ng-messages="orderform.textordernumber.$error" data-ng-if="vm.interacted(orderform.textordernumber)" class="error-messages">
 		                        <div ng-message="required">Order number required</div>
 		                    </div>
@@ -23,10 +22,9 @@
 		            </div>
 
 					<div class="form-group zeromargin" data-ng-class="{ 'has-error': orderform.textmobilenumber.$invalid && orderform.textmobilenumber.$touched }">
-						<label class="col-md-3 control-label">Customer mobile number</label>
+						<label class="col-md-3 control-label">Customer mobile number<span style="margin-left:5px">*</span></label>
 						<div class="col-md-6">
-							<input type="text" class="form-control" style="width:94%; display: inline" placeholder="Enter a Customer Mobile Number" name="textmobilenumber" data-ng-model="vm.order.mobilenumber" required ng-pattern="/^[0-9+]*$/">
-							<span style="margin-left:5px; display: inline">*</span>
+							<input type="text" class="form-control" placeholder="Enter a Customer Mobile Number" name="textmobilenumber" data-ng-model="vm.order.mobilenumber" required ng-pattern="/^[0-9+]*$/">
 		                    <div data-ng-messages="orderform.textmobilenumber.$error" data-ng-if="vm.interacted(orderform.textmobilenumber)" class="error-messages">
 		                        <div ng-message="required">Customer mobile number required</div>
 		                        <div ng-message="pattern">Enter a valid mobile number</div>
@@ -35,10 +33,9 @@
 					</div>
 
 					<div class="form-group zeromargin" data-ng-class="{ 'has-error': orderform.textcustomername.$invalid && orderform.textcustomername.$touched }">
-						<label class="col-md-3 control-label">Customer name</label>
+						<label class="col-md-3 control-label">Customer name<span style="margin-left:5px">*</span></label>
 						<div class="col-md-6">
-							<input type="text" class="form-control" placeholder="Enter a Customer Name" style="width:94%; display: inline" name="textcustomername" data-ng-model="vm.order.name" required>
-							<span style="margin-left:5px; display: inline">*</span>
+							<input type="text" class="form-control" placeholder="Enter a Customer Name" name="textcustomername" data-ng-model="vm.order.name" required>
 		                    <div data-ng-messages="orderform.textcustomername.$error" data-ng-if="vm.interacted(orderform.textcustomername)" class="error-messages">
 		                        <div ng-message="required">Customer name required</div>
 		                    </div>
@@ -46,10 +43,9 @@
 					</div>
 					
 					<div class="form-group zeromargin" data-ng-class="{ 'has-error': orderform.textcustomeraddress.$invalid && orderform.textcustomeraddress.$touched }">
-						<label class="col-md-3 control-label">Customer address</label>
+						<label class="col-md-3 control-label">Customer address<span style="margin-left:5px">*</span></label>
 						<div class="col-md-6">
-							<textarea type="text" class="form-control" style="width:94%; display: inline" placeholder="Enter a Customer Address" name="textcustomeraddress" data-ng-model="vm.order.address" required></textarea>
-							<span style="margin-left:5px; display: inline">*</span>
+							<textarea type="text" class="form-control" placeholder="Enter a Customer Address" name="textcustomeraddress" data-ng-model="vm.order.address" required></textarea>
 		                    <div data-ng-messages="orderform.textcustomeraddress.$error" data-ng-if="vm.interacted(orderform.textcustomeraddress)" class="error-messages">
 		                        <div ng-message="required">Customer address required</div>
 		                    </div>
@@ -67,14 +63,14 @@
 			        <div class="form-group zeromargin">
 						<label class="col-md-3 control-label">Items</label>
 						<div class="col-md-6">
-							<textarea type="text" class="form-control" style="width:94%;" placeholder="Enter a Product Name" name="textproductname" data-ng-model="vm.items"></textarea>
+							<textarea type="text" class="form-control" placeholder="Enter a Product Name" name="textproductname" data-ng-model="vm.items"></textarea>
 		                </div>
 					</div>
 
 					<div class="form-group zeromargin" data-ng-class="{ 'has-error': orderform.textamount.$invalid && orderform.textamount.$touched }">
 						<label class="col-md-3 control-label">Amount to collect from customer</label>
 						<div class="col-md-6">
-							<input type="text" class="form-control" style="width:94%;" placeholder="Enter a amount to collect from customer" name="textamount" data-ng-model="vm.order.amount" ng-pattern="/^[0-9+]*$/">
+							<input type="text" class="form-control" placeholder="Enter a amount to collect from customer" name="textamount" data-ng-model="vm.order.amount" ng-pattern="/^[0-9+]*$/">
 		                    <div data-ng-messages="orderform.textamount.$error" data-ng-if="vm.interacted(orderform.textamount)" class="error-messages">
 		                        <div ng-message="required">Amount to collect from customer required</div>
 		                        <div ng-message="pattern">Enter a valid amount</div>
@@ -83,9 +79,9 @@
 					</div>
 
 					<div class="form-group zeromargin">
-						<label class="col-md-3 control-label">Delivery date</label>
+						<label class="col-md-3 control-label">Delivery date<span style="margin-left:5px;">*</span></label>
 						<div class="col-md-6">						
-							<input data-ng-if="vm.isdatesupport" id="orderdate" type="date" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)" ng-readonly="vm.isOrderEdit" style="width:94%; display: inline">
+							<input data-ng-if="vm.isdatesupport" id="orderdate" type="date" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)" ng-readonly="vm.isOrderEdit">
 							<div data-ng-if="!vm.isdatesupport" class="col-xs-1 form-group" style="width:94%; display: inline">
 					            <div data-ng-if="!vm.isdatesupport" class="col-xs-1 form-group width170">
 					            <div class='input-group date' lb-datepicker >
@@ -96,35 +92,32 @@
 			            			</div>
 			        			</div>
 					        </div>
-					        <span style="margin-left:5px; display: inline">*</span>
 					    </div>
 			        </div>
 
 			        <div class="form-group zeromargin">
-						<label class="col-md-3 control-label">Delivery time</label>
+						<label class="col-md-3 control-label">Delivery time<span style="margin-left:5px;">*</span></label>
 				        <div id="time-range" class="col-md-6">
-				        	<div style="width:94%;">
-							    <p>Time Range: <span class="slider-time">{{vm.time1}}</span> - <span class="slider-time2">{{vm.time2}}</span>
+						    <p>Time Range: <span class="slider-time">{{vm.time1}}</span> - <span class="slider-time2">{{vm.time2}}</span>
 
-							    </p>
-							    <div class="sliders_step1">
-							        <div id="slider-range" time-slider timeone="vm.time1" timetwo="vm.time2"></div>
-							    </div>
-							</div>
+						    </p>
+						    <div class="sliders_step1">
+						        <div id="slider-range" time-slider timeone="vm.time1" timetwo="vm.time2"></div>
+						    </div>
 						</div>
 					</div>
 
 					<div class="form-group zeromargin">
 						<label class="col-md-3 control-label">Notes</label>
 						<div class="col-md-6">
-							<textarea type="text" class="form-control" style="width:94%;" placeholder="Notes" name="textnotes" data-ng-model="vm.order.notes"></textarea>
+							<textarea type="text" class="form-control" placeholder="Notes" name="textnotes" data-ng-model="vm.order.notes"></textarea>
 		                </div>
 					</div>
 
 					<div class="form-group zeromargin">
 						<label class="col-md-3 control-label">Tags</label>
 		                <div class="col-md-6">
-		                	<div class="tagsborder" style="width:94%;">
+		                	<div class="tagsborder">
 		                		<div style="margin-top:5px; margin-left:5px">
 									<a data-ng-repeat="tag in vm.tagsdetail" data-ng-click="vm.removetag(tag)" class="badge {{tag.tagcolor}}">{{tag.tag}}</a>
 								</div>
