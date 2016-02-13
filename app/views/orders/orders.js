@@ -65,6 +65,7 @@ define(['angular',
                 vm.statusoption.push({name:"Accepted", value:"Accepted"});
                 vm.statusoption.push({name:"Picked up", value:"Picked up"});
                 vm.statusoption.push({name:"Delivered", value:"Delivered"});
+                vm.statusoption.push({name:"Cancelled", value:"Cancelled"});
 
                 getOrderColumns();
                 isDateFiledSupported();
@@ -307,7 +308,14 @@ define(['angular',
                         orderindex[orderprop] = {};
                         orderindex[orderprop].index  = vm.orders.length;
 
-                        setAssignedOrdersRef(orderdetail, date);
+                        if(orderinfo.cancelled == true) {
+                            orderdetail.status = "Cancelled";
+                            orderdetail.cancelled = true;
+                        }
+                        else {
+                            orderdetail.cancelled = false;
+                            setAssignedOrdersRef(orderdetail, date);
+                        }
 
                         vm.orders.push(orderdetail);
                     }

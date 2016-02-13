@@ -62,6 +62,7 @@ define(['angular',
                 else {
                     vm.order.tagsdetail = [];
                     vm.order.createdat = null;
+                    vm.order.cancelled = false;
                     vm.time1 = "8:00 AM"
                     vm.time2 = "6:00 PM"
                     setTodayDate();
@@ -155,8 +156,10 @@ define(['angular',
             }
 
             vm.removetag = function(tag) {
-                vm.tagsdetail = _.reject(vm.tagsdetail, function(el) { return el.tag === tag.tag; });
-                vm.unusedtags.push(tag);
+                if(vm.order.cancelled != true) {
+                    vm.tagsdetail = _.reject(vm.tagsdetail, function(el) { return el.tag === tag.tag; });
+                    vm.unusedtags.push(tag);
+                }
             }
 
             vm.createNewTag = function() {
@@ -379,6 +382,31 @@ define(['angular',
                 }
 
                 notify.success('Order deleted successfully');
+                vm.cancel();
+            }
+
+            vm.cancelorder = function() {
+                vm.iscancel = true;
+            }
+
+            vm.cancelcancelled = function() {
+                vm.iscancel = false;
+            }
+
+            vm.cancelconfirm = function() {
+                vm.order.deliverydate = vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
+                submitted = true;
+                spinner.show();
+
+                var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+vm.order.deliverydate+"/"+vm.order.ordernumber+"/cancelled");
+                ordersref.set(true);
+
+                if(vm.order.deviceid != null && vm.order.deviceid != undefined) {
+                    var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber);
+                    ordersref.remove();
+                }
+
+                notify.success('Order cancelled successfully');
                 vm.cancel();
             }
 

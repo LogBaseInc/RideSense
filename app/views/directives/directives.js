@@ -27,6 +27,7 @@ define(['angular',
 
             element.slider({
               range: true,
+              disabled: scope.iscancelled,
               min: 0,
               max: 1440,
               step: 30,
@@ -44,7 +45,8 @@ define(['angular',
             link: linkFn,
             scope: {
               timeone: '=',
-              timetwo: '='
+              timetwo: '=',
+              iscancelled: '='
             },
         };
       }]);
