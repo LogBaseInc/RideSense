@@ -50,7 +50,7 @@ define(['angular',
             },
         };
       }]);
-      
+
       configroute.register.directive('googlePlaces', ['$rootScope', function($rootScope){
         return {
             restrict:'E',

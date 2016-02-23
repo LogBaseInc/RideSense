@@ -1,5 +1,5 @@
 require.config({
-    urlArgs: '7.2',
+    urlArgs: '7.4',
     waitSeconds: 0,
     paths: {
         angular: '../bower_components/angular/angular',
@@ -33,7 +33,7 @@ require.config({
         'jszip-inflate' : 'scripts/jszip-inflate',
         'jszip-load' : 'scripts/jszip-load',
         'xlxs' : 'scripts/xlsx',
-        'multiselect' : '../bower_components/angularjs-dropdown-multiselect/src/angularjs-dropdown-multiselect'
+        'multiselect' : '../bower_components/angularjs-dropdown-multiselect/src/angularjs-dropdown-multiselect',
     },
     shim: {
         angular: {
@@ -64,7 +64,8 @@ require.config({
         'loggly': ['angular'],
         'ngbootbox': ['angular'],
         'fileupload' : ['angular'],
-        'xlxs' : ['jszip', 'jszip-deflate', 'jszip-inflate','jszip-load']
+        'xlxs' : ['jszip', 'jszip-deflate', 'jszip-inflate','jszip-load'],
+        'alasql' : ['jquery']
     },
 });
 

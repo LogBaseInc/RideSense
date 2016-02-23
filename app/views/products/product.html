@@ -1,0 +1,83 @@
+<div data-ng-controller="product as vm">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<br/>
+				<form class="form-horizontal" name="productform">
+					<h5 class="tm-heading" data-ng-hide="vm.isProductEdit"><span class="glyphicon glyphicon-chevron-right"></span> Add Item</h5>
+					<h5 class="tm-heading" data-ng-show="vm.isProductEdit"><span class="glyphicon glyphicon-chevron-right"></span> Update Item</h5>
+					<br/>
+					<div class="form-group zeromargin" data-ng-class="{ 'has-error': productform.textproductname.$invalid && productform.textproductname.$touched }">
+						<label class="col-md-3 control-label">Item name<span style="margin-left:5px">*</span></label>
+						<div class="col-md-6">
+							<input type="text" class="form-control" placeholder="Enter a Item Name" name="textproductname" data-ng-model="vm.product.name" required>
+		                    <div data-ng-messages="productform.textproductname.$error" data-ng-if="vm.interacted(productform.textproductname)" class="error-messages">
+		                        <div ng-message="required">Item name required</div>
+		                    </div>
+		            	</div>
+		            </div>
+
+		            <div class="form-group zeromargin" data-ng-class="{ 'has-error': productform.textdesc.$invalid && productform.textdesc.$touched }">
+						<label class="col-md-3 control-label">Description<span style="margin-left:5px">*</span></label>
+						<div class="col-md-6">
+							<textarea type="text" class="form-control" placeholder="Enter a Description" name="textdesc" data-ng-model="vm.product.description" required></textarea>
+		                    <div data-ng-messages="productform.textdesc.$error" data-ng-if="vm.interacted(productform.textdesc)" class="error-messages">
+		                        <div ng-message="required">Description required</div>
+		                    </div>
+		            	</div>
+					</div>
+
+					<div class="form-group zeromargin" data-ng-class="{ 'has-error': productform.textamount.$invalid && productform.textamount.$touched }">
+						<label class="col-md-3 control-label">Price<span style="margin-left:5px">*</span></label>
+						<div class="col-md-6">
+							<input type="text" class="form-control" placeholder="Enter Price per Unit" name="textamount" data-ng-model="vm.product.price" ng-pattern="/^[0-9.]*$/" required>
+		                    <div data-ng-messages="productform.textamount.$error" data-ng-if="vm.interacted(productform.textamount)" class="error-messages">
+		                        <div ng-message="required">Unit price required</div>
+		                        <div ng-message="pattern">Enter a valid price</div>
+		                    </div>
+		            	</div>
+					</div>
+
+					<div class="form-group zeromargin" data-ng-class="{ 'has-error': productform.selectunit.$invalid && productform.selectunit.$touched }">
+						<label class="col-md-3 control-label">Unit<span style="margin-left:5px">*</span></label>
+						<div class="col-md-6">
+							<select class="form-control" name="selectunit" data-ng-model="vm.product.unit" required>
+								<option value="Kg">Kg</option>
+								<option value="Count">Count</option>
+							</select>
+		                    <div data-ng-messages="productform.selectunit.$error" data-ng-if="vm.interacted(productform.selectunit)" class="error-messages">
+		                        <div ng-message="required">Unit required</div>
+		                    </div>
+		            	</div>
+					</div>
+
+					<div class="form-group zeromargin" data-ng-class="{ 'has-error': productform.textinventory.$invalid && productform.textinventory.$touched }">
+						<label class="col-md-3 control-label">Inventory<span style="margin-left:5px">*</span></label>
+						<div class="col-md-6">
+							<input type="text" class="form-control" placeholder="Enter Inventory" name="textinventory" data-ng-model="vm.product.inventory" ng-pattern="/^[0-9.]*$/" required>
+		                    <div data-ng-messages="productform.textinventory.$error" data-ng-if="vm.interacted(productform.textinventory)" class="error-messages">
+		                        <div ng-message="required">Inventory required</div>
+		                        <div ng-message="pattern">Enter a valid inventory</div>
+		                    </div>
+		            	</div>
+					</div>
+				</form>
+				<div>
+				 	<center data-ng-hide="vm.isdelete">
+			            <button data-ng-hide="vm.isProductEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.addproduct();" data-ng-disabled="!vm.canAdd">Add Item</button>
+			            <button data-ng-show="vm.isProductEdit && !vm.order.cancelled" type="button" class="margintop15 btn btn-default" ng-click="vm.updateproduct();" data-ng-disabled="!vm.canAdd">Update Item</button>
+			           	<button data-ng-show="vm.isProductEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.isdelete = true;">Remove Item</button>
+			           	<button type="button" class="margintop15 btn btn-default" ng-click="vm.cancel();">Go Back</button>
+			        </center>
+		        	<center data-ng-show="vm.isdelete">
+		        		<span class="errortext">Item will be removed permanently, do you want to continue? </span>
+		        		<br/>
+		        		<button style="margin-top:10px" type="button" class="btn btn-default" ng-click="vm.isdelete = false;">No</button>
+			           	<button style="margin-top:10px" type="button" class="btn btn-default" ng-click="vm.deleteconfirm();">Yes</button>
+		        	</center>
+		        	<br/><br/>
+		    	</div>
+		    </div>
+		</div> <!-- row ends -->
+	</div> <!-- container ends -->
+</div>

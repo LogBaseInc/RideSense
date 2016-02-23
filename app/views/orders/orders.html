@@ -19,9 +19,9 @@
 						<div class="orderfilter" >
 							<h5 class="tm-heading tripsheading" style="margin-right:5px">Delivery date</h5>
 							<input class="width170" data-ng-if="vm.isdatesupport" id="ordersdate" type="date" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)">
-							<div data-ng-if="!vm.isdatesupport" class="width170" style="display: inline-block">
+							<div data-ng-if="!vm.isdatesupport" class="width170" style="display: inline-block;height:22px;">
 					            <div class='input-group date' lb-datepicker>
-					                <input type='text' class="form-control" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)"/>
+					                <input type='text' class="form-control" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)">
 					                <span class="input-group-addon">
 					                    <span class="glyphicon glyphicon-calendar"></span>
 					                </span>
@@ -79,22 +79,22 @@
 					</thead>
 					<tbody>
 						<tr data-ng-repeat="order in vm.filterOrders | filter: vm.search | orderBy:predicate:reverse" data-ng-click="vm.orderClicked(order)">
-							<td data-ng-show="vm.orderidshow">
+							<td data-ng-show="vm.orderidshow" class="ordertd">
 								<span data-ng-if="order.url == null || order.url == undefined">{{order.ordernumber}}</span>
 								<a data-ng-if="order.url != null && order.url != undefined" href="{{order.url}}" target="_blank" data-ng-click="vm.linkClicked(order.url)">{{order.ordernumber}}</a>
 							</td>
 
-							<td data-ng-show="vm.nameshow"><span>{{order.name}}</span><br/><span style="margin-top:5px;">{{order.mobilenumber}}</span></td>
-							<td data-ng-show="vm.deliverytimeshow">{{order.time}}</td>
-							<td data-ng-show="vm.amountshow">Rs. {{order.amount}}</td>
-							<td data-ng-show="vm.addressshow">{{order.address}}</td>
-							<td data-ng-show="vm.itemsshow">{{order.productname}} {{order.productdesc}}</td>
-							<td data-ng-show="vm.tagsshow">
+							<td data-ng-show="vm.nameshow" class="ordertd"><span>{{order.name}}</span><br/><span style="margin-top:5px;">{{order.mobilenumber}}</span></td>
+							<td data-ng-show="vm.deliverytimeshow" class="ordertd">{{order.time}}</td>
+							<td data-ng-show="vm.amountshow" class="ordertd">Rs. {{order.amount}}</td>
+							<td data-ng-show="vm.addressshow" class="ordertd">{{order.address}} {{order.zip}}</td>
+							<td data-ng-show="vm.itemsshow" class="ordertd">{{order.productname}} {{order.productdesc}}</td>
+							<td data-ng-show="vm.tagsshow" class="ordertd">
 								<span data-ng-repeat="tag in order.tagsdetail"class="badge {{tag.tagcolor}}">{{tag.tag}}</span>
 							</td>
-							<td data-ng-show="vm.statusshow">
+							<td data-ng-show="vm.statusshow" class="ordertd">
 								<div data-ng-if="order.status != null">
-									<div data-ng-if="vm.istoday == true && order.status == 'Yet to accept'" data-ng-click="vm.unassignorder(order)">
+									<div data-ng-if="vm.istoday == true && (order.status == 'Yet to accept' || order.status == 'Accepted')" data-ng-click="vm.unassignorder(order)">
 										<span>{{order.vehiclenumber}}</span>
 										<i class="glyphicon glyphicon-remove unassgincolor marginleft10"></i>
 									</div>
@@ -102,7 +102,6 @@
 										<span>{{order.vehiclenumber}}</span>
 									</div>
 									<div data-ng-if="order.status == 'Accepted'">									
-										<span>{{order.vehiclenumber}}</span> <br/>
 										<small>Accepted @ {{order.acceptedon}}</small>
 									</div>
 									<div data-ng-if="order.status == 'Picked up'">
@@ -119,7 +118,7 @@
 								</div>
 								<div data-ng-if="order.status == null && vm.istoday == true">
 									<div class="dropdown" data-ng-if="order.deviceid == null">
-										<button class="btn btn-default dropbtn orderdisplaybtn" data-ng-click="vm.dropdownclicked(order.ordernumber)">Assign</button>
+										<button type="button" class="btn btn-default dropbtn orderdisplaybtn" data-ng-click="vm.dropdownclicked(order.ordernumber)">Assign</button>
 										   <div id="userdropdown{{order.ordernumber}}" class="dropdown-content">
 											    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)">{{user.vehiclenumber}}</a>
 										   </div>
@@ -133,9 +132,9 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="col-xs-12" data-ng-show="!vm.showallcars && vm.filterOrders.length==0">
+			<div class="col-xs-12" data-ng-show="!vm.showallcars && vm.filterOrders.length==0" style="margin-top:10%">
 				<br/>
-				<p class="text-muted"></span>No orders available for selected filters.</p>
+				<p class="text-muted center"></span>No orders available for selected filters.</p>
 				<br/>
 			</div>
 		</div> <!-- row -->

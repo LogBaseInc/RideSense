@@ -15,17 +15,19 @@ define(['angular',
                 disableDefaultUI:true,    
             }
             vm.distance = 0;
+            vm.isdatesupport = false;
 
             activate()
 
             function activate() {
                 utility.setGoogleMapConfig();
                 utility.scrollToTop();
-                
+                isDateFiledSupported();
+
                 $rootScope.routeSelection = 'orders';
 
                 vm.selectedorder = utility.getOrderSelected();
-                vm.date = moment(vm.selectedorder.date).format('MMM DD YYYY');
+                vm.date = (vm.isdatesupport == true ? moment(vm.selectedorder.date).format('MMM DD YYYY') : moment(utility.getDateFromString(vm.selectedorder.date)).format('MMM DD YYYY'));
 
                 var starttime = new Date(vm.date + " " +vm.selectedorder.pickedon);
                 var endtime = new Date(vm.date + " " +vm.selectedorder.deliveredon);
@@ -49,6 +51,16 @@ define(['angular',
                 else {
                     $location.path('/order');
                 }
+            }
+
+            function isDateFiledSupported(){
+                var datefield=document.createElement("input")
+                datefield.setAttribute("type", "date")
+                if (datefield.type != "date") { //if browser doesn't support input type="date"
+                   vm.isdatesupport = false;
+                }
+                else
+                   vm.isdatesupport = true;
             }
 
             function getTripHistory() {

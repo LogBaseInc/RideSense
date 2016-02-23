@@ -237,6 +237,33 @@ define(['angular',
                          allowAnonymous: true,
                      }
                  },
+                 {
+                     url: '/account/items',
+                     config: {
+                         templateUrl: 'views/products/products.html',
+                         title: 'items',
+                         controllerUrl: 'views/products/products',
+                         allowAnonymous: true,
+                     }
+                 },
+                 {
+                     url: '/account/item',
+                     config: {
+                         templateUrl: 'views/products/product.html',
+                         title: 'items',
+                         controllerUrl: 'views/products/product',
+                         allowAnonymous: true,
+                     }
+                 },
+                 {
+                     url: '/account/items/upload',
+                     config: {
+                         templateUrl: 'views/products/uploadproducts.html',
+                         title: 'items',
+                         controllerUrl: 'views/products/uploadproducts',
+                         allowAnonymous: true,
+                     }
+                 },
             ];
 
             return routs;

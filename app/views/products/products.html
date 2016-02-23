@@ -1,0 +1,63 @@
+<div data-ng-controller="products as vm">
+	<div class="input-group input-group-lg livemapsearch">
+		<input type="text" class="form-control tm-search-text tm-no-outline fullwidth" placeholder="Search product" data-ng-model="vm.search" 
+		 />
+	    <div class="input-group-btn">
+	    	<a type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.addProduct()"><span class="glyphicon glyphicon-plus"></span></a>
+	    	<a type="button" class="btn btn-default tm-no-outline" href="#account/items/upload"><span class="glyphicon glyphicon-file"></span></a>
+	    </div>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="row col-xs-12">
+				<div>
+					<br/>
+					<div>
+						<h5 class="tm-heading tripsheading" style="margin-left:14px;"><span class="glyphicon glyphicon-chevron-right" style="margin-right:1px"></span>Items | Total: {{vm.products.length}}
+							<a data-ng-click="vm.exportItems()" style="float:right" data-ng-if="vm.products.length > 0">Export Items</a>
+						</h5>
+				    </div>
+			    </div>
+			</div>
+			<div class="col-xs-12" data-ng-if="vm.products.length > 0">
+				<table id="producttable" name="producttable">
+					<thead>
+						<tr class="cakebeecolor">
+							<th ng-click="productsort('name')"> Item name
+								<span class="sortorder" ng-show="predicate == 'name'" ng-class="{reverse:reverse}"></span>
+							</th>
+							<th ng-click="productsort('description')"> Description
+								<span class="sortorder" ng-show="predicate == 'description'" ng-class="{reverse:reverse}"></span>
+							</th>
+							<th ng-click="productsort('price')"> Price
+								<span class="sortorder" ng-show="predicate == 'price'" ng-class="{reverse:reverse}"></span>
+							</th>
+							<th ng-click="productsort('unit')"> Unit
+								<span class="sortorder" ng-show="predicate == 'unit'" ng-class="{reverse:reverse}"></span>
+							</th>
+							<th ng-click="productsort('inventory')"> Inventory
+								<span class="sortorder" ng-show="predicate == 'inventory'" ng-class="{reverse:reverse}"></span>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-ng-repeat="product in vm.products | filter: vm.search | orderBy:predicate:reverse" data-ng-click="vm.productClicked(product)">
+							<td class="itemtd"> {{product.name}} </td>
+							<td class="itemtd"> {{product.description}} </td>
+							<td class="itemtd"> {{product.price}} </td>
+							<td class="itemtd"> {{product.unit}} </td>
+							<td class="itemtd"> {{product.inventory}} </td>
+							<td class="itemtd" data-ng-hide="'true'">{{product.uuid}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-xs-12" data-ng-show="vm.products.length==0" style="margin-top:10%">
+				<br/>
+				<p class="text-muted center"></span>No items available.</p>
+				<br/>
+			</div>
+		</div> <!-- row -->
+	</div> <!--container -->
+</div>
+

@@ -24,10 +24,11 @@
 					<div class="form-group zeromargin" data-ng-class="{ 'has-error': orderform.textmobilenumber.$invalid && orderform.textmobilenumber.$touched }">
 						<label class="col-md-3 control-label">Customer mobile number<span style="margin-left:5px">*</span></label>
 						<div class="col-md-6">
-							<input type="text" class="form-control" placeholder="Enter a Customer Mobile Number" name="textmobilenumber" data-ng-model="vm.order.mobilenumber" required ng-pattern="/^[0-9+]*$/" ng-readonly="vm.order.cancelled">
+							<input type="text" placeholder="Enter a Customer Mobile Number" name="textmobilenumber" data-ng-model="vm.order.mobilenumber" typeahead="cust.mobile as cust.mobile for cust in vm.mobilenumbers | filter:{mobile:$viewValue}" typeahead-template-url="customerElement.html" typeahead-on-select="vm.mobileselected($item, $model, $label)" class="form-control" ng-pattern="/^[0-9+]*$/" ng-readonly="vm.order.cancelled" data-ng-change="vm.mobilechanged()" required maxLength="10" minLength="10">
 		                    <div data-ng-messages="orderform.textmobilenumber.$error" data-ng-if="vm.interacted(orderform.textmobilenumber)" class="error-messages">
 		                        <div ng-message="required">Customer mobile number required</div>
 		                        <div ng-message="pattern">Enter a valid mobile number</div>
+		                        <div ng-message="minlength">Enter a valid mobile number</div>
 		                    </div>
 		            	</div>
 					</div>
@@ -52,10 +53,21 @@
 		            	</div>
 					</div>
 
+					<div class="form-group zeromargin" data-ng-class="{ 'has-error': orderform.textcustomerzip.$invalid && orderform.textcustomerzip.$touched }">
+						<label class="col-md-3 control-label">Customer zipcode<span style="margin-left:5px">*</span></label>
+						<div class="col-md-6">
+							<input type="text" class="form-control" placeholder="Enter a Customer ZipCode" name="textcustomerzip" data-ng-model="vm.order.zip" required ng-readonly="vm.order.cancelled" ng-pattern="/^[0-9+]*$/">
+		                    <div data-ng-messages="orderform.textcustomerzip.$error" data-ng-if="vm.interacted(orderform.textcustomerzip)" class="error-messages">
+		                        <div ng-message="required">Customer zipcode required</div>
+		                        <div ng-message="pattern">Enter valid zipcode</div>
+		                    </div>
+		            	</div>
+					</div>
+
 					<div class="form-group zeromargin">
 						<label class="col-md-3 control-label"></label>
 						<div class="col-md-6 checkdist">
-							<button type="button" class="btn btn-default" data-ng-click="vm.checkdistance = true" data-ng-hide="vm.checkdistance || vm.order.cancelled">Check Distance</button>
+							<button type="button" class="btn btn-default" data-ng-click="vm.checkdistclicked()" data-ng-hide="vm.checkdistance || vm.order.cancelled">Check Distance</button>
 							<div ng-include src="'views/orders/distance.html'"> </div>
 		            	</div>
 					</div>
@@ -63,14 +75,31 @@
 			        <div class="form-group zeromargin">
 						<label class="col-md-3 control-label">Items</label>
 						<div class="col-md-6">
-							<textarea type="text" class="form-control" placeholder="Enter a Product Name" name="textproductname" data-ng-model="vm.items" ng-readonly="vm.order.cancelled"></textarea>
+							<div class="col-md-12 nopadding" style="margin-bottom:10px;" data-ng-repeat="product in vm.products">
+								<div class="col-md-5 nopadding" style="padding-right:5px !important">
+									<input type="text" class="form-control" placeholder="Enter Item Name" data-ng-model="product.name" typeahead="prod.name as prod.name for prod in vm.productslist | filter:{name:$viewValue}" typeahead-template-url="typeaheadElement.html" typeahead-on-select="vm.productselected($item, $model, $label, product)" data-ng-change="vm.productChanged(product)" ng-readonly="vm.order.cancelled" />
+								</div>
+								<div class="col-md-4 nopadding" style="padding-left:5px !important; padding-right:5px !important">
+									<input type="text" class="form-control" placeholder="Enter Quantity" data-ng-model="product.quantity" data-ng-change="vm.quantityChanged(product)" ng-pattern="/^[0-9.]*$/" ng-readonly="vm.order.cancelled">
+								</div>
+								<div class="col-md-2 nopadding" style="padding-left:5px !important">
+									<input type="text" class="form-control" placeholder="Price" data-ng-model="product.price" data-ng-change="vm.priceChanged(product)" ng-pattern="/^[0-9.]*$/" ng-readonly="vm.order.cancelled">
+								</div>
+								<div class="col-md-1 nopadding" style="padding-left:5px !important">
+									<a class="pop-over-header-close-btn" style="font-size: 20px; margin-top: -11px;" data-ng-click="vm.removeproduct($index)" data-ng-hide="vm.order.cancelled">x</a>
+								</div>
+							</div>
+							<br/>
+							<button type="button" data-ng-click="vm.addproduct()" class="btn btn-success" data-ng-disabled="vm.order.cancelled">Add Item</button>
+							<br/>
+							<textarea type="text" class="form-control" placeholder="Items Summary" name="textproductname" data-ng-model="vm.order.productdesc" ng-readonly="vm.order.cancelled" style="margin-top:20px;"></textarea>
 		                </div>
 					</div>
 
 					<div class="form-group zeromargin" data-ng-class="{ 'has-error': orderform.textamount.$invalid && orderform.textamount.$touched }">
 						<label class="col-md-3 control-label">Amount to collect from customer</label>
 						<div class="col-md-6">
-							<input type="text" class="form-control" placeholder="Enter a amount to collect from customer" name="textamount" data-ng-model="vm.order.amount" ng-pattern="/^[0-9+]*$/" ng-readonly="vm.order.cancelled">
+							<input type="text" class="form-control" placeholder="Enter a amount to collect from customer" name="textamount" data-ng-model="vm.order.amount" ng-pattern="/^[0-9.]*$/" ng-readonly="vm.order.cancelled">
 		                    <div data-ng-messages="orderform.textamount.$error" data-ng-if="vm.interacted(orderform.textamount)" class="error-messages">
 		                        <div ng-message="required">Amount to collect from customer required</div>
 		                        <div ng-message="pattern">Enter a valid amount</div>
@@ -157,3 +186,20 @@
 		</div> <!-- row ends -->
 	</div> <!-- container ends -->
 </div>
+
+<script type="text/ng-template" id="typeaheadElement.html">
+  <a class="typeheadanchor" style="height: 54px !important">
+      <span class="blackcolor">{{match.label}}</span>
+      <br/>
+      <small style="color:gray">Rs. {{match.model.price}}</small>
+  </a>
+</script>
+
+<script type="text/ng-template" id="customerElement.html">
+  <a class="typeheadanchor" style="height: 54px !important">
+      <span class="blackcolor">{{match.label}}</span>
+      <br/>
+      <small style="color:gray">{{match.model.name}}</small>
+  </a>
+</script>
+

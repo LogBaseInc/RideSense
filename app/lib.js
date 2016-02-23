@@ -7,5 +7,5 @@ define([
     'highcharts',
     'fileupload',
     'xlxs',
-    'multiselect'
+    'multiselect',
 ], function () { });

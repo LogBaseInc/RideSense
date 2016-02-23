@@ -32,6 +32,8 @@ define(['angular'], function (angular) {
                 getTimeInMins : getTimeInMins,
                 getOrderSelected : getOrderSelected,
                 setOrderSelected : setOrderSelected,
+                getProductSelected : getProductSelected,
+                setProductSelected : setProductSelected,
                 getDateFromString : getDateFromString,
                 getSourcePincode : getSourcePincode,
                 setSourcePincode : setSourcePincode
@@ -140,6 +142,17 @@ define(['angular'], function (angular) {
 
             function setOrderSelected(order) {
                 sessionStorage.setItem('selectedorder', (order != null ? angular.toJson(order, true) : null));
+            }
+
+            function getProductSelected() {
+                var selectedproduct = sessionStorage.getItem('selectedproduct');
+                if (selectedproduct)
+                    selectedproduct = angular.fromJson(selectedproduct);
+                return selectedproduct                
+            }
+
+            function setProductSelected(product) {
+                sessionStorage.setItem('selectedproduct', (product != null ? angular.toJson(product, true) : null));
             }
 
             function getSourcePincode() {

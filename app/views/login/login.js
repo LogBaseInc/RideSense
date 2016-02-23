@@ -198,9 +198,6 @@ define(['angular',
                     useracc.email = vm.newuser.email;
                     useracc.emailverified = false;
                     usersref.set(useracc);
-
-                    var url = config.hosturl+'account/verify/'+userData.uid;
-                    userservice.sendUserVerifyEmail(vm.newuser.email, vm.newuser.accountname, url);
                     
                     var accountref = new Firebase(config.firebaseUrl+'accounts/account'+uuid);
                     var accountjson = '{"email":"'+ vm.newuser.email + '","name" : "'+vm.newuser.accountname+'","timezone" : "'+getTimeZone()+'"}';
@@ -212,7 +209,7 @@ define(['angular',
                     
                     spinner.hide();
                     submitted = false;
-                    notify.success('Registered successfully. Email sent to your ID to verify the account');
+                    notify.success('Registered successfully.');
                     backtologinclicked();
                 }
 

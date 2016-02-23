@@ -266,6 +266,7 @@ define(['angular',
                         orderdetail.ordernumber = orderprop;
                         orderdetail.name = orderinfo.name;
                         orderdetail.address = orderinfo.address;
+                        orderdetail.zip = orderinfo.zip;
                         orderdetail.amount = orderinfo.amount;
                         orderdetail.time = orderinfo.time;
                         orderdetail.deviceid = null;
@@ -281,7 +282,7 @@ define(['angular',
                         }
                         orderdetail.mobilenumber = orderinfo.mobilenumber;
                         orderdetail.productdesc = orderinfo.productdesc;
-                        orderdetail.productname = orderinfo.productname;
+                        orderdetail.items = orderinfo.items;
                         orderdetail.notes = orderinfo.notes;
                         orderdetail.url = ((orderinfo.url != null && orderinfo.url != undefined && orderinfo.url != "") ? orderinfo.url : null);
                         orderdetail.tags = orderinfo.tags;
@@ -475,14 +476,16 @@ define(['angular',
                var deliverydate =  vm.isdatesupport ? moment(order.date).format('YYYYMMDD') : moment(utility.getDateFromString(order.date)).format('YYYYMMDD');
                var assignorders = {};
                assignorders.Name = order.name;
-               assignorders.Address = order.address;
+               assignorders.Address = order.address + (order.zip != null && order.zip != undefined ? (" " +order.zip) : "");
                assignorders.Amount = order.amount;
                assignorders.Mobile = order.mobilenumber;
                assignorders.Time = order.time;
                assignorders.Notes = (order.notes != null && order.notes != undefined) ? order.notes : "";
-               if(order.productname != null && order.productname != undefined) {
-                  assignorders.Items = [];
-                  assignorders.Items.push({Name: order.productname, Description: order.productdesc});
+               assignorders.Items = [];
+               if(order.items != null && order.items != undefined && order.items.length > 0) {
+                    for (var i = 0; i < order.items.length; i++) {
+                        assignorders.Items.push({Name: (order.items[i].quantity +  " X " + order.items[i].name), Description: ""});
+                    };
                }
                var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+user.deviceid+"/"+deliverydate+"/"+order.ordernumber);
                ordersref.set(assignorders); 

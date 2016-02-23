@@ -175,7 +175,7 @@ define(['angular',
             function sendUserInviteEmailCompleted() {
                 submitted = false;
                 spinner.hide();
-                notify.success('User added successfully. Invite email send');
+                notify.success('User added successfully. Invite email sent');
                 vm.cancel();
             }
 
