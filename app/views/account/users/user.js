@@ -39,7 +39,7 @@ define(['angular',
                 if($rootScope.userselected) {
                     vm.isEdit = true;
                     vm.userName = $rootScope.userselected.email;
-                    vm.isAdmin = $rootScope.userselected.admin == 'Admin' ? true  : false;
+                    vm.isAdmin = $rootScope.userselected.admin.indexOf('Admin') >=0 ? true  : false;
                     vm.isJoined = $rootScope.userselected.status == 'Joined' ? true : false;
                     $('#role-toggle').prop('checked', vm.isAdmin).change();
                     

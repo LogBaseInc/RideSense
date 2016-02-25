@@ -10,7 +10,8 @@ define(['angular', 'config.route'], function (angular, configroute) {
                 getProductsBrief: getProductsBrief,
                 getProductsDetail : getProductsDetail,
                 deleteProduct : deleteProduct,
-                saveProducts : saveProducts
+                saveProducts : saveProducts,
+                updateProuctsInvetory : updateProuctsInvetory
             };
             return service;
 
@@ -57,6 +58,21 @@ define(['angular', 'config.route'], function (angular, configroute) {
                     url: urlstr,
                     method: "POST",
                     data: products
+                })
+                .then(function(response) {
+                    return response.data;
+                }, function(error, code) {
+                    $log.error(urlstr +" Error :" + error);
+                    return $q.reject(error);
+                });
+            }
+
+            function updateProuctsInvetory(accountid, inventories) {
+                var urlstr =  url + 'products/update/'+accountid;
+                return $http({
+                    url: urlstr,
+                    method: "POST",
+                    data: inventories
                 })
                 .then(function(response) {
                     return response.data;

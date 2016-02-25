@@ -23,6 +23,9 @@ define(['angular',
             vm.mobilenumbers=[];
             vm.products = [];
             vm.productslist = [];
+            vm.trackinventory = false;
+            vm.inventoryerror = false;
+            vm.removedinventory = [];
 
             Object.defineProperty(vm, 'canAdd', {
                 get: canAdd
@@ -38,10 +41,13 @@ define(['angular',
 
             activate();
 
+            //Activate
             function activate() {
-                initializeUnusedTags();
                 $rootScope.routeSelection = 'orders';
                 vm.isOrderEdit = false;
+
+                initializeUnusedTags();
+                getInventoryTracking();
 
                 isDateFiledSupported();
                 getCountryName();
@@ -55,7 +61,7 @@ define(['angular',
                         vm.products = angular.copy(vm.order.items);
                     }
                     else {
-                        vm.products.push({name:"", quantity:1, price:0, unitprice:0});
+                        addoneProduct();
                     }
                     vm.isOrderEdit = true;
                     vm.selecteddate = vm.isdatesupport ? new Date(vm.order.date): moment(utility.getDateFromString(vm.order.date)).format('DD/MM/YYYY');
@@ -66,65 +72,20 @@ define(['angular',
                     vm.order.cancelled = false;
                     vm.order.productdesc = "";
                     vm.products = [];
-                    vm.products.push({name:"", quantity:1, price:0, unitprice:0});
+                    addoneProduct();
                     vm.time1 = "8:00 AM"
                     vm.time2 = "6:00 PM"
                     setTodayDate();
                 }
+                vm.removedinventory = [];
                 vm.tagsdetail = vm.order.tagsdetail;
                 initializeTagColors();
                 getAllMobileNumbers();
                 getProducts();
             }
 
-            function getAllMobileNumbers() {
-                return customerservice.getAllMobileNumbers(accountid).then(
-                function(data) {
-                    vm.mobilenumbers = (data != null && data != undefined ) ? data : [];
-                }
-                , function(error) {
-                });
-            }
-
-            function getProducts() {
-                return productservice.getProductsBrief(accountid).then(
-                function(data) {
-                    vm.productslist = (data != null && data != undefined ) ? data : [];
-                }
-                , function(error) {
-                });
-            }
-
-            function getAddressbyMobile(mobilenumber) {
-                return customerservice.getAddressbyMobile(accountid, mobilenumber).then(
-                function(data) {    
-                    if(data != null && data != undefined && data.length > 0) {
-                        vm.order.name = data[0].name;
-                        vm.order.address = data[0].address;
-                        vm.order.zip = data[0].zip;
-                    }
-                    else {
-                        vm.order.name = null
-                        vm.order.address = null;
-                        vm.order.zip = null;
-                    }
-                }
-                , function(error) {
-                });
-            }
-
-            vm.mobileselected = function($item, $model, $label) {
-               getAddressbyMobile($item.mobile)
-            }
-
-            vm.mobilechanged = function() {
-                if(vm.order.mobilenumber == null || vm.order.mobilenumber == undefined) {
-                    vm.order.name = null
-                    vm.order.address = null;
-                    vm.order.zip = null;
-                }
-                else if(vm.order.mobilenumber.length == 10)
-                    getAddressbyMobile(vm.order.mobilenumber)
+            function canAdd(){
+                return $scope.orderform.$valid && !submitted && !vm.inventoryerror;
             }
 
             function getCountryName() {
@@ -133,6 +94,7 @@ define(['angular',
                 });
             }
 
+            //Initialize methods
             function initializeTagColors() {
                 vm.tagColors = [];
                 vm.tagColors.push({color: "badgeblue"});
@@ -170,10 +132,6 @@ define(['angular',
                 });
             }
 
-            function canAdd(){
-                return $scope.orderform.$valid && !submitted ;
-            }
-
             function setTodayDate() {
                 vm.selecteddate = vm.isdatesupport ? new Date() : moment(new Date()).format('DD/MM/YYYY');
             }
@@ -188,12 +146,81 @@ define(['angular',
                    vm.isdatesupport = true;
             }
 
-            $rootScope.$on('datepicker:dateselected', function (event, data) {
-                if(data.date.format('DD/MM/YYYY') != vm.selecteddate) {
-                    vm.selecteddate = data.date.format('DD/MM/YYYY');
-                    vm.datechanged(vm.selecteddate);
+            //Get methods
+            function getInventoryTracking() {
+                var inventoryTrackingRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/inventorytracking');
+                inventoryTrackingRef.once("value", function(snapshot) {
+                    vm.trackinventory =  (snapshot.val() != null && snapshot.val() != undefined && snapshot.val() != "" && snapshot.val() == true ? true : false);
+                    utility.applyscope($scope);
+                }, function (errorObject) {
+                    utility.errorlog("Inventory Tracking read failed: ", errorObject);
+                });
+            }
+
+            function getAllMobileNumbers() {
+                return customerservice.getAllMobileNumbers(accountid).then(
+                function(data) {
+                    vm.mobilenumbers = (data != null && data != undefined ) ? data : [];
                 }
-            });
+                , function(error) {
+                });
+            }
+
+            function getProducts() {
+                return productservice.getProductsBrief(accountid).then(
+                function(data) {
+                    vm.productslist = (data != null && data != undefined ) ? data : [];
+                    for (var i = 0; i < vm.products.length; i ++) {
+                        if(vm.products[i].uuid != null && vm.products[i].uuid != undefined && vm.products[i].uuid != "") {
+                            var filterpr = _.filter(vm.productslist, function(pr){ return pr.uuid ==  vm.products[i].uuid});
+                            if(filterpr != null && filterpr != undefined && filterpr.length > 0) {
+                                vm.products[i].inventory = filterpr[0].inventory;
+                            }
+                            else {
+                                vm.products[i].uuid = "";
+                                vm.products[i].inventory = 0;
+                            }
+                            vm.products[i].originalQuantity = angular.copy(vm.products[i].quantity);
+                        }
+                    }
+                    utility.applyscope($scope);
+                }
+                , function(error) {
+                });
+            }
+
+            function getAddressbyMobile(mobilenumber) {
+                return customerservice.getAddressbyMobile(accountid, mobilenumber).then(
+                function(data) {    
+                    if(data != null && data != undefined && data.length > 0) {
+                        vm.order.name = data[0].name;
+                        vm.order.address = data[0].address;
+                        vm.order.zip = data[0].zip;
+                    }
+                    else {
+                        vm.order.name = null
+                        vm.order.address = null;
+                        vm.order.zip = null;
+                    }
+                }
+                ,function(error) {
+                });
+            }
+
+            //Changed event methods
+            vm.mobileselected = function($item, $model, $label) {
+               getAddressbyMobile($item.mobile)
+            }
+
+            vm.mobilechanged = function() {
+                if(vm.order.mobilenumber == null || vm.order.mobilenumber == undefined) {
+                    vm.order.name = null
+                    vm.order.address = null;
+                    vm.order.zip = null;
+                }
+                else if(vm.order.mobilenumber.length == 10)
+                    getAddressbyMobile(vm.order.mobilenumber)
+            }
 
             vm.datechanged = function (date) {
                 if(date == null) {
@@ -204,6 +231,7 @@ define(['angular',
                     vm.selecteddate = date;
             }
 
+            //Tags method
             vm.addtag = function(tag) {
                 vm.createtag = false;
                 vm.unusedtags = _.reject(vm.unusedtags, function(el) { return el.tag === tag.tag; });
@@ -270,10 +298,21 @@ define(['angular',
                 }
             }
 
+            function setTags() {
+                delete vm.order["tagsdetail"];
+                var tagArray = [];
+                vm.order.tags = "";
+                for(var i = 0; i < vm.tagsdetail.length; i++) {
+                    tagArray.push(vm.tagsdetail[i].tag);
+                }
+                vm.order.tags = tagArray.join(",");
+            }
+
             vm.selecttagcolor = function(tagcolor) {
                 vm.selectcolor = tagcolor.color;
             }
 
+            //Distance check
             vm.checkdistclicked = function() {
                 vm.checkdistance = true;
                 vm.dpincode = vm.order.zip;
@@ -339,48 +378,103 @@ define(['angular',
                 vm.dpincode = null;
             }
 
-            function setTags() {
-                delete vm.order["tagsdetail"];
-                var tagArray = [];
-                vm.order.tags = "";
-                for(var i = 0; i < vm.tagsdetail.length; i++) {
-                    tagArray.push(vm.tagsdetail[i].tag);
-                }
-                vm.order.tags = tagArray.join(",");
+            //Products method
+            vm.addproduct = function() {
+                addoneProduct();
+            }
+
+            function addoneProduct () {
+                vm.products.push({name:"", quantity:null, originalQuantity : 0, price:null, unitprice:0,inventoryerror: false});
+            }
+
+            vm.removeproduct = function(index) {
+               vm.removedinventory.push(vm.products[index]);
+               vm.products.splice(index, 1);
+               calculateItemsAndAmount();
             }
 
             vm.productselected =function($item, $model, $label, product) {
-                product.unitprice = $item.price
-                vm.quantityChanged(product);
+                var prodfound = _.filter(vm.products, function(pdt){ return pdt.uuid == $item.uuid; });
+                if(prodfound != null && prodfound.length > 0) {
+                    product.name = null;
+                    product.uuid = null;
+                    product.unitprice = 0;
+                    product.inventory = null;
+                    product.quantity = 0;
+                    product.inventoryerror = false;
+                    var pr = prodfound[0];
+                    pr.quantity = parseFloat(pr.quantity)+1;
+                    vm.quantityChanged(pr);
+                }
+                else {
+                    product.uuid = $item.uuid;
+                    product.unitprice = $item.price;
+                    product.inventory = $item.inventory;
+                    product.quantity = product.quantity != null && product.quantity > 0 ? product.quantity : 1;
+                    vm.quantityChanged(product);
+                }
             }
 
             vm.productChanged = function(product){
+                product.uuid = null;
                 product.unitprice = 0;
                 product.price = 0;
+                product.inventory = null;
+                product.inventoryerror = false;
+                product.quantity = product.quantity != null && product.quantity > 0 ? product.quantity : 1;
                 vm.quantityChanged(product);
             }
 
             vm.quantityChanged = function(product) {
-                if(product.quantity <=0) {
-                    product.price = 0;
+                vm.inventoryerror = false;
+
+                if(vm.trackinventory == true && product.inventory != null)
+                { 
+                    product.inventoryerror = false;
+                    if(parseFloat(product.quantity) <= (parseFloat(product.inventory) + parseFloat(product.originalQuantity)))
+                    {
+                        if(product.quantity <=0) {
+                            product.price = 0;
+                        }
+                        else {
+                            product.price = parseFloat((parseFloat(product.quantity) * parseFloat(product.unitprice)).toFixed(2));
+                        }
+                        calculateItemsAndAmount();
+                    }
+                    else if(vm.trackinventory == true && product.quantity != null && product.quantity != undefined && product.quantity != "") {
+                        product.noquantity = false;
+                        product.inventoryerror = true;
+                    }
+                    else if(product.quantity == null || product.quantity == undefined || product.quantity == "") {
+                        product.noquantity = true;
+                        product.inventoryerror = true;
+                    }
                 }
-                else {
-                    product.price = parseFloat((parseFloat(product.quantity) * parseFloat(product.unitprice)).toFixed(2));
+                else if(vm.trackinventory == false) {
+                    product.noquantity = false;
+                    product.inventoryerror = false;
+
+                    if(product.quantity == null || product.quantity == undefined || product.quantity == "") {
+                        product.noquantity = true;
+                        product.inventoryerror = true;
+                    }
+                    else {
+                        if(product.quantity <=0) {
+                            product.price = 0;
+                        }
+                        else {
+                            product.price = parseFloat((parseFloat(product.quantity) * parseFloat(product.unitprice)).toFixed(2));
+                        }
+                        calculateItemsAndAmount();
+                    }
                 }
-                calculateItemsAndAmount();
+
+                var inventoryerrors = _.filter(vm.products, function(product){ return product.inventoryerror == true; });
+                vm.inventoryerror = inventoryerrors != null && inventoryerrors!= undefined && inventoryerrors.length>0;
             }
 
             vm.priceChanged = function(product) {
                 calculateItemsAndAmount();  
-            }
-
-            vm.addproduct = function() {
-                vm.products.push({name:"", quantity:1, price:0, unitprice:0});
-            }
-
-            vm.removeproduct = function(index) {
-               vm.products.splice(index, 1);
-               calculateItemsAndAmount();
             }
 
             function calculateItemsAndAmount() {
@@ -396,8 +490,8 @@ define(['angular',
                         if(i != (vm.products.length-1))
                             items = items + ",\n";
 
-                        vm.order.items.push({name: vm.products[i].name, quantity: vm.products[i].quantity, price : parseFloat(vm.products[i].price), 
-                                        unitprice : parseFloat(vm.products[i].unitprice)});
+                        vm.order.items.push({name: vm.products[i].name, quantity: vm.products[i].quantity, price : parseFloat(vm.products[i].price), unitprice : parseFloat(vm.products[i].unitprice), 
+                        uuid : (vm.products[i].uuid != null && vm.products[i].uuid != undefined) ? vm.products[i].uuid : ""});
                     }
                     amount = amount + parseFloat(vm.products[i].price);
                 }
@@ -406,6 +500,62 @@ define(['angular',
                 vm.order.amount = amount;
             }
 
+            function productInventoryCal (type) {
+                var inventories = [];
+                if(type == "Add") {
+                    for (var i = 0; i < vm.products.length; i++) {
+                        if(vm.products[i].uuid != null && vm.products[i].uuid != undefined) {
+                            if(vm.products[i].quantity != null && vm.products[i].quantity != undefined && vm.products[i].quantity != "")
+                                inventories.push({uuid : vm.products[i].uuid, inventory_diff :  (0-parseFloat(vm.products[i].quantity)).toString()});
+                        }
+                    }
+                }
+                else if(type == "Delete") {
+                    for (var i = 0; i < vm.products.length; i++) {
+                        if(vm.products[i].uuid != null && vm.products[i].uuid != undefined && parseFloat(vm.products[i].originalQuantity) > 0) {
+                            inventories.push({uuid : vm.products[i].uuid, inventory_diff :  vm.products[i].originalQuantity.toString()});
+                        }
+                    }
+
+                    for (var j = 0; j < vm.removedinventory.length; j++) {
+                        inventories.push({uuid : vm.removedinventory[j].uuid, inventory_diff :  parseFloat(vm.removedinventory[j].originalQuantity).toString()});
+                    }
+                }
+                else if(type == "Update") {
+                    for (var i = 0; i < vm.products.length; i++) {
+                        if(vm.products[i].uuid != null && vm.products[i].uuid != undefined) {
+                            if(vm.products[i].quantity != null && vm.products[i].quantity != undefined && vm.products[i].quantity != "") 
+                            {
+                                if(parseFloat(vm.products[i].originalQuantity) > 0) 
+                                {
+                                    var invendiff = (parseFloat(vm.products[i].originalQuantity)  - parseFloat(vm.products[i].quantity));
+                                    if(invendiff != 0 ) {
+                                        inventories.push({uuid : vm.products[i].uuid, inventory_diff : invendiff.toString()});
+                                    }
+                                }
+                                else {
+                                    inventories.push({uuid : vm.products[i].uuid, inventory_diff :  (0-parseFloat(vm.products[i].quantity)).toString()});
+                                }
+                            }
+                        }
+                    }
+
+                    for (var j = 0; j < vm.removedinventory.length; j++) {
+                        if(vm.removedinventory[j].uuid != null && vm.removedinventory[j].uuid != undefined) {
+                           var alreadyadded = _.filter(inventories, function(inv){ return inv.uuid ==  vm.removedinventory[j].uuid});
+                           
+                           if(alreadyadded != null && alreadyadded.length > 0) {
+                                alreadyadded[0].inventory_diff = parseFloat(alreadyadded[0].inventory_diff) + (parseFloat(vm.removedinventory[j].originalQuantity));
+                           }
+                           else
+                                inventories.push({uuid : vm.removedinventory[j].uuid, inventory_diff :  parseFloat(vm.removedinventory[j].originalQuantity).toString()});
+                        }
+                    }
+                }
+                return (inventories);
+            }
+
+            //Order methods
             vm.addorder = function() {
                 submitted = true;
                 spinner.show();
@@ -427,23 +577,80 @@ define(['angular',
                var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+vm.order.deliverydate+"/"+vm.order.ordernumber);
                ordersref.once("value", function(snapshot) {
                     if(snapshot.val() == null) {
-                        setTags();
-                        ordersref.set(vm.order);
-                        saveCustomer();
-                        vm.cancel();
+                        updateinventories("Add");
                     }
                     else{
                         notify.error("Order number already exists");
+                        submitted = false;
+                        spinner.hide();
+                        utility.applyscope($scope);
                     }
-                    submitted = false;
-                    spinner.hide();
-                    utility.applyscope($scope);
+                   
                 });
             }
 
             vm.updateorder = function() {
+                updateinventories("Update");
+            }
+
+            vm.deleteorder = function() {
+                vm.isdelete = true;
+            }
+
+            vm.deletecancel = function() {
+                vm.isdelete = false;
+            }
+
+            vm.deleteconfirm = function() {
+               updateinventories("Delete");
+            }
+
+            function updateinventories (calledfrom) {
                 submitted = true;
                 spinner.show();
+
+                var inventories = productInventoryCal(calledfrom);
+                if(inventories.length > 0 && vm.trackinventory == true) {
+                    return productservice.updateProuctsInvetory(accountid, inventories).
+                    then(function (data) {
+                        if(calledfrom == "Add") 
+                            addFirebaseOrder();
+                        else if(calledfrom == "Update")
+                            updateFirebaseOrder();
+                        else if(calledfrom == "Delete")
+                            deleteFirebaseOrder();
+
+                    }, function (error) {
+                        if(error.data.indexOf('out of stock')>=0) {
+                            notify.error("Some products inventory changed, please refresh the page and add order");
+                        }
+                        else{
+                            notify.error("Something went worng, please try after sometime");
+                        }
+                        submitted = false;
+                        spinner.hide();
+                        utility.applyscope($scope);
+                    });
+                }
+                else {
+                    if(calledfrom == "Add") 
+                        addFirebaseOrder();
+                    else if(calledfrom == "Update")
+                        updateFirebaseOrder();
+                    else if(calledfrom == "Delete")
+                        deleteFirebaseOrder();
+                }
+            }
+
+            function addFirebaseOrder () {
+                var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+vm.order.deliverydate+"/"+vm.order.ordernumber);
+                setTags();
+                ordersref.set(vm.order);
+                saveCustomer();
+                vm.cancel();
+            }
+
+            function updateFirebaseOrder () {
                 setTags();
                 
                 vm.order.deliverydate = vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
@@ -494,21 +701,8 @@ define(['angular',
                 vm.cancel();
             }
 
-            function saveCustomer() {
-                return customerservice.saveCustomer(accountid, vm.order.mobilenumber, vm.order.name, vm.order.address, vm.order.zip);
-            }
-
-            vm.deleteorder = function() {
-                vm.isdelete = true;
-            }
-
-            vm.deletecancel = function() {
-                vm.isdelete = false;
-            }
-
-            vm.deleteconfirm = function() {
+            function deleteFirebaseOrder () {
                 vm.order.deliverydate = vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
-
                 submitted = true;
                 spinner.show();
 
@@ -549,6 +743,12 @@ define(['angular',
                 vm.cancel();
             }
 
+            //Customer
+            function saveCustomer() {
+                return customerservice.saveCustomer(accountid, vm.order.mobilenumber, vm.order.name, vm.order.address, vm.order.zip);
+            }
+
+            //Trip
             vm.viewtrip = function() {
                 $location.path('/order/trip');
             }
@@ -558,6 +758,13 @@ define(['angular',
                 spinner.hide();
                 $location.path('/orders');
             }
+
+            $rootScope.$on('datepicker:dateselected', function (event, data) {
+                if(data.date.format('DD/MM/YYYY') != vm.selecteddate) {
+                    vm.selecteddate = data.date.format('DD/MM/YYYY');
+                    vm.datechanged(vm.selecteddate);
+                }
+            });
 
             $scope.$on('$destroy', function iVeBeenDismissed() {
                 if(alltagsref != null && alltagsref != undefined)

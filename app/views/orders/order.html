@@ -76,23 +76,29 @@
 						<label class="col-md-3 control-label">Items</label>
 						<div class="col-md-6">
 							<div class="col-md-12 nopadding" style="margin-bottom:10px;" data-ng-repeat="product in vm.products">
-								<div class="col-md-5 nopadding" style="padding-right:5px !important">
+								<div class="col-md-5 orderitem">
 									<input type="text" class="form-control" placeholder="Enter Item Name" data-ng-model="product.name" typeahead="prod.name as prod.name for prod in vm.productslist | filter:{name:$viewValue}" typeahead-template-url="typeaheadElement.html" typeahead-on-select="vm.productselected($item, $model, $label, product)" data-ng-change="vm.productChanged(product)" ng-readonly="vm.order.cancelled" />
+									<small data-ng-if="vm.trackinventory==true && product.inventory != null">Inventory: {{product.inventory}}</small>
 								</div>
-								<div class="col-md-4 nopadding" style="padding-left:5px !important; padding-right:5px !important">
+								<div class="col-md-4 orderitem">
 									<input type="text" class="form-control" placeholder="Enter Quantity" data-ng-model="product.quantity" data-ng-change="vm.quantityChanged(product)" ng-pattern="/^[0-9.]*$/" ng-readonly="vm.order.cancelled">
+									<small data-ng-if="product.inventoryerror == true && product.noquantity == true" style="color:#bf1c1c">Quantity is required</small>
+									<small data-ng-if="product.inventoryerror == true && product.noquantity == false" style="color:#bf1c1c">Quantity more than inventory</small>
 								</div>
-								<div class="col-md-2 nopadding" style="padding-left:5px !important">
-									<input type="text" class="form-control" placeholder="Price" data-ng-model="product.price" data-ng-change="vm.priceChanged(product)" ng-pattern="/^[0-9.]*$/" ng-readonly="vm.order.cancelled">
+								<div class="col-md-2 orderitem">
+									<input type="text" class="form-control" placeholder="Enter Price" data-ng-model="product.price" data-ng-change="vm.priceChanged(product)" ng-pattern="/^[0-9.]*$/" ng-readonly="vm.order.cancelled">
 								</div>
-								<div class="col-md-1 nopadding" style="padding-left:5px !important">
+								<div class="col-md-1 nopadding">
 									<a class="pop-over-header-close-btn" style="font-size: 20px; margin-top: -11px;" data-ng-click="vm.removeproduct($index)" data-ng-hide="vm.order.cancelled">x</a>
 								</div>
+								<br/>
 							</div>
 							<br/>
-							<button type="button" data-ng-click="vm.addproduct()" class="btn btn-success" data-ng-disabled="vm.order.cancelled">Add Item</button>
+							<div class="col-md-12 nopadding" style="margin-bottom:20px;">
+								<button type="button" data-ng-click="vm.addproduct()" class="btn btn-success" data-ng-disabled="vm.order.cancelled">Add Item</button>
+							</div>
 							<br/>
-							<textarea type="text" class="form-control" placeholder="Items Summary" name="textproductname" data-ng-model="vm.order.productdesc" ng-readonly="vm.order.cancelled" style="margin-top:20px;"></textarea>
+							<textarea type="text" class="form-control" placeholder="Items Summary" name="textproductname" data-ng-model="vm.order.productdesc" ng-readonly="vm.order.cancelled"></textarea>
 		                </div>
 					</div>
 
@@ -139,7 +145,7 @@
 					<div class="form-group zeromargin">
 						<label class="col-md-3 control-label">Notes</label>
 						<div class="col-md-6">
-							<textarea type="text" class="form-control" placeholder="Notes" name="textnotes" data-ng-model="vm.order.notes" ng-readonly="vm.order.cancelled"></textarea>
+							<textarea type="text" class="form-control" placeholder="Enter Notes" name="textnotes" data-ng-model="vm.order.notes" ng-readonly="vm.order.cancelled"></textarea>
 		                </div>
 					</div>
 

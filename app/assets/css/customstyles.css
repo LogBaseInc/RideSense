@@ -837,6 +837,11 @@ ul#strength {
       display: block !important; 
     }
     
+    .orderitem {
+        padding-left: 0px !important;
+        margin-top: 10px !important
+    }
+
     /* Hide table headers (but not display: none;, for accessibility) */
     thead tr { 
       position: absolute !important;
@@ -850,7 +855,7 @@ ul#strength {
 
     tr { 
       cursor: pointer; 
-      min-height: 334px;
+      min-height: 170px;
       border-radius: 4px;
     }
     
@@ -892,6 +897,7 @@ ul#strength {
     .itemtd:nth-of-type(3):before { content: "Price"; }
     .itemtd:nth-of-type(4):before { content: "Unit"; }
     .itemtd:nth-of-type(5):before { content: "Inventory"; }
+    
   }
   
   
@@ -1078,6 +1084,12 @@ ul#strength {
     color: LightCoral !important;
 }
 
+.orderitem {
+    padding-left: 0px !important;
+    padding-right:10px !important; 
+}
+
+
 /* Smartphones (portrait and landscape) ----------- */
   @media only screen
   and (max-width : 500px) {
@@ -1096,6 +1108,11 @@ ul#strength {
     }
     .checkdist {
         margin-top: -20px;
+    }
+
+    .orderitem {
+        padding-left: 0px !important;
+        margin-top: 10px !important
     }
 }
 
@@ -1164,4 +1181,8 @@ a {
 
 .bootstrap-datetimepicker-widget table td span {
     padding-left: 10px !important;
+}
+
+.dropdown-menu > li {
+    margin-top: 10px !important;
 }

@@ -35,6 +35,7 @@ define(['angular',
             vm.selectedcolumns = [];
             vm.isdesktop = utility.IsDesktop();
             vm.filterOrders = [];
+            vm.manualdelivery = false;
 
             activate();
             $scope.ordersort = function(predicate) {
@@ -49,11 +50,12 @@ define(['angular',
             };
 
             function activate() {
+                $rootScope.routeSelection = 'orders';
                 $scope.predicate = null;
                 $scope.reverse = false;
                 
                 setColumnOptions();
-                $rootScope.routeSelection = 'orders';
+                getInventoryTracking();
 
                 vm.tagsoption = [];
                 vm.tagsoption.push({name:"All", value:"All"});
@@ -72,6 +74,16 @@ define(['angular',
                 setTodayDate();
                 getAllTags();
                 getDevices();
+            }
+
+            function getInventoryTracking() {
+                var manualdeliverygRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/manualdelivery');
+                manualdeliverygRef.once("value", function(snapshot) {
+                    vm.manualdelivery =  (snapshot.val() != null && snapshot.val() != undefined && snapshot.val() != "" && snapshot.val() == true ? true : false);
+                    utility.applyscope($scope);
+                }, function (errorObject) {
+                    utility.errorlog("manual delivery read failed: ", errorObject);
+                });
             }
 
             function getDevices() {
@@ -228,13 +240,19 @@ define(['angular',
                     vm.istoday = false; 
             }
 
-            function getUnAssignOrders() {
-                spinner.show(); 
+            function getOrderDate () {
                 var date;
                 if(vm.isdatesupport == true)
                     date = moment(vm.selecteddate).format('YYYYMMDD');
                 else
                     date = moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
+
+                return date;
+            }
+
+            function getUnAssignOrders() {
+                spinner.show(); 
+                var date = getOrderDate();
 
                 if(unassignorderref != null && unassignorderref != undefined) {
                     unassignorderref.off()
@@ -507,6 +525,18 @@ define(['angular',
 
                         var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+deliverydate+"/"+order.ordernumber+"/deviceid");
                         ordersref1.remove();
+                    }
+                });
+            }
+
+            vm.markasDelivered = function (order) {
+                isassignorderclickd = true;
+                bootbox.confirm("Are you sure, you want to mark this order as delivered?", function(result) {
+                    if(result == true) {
+                        var date = getOrderDate();
+                        var orderfbref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+order.deviceid+"/"+date+"/"+order.ordernumber);
+                        var timestamp = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
+                        orderfbref.update({Pickedon:timestamp, Deliveredon:timestamp});
                     }
                 });
             }

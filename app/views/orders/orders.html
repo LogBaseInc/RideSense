@@ -94,9 +94,12 @@
 							</td>
 							<td data-ng-show="vm.statusshow" class="ordertd">
 								<div data-ng-if="order.status != null">
-									<div data-ng-if="vm.istoday == true && (order.status == 'Yet to accept' || order.status == 'Accepted')" data-ng-click="vm.unassignorder(order)">
-										<span>{{order.vehiclenumber}}</span>
-										<i class="glyphicon glyphicon-remove unassgincolor marginleft10"></i>
+									<div data-ng-if="vm.istoday == true && (order.status == 'Yet to accept' || order.status == 'Accepted')">
+										<div data-ng-click="vm.unassignorder(order)">
+											<span>{{order.vehiclenumber}}</span>
+											<i class="glyphicon glyphicon-remove unassgincolor marginleft10"></i>
+										</div>
+										<button data-ng-if="vm.manualdelivery==true" type="button" class="btn btn-default" style="margin-top:10px;" data-ng-click="vm.markasDelivered(order)">Mark as Delivered</button>
 									</div>
 									<div data-ng-if="vm.istoday == false && order.status == 'Yet to accept'">
 										<span>{{order.vehiclenumber}}</span>

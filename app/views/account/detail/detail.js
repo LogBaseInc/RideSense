@@ -24,10 +24,18 @@ define(['angular',
             var accountref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/name');
             var addressref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/address');
             var tokenref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/token');
+            var inventoryTrackingRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/inventorytracking');
+            var manualDeliveryRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/manualdelivery');
 
             activate();
 
             function activate() {
+                $('#role-toggle1').bootstrapToggle();
+                $('#role-toggle2').bootstrapToggle();
+
+                $('#role-toggle1').prop('checked', false).change();
+                $('#role-toggle2').prop('checked', false).change();
+
                 spinner.show();
                 accountref.once("value", function(snapshot) {
                     vm.accountname = snapshot.val();
@@ -53,6 +61,21 @@ define(['angular',
                 }, function (errorObject) {
                     utility.errorlog("The address read failed: ", errorObject);
                 });
+
+                inventoryTrackingRef.once("value", function(snapshot) {
+                    $('#role-toggle1').prop('checked', (snapshot.val() != null && snapshot.val() != undefined && snapshot.val() != "" && snapshot.val() == true ? true : false)).change();
+                    utility.applyscope($scope);
+                }, function (errorObject) {
+                    utility.errorlog("Inventory Tracking read failed: ", errorObject);
+                });
+
+                manualDeliveryRef.once("value", function(snapshot) {
+                    $('#role-toggle2').prop('checked', (snapshot.val() != null && snapshot.val() != undefined && snapshot.val() != "" && snapshot.val() == true ? true : false)).change();
+                    utility.applyscope($scope);
+                }, function (errorObject) {
+                    utility.errorlog("Manual Delivery read failed: ", errorObject);
+                });
+
 
                 tokenref.on("value", function(snapshot) {
                     if(snapshot.val() != null) {
@@ -84,6 +107,8 @@ define(['angular',
             vm.update = function () {
                 accountref.set(vm.accountname);
                 addressref.set(vm.address);
+                inventoryTrackingRef.set($('#role-toggle1').prop('checked'));
+                manualDeliveryRef.set($('#role-toggle2').prop('checked'));
                 notify.success('Account details updated successfully');
             }
 

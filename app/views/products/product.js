@@ -30,6 +30,7 @@ define(['angular',
                     vm.product = {};
                     vm.product.uuid = utility.generateUUID();
                     vm.product.unit = "Kg";
+                    vm.product.inventory = 0;
                     vm.isProductEdit = false;
                 }
             }   

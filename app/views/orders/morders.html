@@ -34,9 +34,13 @@
 				<br/>
 				<br/>
 				<div data-ng-show="order.status != null" style="float:right">
-					<div data-ng-show="vm.istoday == true && order.status == 'Yet to accept'" data-ng-click="vm.unassignorder(order)">
-						<span class="drivername">{{order.vehiclenumber}}</span>
-						<i class="glyphicon glyphicon-remove unassgincolor marginleft10"></i>
+					<div data-ng-show="vm.istoday == true && order.status == 'Yet to accept'">
+						<div data-ng-click="vm.unassignorder(order)" style="float:right;margin-top: -10px;">
+							<span class="drivername">{{order.vehiclenumber}}</span>
+							<i class="glyphicon glyphicon-remove unassgincolor marginleft10"></i>
+						</div>
+						<br/>
+						<button data-ng-if="vm.manualdelivery==true" type="button" class="btn btn-default" style="float:right;" data-ng-click="vm.markasDelivered(order)">Mark as Delivered</button>
 					</div>
 					<div data-ng-show="vm.istoday == false && order.status == 'Yet to accept'">
 						<span class="drivername">{{order.vehiclenumber}}</span>

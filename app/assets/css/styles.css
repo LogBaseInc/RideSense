@@ -366,3 +366,7 @@ select:focus {
 textarea {
   min-height: 80px;
 }
+
+.toggle {
+  width: 100% !important
+}
