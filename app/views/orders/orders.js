@@ -95,10 +95,12 @@ define(['angular',
                         for(prop in accountdevices){
                             if(accountdevices[prop].activity != null && accountdevices[prop].activity != undefined) {
                                 if ((moment(accountdevices[prop].activity.date).format('DD/MM/YYYY') == moment(todaysdate).format('DD/MM/YYYY')) && accountdevices[prop].activity.login == true)
-                                    vm.users.push({deviceid : prop, vehiclenumber: accountdevices[prop].vehiclenumber});
+                                    vm.users.push({deviceid : prop, vehiclenumber: accountdevices[prop].vehiclenumber, loggedin : true});
+                                else
+                                    vm.users.push({deviceid : prop, vehiclenumber: accountdevices[prop].vehiclenumber, loggedin : false});
                             }
                             else 
-                                vm.users.push({deviceid : prop, vehiclenumber: accountdevices[prop].vehiclenumber});
+                                vm.users.push({deviceid : prop, vehiclenumber: accountdevices[prop].vehiclenumber, loggedin : true});
                         }
                         utility.applyscope($scope);
                     }
@@ -484,35 +486,38 @@ define(['angular',
             }
 
             vm.linkClicked = function(url) {
-                isassignorderclickd=true;
+                isassignorderclickd = true;
             }
 
             vm.assignorder = function(order, user) {
-               submitted = true;
-               spinner.show();
+                isassignorderclickd = true;
+                if(user.loggedin == true)  {
+                   submitted = true;
+                   spinner.show();
 
-               var deliverydate =  vm.isdatesupport ? moment(order.date).format('YYYYMMDD') : moment(utility.getDateFromString(order.date)).format('YYYYMMDD');
-               var assignorders = {};
-               assignorders.Name = order.name;
-               assignorders.Address = order.address + (order.zip != null && order.zip != undefined ? (" " +order.zip) : "");
-               assignorders.Amount = order.amount;
-               assignorders.Mobile = order.mobilenumber;
-               assignorders.Time = order.time;
-               assignorders.Notes = (order.notes != null && order.notes != undefined) ? order.notes : "";
-               assignorders.Items = [];
-               if(order.items != null && order.items != undefined && order.items.length > 0) {
-                    for (var i = 0; i < order.items.length; i++) {
-                        assignorders.Items.push({Name: (order.items[i].quantity +  " X " + order.items[i].name), Description: ""});
-                    };
+                   var deliverydate =  vm.isdatesupport ? moment(order.date).format('YYYYMMDD') : moment(utility.getDateFromString(order.date)).format('YYYYMMDD');
+                   var assignorders = {};
+                   assignorders.Name = order.name;
+                   assignorders.Address = order.address + (order.zip != null && order.zip != undefined ? (" " +order.zip) : "");
+                   assignorders.Amount = order.amount;
+                   assignorders.Mobile = order.mobilenumber;
+                   assignorders.Time = order.time;
+                   assignorders.Notes = (order.notes != null && order.notes != undefined) ? order.notes : "";
+                   assignorders.Items = [];
+                   if(order.items != null && order.items != undefined && order.items.length > 0) {
+                        for (var i = 0; i < order.items.length; i++) {
+                            assignorders.Items.push({Name: (order.items[i].quantity +  " X " + order.items[i].name), Description: ""});
+                        };
+                   }
+                   var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+user.deviceid+"/"+deliverydate+"/"+order.ordernumber);
+                   ordersref.set(assignorders); 
+
+                   var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+deliverydate+"/"+order.ordernumber);
+                   ordersref1.update({deviceid : user.deviceid});
+
+                   submitted = false;
+                   spinner.hide();
                }
-               var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+user.deviceid+"/"+deliverydate+"/"+order.ordernumber);
-               ordersref.set(assignorders); 
-
-               var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+deliverydate+"/"+order.ordernumber);
-               ordersref1.update({deviceid : user.deviceid});
-
-               submitted = false;
-               spinner.hide();
             }
 
             vm.unassignorder = function(order) {

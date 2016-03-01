@@ -72,10 +72,7 @@ define(['angular',
                     var ref1 = new Firebase(config.firebaseUrl+'users/'+data.uid+'/');
                     ref1.once("value", function(snapshot) {
                         if(snapshot.val() != null && snapshot.val().account) {
-                            //if(snapshot.val().emailverified === true)
-                                loginCompleted(data, snapshot.val().account);
-                            //else
-                                //emailNotVerified(data.uid, snapshot.val().account);
+                            loginCompleted(data, snapshot.val().account);
                         }
                         else {
                             spinner.hide();
@@ -87,20 +84,6 @@ define(['angular',
                     }, function (errorObject) {
                         notify.error('Something went wrong, please try again later');
                     });
-                }
-
-                function emailNotVerified(uid, accountId) {
-                    accountdata = {};
-                    accountdata.uid = uid;
-                    accountdata.accountId = accountId;
-                    accountdata.email = vm.userName;
-
-                    spinner.hide();
-                    submitted = false;
-                    vm.password = null;
-                    vm.emailnotverified = true;
-                    resetform($scope.loginform);
-                    utility.applyscope($scope); 
                 }
 
                 function loginCompleted(data, accountId) {
@@ -199,6 +182,9 @@ define(['angular',
                     useracc.emailverified = false;
                     usersref.set(useracc);
                     
+                    var url = config.hosturl+'account/verify/'+userData.uid;      
+                    userservice.sendUserVerifyEmail(vm.newuser.email, vm.newuser.accountname, url);
+
                     var accountref = new Firebase(config.firebaseUrl+'accounts/account'+uuid);
                     var accountjson = '{"email":"'+ vm.newuser.email + '","name" : "'+vm.newuser.accountname+'","timezone" : "'+getTimeZone()+'"}';
                     accountref.set(angular.fromJson(accountjson));
@@ -207,6 +193,9 @@ define(['angular',
                     var accountuserjson = '{"accountid":"account'+ uuid+'"}';
                     accountuserref.set(angular.fromJson(accountuserjson));
                     
+                    var accountidref = new Firebase(config.firebaseUrl+'accountids/'+useracc.account);
+                    accountidref.set(useracc.account);
+
                     spinner.hide();
                     submitted = false;
                     notify.success('Registered successfully.');
@@ -219,28 +208,6 @@ define(['angular',
                     notify.error(error.message)
                     vm.newuser = null;
                     resetform($scope.signupform);
-                }
-
-                vm.resendVerificationEmail = function () {
-                    spinner.show();
-                    var ref1 = new Firebase(config.firebaseUrl+'accounts/'+accountdata.accountId+'/name');
-                    ref1.once("value", function(snapshot) {
-                        var url = config.hosturl+'account/verify/'+accountdata.uid;
-                        return userservice.sendUserVerifyEmail(accountdata.email, snapshot.val(), url).then(resendVerificationEmailCompleted, resendVerificationEmailFailed);                      
-                    }, function (errorObject) {
-                        resendVerificationEmailFailed();
-                    });
-                }
-
-                function resendVerificationEmailCompleted() {
-                    spinner.hide();
-                    vm.emailnotverified = false;
-                    notify.success("Verification email sent successfully");
-                }
-
-                function resendVerificationEmailFailed() {
-                    spinner.hide();
-                    notify.error('Something went wrong, please try again later');
                 }
 
                 function getTimeZone() {

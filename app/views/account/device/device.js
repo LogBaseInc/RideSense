@@ -33,7 +33,7 @@ define(['angular',
                 if(vm.device == null) { 
                     vm.device = {};
                     vm.device.type = 'stickmobile';
-                    vm.device.vehicletype = 'person';
+                    vm.device.vehicletype = 'other';
                     vm.isDeviceEdit = false;
                 }
                 else {
