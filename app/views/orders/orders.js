@@ -53,7 +53,7 @@ define(['angular',
                 $rootScope.routeSelection = 'orders';
                 $scope.predicate = null;
                 $scope.reverse = false;
-                
+
                 setColumnOptions();
                 getInventoryTracking();
 
@@ -74,6 +74,13 @@ define(['angular',
                 setTodayDate();
                 getAllTags();
                 getDevices();
+
+                updatelastseen();
+            }
+
+            function updatelastseen() {
+                var lastseenref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/lastseen');
+                lastseenref.set(moment(new Date()).format('YYYY/DD/MM HH:mm:ss'));
             }
 
             function getInventoryTracking() {

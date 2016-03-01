@@ -1,5 +1,6 @@
 define(['angular',
     'config.route', 
+    'lib',
     'views/services/loginservice',
     'views/services/userservice'], function (angular, configroute) {
         (function () {
@@ -186,8 +187,12 @@ define(['angular',
                     userservice.sendUserVerifyEmail(vm.newuser.email, vm.newuser.accountname, url);
 
                     var accountref = new Firebase(config.firebaseUrl+'accounts/account'+uuid);
-                    var accountjson = '{"email":"'+ vm.newuser.email + '","name" : "'+vm.newuser.accountname+'","timezone" : "'+getTimeZone()+'"}';
-                    accountref.set(angular.fromJson(accountjson));
+                    var accountobj = {};
+                    accountobj.email = vm.newuser.email;
+                    accountobj.name = vm.newuser.accountname;
+                    accountobj.timezone = getTimeZone();
+                    accountobj.createdon = moment(new Date()).format('YYYY/DD/MM HH:mm:ss');
+                    accountref.set(accountobj);
 
                     var accountuserref = new Firebase(config.firebaseUrl+'accountusers/'+vm.newuser.accountname.toLowerCase());
                     var accountuserjson = '{"accountid":"account'+ uuid+'"}';
@@ -248,7 +253,7 @@ define(['angular',
                 function canSignup() {
                     if(vm.isPasswordGood)
                     {
-                        if(vm.newuser.password != null && vm.newuser.password != undefined &&
+                        if(vm.newuser != null && vm.newuser.password != null && vm.newuser.password != undefined &&
                            vm.newuser.repeatpassword != null && vm.newuser.repeatpassword != undefined)
                         {
                             if(vm.newuser.password !== vm.newuser.repeatpassword)
