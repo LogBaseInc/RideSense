@@ -127,13 +127,15 @@
 								</div>
 								<div data-ng-if="order.status == null && vm.istoday == true">
 									<div class="dropdown" data-ng-if="order.deviceid == null">
-										<button type="button" class="btn btn-default dropbtn orderdisplaybtn" data-ng-click="vm.dropdownclicked(order.ordernumber)">Assign</button>
-										   <div id="userdropdown{{order.ordernumber}}" class="dropdown-content">
-											    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)" data-ng-if="user.loggedin == true">
-											    	<img src="/assets/images/greendot.png" style="margin-right:5px"></img>{{user.vehiclenumber}}</a>
-											    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)" data-ng-if="user.loggedin == false" style="cursor: none !important; color:grey;"><img src="/assets/images/reddot.png" style="margin-right:5px"></img>{{user.vehiclenumber}}</a>
-											    <a data-ng-if="vm.manualdelivery==true" type="button" style="margin-top:10px;"  confirm on-confirm="vm.markasDelivered(order)">Mark as Delivered</a>
-										   </div>
+										<button type="button" class="btn btn-default dropbtn orderdisplaybtn" data-ng-click="vm.dropdownclicked(order.ordernumber, $index)">Assign</button>
+										<div id="userdropdown{{$index}}" class="dropdown-content">
+										    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)">
+										    	<img src="/assets/images/greendot.png" style="margin-right:5px"></img>{{user.vehiclenumber}}</a>
+
+										    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)" data-ng-if="user.loggedin == false" style="cursor: none !important; color:grey;"><img src="/assets/images/reddot.png" style="margin-right:5px"></img>{{user.vehiclenumber}}</a>
+
+										    <a data-ng-if="vm.manualdelivery==true" type="button" style="margin-top:10px;"  confirm on-confirm="vm.markasDelivered(order)">Mark as Delivered</a>
+										</div>
 									</div>
 								</div>
 								<div data-ng-if="order.cancelled == true">

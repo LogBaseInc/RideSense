@@ -563,14 +563,14 @@ define(['angular',
                 orderfbref.update({markeddeliveredon: timestamp, markeddelivereddriver: (drivername != null && drivername != undefined && drivername != "" ? drivername : "")});
             }
 
-            vm.dropdownclicked = function(ordernumber) {
+            vm.dropdownclicked = function(ordernumber, $index) {
                 isassignorderclickd = true;
-                if($("#userdropdown"+ordernumber).hasClass('show') == true) {
-                    $("#userdropdown"+ordernumber).removeClass("show");
+                if($("#userdropdown"+$index).hasClass('show') == true) {
+                    $("#userdropdown"+$index).removeClass("show");
                 }
                 else {
                     $(".dropdown-content").removeClass("show");
-                    $("#userdropdown"+ordernumber).addClass("show");
+                    $("#userdropdown"+$index).addClass("show");
                 }
                 utility.applyscope($scope);
             }
