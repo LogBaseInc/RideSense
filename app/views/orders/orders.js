@@ -279,73 +279,14 @@ define(['angular',
 
                     var data = snapshot.val();
                     for(orderprop in data) {
-                        var orderdetail = {};
                         var orderinfo = data[orderprop];
+                        var orderdetail = getOrderDetail(orderinfo);
+                        vm.orders.push(orderdetail);
 
-                        var timesplit = orderinfo.time.split('-');
-                        var ispm = false;
-                        if(timesplit[0].toLowerCase().indexOf('pm') >=0 && parseInt(timesplit[0]) >= 1 && parseInt(timesplit[0]) <= 11) {
-                            ispm = true;
-                        }
-
-                        orderdetail.timetosort = (isNaN(parseInt(timesplit[0])) ? 24 : (ispm ? (parseInt(timesplit[0])+12) : parseInt(timesplit[0])));
-                        orderdetail.createdat = (orderinfo.createdat != null && orderinfo.createdat != undefined) ? getCreatedTime(orderinfo.createdat) : null;
-                        orderdetail.ordernumber = orderprop;
-                        orderdetail.name = orderinfo.name;
-                        orderdetail.address = orderinfo.address;
-                        orderdetail.zip = orderinfo.zip;
-                        orderdetail.amount = orderinfo.amount;
-                        orderdetail.time = orderinfo.time;
-                        orderdetail.deviceid = null;
-                        orderdetail.vehiclenumber = null;
-                        orderdetail.lat = orderinfo.lat;
-                        orderdetail.lng = orderinfo.lng;
-                        if(orderinfo.deviceid != null && orderinfo.deviceid != undefined) {
-                            var deviceinfo  = accountdevices[orderinfo.deviceid];
-                            if(deviceinfo != null && deviceinfo != undefined) {
-                                orderdetail.deviceid = orderinfo.deviceid;
-                                orderdetail.vehiclenumber = deviceinfo.vehiclenumber;
-                            }
-                        }
-                        orderdetail.mobilenumber = orderinfo.mobilenumber;
-                        orderdetail.productdesc = orderinfo.productdesc;
-                        orderdetail.items = orderinfo.items;
-                        orderdetail.notes = orderinfo.notes;
-                        orderdetail.url = ((orderinfo.url != null && orderinfo.url != undefined && orderinfo.url != "") ? orderinfo.url : null);
-                        orderdetail.tags = orderinfo.tags;
-                        orderdetail.tagsdetail = [];
-                        if(orderinfo.tags != null && orderinfo.tags != undefined && orderinfo.tags != "") {
-                            var tagspilit = orderinfo.tags.split(",");
-                            for(var i = 0; i < tagspilit.length; i++) {
-                                var tag = $.trim(tagspilit[i]);
-                                if(tags[tag] != null && tags[tag] != undefined) {
-                                    orderdetail.tagsdetail.push({
-                                        tag: tag, 
-                                        tagcolor : "badge"+tags[tag]
-                                    });
-                                }
-                            }
-                        }
-
-                        orderdetail.tagcolor =  "background-color:green !important";
-                        orderdetail.date = vm.selecteddate;
-                        orderdetail.status = null;
-                        var displayaddress = orderinfo.Name+", "+orderinfo.Address;
-                        orderdetail.displayaddress = displayaddress.length <= 85 ? displayaddress : (displayaddress.substring(0, 80) +"...");
-
-                        orderindex[orderprop] = {};
-                        orderindex[orderprop].index  = vm.orders.length;
-
-                        if(orderinfo.cancelled == true) {
-                            orderdetail.status = "Cancelled";
-                            orderdetail.cancelled = true;
-                        }
-                        else {
+                        if(orderdetail.status != "Cancelled" && orderdetail.status != "Delivered") {
                             orderdetail.cancelled = false;
                             setAssignedOrdersRef(orderdetail, date);
                         }
-
-                        vm.orders.push(orderdetail);
                     }
 
                     vm.orders.sort(SortByTime);
@@ -353,6 +294,77 @@ define(['angular',
                     spinner.hide(); 
                     utility.applyscope($scope);
                 });
+            }
+
+            function getOrderDetail(orderinfo) {
+                var orderdetail = {};
+                var timesplit = orderinfo.time.split('-');
+                var ispm = false;
+                if(timesplit[0].toLowerCase().indexOf('pm') >=0 && parseInt(timesplit[0]) >= 1 && parseInt(timesplit[0]) <= 11) {
+                    ispm = true;
+                }
+                orderdetail.timetosort = (isNaN(parseInt(timesplit[0])) ? 24 : (ispm ? (parseInt(timesplit[0])+12) : parseInt(timesplit[0])));
+                orderdetail.createdat = (orderinfo.createdat != null && orderinfo.createdat != undefined) ? getCreatedTime(orderinfo.createdat) : null;
+                orderdetail.ordernumber = orderprop;
+                orderdetail.name = orderinfo.name;
+                orderdetail.address = orderinfo.address;
+                orderdetail.zip = orderinfo.zip;
+                orderdetail.amount = orderinfo.amount;
+                orderdetail.time = orderinfo.time;
+                orderdetail.deviceid = null;
+                orderdetail.vehiclenumber = null;
+                orderdetail.lat = orderinfo.lat;
+                orderdetail.lng = orderinfo.lng;
+                if(orderinfo.deviceid != null && orderinfo.deviceid != undefined) {
+                    var deviceinfo  = accountdevices[orderinfo.deviceid];
+                    if(deviceinfo != null && deviceinfo != undefined) {
+                        orderdetail.deviceid = orderinfo.deviceid;
+                        orderdetail.vehiclenumber = deviceinfo.vehiclenumber;
+                    }
+                }
+                orderdetail.markeddelivereddriver = (orderinfo.markeddelivereddriver != null && orderinfo.markeddelivereddriver != undefined && orderinfo.markeddelivereddriver != "") ? orderinfo.markeddelivereddriver : null;
+                orderdetail.markeddeliveredon = (orderinfo.markeddeliveredon != null && orderinfo.markeddeliveredon != undefined && orderinfo.markeddeliveredon != "") ? orderinfo.markeddeliveredon : null;
+                orderdetail.mobilenumber = orderinfo.mobilenumber;
+                orderdetail.productdesc = orderinfo.productdesc;
+                orderdetail.items = orderinfo.items;
+                orderdetail.notes = orderinfo.notes;
+                orderdetail.url = ((orderinfo.url != null && orderinfo.url != undefined && orderinfo.url != "") ? orderinfo.url : null);
+                orderdetail.tags = orderinfo.tags;
+                orderdetail.tagsdetail = [];
+                if(orderinfo.tags != null && orderinfo.tags != undefined && orderinfo.tags != "") {
+                    var tagspilit = orderinfo.tags.split(",");
+                    for(var i = 0; i < tagspilit.length; i++) {
+                        var tag = $.trim(tagspilit[i]);
+                        if(tags[tag] != null && tags[tag] != undefined) {
+                            orderdetail.tagsdetail.push({
+                                tag: tag, 
+                                tagcolor : "badge"+tags[tag]
+                            });
+                        }
+                    }
+                }
+
+                orderdetail.tagcolor =  "background-color:green !important";
+                orderdetail.date = vm.selecteddate;
+                orderdetail.status = null;
+                var displayaddress = orderinfo.Name+", "+orderinfo.Address;
+                orderdetail.displayaddress = displayaddress.length <= 85 ? displayaddress : (displayaddress.substring(0, 80) +"...");
+
+                orderindex[orderprop] = {};
+                orderindex[orderprop].index  = vm.orders.length;
+
+                if(orderinfo.cancelled == true) {
+                    orderdetail.status = "Cancelled";
+                    orderdetail.cancelled = true;
+                }
+                else if(orderdetail.markeddeliveredon != null) {
+                    orderdetail.status = "Delivered";
+                    orderdetail.pickedon = moment(orderdetail.markeddeliveredon).format('hh:mm A');
+                    orderdetail.deliveredon = null;
+                    orderdetail.cancelled = false;
+                }
+               
+                return orderdetail;
             }
 
             function getCreatedTime(unixtimestamp) {
@@ -543,14 +555,12 @@ define(['angular',
 
             vm.markasDelivered = function (order) {
                 isassignorderclickd = true;
-                bootbox.confirm("Are you sure, you want to mark this order as delivered?", function(result) {
-                    if(result == true) {
-                        var date = getOrderDate();
-                        var orderfbref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+order.deviceid+"/"+date+"/"+order.ordernumber);
-                        var timestamp = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
-                        orderfbref.update({Pickedon:timestamp, Deliveredon:timestamp});
-                    }
-                });
+                var drivername = $("#drivernametxt").val();
+                var date = getOrderDate();
+                var timestamp = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
+
+                var orderfbref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+date+"/"+order.ordernumber);
+                orderfbref.update({markeddeliveredon: timestamp, markeddelivereddriver: (drivername != null && drivername != undefined && drivername != "" ? drivername : "")});
             }
 
             vm.dropdownclicked = function(ordernumber) {
@@ -586,6 +596,10 @@ define(['angular',
 
                 if(unassignorderref != null && unassignorderref != undefined)
                     unassignorderref.off();
+            });
+
+            $rootScope.$on('confrimdialog', function(event, data) {
+                isassignorderclickd = true;
             });
         }
     })();

@@ -7,6 +7,7 @@
 	    	<a type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.uploadfile()"><span class="glyphicon glyphicon-file"></span></a>
 	    </div>
 	</div>
+
 	<div data-ng-if="vm.isdesktop == false" ng-include src="'views/orders/morders.html'"> </div>
 	<div data-ng-if="vm.isdesktop == true" class="container-fluid">
 		<div class="row">
@@ -99,7 +100,6 @@
 											<span>{{order.vehiclenumber}}</span>
 											<i class="glyphicon glyphicon-remove unassgincolor marginleft10"></i>
 										</div>
-										<button data-ng-if="vm.manualdelivery==true" type="button" class="btn btn-default" style="margin-top:10px;" data-ng-click="vm.markasDelivered(order)">Mark as Delivered</button>
 									</div>
 									<div data-ng-if="vm.istoday == false && order.status == 'Yet to accept'">
 										<span>{{order.vehiclenumber}}</span>
@@ -112,8 +112,14 @@
 										<small>Picked @ {{order.pickedon}}</small>
 									</div>
 									<div data-ng-if="order.status == 'Delivered'">
-										<span>{{order.vehiclenumber}}</span> <br/>
-										<small>{{order.pickedon}} - {{order.deliveredon}}</small>
+										<div data-ng-if="order.markeddeliveredon == null">
+											<span>{{order.vehiclenumber}}</span> <br/>
+											<small>{{order.pickedon}} - {{order.deliveredon}}</small>
+										</div>
+										<div data-ng-if="order.markeddeliveredon != null">
+											<span>{{order.markeddelivereddriver}}</span> <br/>
+											<small>Marked as delivered @ {{order.pickedon}}</small>
+										</div>
 									</div>
 								</div>
 								<div data-ng-if="order.status == null && order.deviceid != null && vm.istoday==false">
@@ -126,6 +132,7 @@
 											    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)" data-ng-if="user.loggedin == true">
 											    	<img src="/assets/images/greendot.png" style="margin-right:5px"></img>{{user.vehiclenumber}}</a>
 											    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)" data-ng-if="user.loggedin == false" style="cursor: none !important; color:grey;"><img src="/assets/images/reddot.png" style="margin-right:5px"></img>{{user.vehiclenumber}}</a>
+											    <a data-ng-if="vm.manualdelivery==true" type="button" style="margin-top:10px;"  confirm on-confirm="vm.markasDelivered(order)">Mark as Delivered</a>
 										   </div>
 									</div>
 								</div>
@@ -145,3 +152,14 @@
 		</div> <!-- row -->
 	</div> <!--container -->
 </div>
+
+<script type="text/ng-template" id="markasdeliveredmodal.html">
+    <div class="modal-body">
+        <p>Are you sure, you want to mark this order as delivered</p>
+        <input id="drivernametxt" type='text' class="form-control" placeholder="Enter driver name">
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" ng-click="ok()">OK</button>
+        <button class="btn btn-primary" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

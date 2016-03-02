@@ -171,7 +171,7 @@
 			            <button data-ng-show="vm.isOrderEdit && !vm.order.cancelled" type="button" class="margintop15 btn btn-default" ng-click="vm.updateorder();" data-ng-disabled="!vm.canAdd">Update Order</button>
 			            <button data-ng-show="vm.isOrderEdit && !vm.order.cancelled" type="button" class="margintop15 btn btn-default" ng-click="vm.cancelorder();">Cancel Order</button>
 			           	<button data-ng-show="vm.isOrderEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.deleteorder();">Remove Order</button>
-			           	<button type="button" class="margintop15 btn btn-default" data-ng-if="vm.order.status=='Delivered' && !vm.order.cancelled" data-ng-click="vm.viewtrip()">View trip</button>
+			           	<button type="button" class="margintop15 btn btn-default" data-ng-if="vm.order.status=='Delivered' && !vm.order.cancelled && vm.order.deliveredon != null" data-ng-click="vm.viewtrip()">View trip</button>
 			           	<button type="button" class="margintop15 btn btn-default" ng-click="vm.cancel();">Go Back</button>
 			        </center>
 		        	<center data-ng-show="vm.isdelete">

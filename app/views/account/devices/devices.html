@@ -22,15 +22,17 @@
 										<span style="margin-left:3px">{{device.displayvehiclenumber}}</span>
 									</h4>
 								</div>
-																		
 								<div class="col-xs-4">
 									<h5 class="text-right">{{device.type == 'stick' ? 'Stick' : 'Mobile'}}</h5>
 								</div>
 							</div>
 							<div class="space-6"></div>
 							<div class="row tripblock">
-								<div class="col-xs-12">
+								<div class="col-xs-8">
 									<h5 class="ng-binding text-muted zeropadding zeromargin">{{device.devicenumber}}</h5>
+								</div>
+								<div class="col-xs-4" data-ng-if="device.appversion">
+									<small style="float:right; color: gray">Agent app: {{device.appversion}}</small>
 								</div>
 							</div>
 						</div>

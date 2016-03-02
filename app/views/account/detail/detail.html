@@ -61,11 +61,28 @@
 		<div>
 		 	<center>
 	            <button type="button" class="btn btn-default" ng-click="vm.update();" data-ng-disabled="!vm.canupdate">Update</button>
-	            <a type="button" class="btn btn-default" href="#/account/changepassword">Change Password</a>
 	        </center>
 	        <br/>
 	        <hr/>
         </div>
+        <div>  
+			<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Currently Loggedin User</h5>
+			<br/>
+			<div>
+				<form class="form-horizontal">
+					<div class="form-group zeromargin">
+						<label class="col-md-3 control-label">Loggedin Email</label>
+						<div class="col-md-8">
+		                   	<h5 class="text-muted">{{vm.loggedinusername}}</h5>
+		            	</div>
+					</div>
+				</form>
+				<center>
+	            	<a type="button" class="btn btn-default" href="#/account/changepassword">Change Your Password</a>
+	        	</center>
+			</div>
+			<hr/>
+		</div>
 		<div>  
 			<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Account Api Token</h5>
 			<br/>

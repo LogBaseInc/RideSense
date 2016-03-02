@@ -36,6 +36,7 @@ define(['angular',
                         vehiclenumber: data[property].vehiclenumber,
                         type : data[property].type ? data[property].type : 'stick',
                         addedon : data[property].addedon,
+                        appversion : (data[property].appversion != null && data[property].appversion != undefined && data[property].appversion != "") ? data[property].appversion : null
                     });
 
                     vm.devicesdetails.push({

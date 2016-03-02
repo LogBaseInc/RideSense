@@ -12,6 +12,7 @@ define(['angular',
             vm.isdelete = false;
             vm.urlisdelete = false;
             vm.webhookurl = null;
+            vm.loggedinusername = sessionservice.getusername();
             
             Object.defineProperty(vm, 'canupdate', {
                 get: canupdate

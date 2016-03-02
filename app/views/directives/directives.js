@@ -56,7 +56,6 @@ define(['angular',
             restrict:'E',
             replace:true,
             scope: {},
-            //template: '<input id="google_places_ac" name="google_places_ac" type="text" class="input-block-level" placeholder="Search by Map Location" style="border :2px solid rgba(59, 153, 252, 0.68); width:100%; position: relative; z-index:3;"/>',
             template: '<input id="google_places_ac" name="google_places_ac" type="text" class="form-control tm-search-text" placeholder="Search by location" />',
             link: function($scope, elm, attrs){
                 var autocomplete = new google.maps.places.Autocomplete($("#google_places_ac")[0], {});
@@ -65,6 +64,36 @@ define(['angular',
                     $rootScope.$emit('search:location', {lat:place.geometry.location.lat(), lng:place.geometry.location.lng()});
                 });
             }
+        }
+      }]);
+
+      configroute.register.directive('confirm', ['$modal', '$parse', '$rootScope', function($modal, $parse, $rootScope){
+        return {
+          link: function(scope, el, attr){
+            el.bind('click', function(){
+              $rootScope.$emit('confrimdialog');
+
+              var instance = $modal.open({
+                templateUrl: 'markasdeliveredmodal.html',
+                controller: ['$scope', '$modalInstance', function(s, m){
+                  s.ok = function(){
+                    m.close();
+                  };
+                  s.cancel = function(){
+                    m.dismiss();
+                  };
+                }]
+              });
+              
+              instance.result.then(function(){
+                // close - action!
+                $parse(attr.onConfirm)(scope);
+              }, 
+              function(){
+                // dimisss - do nothing
+              });
+            });
+          }
         }
       }]);
 
