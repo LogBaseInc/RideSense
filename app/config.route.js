@@ -57,21 +57,21 @@ define(['angular',
         // Define the routes 
         function getRoutes() {
             var routs = [
+                {
+                     url: '/detail',
+                     config: {
+                         templateUrl: 'views/layout/decidepage.html',
+                         title: 'live',
+                         controllerUrl: 'views/layout/decidepage',
+                         allowAnonymous: true
+                     }
+                 },
                  {
                      url: '/login',
                      config: {
                         templateUrl: 'views/login/login.html',
                         title: 'login',
                         controllerUrl: 'views/login/login',
-                        allowAnonymous: true
-                     }
-                 },
-                 {
-                     url: '/user/activate/:accountId?/:email?',
-                     config: {
-                        templateUrl: 'views/account/users/activateuser.html',
-                        title: 'detail',
-                        controllerUrl: 'views/account/users/activateuser',
                         allowAnonymous: true
                      }
                  },
@@ -180,34 +180,17 @@ define(['angular',
                          templateUrl: 'views/account/delete/deleteaccount.html',
                          title: 'detail',
                          controllerUrl: 'views/account/delete/deleteaccount',
-                         allowAnonymous: true
+                         allowAnonymous: false
                      }
                  },
-                 {
-                     url: '/detail',
-                     config: {
-                         templateUrl: 'views/layout/decidepage.html',
-                         title: 'live',
-                         controllerUrl: 'views/layout/decidepage',
-                         allowAnonymous: true
-                     }
-                 },
-                 {
-                     url: '/account/verify/:accountId?',
-                     config: {
-                         templateUrl: 'views/login/verifyemail.html',
-                         title: 'verifyemail',
-                         controllerUrl: 'views/login/verifyemail',
-                         allowAnonymous: true
-                     }
-                 },
+                
                  {
                      url: '/orders',
                      config: {
                          templateUrl: 'views/orders/orders.html',
                          title: 'orders',
                          controllerUrl: 'views/orders/orders',
-                         allowAnonymous: true
+                         allowAnonymous: false
                      }
                  },
                  {
@@ -216,7 +199,7 @@ define(['angular',
                          templateUrl: 'views/orders/order.html',
                          title: 'orders',
                          controllerUrl: 'views/orders/order',
-                         allowAnonymous: true
+                         allowAnonymous: false
                      }
                  },
                  {
@@ -225,7 +208,7 @@ define(['angular',
                          templateUrl: 'views/orders/ordertrip.html',
                          title: 'orders',
                          controllerUrl: 'views/orders/ordertrip',
-                         allowAnonymous: true,
+                         allowAnonymous: false,
                      }
                  },
                  {
@@ -234,7 +217,7 @@ define(['angular',
                          templateUrl: 'views/orders/uploadorders.html',
                          title: 'uploadorders',
                          controllerUrl: 'views/orders/uploadorders',
-                         allowAnonymous: true,
+                         allowAnonymous: false,
                      }
                  },
                  {
@@ -243,7 +226,7 @@ define(['angular',
                          templateUrl: 'views/products/products.html',
                          title: 'items',
                          controllerUrl: 'views/products/products',
-                         allowAnonymous: true,
+                         allowAnonymous: false,
                      }
                  },
                  {
@@ -252,7 +235,7 @@ define(['angular',
                          templateUrl: 'views/products/product.html',
                          title: 'items',
                          controllerUrl: 'views/products/product',
-                         allowAnonymous: true,
+                         allowAnonymous: false,
                      }
                  },
                  {
@@ -261,7 +244,7 @@ define(['angular',
                          templateUrl: 'views/products/uploadproducts.html',
                          title: 'items',
                          controllerUrl: 'views/products/uploadproducts',
-                         allowAnonymous: true,
+                         allowAnonymous: false,
                      }
                  },
             ];

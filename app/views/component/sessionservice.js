@@ -19,7 +19,8 @@ define(['angular', 'utility'], function (angular) {
                 getRole : getRole,
                 setAccountName : setAccountName,
                 getAccountName : getAccountName,
-                getusername : getusername
+                getusername : getusername,
+                getuseruid : getuseruid
             };
             
             function getDevices() {
@@ -99,6 +100,14 @@ define(['angular', 'utility'], function (angular) {
                 if (user)
                     session = angular.fromJson(user);                
                 return session != null ? session.password.email : null;
+            }
+
+            function getuseruid() {
+                var session = null;
+                var user = localStorage.getItem('useridentity');
+                if (user)
+                    session = angular.fromJson(user);                
+                return session != null ? session.uid : null;
             }
 
             function getEncodedusername() {

@@ -1,5 +1,6 @@
 define(['angular',
     'config.route',
+    'lib',
     'views/account/users/users'], function (angular, configroute) {
     (function () {
 

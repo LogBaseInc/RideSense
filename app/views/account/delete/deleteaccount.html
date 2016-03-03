@@ -1,54 +1,33 @@
-<div data-ng-controller="deleteaccount  as vm">
-	 <div class="login-container">
-	 	<div class="center">
-            <h1>
-                <img class="logoimage" style="height:30px" src = "assets/images/logo.png"></img>
-                <span class="red">Stick</span>
-            </h1>
-            <h4 class="blue lighter" id="id-company-text">© LogBase</h4>
+<div data-ng-controller="deleteaccount as vm">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <form class="form-horizontal" name="deleteform">
+                    <h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Delete Account</h5>
+                    </br>
+                    <div class="form-group zeromargin" data-ng-class="{ 'has-error': deleteform.textcurrentpassword.$invalid && deleteform.textcurrentpassword.$touched }">
+                        <label class="col-md-3 control-label">Email</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" placeholder="Account owner email" data-ng-model="vm.email" ng-readonly="true">
+                        </div>
+                    </div>
+                    <div class="form-group zeromargin" data-ng-class="{ 'has-error': deleteform.textpwd.$invalid && deleteform.textpwd.$touched }">
+                        <label class="col-md-3 control-label">Password</label>
+                        <div class="col-md-6">
+                            <input type="password" class="form-control" placeholder="Enter password" name="textpwd" required data-ng-model="vm.password">
+                            <div data-ng-messages="deleteform.textpwd.$error" data-ng-if="vm.interacted(deleteform.textpwd)" class="error-messages">
+                                <div ng-message="required">Password is required</div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div>
+                    <center>
+                        <button type="button" class="btn btn-danger" data-ng-disabled="!vm.candelete" data-ng-click="vm.deleteuser()">Delete Account</button>
+                        <a type="button" class="btn btn-default" href="#/account/detail">Cancel</a>
+                    </center>
+                </div>
+            </div>
         </div>
-        <div class="space-6"></div>
-	 	<div class="position-relative">
-			<form name="deleteform">
-                <div id="signup-box" class="forgot-box widget-box no-border visible">
-                    <div class="widget-body">
-                        <div class="widget-main">
-                            <h4 class="header red lighter bigger">
-                                Delete Account
-                            </h4>
-
-                            <div class="space-6"></div>
-							<div class="form-group">
-                                <span class="block input-icon input-icon-right">
-                                    <input type="text" class="form-control" data-ng-model="vm.email" placeholder="Username" name="textnewemail" ng-readonly="'true'">
-                                </span>
-                            </div>
-
-                            <div class="form-group" data-ng-class="{ 'has-error': deleteform.textnewpwd.$invalid && deleteform.textnewpwd.$touched }">
-                                <span class="block input-icon input-icon-right">
-                                    <input type="password" class="form-control" placeholder="Password" name="textnewpwd" required data-ng-model="vm.password">
-                                </span>
-                                <div data-ng-messages="deleteform.textnewpwd.$error" data-ng-if="vm.interacted(deleteform.textnewpwd)" class="error-messages">
-                                    <div ng-message="required">Password required</div>
-                                </div>
-                            </div>
-
-                            <div class="space-6"></div>
-                            <div class="clearfix">
-                                <button type="button" class="width-65 pull-right btn btn-sm btn-danger" data-ng-disabled="!vm.candelete" data-ng-click="vm.deleteuser()">
-                                    <span class="bigger-110">Delete</span>
-                                    <i class="ace-icon glyphicon glyphicon-arrow-right icon-on-right"></i>
-                                </button>
-                            </div>
-                    </div>
-                    <div class="toolbar center">
-                        <a class="back-to-login-link" href="#/login">
-                            Back to login
-                            <i class="ace-icon glyphicon glyphicon-arrow-right"></i>
-                        </a>
-                    </div>
-				</div>
-			</form>
-		</div>
-	</div>
+    </div>
 </div>
