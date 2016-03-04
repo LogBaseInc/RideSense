@@ -65,7 +65,7 @@
 					<div class="dropdown" data-ng-show="order.deviceid == null">
 						<button type="button" class="btn btn-default dropbtn orderdisplaybtn" data-ng-click="vm.dropdownclicked(order.ordernumber, $index)">Assign</button>
 						<div id="userdropdown{{$index}}" class="dropdown-content">
-						    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)">
+						    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)" data-ng-if="user.loggedin == true">
 						    	<img src="/assets/images/greendot.png" style="margin-right:5px"></img>{{user.vehiclenumber}}</a>
 
 						    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)" data-ng-if="user.loggedin == false" style="cursor: none !important; color:grey;"><img src="/assets/images/reddot.png" style="margin-right:5px"></img>{{user.vehiclenumber}}</a>

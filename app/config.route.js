@@ -150,27 +150,27 @@ define(['angular',
                  {
                      url: '/activity/:selectedcar?',
                      config: {
-                         templateUrl: 'views/cars/cardetails.html',
-                         title: 'cars',
-                         controllerUrl: 'views/cars/cardetails',
+                         templateUrl: 'views/activity/activity.html',
+                         title: 'activity',
+                         controllerUrl: 'views/activity/activity',
                          allowAnonymous: false
                      }
                  },
                  {
-                     url: '/activity/trip/:carnumber',
+                     url: '/trip/:selectedcar?',
                      config: {
-                         templateUrl: 'views/cars/tripdetail/tripdetail.html',
+                         templateUrl: 'views/activity/tripdetail/tripdetail.html',
                          title: 'trip',
-                         controllerUrl: 'views/cars/tripdetail/tripdetail',
+                         controllerUrl: 'views/activity/tripdetail/tripdetail',
                          allowAnonymous: false
                      }
                  },
                  {
                      url: '/activity/detail/:devicenumber/:carnumber',
                      config: {
-                         templateUrl: 'views/cars/carmap/carmap.html',
+                         templateUrl: 'views/activity/agentmap/agentmap.html',
                          title: 'detail',
-                         controllerUrl: 'views/cars/carmap/carmap',
+                         controllerUrl: 'views/activity/agentmap/agentmap',
                          allowAnonymous: false
                      }
                  },
@@ -200,15 +200,6 @@ define(['angular',
                          title: 'orders',
                          controllerUrl: 'views/orders/order',
                          allowAnonymous: false
-                     }
-                 },
-                 {
-                     url: '/order/trip',
-                     config: {
-                         templateUrl: 'views/orders/ordertrip.html',
-                         title: 'orders',
-                         controllerUrl: 'views/orders/ordertrip',
-                         allowAnonymous: false,
                      }
                  },
                  {

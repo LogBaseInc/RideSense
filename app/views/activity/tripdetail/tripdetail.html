@@ -1,0 +1,25 @@
+<div data-ng-controller="tripdetail as vm">
+	<div class="tm-live-map">
+		<ui-gmap-google-map center='vm.map.center' zoom='vm.map.zoom' options="vm.mapOptions">
+			<ui-gmap-marker coords="vm.startmarker.coords" options="vm.startmarker.options" events="vm.startmarker.events" idkey="vm.startmarker.id"></ui-gmap-marker>
+			<ui-gmap-marker coords="vm.endmarker.coords" options="vm.endmarker.options" events="vm.endmarker.events" idkey="vm.endmarker.id"></ui-gmap-marker>
+		</ui-gmap-google-map>
+	</div>
+	<div data-ng-if="vm.showmap" class="tm-live-summary">
+		<h4 class="tm-live-today" style="margin-top:0px;" data-ng-if="vm.selectedtrip.isorder == true">Order #: {{vm.selectedtrip.tripid}}</h4>
+		<h3 class="tm-live-today" style="margin-top:0px;" data-ng-if="vm.selectedtrip.isorder == false">{{vm.selectedtrip.notes}}</h3>
+		<div class="tm-live-distance">
+			<span>{{vm.selectedtrip.vehiclenumber}}</span></br/>
+			<div class="margintop5"> <i class="glyphicon glyphicon-flash"></i> ~{{vm.distance}} km | {{vm.time}}</div>
+			<div class="margintop5"> <i class="glyphicon glyphicon-calendar"></i> {{vm.date}}</div>
+			<div class="margintop5"> <i class="glyphicon glyphicon-time"></i> {{vm.selectedtrip.pickedon}} to {{vm.selectedtrip.deliveredon}}</div>
+		</div>
+		<button type="button" class="btn btn-info btn-xs" style="background-color:rgba(204, 204, 204, 0.52); margin-top:10px;" data-ng-click="vm.gotoorder()" data-ng-if="vm.selectedtrip.isfromorderdetail == true">
+			<i class="glyphicon glyphicon-arrow-left"></i> Back to order
+		</button>
+		<button type="button" class="btn btn-info btn-xs" style="background-color:rgba(204, 204, 204, 0.52); margin-top:10px;" data-ng-click="vm.gotoactivity()" data-ng-if="vm.selectedtrip.isfromorderdetail == false">
+			<i class="glyphicon glyphicon-arrow-left"></i> Back to activity
+		</button>
+	</div>
+</div>
+	

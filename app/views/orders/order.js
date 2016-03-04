@@ -750,7 +750,11 @@ define(['angular',
 
             //Trip
             vm.viewtrip = function() {
-                $location.path('/order/trip');
+                vm.order.tripid = vm.order.ordernumber;
+                vm.order.isorder = true;
+                vm.order.isfromorderdetail = true;
+                utility.setTripSelected(vm.order);
+                $location.path('/trip');
             }
 
             vm.cancel = function() {

@@ -107,7 +107,7 @@ define(['angular',
                                     vm.users.push({deviceid : prop, vehiclenumber: accountdevices[prop].vehiclenumber, loggedin : false});
                             }
                             else 
-                                vm.users.push({deviceid : prop, vehiclenumber: accountdevices[prop].vehiclenumber, loggedin : true});
+                                vm.users.push({deviceid : prop, vehiclenumber: accountdevices[prop].vehiclenumber, loggedin : false});
                         }
                         utility.applyscope($scope);
                     }

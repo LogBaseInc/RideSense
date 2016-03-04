@@ -11,6 +11,7 @@
 			<!--Order activity-->
 			<div ng-include="'/views/orders/orderactivity.html'"> </div>	
 
+			<!--Distance activity-->
 			<div class="row beige-bg" style="padding: 0px; margin-top:10px">
 				<div class="col-xs-12 col-md-4" data-ng-hide="vm.showallcars">
 					<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span> Distance Summary for {{vm.selectedcar.vehiclenumber}}</h5>
@@ -19,8 +20,8 @@
 					<h4>{{vm.selectedcar.drivername}} <small><span data-ng-if="vm.selectedcar.drivername && vm.selectedcar.drivermobile">|</span> {{vm.selectedcar.drivermobile}}</small></h4>
 					<h4>{{vm.totalDistance | number : 2}} km <small> today.</small></h4>
 					<div data-ng-show="vm.havelivedata">
-						<h4 data-ng-if="vm.carrunning"><small>Currently running @ {{vm.carlocation}}.</small></h4>
-						<h4 data-ng-if="!vm.carrunning"><small>Currently idle @ {{vm.carlocation}}.</small></h4>
+						<h4 data-ng-if="vm.isonline"><small>Currently online @ {{vm.carlocation}}.</small></h4>
+						<h4 data-ng-if="!vm.isonline"><small>Currently offline @ {{vm.carlocation}}.</small></h4>
 						<button type="button" class="btn btn-info btn-xs" data-ng-click="vm.gotoCarDetail()">
 							View on Map <span class="glyphicon glyphicon-arrow-right"></span>
 						</button>
@@ -52,56 +53,9 @@
 			</div>
 		</div>
 
-		<div class="row">
-			<div class="row col-xs-12" data-ng-hide="vm.showallcars">
-				<br>
-				<div>
-					<br/>
-					<h5 class="col-xs-1 tm-heading tripsheading"><span class="glyphicon glyphicon-chevron-right"></span> Trips</h5>
-					<input data-ng-if="vm.isdatesupport" id="tripdate" type="date" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)">
-					<div data-ng-if="!vm.isdatesupport" class="col-xs-1 form-group width170">
-			            <div class='input-group date' lb-datepicker>
-			                <input type='text' class="form-control" data-ng-model="vm.selecteddate" data-ng-change="vm.datechanged(vm.selecteddate)"/>
-			                <span class="input-group-addon">
-			                    <span class="glyphicon glyphicon-calendar"></span>
-			                </span>
-			            </div>
-			        </div>
-			    </div>
-			</div>
-		    <div class="col-xs-12 tripblock">
-			    <div data-ng-repeat="tripdetail in vm.tripsBy3">
-			    	<div class="row tripblock">
-			        	<div data-ng-repeat="trip in tripdetail.trips">
-							<div class="col-xs-12 col-md-4 tm-card-wrap ng-scope">
-								<div class="col-md-12 tripdetail tripblock stick-list" ng-click="vm.tripClicked(trip)">
-									<div class="row tripblock">
-										<div class="col-xs-8">
-											<h4 class="ng-binding" style="margin-top:0px;padding-top:0px;margin-bottom:0px;">{{trip.starttime}} > {{trip.endtime}}</h4>
-										</div>
-										<div class="col-xs-4">
-											<h4 class="text-right" style="margin-top:0px;padding-top:0px;margin-bottom:0px;">{{trip.distance}} km</h4>
-										</div>
-									</div>
-									<div class="space-6"></div>
-									<div class="row tripblock">
-										<div class="col-xs-12 col-md-12">
-											<span class="ng-binding text-muted"> {{trip.startlocation}} > {{trip.endlocation}}</span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>   
-				<br/>
-			</div>     
-			<div class="col-xs-12" data-ng-show="!vm.showallcars && vm.trips.length==0">
-				<br/>
-				<p class="text-muted"></span>No trips available for {{vm.selecteddate | date }}.</p>
-				<br/>
-			</div>
-		</div> <!-- row -->
+		<!-- Trips -->
+		<div ng-include="'/views/activity/trips.html'"> </div>	
+
 	</div> <!--container -->
 </div>
 

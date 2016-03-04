@@ -19,6 +19,8 @@ define(['angular',
 			var devicedetails;
 			var defaultzoom = 14;
 			var isunclusterallowed = true;
+			var accountid = sessionservice.getaccountId();
+			var devicesref = null;
 
 		 	vm.distanceCovered = 0;
 		 	vm.showmaps =false;
@@ -37,6 +39,8 @@ define(['angular',
 			vm.mapOptions = {
 				disableDefaultUI: !(utility.IsDesktop()),    
 			}
+			vm.onlineusers = 0;
+            vm.offlineusers = 0;
 
 			activate();
 
@@ -76,8 +80,8 @@ define(['angular',
 		 		vm.islocationsearhced = true;
 		 		
 			 	spinner.show();
+			 	getOfflineOnlineDeviceCount();
 				getlivecardata();
-				getRunningCarCount();
 				getDistance();
 
 				vm.map = { center: { latitude: 11, longitude: 77 }, zoom: defaultzoom };
@@ -88,8 +92,31 @@ define(['angular',
 		 		vm.map = { center: { latitude: position.coords.latitude, longitude: position.coords.longitude }, zoom: defaultzoom };
 		 	}
 
+		 	function getOfflineOnlineDeviceCount() {
+                devicesref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/devices');
+                devicesref.on("value", function(snapshot) {
+                    vm.onlineusers = 0;
+                    vm.offlineusers = 0;
+                    if(snapshot.val() != null && snapshot.val() != undefined) {
+                        accountdevices = snapshot.val();
+                        for(prop in accountdevices) {
+                            if(accountdevices[prop].activity != null && accountdevices[prop].activity != undefined) {
+                                if ((moment(accountdevices[prop].activity.date).format('DD/MM/YYYY') == moment(new Date()).format('DD/MM/YYYY')) && accountdevices[prop].activity.login == true)
+                                    vm.onlineusers = vm.onlineusers + 1;
+                                else
+                                    vm.offlineusers = vm.offlineusers + 1;
+                            }
+                            else 
+                               vm.offlineusers = vm.offlineusers + 1;
+                        }
+                        utility.applyscope($scope);
+                    }
+                }, function (errorObject) {
+                });
+            }
+
 		 	function getlivecardata() {
-		 		livecarref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars');
+		 		livecarref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/livecars');
 				livecarref.once("value", function(snapshot) {
 					if(snapshot.val()) {
 				  		livecarsmodel(snapshot.val());
@@ -126,26 +153,12 @@ define(['angular',
 				});
 		 	}
 
-		 	function getRunningCarCount() {
-		 		runningcarref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecount/running');
-				runningcarref.on("value", function(snapshot) {
-					if(snapshot.val())
-				  		vm.activeCabs =  snapshot.val();
-				  	else
-				  		vm.activeCabs = 0;
-				  	utility.applyscope($scope);
-
-				}, function (errorObject) {
-				  	utility.errorlog("The running count failed: " , errorObject);
-				});
-		 	}
-
 		 	function getDistance() {
 				var newdate = new Date();
 				newdate.setDate(newdate.getDate() - 1);
 				var previousday = moment(new Date(newdate)).format('YYYYMMDD');
 
-				var pdistancefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/daily/'+previousday);
+				var pdistancefbref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/activity/daily/'+previousday);
 				pdistancefbref.once("value", function(snapshot) {
 				  	vm.previousdaydistance = snapshot.val() != null ? snapshot.val().distance : 0; 
 					getCurrentdayDistance();
@@ -156,7 +169,7 @@ define(['angular',
 
 		 	function getCurrentdayDistance() {
 		 		var currentday = moment().format("YYYYMMDD");
-				distancefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/daily/'+currentday);
+				distancefbref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/activity/daily/'+currentday);
 				distancefbref.on("value", function(snapshot) {
 				  	vm.distanceCovered = snapshot.val() != null ? (snapshot.val().distance.toFixed(2)) : 0; 
 
@@ -395,7 +408,7 @@ define(['angular',
 				  	for (var i=0; i < vm.cars.models.length; i++) {
 					    if (mapinstance.getBounds().contains(new google.maps.LatLng(vm.cars.models[i].latitude, vm.cars.models[i].longitude))) {
 
-							var fbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars/'+vm.cars.models[i].id);
+							var fbref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/livecars/'+vm.cars.models[i].id);
 							if(vm.liverefs.indexOf(fbref) < 0 ) {
 								vm.liverefs.push(fbref);
 								fbref.on("value", function(snapshot) {
@@ -440,6 +453,9 @@ define(['angular',
 
 				if(runningcarref)
 					runningcarref.off();
+
+				/*if(devicesref)
+					devicesref.off();*/
 
 				for(var i = 0 ; i < vm.liverefs.length ; i++) {
 				  	vm.liverefs[i].off();

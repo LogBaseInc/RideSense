@@ -8,7 +8,8 @@ define(['angular',
             var vm = this;
             var currentmonth;
             var todaysdate = '';
-            var allcaractivityref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/daily');
+            var accountid = sessionservice.getaccountId();
+            var allcaractivityref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/activity/daily');
             var selectedcarref;
             var carLiveRef = ""
 
@@ -19,6 +20,11 @@ define(['angular',
             vm.selectedcar = {};
             vm.isdatesupport = false;
             vm.averagedistance = 0;
+            vm.orderstripsBy3 = [];
+            var orderstripsplit = [];
+
+            vm.errandtripsBy3 = [];
+            var errandtripsplit = [];
 
             activate();
 
@@ -42,7 +48,6 @@ define(['angular',
                 vm.currentdate = moment(new Date(year, month, 1)).format('MMM DD, YYYY');
                 month = month + 1;
                 currentmonth = year.toString()+""+(month.toString().length ==1 ? "0"+ month.toString() : month.toString());
-
 
                 getCarList();
                 vm.totalcars = Object.keys(sessionservice.getAccountDevices()).length;
@@ -119,7 +124,7 @@ define(['angular',
             vm.tripClicked = function (trip) {
                 utility.setTripSelected(trip);
                 utility.setTripDate(vm.selecteddate);
-                $location.path('/activity/trip/'+vm.selectedcar.vehiclenumber);
+                $location.path('/trip/'+vm.selectedcar.vehiclenumber);
             }
 
             vm.clearcar = function() {
@@ -131,9 +136,11 @@ define(['angular',
                     if(carLiveRef != "")
                         carLiveRef.off();
                     
-                    vm.trips = [];
-                    vm.tripsBy3 = [];
-                    vm.tripsplit = [];
+                    vm.orderstripsBy3 = [];
+                    orderstripsplit = [];
+
+                    vm.errandtripsBy3 = [];
+                    errandtripsplit = [];
 
                     emitToSelectedUser(null);
                     getAllCarDistanceDetails();
@@ -147,11 +154,30 @@ define(['angular',
                 $location.path('/activity/detail/'+vm.selectedcar.devicenumber+'/'+vm.selectedcar.vehiclenumber);
             }
 
+            function getOfflineorOnline() {
+                if(vm.selectedcar.devicenumber != null && vm.selectedcar.devicenumber != undefined) {
+                    vm.isonline = false;
+                    var devicesref12 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/devices/'+vm.selectedcar.devicenumber.toString()+"/activity");
+                    devicesref12.once("value", function(snapshot) {
+                        console.log(snapshot.val());
+                        if(snapshot.val() != null && snapshot.val() != undefined) {
+                            var data = snapshot.val();
+                            if (moment(data.date).format('DD/MM/YYYY') == moment(new Date()).format('DD/MM/YYYY') && data.login == true)
+                                vm.isonline = true;
+                            utility.applyscope($scope);
+                        }
+                    }, function (errorObject) {
+                    });
+                }
+            }
+
             function getCarLiveData(){
                 if(carLiveRef != "")
                     carLiveRef.off();
 
-                carLiveRef = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/livecars/'+vm.selectedcar.devicenumber);
+                getOfflineorOnline();
+
+                carLiveRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/livecars/'+vm.selectedcar.devicenumber);
                 carLiveRef.once("value", function(snapshot) {
                     var data = snapshot.val();
                     if(data) {
@@ -219,44 +245,114 @@ define(['angular',
             }
 
             function getTrips(devicenumber) {
+                if(devicenumber != null && devicenumber != undefined && devicenumber != "") {
+                    getErrandTrips(devicenumber);
+                    spinner.show(); 
+                    var orderstripref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+devicenumber+"/"+getDateRef());
+                    orderstripref.once("value", function(snapshot) {
+                        vm.orderstripsBy3 = [];
+                        orderstrips = [];
+                        orderstripsplit = [];
+
+                        var data = snapshot.val();
+                        for(property in data) {
+                            var order = data[property];
+                            if(order.Pickedon != null && order.Pickedon != undefined && order.Pickedon != "" &&
+                               order.Deliveredon != null && order.Deliveredon != undefined && order.Deliveredon != " " &&
+                               order.Pickedat != null && order.Pickedat != undefined && order.Pickedat != "" &&
+                               order.Deliveredat != null && order.Deliveredat != undefined && order.Deliveredat != " ") {
+                                var startlatnlng = order.Pickedat.split(" ");
+                                var endlatnlng = order.Deliveredat.split(" ");
+                                var vechicle = _.filter(vm.cars, function(car){ return car.devicenumber == devicenumber});
+
+                                var tripdetail = {
+                                    tripid : property,
+                                    isorder: true,
+                                    isfromorderdetail : false,
+                                    date : vm.selecteddate,
+                                    starttimestamp : new Date(order.Pickedon).getTime(),
+                                    endtimestamp : new Date(order.Deliveredon).getTime(),
+                                    pickedon : moment(order.Pickedon).format('hh:mm a'),
+                                    deliveredon : moment(order.Deliveredon).format('hh:mm a'),
+                                    distance : (order.Distance != null && order.Distance != undefined && order.Distance != "") ? (parseFloat(order.Distance).toFixed(2)).replace(".00","") : null,
+                                    startlocation : order.Startlocation,
+                                    endlocation : order.Endlocation,
+                                    vehiclenumber : (vechicle != null && vechicle .length >0 ? vechicle[0].vehiclenumber : ""),
+                                    deviceid : devicenumber,
+                                    startlatitude : startlatnlng[0],
+                                    startlongitude : startlatnlng[1],
+                                    endlatitude : endlatnlng[0],
+                                    endlongitude : endlatnlng[1],
+                                };
+                                orderstripsplit.push(tripdetail);
+                                if(orderstripsplit.length == 3) {
+                                    vm.orderstripsBy3.push({trips: orderstripsplit});
+                                    orderstripsplit = [];
+                                }
+                            }
+                        }
+
+                        if(orderstripsplit.length > 0) {
+                            vm.orderstripsBy3.push({trips: orderstripsplit});
+                            orderstripsplit = [];
+                        }
+
+                        spinner.hide(); 
+                        utility.applyscope($scope);
+                    });
+                }
+            }
+
+            function getErrandTrips(devicenumber) {
                 spinner.show(); 
-                var tripref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/trips/devices/'+devicenumber+'/daily/'+getDateRef());
-                tripref.once("value", function(snapshot) {
-                    vm.trips = [];
-                    vm.tripsBy3 = [];
-                    vm.tripsplit = [];
+                var orderstripref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/tasks/'+devicenumber+"/"+getDateRef());
+                orderstripref.once("value", function(snapshot) {
+                    vm.errandtripsBy3 = [];
+                    errandtripsplit = [];
 
                     var data = snapshot.val();
                     for(property in data) {
-                        if(data[property].endtime) {
+                        var task = data[property];
+                        if(task.starttime != null && task.starttime != undefined && task.starttime != "" &&
+                           task.endtime != null && task.endtime != undefined && task.endtime != " " &&
+                           task.startedat != null && task.startedat != undefined && task.startedat != "" &&
+                           task.endedat != null && task.endedat != undefined && task.endedat != " ") {
+                            var startlatnlng = task.startedat.split(" ");
+                            var endlatnlng = task.endedat.split(" ");
+                            var vechicle = _.filter(vm.cars, function(car){ return car.devicenumber == devicenumber});
+
                             var tripdetail = {
                                 tripid : property,
-                                starttimestamp : data[property].starttime,
-                                endtimestamp : data[property].endtime,
-                                starttime : moment(data[property].starttime).format('hh:mm a'),
-                                endtime : moment(data[property].endtime).format('hh:mm a'),
-                                distance : data[property].tripdistance ? data[property].tripdistance.toFixed(2) : 0,
-                                startlocation : data[property].startaddress,
-                                endlocation : data[property].endaddress,
-                                vehiclenumber : vm.selectedcar.vehiclenumber,
-                                devicenumber : devicenumber,
-                                startlatitude : data[property].startlatitude,
-                                startlongitude : data[property].startlongitude,
-                                endlatitude : data[property].endlatitude,
-                                endlongitude : data[property].endlongitude,
+                                isorder: false,
+                                isfromorderdetail : false,
+                                date : vm.selecteddate,
+                                starttimestamp : new Date(task.starttime).getTime(),
+                                endtimestamp : new Date(task.endtime).getTime(),
+                                pickedon : moment(task.starttime).format('hh:mm a'),
+                                deliveredon : moment(task.endtime).format('hh:mm a'),
+                                distance : (task.distance != null && task.distance != undefined && task.distance != "") ?  (parseFloat(task.distance).toFixed(2)).replace(".00","") : null,
+                                startlocation : task.startlocation,
+                                endlocation : task.endlocation,
+                                vehiclenumber : (vechicle != null && vechicle .length >0 ? vechicle[0].vehiclenumber : ""),
+                                deviceid : devicenumber,
+                                startlatitude : startlatnlng[0],
+                                startlongitude : startlatnlng[1],
+                                endlatitude : endlatnlng[0],
+                                endlongitude : endlatnlng[1],
+                                notes : (task.notes != null && task.notes != undefined && task.notes != "") ? task.notes : null,
                             };
-                            vm.trips.push(tripdetail);
-                            vm.tripsplit.push(tripdetail);
-                            if(vm.tripsplit.length == 3) {
-                                vm.tripsBy3.push({trips: vm.tripsplit});
-                                vm.tripsplit = [];
+
+                            errandtripsplit.push(tripdetail);
+                            if(errandtripsplit.length == 3) {
+                                vm.errandtripsBy3.push({trips: errandtripsplit});
+                                errandtripsplit = [];
                             }
                         }
                     }
 
-                    if(vm.tripsplit.length > 0) {
-                        vm.tripsBy3.push({trips: vm.tripsplit});
-                        vm.tripsplit = [];
+                    if(errandtripsplit.length > 0) {
+                        vm.errandtripsBy3.push({trips: errandtripsplit});
+                        errandtripsplit = [];
                     }
 
                     spinner.hide(); 
@@ -274,7 +370,7 @@ define(['angular',
 
             function getCarDistanceDetail(devicenumber) {
                 spinner.show();
-                selectedcarref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/activity/devices/'+devicenumber+'/daily/');
+                selectedcarref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/activity/devices/'+devicenumber+'/daily/');
                 selectedcarref.orderByChild("timestamp").limitToLast(30).once("value", function(snapshot) {
                     setDistanceChartConfig(snapshot.val());
                 });

@@ -30,13 +30,8 @@
 
 		<div class="tm-live-summary">
 		    <p class="tm-live-today">Today</p>
-			<h1 class="tm-live-distance">{{vm.distanceCovered}} 
-				<!--<small class="tm-overlay-unit">km 
-					<span data-ng-if="vm.isUP == true" class="glyphicon glyphicon-arrow-up"></span>
-					<span data-ng-if="vm.isUP == false" class="glyphicon glyphicon-arrow-down"></span>
-				</small>-->
-			</h1>
-			<h4>{{vm.activeCabs}} <small class="tm-overlay-unit">running</small> | {{vm.activeCabs >=0 ? vm.cars.models.length - vm.activeCabs : vm.cars.models.length}} <small class="tm-overlay-unit">idle</small></h4>
+			<h1 class="tm-live-distance">{{vm.distanceCovered}}</h1>
+			<h4>{{vm.onlineusers}}<small class="tm-overlay-unit" style="margin-left:5px;margin-right:5px;">online</small>| {{vm.offlineusers}}<small class="tm-overlay-unit" style="margin-left:5px;margin-right:5px;">offline</small></h4>
 			<div data-ng-if="!vm.istracking">
 				<hr class="tm-light-margin"/>
 				<small>Zoom in for live tracking.</small>
