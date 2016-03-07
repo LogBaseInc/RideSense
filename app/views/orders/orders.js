@@ -22,7 +22,7 @@ define(['angular',
             var tags = [];
             vm.tagsoption = [];
             vm.selectedTag = "All";
-            vm.selectedStatus = "All";
+            vm.selectedStatus = [{id: "All"}];
 
             vm.orderidshow = false;
             vm.nameshow = false;
@@ -59,15 +59,6 @@ define(['angular',
 
                 vm.tagsoption = [];
                 vm.tagsoption.push({name:"All", value:"All"});
-
-                vm.statusoption=[];
-                vm.statusoption.push({name:"All", value:"All"});
-                vm.statusoption.push({name:"Unassigned", value:"Unassigned"});
-                vm.statusoption.push({name:"Yet to accept", value:"Yet to accept"});
-                vm.statusoption.push({name:"Accepted", value:"Accepted"});
-                vm.statusoption.push({name:"Picked up", value:"Picked up"});
-                vm.statusoption.push({name:"Delivered", value:"Delivered"});
-                vm.statusoption.push({name:"Cancelled", value:"Cancelled"});
 
                 getOrderColumns();
                 isDateFiledSupported();
@@ -146,6 +137,39 @@ define(['angular',
             }
 
             function setColumnOptions() {
+                vm.statusoptions = [
+                    {id: "All", label: "All"},
+                    {id: "Unassigned", label: "Unassigned"},
+                    {id: "Yet to accept", label: "Yet to accept"},
+                    {id: "Accepted", label: "Accepted"},
+                    {id: "Picked up", label: "Picked up"},
+                    {id: "Delivered", label: "Delivered"},
+                    {id: "Cancelled", label: "Cancelled"}];
+
+                vm.statussselectsettings = {
+                    showCheckAll : false,
+                    showUncheckAll : false,
+                    scrollable : false,
+                    dynamicTitle : false,
+                    buttonDefaultText : "Selected status"
+                };
+
+                vm.statusevents = {
+                    onItemSelect : function(item) {
+                        if(item.id != "All")
+                            vm.selectedStatus = _.reject(vm.selectedStatus, function(el) { return el.id === "All"; });
+                        else if(item.id == "All")
+                            vm.selectedStatus = [{id: "All"}];
+
+                        vm.statusfilter();
+                    },
+                    onItemDeselect : function(item) {
+                        if(vm.selectedStatus.length == 0 )
+                            vm.selectedStatus = [{id: "All"}];
+                        vm.statusfilter();
+                    }
+                }
+
                 vm.columns = [
                     {id: "Order #", label: "Order #"},
                     {id: "Customer name", label: "Customer name"},
@@ -356,6 +380,7 @@ define(['angular',
                 if(orderinfo.cancelled == true) {
                     orderdetail.status = "Cancelled";
                     orderdetail.cancelled = true;
+                    orderdetail.cancelledon = (orderinfo.cancelledon != null && orderinfo.cancelledon != undefined && orderinfo.cancelledon != "") ? moment(orderdetail.cancelledon).format('hh:mm A') : null;
                 }
                 else if(orderdetail.markeddeliveredon != null) {
                     orderdetail.status = "Delivered";
@@ -472,13 +497,16 @@ define(['angular',
             }
 
             vm.statusfilter = function() {
-                if(vm.selectedStatus != "All")
+                var statusarr = [];
+                for(var i=0; i< vm.selectedStatus.length; i++){
+                    statusarr.push(vm.selectedStatus[i].id);
+                }
+                if(jQuery.inArray("All", statusarr) < 0)
                     vm.filterOrders = _.filter(vm.tagfilterOrders, function(order){ 
-                        if(vm.selectedStatus != "Unassigned") {
-                            if(order.status != null && order.status != undefined && order.status.toLowerCase() == vm.selectedStatus.toLowerCase()) return true;
-                        }
-                        else {
-                            if(order.status == null || order.status == undefined) return true;
+                        if(jQuery.inArray("Unassigned", statusarr) >= 0 && (order.status == null || order.status == undefined))
+                            return true;
+                        else if(jQuery.inArray(order.status, statusarr) >= 0) {
+                            return true;
                         }
                         return false;
                     });

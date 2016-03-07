@@ -13,7 +13,7 @@ define(['angular',
         }]);
 
         app.config( function( LogglyLoggerProvider ) {
-            LogglyLoggerProvider.inputToken('437c82a2-019f-4d20-858a-7dda1dd5a134')
+            LogglyLoggerProvider.inputToken('7b9f6d3d-01ed-45c5-b4ed-e8d627764998')
                                 .includeUrl(true)
                                 .includeTimestamp(true)
                                 .sendConsoleErrors(true)

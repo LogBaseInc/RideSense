@@ -4,8 +4,8 @@ define(['angular',
     'views/services/customerservice',
     'views/services/productservice'], function (angular, configroute) {
     (function () {
-        configroute.register.controller('order', ['$rootScope', '$routeParams' , '$http', '$scope', '$location', 'config', 'spinner', 'notify', 'sessionservice', 'utility', '$window', 'customerservice', 'productservice', order]);
-        function order($rootScope, $routeParams, $http, $scope, $location, config, spinner, notify, sessionservice, utility, $window, customerservice, productservice) {
+        configroute.register.controller('order', ['$rootScope', '$routeParams' , '$http', '$log', '$scope', '$location', 'config', 'spinner', 'notify', 'sessionservice', 'utility', '$window', 'customerservice', 'productservice', order]);
+        function order($rootScope, $routeParams, $http, $log, $scope, $location, config, spinner, notify, sessionservice, utility, $window, customerservice, productservice) {
             var vm = this;
             var submitted = false;
             vm.order = {};
@@ -643,6 +643,8 @@ define(['angular',
             }
 
             function addFirebaseOrder () {
+                $log.info(vm.order,['stick', 'order', 'ui', accountid]);
+
                 var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+vm.order.deliverydate+"/"+vm.order.ordernumber);
                 setTags();
                 ordersref.set(vm.order);
@@ -730,13 +732,13 @@ define(['angular',
                 vm.order.deliverydate = vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
                 submitted = true;
                 spinner.show();
-
-                var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+vm.order.deliverydate+"/"+vm.order.ordernumber+"/cancelled");
-                ordersref.set(true);
+                var cancelledon = moment(new Date()).format('YYYY/MM/DD HH:mm:ss')
+                var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+vm.order.deliverydate+"/"+vm.order.ordernumber);
+                ordersref.update({cancelled:true, cancelledon: cancelledon});
 
                 if(vm.order.deviceid != null && vm.order.deviceid != undefined) {
-                    var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber);
-                    ordersref.remove();
+                    var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber+"/Cancelledon");
+                    ordersref.set(cancelledon);
                 }
 
                 notify.success('Order cancelled successfully');

@@ -15,7 +15,7 @@
 			       		 </div>
 			       	</div>
 			        <div class="orderfilter marginleft10"  style="display: inline !important">
-			        	<select class="width150" style="height:35px;" ng-model="vm.selectedStatus" ng-options="status.value as status.name for status in vm.statusoption" data-ng-change="vm.statusfilter()"></select>
+			        	<div ng-dropdown-multiselect="" options="vm.statusoptions" selected-model="vm.selectedStatus" extra-settings="vm.statussselectsettings" events="vm.statusevents" checkboxes="true" class="width170" style="height:35px;display:inline"></div>
 			        </div>
 			        <div class="orderfilter marginleft10" style="display: inline-block !important">
 			        	<span>{{vm.filterOrders.length}} orders<span>
@@ -56,6 +56,10 @@
 					<div data-ng-show="order.status == 'Delivered'">
 						<span class="drivername">{{order.vehiclenumber}}</span> </br>
 						<small>{{order.pickedon}} - {{order.deliveredon}}</small>
+					</div>
+					<div data-ng-if="order.cancelled == true">
+						<span>Cancelled</span> </br>
+						<span data-ng-if="order.cancelledon">@ {{order.cancelledon}}</span>
 					</div>
 				</div>
 				<div data-ng-show="order.status == null && order.deviceid != null && vm.istoday==false" style="float:right">

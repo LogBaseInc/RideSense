@@ -35,7 +35,7 @@
 				        </div>
 				        <div class="orderfilter marginleft10">
 				        	<h5 class="tm-heading tripsheading" style="margin-right:5px">Status</h5>
-				        	<select class="width170" style="height:35px;" ng-model="vm.selectedStatus" ng-options="status.value as status.name for status in vm.statusoption" data-ng-change="vm.statusfilter()"></select>
+				        	<div ng-dropdown-multiselect="" options="vm.statusoptions" selected-model="vm.selectedStatus" extra-settings="vm.statussselectsettings" events="vm.statusevents" checkboxes="true" class="width170" style="height:35px;display:inline"></div>
 				        </div>
 				        <div class="orderfilter marginleft10">
 				        	<span>Total orders : {{vm.filterOrders.length}}<span>
@@ -49,7 +49,7 @@
 			    </div>
 			</div>
 			<div class="col-xs-12" data-ng-if="vm.filterOrders.length > 0">
-				<table id="ordertable" name="ordertable">
+				<table id="ordertable" name="ordertable" style="margin-bottom:200px">
 					<thead>
 						<tr class="cakebeecolor">
 							<th data-ng-show="vm.orderidshow" ng-click="ordersort('orderid')"> Order
@@ -121,6 +121,10 @@
 											<small>Marked as delivered @ {{order.pickedon}}</small>
 										</div>
 									</div>
+									<div data-ng-if="order.cancelled == true">
+										<span>Cancelled</span> </br>
+										<span data-ng-if="order.cancelledon">@ {{order.cancelledon}}</span>
+									</div>
 								</div>
 								<div data-ng-if="order.status == null && order.deviceid != null && vm.istoday==false">
 									<span>{{order.vehiclenumber}}</span> </br>
@@ -137,9 +141,6 @@
 										    <a data-ng-if="vm.manualdelivery==true" type="button" style="margin-top:10px;"  confirm on-confirm="vm.markasDelivered(order)">Mark as Delivered</a>
 										</div>
 									</div>
-								</div>
-								<div data-ng-if="order.cancelled == true">
-									<span>Cancelled</span> </br>
 								</div>
 							</td>
 						</tr>

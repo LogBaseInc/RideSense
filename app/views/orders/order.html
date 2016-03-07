@@ -168,10 +168,15 @@
 				<div>
 				 	<center data-ng-hide="vm.isdelete || vm.iscancel">
 			            <button data-ng-hide="vm.isOrderEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.addorder();" data-ng-disabled="!vm.canAdd">Add Order</button>
+			            
 			            <button data-ng-show="vm.isOrderEdit && !vm.order.cancelled" type="button" class="margintop15 btn btn-default" ng-click="vm.updateorder();" data-ng-disabled="!vm.canAdd">Update Order</button>
-			            <button data-ng-show="vm.isOrderEdit && !vm.order.cancelled" type="button" class="margintop15 btn btn-default" ng-click="vm.cancelorder();">Cancel Order</button>
+			            
+			            <button data-ng-show="vm.isOrderEdit && !vm.order.cancelled && vm.order.status != 'Delivered'" type="button" class="margintop15 btn btn-default" ng-click="vm.cancelorder();">Cancel Order</button>
+
 			           	<button data-ng-show="vm.isOrderEdit" type="button" class="margintop15 btn btn-default" ng-click="vm.deleteorder();">Remove Order</button>
+			           	
 			           	<button type="button" class="margintop15 btn btn-default" data-ng-if="vm.order.status=='Delivered' && !vm.order.cancelled && vm.order.deliveredon != null" data-ng-click="vm.viewtrip()">View trip</button>
+			           	
 			           	<button type="button" class="margintop15 btn btn-default" ng-click="vm.cancel();">Go Back</button>
 			        </center>
 		        	<center data-ng-show="vm.isdelete">
@@ -194,7 +199,7 @@
 </div>
 
 <script type="text/ng-template" id="typeaheadElement.html">
-  <a class="typeheadanchor" style="height: 54px !important">
+  <a class="typeheadanchor" style="height: 50px !important; padding-top:5px !important">
       <span class="blackcolor">{{match.label}}</span>
       <br/>
       <small style="color:gray">Rs. {{match.model.price}}</small>
@@ -202,7 +207,7 @@
 </script>
 
 <script type="text/ng-template" id="customerElement.html">
-  <a class="typeheadanchor" style="height: 54px !important">
+  <a class="typeheadanchor" style="height: 50px !important; padding-top:5px !important">
       <span class="blackcolor">{{match.label}}</span>
       <br/>
       <small style="color:gray">{{match.model.name}}</small>
