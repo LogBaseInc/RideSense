@@ -265,6 +265,26 @@ define(['angular',
                                 var endlatnlng = order.Deliveredat.split(" ");
                                 var vechicle = _.filter(vm.cars, function(car){ return car.devicenumber == devicenumber});
 
+                                var startloc = null;
+                                var startlocsplit = (order.Startlocation != null && order.Startlocation != undefined && order.Startlocation != "") ? order.Startlocation.split(",") : [];
+                                if(startlocsplit.length > 2){
+                                    startlocsplit = startlocsplit.slice(-2);
+                                    startloc = startlocsplit.join(",")
+                                }
+                                else {
+                                    startloc = order.Startlocation;
+                                }
+
+                                var endloc = null;
+                                var endlocsplit = (order.Endlocation != null && order.Endlocation != undefined && order.Endlocation != "") ? order.Endlocation.split(",") : [];
+                                if(endlocsplit.length > 2){
+                                    endlocsplit = endlocsplit.slice(-2);
+                                    endloc = endlocsplit.join(",")
+                                }
+                                else {
+                                    endloc = order.Endlocation;
+                                }
+
                                 var tripdetail = {
                                     tripid : property,
                                     isorder: true,
@@ -275,8 +295,8 @@ define(['angular',
                                     pickedon : moment(order.Pickedon).format('hh:mm a'),
                                     deliveredon : moment(order.Deliveredon).format('hh:mm a'),
                                     distance : (order.Distance != null && order.Distance != undefined && order.Distance != "") ? (parseFloat(order.Distance).toFixed(2)).replace(".00","") : null,
-                                    startlocation : order.Startlocation,
-                                    endlocation : order.Endlocation,
+                                    startlocation : startloc,
+                                    endlocation : endloc,
                                     vehiclenumber : (vechicle != null && vechicle .length >0 ? vechicle[0].vehiclenumber : ""),
                                     deviceid : devicenumber,
                                     startlatitude : startlatnlng[0],
@@ -321,6 +341,26 @@ define(['angular',
                             var endlatnlng = task.endedat.split(" ");
                             var vechicle = _.filter(vm.cars, function(car){ return car.devicenumber == devicenumber});
 
+                            var startloc = null;
+                            var startlocsplit = (task.startlocation != null && task.startlocation != undefined && task.startlocation != "") ? task.startlocation.split(",") : [];
+                            if(startlocsplit.length > 2){
+                                startlocsplit = startlocsplit.slice(-2);
+                                startloc = startlocsplit.join(",")
+                            }
+                            else {
+                                startloc = task.startlocation;
+                            }
+
+                            var endloc = null;
+                            var endlocsplit = (task.endlocation != null && task.endlocation != undefined && task.endlocation != "") ? task.endlocation.split(",") : [];
+                            if(endlocsplit.length > 2){
+                                endlocsplit = endlocsplit.slice(-2);
+                                endloc = endlocsplit.join(",")
+                            }
+                            else {
+                                endloc = task.endlocation;
+                            }
+                                
                             var tripdetail = {
                                 tripid : property,
                                 isorder: false,
@@ -331,8 +371,8 @@ define(['angular',
                                 pickedon : moment(task.starttime).format('hh:mm a'),
                                 deliveredon : moment(task.endtime).format('hh:mm a'),
                                 distance : (task.distance != null && task.distance != undefined && task.distance != "") ?  (parseFloat(task.distance).toFixed(2)).replace(".00","") : null,
-                                startlocation : task.startlocation,
-                                endlocation : task.endlocation,
+                                startlocation : startloc,
+                                endlocation : endloc,
                                 vehiclenumber : (vechicle != null && vechicle .length >0 ? vechicle[0].vehiclenumber : ""),
                                 deviceid : devicenumber,
                                 startlatitude : startlatnlng[0],

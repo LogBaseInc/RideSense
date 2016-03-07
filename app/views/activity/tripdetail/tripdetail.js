@@ -48,12 +48,10 @@ define(['angular',
                     else
                         vm.time = seconds + " secs";
 
-                    if(vm.selectedtrip) {
+                    if(vm.selectedtrip) 
                         getTripHistory();
-                    }
-                    else {
-                        $location.path('/order');
-                    }
+                    else
+                       $location.path('/login');
                 }
                 else {
                     $location.path('/login');
@@ -99,6 +97,12 @@ define(['angular',
                             draggable: false, 
                             icon: 'assets/images/greenmarker.png',
                         },
+                         events: {      
+                            click: function (marker, eventName, args) {       
+                               infowindow.setContent(vm.selectedtrip.startlocation);     
+                               infowindow.open(mapinstance , marker);        
+                            }     
+                        }
                     };
 
                     vm.endmarker = {
@@ -111,6 +115,12 @@ define(['angular',
                             draggable: false, 
                             icon: 'assets/images/redmarker.png',
                         },
+                        events: {       
+                          click: function (marker, eventName, args) {       
+                               infowindow.setContent(vm.selectedtrip.endlocation);       
+                               infowindow.open(mapinstance , marker);        
+                            }     
+                        }     
                     }
 
                     var flightPlanCoordinates = [];
@@ -141,8 +151,11 @@ define(['angular',
                     });
                 }
                 else {
-                   notify.warning("Selected order doesn't have trip details");
-                   vm.gotoorder();
+                   notify.warning("Selected trip doesn't have details");
+                   if(vm.selectedtrip.isfromorderdetail == true)
+                        vm.gotoorder();
+                    else
+                        vm.gotoactivity();
                 }
             }
 
