@@ -556,6 +556,10 @@ define(['angular',
                             assignorders.Items.push({Name: (order.items[i].quantity +  " X " + order.items[i].name), Description: ""});
                         };
                    }
+                   else if(order.productdesc != null && order.productdesc != undefined && order.productdesc != ""){
+                        assignorders.Items.push({Name: "", Description: order.productdesc});
+                   }
+
                    var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+user.deviceid+"/"+deliverydate+"/"+order.ordernumber);
                    ordersref.set(assignorders); 
 

@@ -682,7 +682,6 @@ define(['angular',
                     ordersref1.update({Name: vm.order.name, Mobile: vm.order.mobilenumber, Amount: vm.order.amount, Time: updateorder.time, 
                         Address: vm.order.address + (vm.order.zip != null && vm.order.zip != undefined ? (" " + vm.order.zip) : ""), Notes: updateorder.notes});
 
-                    
                     if(vm.order.items != null && vm.order.items != undefined && vm.order.items.length > 0) {
                         var items = [];
 
@@ -690,6 +689,12 @@ define(['angular',
                             items.push({Name: (vm.order.items[i].quantity +  " X " + vm.order.items[i].name), Description: ""});
                         };
 
+                        ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber+"/Items");
+                        ordersref1.set(items);
+                    }
+                    else if(vm.order.productdesc != null && vm.order.productdesc != undefined && vm.order.productdesc != "") {
+                        var items = [];
+                        items.push({Name: "", Description: vm.order.productdesc});
                         ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber+"/Items");
                         ordersref1.set(items);
                     }
