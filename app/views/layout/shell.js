@@ -19,7 +19,6 @@ define(['angular'], function () {
             vm.logout = logout;
             vm.accountname = sessionservice.getAccountName();
             vm.isAdmin = sessionservice.getRole();
-            //vm.showorders = sessionservice.getOrderTracking();
             var timer;
 
             activate();
@@ -34,10 +33,6 @@ define(['angular'], function () {
                     sessionservice.getDevices();
                 }
             }
-
-            /*$rootScope.$on('login:ordertracking', function(event, data) {
-                vm.showorders = data.ordertracking;
-            });*/
 
             $rootScope.$on('alertcount', function (event, data) {
                 alertsfbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/alerts');

@@ -1,8 +1,5 @@
 function generateArray(table) {
     var out = [];
-    var outRow = ["Item name", "Description", "Price", "Unit (Kg / Count)", "Inventory", "UUID(Don't edit this. For new leave it blank)"];
-    out.push(outRow)
-
     var rows = table.querySelectorAll('tr');
     var ranges = [];
     for (var R = 0; R < rows.length; ++R) {
@@ -90,25 +87,47 @@ function s2ab(s) {
 }
 
 function export_table_to_excel(id) {
-var theTable = document.getElementById(id);
-var oo = generateArray(theTable);
-var ranges = oo[1];
+    var theTable = document.getElementById(id);
+    var oo = generateArray(theTable);
+    var ranges = oo[1];
 
-/* original data */
-var data = oo[0]; 
-var ws_name = "SheetJS";
-console.log(data); 
+    /* original data */
+    var data = oo[0]; 
+    var ws_name = "SheetJS";
+    console.log(data); 
 
-var wb = new Workbook(), ws = sheet_from_array_of_arrays(data);
- 
-/* add ranges to worksheet */
-ws['!merges'] = ranges;
+    var wb = new Workbook(), ws = sheet_from_array_of_arrays(data);
+     
+    /* add ranges to worksheet */
+    ws['!merges'] = ranges;
 
-/* add worksheet to workbook */
-wb.SheetNames.push(ws_name);
-wb.Sheets[ws_name] = ws;
+    /* add worksheet to workbook */
+    wb.SheetNames.push(ws_name);
+    wb.Sheets[ws_name] = ws;
 
-var wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:false, type: 'binary'});
+    var wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:false, type: 'binary'});
 
-saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), "Items.xlsx")
+    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), type+".xlsx")
+}
+
+function export_array_to_excel(values, filename) {
+    var ranges = values[1];
+
+    /* original data */
+    var data = values[0]; 
+    var ws_name = "SheetJS";
+    console.log(data); 
+
+    var wb = new Workbook(), ws = sheet_from_array_of_arrays(data);
+     
+    /* add ranges to worksheet */
+    ws['!merges'] = ranges;
+
+    /* add worksheet to workbook */
+    wb.SheetNames.push(ws_name);
+    wb.Sheets[ws_name] = ws;
+
+    var wbout = XLSX.write(wb, {bookType:'xlsx', bookSST:false, type: 'binary'});
+
+    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), filename+".xlsx");
 }

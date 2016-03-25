@@ -34,7 +34,7 @@
 				<br/>
 				<br/>
 				<div data-ng-show="order.status != null" style="float:right">
-					<div data-ng-show="vm.istoday == true && order.status == 'Yet to accept'">
+					<div data-ng-show="vm.showassign == true && order.status == 'Yet to accept'">
 						<div data-ng-click="vm.unassignorder(order)" style="float:right;margin-top: -10px;">
 							<span class="drivername">{{order.vehiclenumber}}</span>
 							<i class="glyphicon glyphicon-remove unassgincolor marginleft10"></i>
@@ -42,7 +42,7 @@
 						<br/>
 						<button data-ng-if="vm.manualdelivery==true" type="button" class="btn btn-default" style="float:right;" data-ng-click="vm.markasDelivered(order)">Mark as Delivered</button>
 					</div>
-					<div data-ng-show="vm.istoday == false && order.status == 'Yet to accept'">
+					<div data-ng-show="vm.showassign == false && order.status == 'Yet to accept'">
 						<span class="drivername">{{order.vehiclenumber}}</span>
 					</div>
 					<div data-ng-show="order.status == 'Accepted'">									
@@ -62,17 +62,17 @@
 						<span data-ng-if="order.cancelledon">@ {{order.cancelledon}}</span>
 					</div>
 				</div>
-				<div data-ng-show="order.status == null && order.deviceid != null && vm.istoday==false" style="float:right">
+				<div data-ng-show="order.status == null && order.deviceid != null && vm.showassign==false" style="float:right">
 					<span class="drivername">{{order.vehiclenumber}}</span> </br>
 				</div>
-				<div data-ng-show="order.status == null && vm.istoday == true" style="float:right">
+				<div data-ng-show="order.status == null && vm.showassign == true" style="float:right">
 					<div class="dropdown" data-ng-show="order.deviceid == null">
-						<button type="button" class="btn btn-default dropbtn orderdisplaybtn" data-ng-click="vm.dropdownclicked(order.ordernumber, $index)">Assign</button>
+						<button type="button" class="btn btn-default dropbtn orderdisplaybtn" data-ng-click="vm.dropdownclicked($index)">Assign</button>
 						<div id="userdropdown{{$index}}" class="dropdown-content">
 						    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)" data-ng-if="user.loggedin == true">
 						    	<img src="assets/images/greendot.png" style="margin-right:5px"></img>{{user.vehiclenumber}}</a>
 
-						    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)" data-ng-if="user.loggedin == false" style="cursor: none !important; color:grey;"><img src="assets/images/reddot.png" style="margin-right:5px"></img>{{user.vehiclenumber}}</a>
+						    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)" data-ng-if="user.loggedin == false"><img src="assets/images/reddot.png" style="margin-right:5px"></img>{{user.vehiclenumber}}</a>
 
 						    <a data-ng-if="vm.manualdelivery==true" type="button" style="margin-top:10px;"  confirm on-confirm="vm.markasDelivered(order)">Mark as Delivered</a>
 						</div>

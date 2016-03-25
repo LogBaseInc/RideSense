@@ -14,11 +14,12 @@
 								<center style="margin-top:50px;">
 				                   <i class="glyphicon glyphicon-plus grey"></i>
 				                   <span class="text-muted">Select or Drop file</span>
+				                   <br/>
+				                   <br/>
+				                   <span data-ng-show="vm.selectedfile != null" style="color:green">{{vm.selectedfile.name}}</span>
 				                   <input type="file" ngf-select="" ng-model="vm.selectedfile" name="file" accept=".xlsx">
-				                <center>
+				                </center>
 			                </span>
-			                <br/>
-			               	<span data-ng-show="vm.selectedfile != null" style="color:green">{{vm.selectedfile.name}}</span>
 		            	</div>
 					</div>
 				</form>
@@ -44,7 +45,7 @@
 							<li>Please use the template attached here to upload the orders. <a href="https://stickstoragecp.blob.core.windows.net/ordertmp/UploadOrderTemplate.xlsx">Download template</a></li>
 							<li>All the column’s should be as shown in the template.</li>
 							<li>First row should be header.</li>
-							<li>Following fields are mandatory - id, customer name, customer address, mobile number, delivery date, delivery time.</li>
+							<li>Following fields are mandatory - id, customer name, customer address, zipcode, mobile number, delivery date, delivery time.</li>
 							<li>Please don’t leave any fields empty. Use “-“ for all missing fields.</li>
 							<li>Tags can have multiple values. Separate the values using “,”</li>
 							<li>Delivery date should be in dd/mm/yyyy format (e.g.: 23/01/2016).</li>

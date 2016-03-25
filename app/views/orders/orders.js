@@ -1,7 +1,9 @@
 
 define(['angular',
     'config.route',
-    'lib'], function (angular, configroute) {
+    'lib',
+    'views/orders/ordersmap.js'
+    ], function (angular, configroute) {
     (function () {
         configroute.register.controller('orders', ['$rootScope', '$routeParams' ,'$scope', '$location', 'config', 'spinner', 'sessionservice', 'utility', orders]);
         function orders($rootScope, $routeParams, $scope, $location, config, spinner, sessionservice, utility) {
@@ -12,7 +14,7 @@ define(['angular',
             vm.isdatesupport = false;
             vm.orders = [];
             var datefilter = "";
-            vm.istoday = false;
+            vm.showassign = false;
             var accountdevices = sessionservice.getAccountDevices();
             var accountid = sessionservice.getaccountId();
             var userid = sessionservice.getSession().uid;
@@ -35,7 +37,10 @@ define(['angular',
             vm.selectedcolumns = [];
             vm.isdesktop = utility.IsDesktop();
             vm.filterOrders = [];
+            vm.nolocationOrders = [];
             vm.manualdelivery = false;
+            vm.showmaps = false;
+            vm.hasunassignorders = false;
 
             activate();
             $scope.ordersort = function(predicate) {
@@ -54,6 +59,17 @@ define(['angular',
                 $scope.predicate = null;
                 $scope.reverse = false;
 
+                vm.time1options = initializeTime(true);
+                vm.time2options = initializeTime(false);
+
+                vm.time1 = utility.getTimeInMins("12:00 AM");
+                vm.time2 = utility.getTimeInMins("11:59 PM");
+
+                if(utility.getOrderView() == "Map")
+                    vm.showmaps = true;
+                else
+                    vm.showmaps = false;
+
                 setColumnOptions();
                 getInventoryTracking();
 
@@ -67,6 +83,65 @@ define(['angular',
                 getDevices();
 
                 updatelastseen();
+               
+            }
+
+            function initializeTime(isstart){
+                var timeoptions = [];
+
+                if(isstart)
+                    timeoptions.push({id:utility.getTimeInMins("12:00 AM"), value:"12:00 AM"});
+
+                timeoptions.push({id:utility.getTimeInMins("12:30 AM"), value:"12:30 AM"});
+                timeoptions.push({id:utility.getTimeInMins("1:00 AM"), value:"1:00 AM"});
+                timeoptions.push({id:utility.getTimeInMins("1:30 AM"), value:"1:30 AM"});
+                timeoptions.push({id:utility.getTimeInMins("2:00 AM"), value:"2:00 AM"});
+                timeoptions.push({id:utility.getTimeInMins("2:30 AM"), value:"2:30 AM"});
+                timeoptions.push({id:utility.getTimeInMins("3:00 AM"), value:"3:00 AM"});
+                timeoptions.push({id:utility.getTimeInMins("3:30 AM"), value:"3:30 AM"});
+                timeoptions.push({id:utility.getTimeInMins("4:00 AM"), value:"4:00 AM"});
+                timeoptions.push({id:utility.getTimeInMins("4:30 AM"), value:"4:30 AM"});
+                timeoptions.push({id:utility.getTimeInMins("5:00 AM"), value:"5:00 AM"});
+                timeoptions.push({id:utility.getTimeInMins("5:30 AM"), value:"5:30 AM"});
+                timeoptions.push({id:utility.getTimeInMins("6:00 AM"), value:"6:00 AM"});
+                timeoptions.push({id:utility.getTimeInMins("6:30 AM"), value:"6:30 AM"});
+                timeoptions.push({id:utility.getTimeInMins("7:00 AM"), value:"7:00 AM"});
+                timeoptions.push({id:utility.getTimeInMins("7:30 AM"), value:"7:30 AM"});
+                timeoptions.push({id:utility.getTimeInMins("8:00 AM"), value:"8:00 AM"});
+                timeoptions.push({id:utility.getTimeInMins("8:30 AM"), value:"8:30 AM"});
+                timeoptions.push({id:utility.getTimeInMins("9:00 AM"), value:"9:00 AM"});
+                timeoptions.push({id:utility.getTimeInMins("9:30 AM"), value:"9:30 AM"});
+                timeoptions.push({id:utility.getTimeInMins("10:00 AM"), value:"10:00 AM"});
+                timeoptions.push({id:utility.getTimeInMins("10:30 AM"), value:"10:30 AM"});
+                timeoptions.push({id:utility.getTimeInMins("11:00 AM"), value:"11:00 AM"});
+                timeoptions.push({id:utility.getTimeInMins("11:30 AM"), value:"11:30 AM"});
+                timeoptions.push({id:utility.getTimeInMins("12:00 PM"), value:"12:00 PM"});
+                timeoptions.push({id:utility.getTimeInMins("12:30 PM"), value:"12:30 PM"});
+                timeoptions.push({id:utility.getTimeInMins("1:00 PM"), value:"1:00 PM"});
+                timeoptions.push({id:utility.getTimeInMins("1:30 PM"), value:"1:30 PM"});
+                timeoptions.push({id:utility.getTimeInMins("2:00 PM"), value:"2:00 PM"});
+                timeoptions.push({id:utility.getTimeInMins("2:30 PM"), value:"2:30 PM"});
+                timeoptions.push({id:utility.getTimeInMins("3:00 PM"), value:"3:00 PM"});
+                timeoptions.push({id:utility.getTimeInMins("3:30 PM"), value:"3:30 PM"});
+                timeoptions.push({id:utility.getTimeInMins("4:00 PM"), value:"4:00 PM"});
+                timeoptions.push({id:utility.getTimeInMins("4:30 PM"), value:"4:30 PM"});
+                timeoptions.push({id:utility.getTimeInMins("5:00 PM"), value:"5:00 PM"});
+                timeoptions.push({id:utility.getTimeInMins("5:30 PM"), value:"5:30 PM"});
+                timeoptions.push({id:utility.getTimeInMins("6:00 PM"), value:"6:00 PM"});
+                timeoptions.push({id:utility.getTimeInMins("6:30 PM"), value:"6:30 PM"});
+                timeoptions.push({id:utility.getTimeInMins("7:00 PM"), value:"7:00 PM"});
+                timeoptions.push({id:utility.getTimeInMins("7:30 PM"), value:"7:30 PM"});
+                timeoptions.push({id:utility.getTimeInMins("8:00 PM"), value:"8:00 PM"});
+                timeoptions.push({id:utility.getTimeInMins("8:30 PM"), value:"8:30 PM"});
+                timeoptions.push({id:utility.getTimeInMins("9:00 PM"), value:"9:00 PM"});
+                timeoptions.push({id:utility.getTimeInMins("9:30 PM"), value:"9:30 PM"});
+                timeoptions.push({id:utility.getTimeInMins("10:00 PM"), value:"10:00 PM"});
+                timeoptions.push({id:utility.getTimeInMins("10:30 PM"), value:"10:30 PM"});
+                timeoptions.push({id:utility.getTimeInMins("11:00 PM"), value:"11:00 PM"});
+                timeoptions.push({id:utility.getTimeInMins("11:30 PM"), value:"11:30 PM"});
+                timeoptions.push({id:utility.getTimeInMins("11:59 PM"), value:"11:59 PM"});
+
+                return timeoptions;
             }
 
             function updatelastseen() {
@@ -251,7 +326,7 @@ define(['angular',
                 var selectedorder = utility.getOrderSelected();
                 utility.setOrderSelected(null);
                 if(selectedorder == null) {
-                    vm.istoday = true;
+                    vm.showassign = true;
                     vm.selecteddate = todaysdate;
                     datefilter = vm.selecteddate;
 
@@ -266,11 +341,11 @@ define(['angular',
             }
 
             function setIsToday() {
-                if((vm.isdatesupport == false && todaysdate == vm.selecteddate) ||
-                   (vm.isdatesupport == true && moment(todaysdate).format('YYYYMMDD') == moment(vm.selecteddate).format('YYYYMMDD')))
-                    vm.istoday = true;
+                if((vm.isdatesupport == false && moment(todaysdate).format('DD/MM/YYYY') == moment(vm.selecteddate).format('DD/MM/YYYY')) ||
+                   (vm.isdatesupport == true && moment(todaysdate).format('DD/MM/YYYY') <= moment(vm.selecteddate).format('DD/MM/YYYY')))
+                    vm.showassign = true;
                 else
-                    vm.istoday = false; 
+                    vm.showassign = false; 
             }
 
             function getOrderDate () {
@@ -307,17 +382,64 @@ define(['angular',
                         var orderdetail = getOrderDetail(orderinfo);
                         vm.orders.push(orderdetail);
 
-                        if(orderdetail.status != "Cancelled" && orderdetail.status != "Delivered") {
+                        if(orderdetail.status != "Cancelled" && orderdetail.status != "Delivered" && 
+                            orderdetail.deviceid != null && orderdetail.deviceid != undefined && orderdetail.deviceid != "") {
                             orderdetail.cancelled = false;
                             setAssignedOrdersRef(orderdetail, date);
                         }
                     }
 
                     vm.orders.sort(SortByTime);
+                    checkLatnLng();
                     vm.tagfilter();
                     spinner.hide(); 
                     utility.applyscope($scope);
                 });
+            }
+
+            function checkLatnLng() {
+                if (vm.orders.length != 0) {
+                    for (j=0; j < vm.orders.length; j++) {
+                        if(vm.orders[j].latitude != null && vm.orders[j].latitude != undefined && vm.orders[j].latitude != "" &&
+                          vm.orders[j].longitude != null && vm.orders[j].longitude != undefined && vm.orders[j].longitude != "") {
+
+                            var finalLatLng = new google.maps.LatLng(vm.orders[j].latitude,vm.orders[j].longitude);
+                            for (i=j+1; i < vm.orders.length; i++) {
+                                
+                                if(vm.orders[i].latitude != null && vm.orders[i].latitude != undefined && vm.orders[i].latitude != "" &&
+                                vm.orders[i].longitude != null && vm.orders[i].longitude != undefined && vm.orders[i].longitude != "") {
+
+                                    var pos = new google.maps.LatLng( vm.orders[i].latitude, vm.orders[i].longitude);
+
+                                    //if a marker already exists in the same position as this marker
+                                    if (finalLatLng.equals(pos)) {
+                                        //update the position of the coincident marker by applying a small multipler to its coordinates
+                                        var newLat = finalLatLng.lat() + (Math.random() -.5) / 1500;// * (Math.random() * (max - min) + min);
+                                        var newLng = finalLatLng.lng() + (Math.random() -.5) / 1500;// * (Math.random() * (max - min) + min);
+                                        finalLatLng = new google.maps.LatLng(newLat,newLng);
+                                    }
+                                }
+                            }
+
+                            vm.orders[j].latitude = finalLatLng.lat();
+                            vm.orders[j].longitude = finalLatLng.lng();
+                        }
+                    }
+
+                }
+            }
+
+            function parseAddress(address) {
+                if (typeof address !== "string") throw "Address is not a string.";
+                address = address.trim();
+                var comma = address.indexOf(',');
+                var returned = {};
+                returned.city = address.slice(0, comma);
+                var after = address.substring(comma + 2); // The string after the comma, +2 so that we skip the comma and the space.
+                var space = after.lastIndexOf(' ');
+                returned.state = after.slice(0, space);
+                returned.zip = after.substring(space + 1);
+                return returned;
             }
 
             function getOrderDetail(orderinfo) {
@@ -367,7 +489,7 @@ define(['angular',
                         }
                     }
                 }
-
+    
                 orderdetail.tagcolor =  "background-color:green !important";
                 orderdetail.date = vm.selecteddate;
                 orderdetail.status = null;
@@ -388,6 +510,26 @@ define(['angular',
                     orderdetail.deliveredon = null;
                     orderdetail.cancelled = false;
                 }
+
+
+                //For maps
+                orderdetail.title = orderinfo.ordernumber;
+                orderdetail.id  = orderinfo.ordernumber;
+
+                if(orderinfo.location != null && orderinfo.location != undefined && orderinfo.location != "") {
+                    orderdetail.latitude = orderinfo.location.lat;
+                    orderdetail.longitude = orderinfo.location.lng;
+                    orderdetail.options = {
+                        labelContent: '<span> #'+orderinfo.ordernumber +'</span><br/><span>'+ orderdetail.time +'</span>',
+                        labelClass: 'tm-marker-label',
+                        icon: orderdetail.deviceid == null && orderdetail.status == null ? 'assets/images/redmarker.png' : 'assets/images/greenmarker.png',
+                        labelAnchor: '22 0'
+                    }
+                }
+                else {
+                    orderdetail.latitude = null;
+                    orderdetail.longitude = null;
+                }
                
                 return orderdetail;
             }
@@ -403,38 +545,38 @@ define(['angular',
                 return ((b1 > a1) ? -1 : ((b1 < a1) ? 1 : 0));
             }
 
-            function setAssignedOrdersRef(orderdetail, date) {
-                var ref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+orderdetail.deviceid+'/'+date+'/'+orderdetail.ordernumber);
+            function setAssignedOrdersRef(orderdet, date) {
+                var ref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+orderdet.deviceid+'/'+date+'/'+orderdet.ordernumber);
                 assignedordersref.push(ref);
                 ref.on("value", function(snapshot) {
                     var data = snapshot.val();
                     if(data != null) {
                         if(data.Deliveredon != null && data.Deliveredon != undefined) {
-                            orderdetail.status = "Delivered";
-                            orderdetail.pickedon = moment(data.Pickedon).format('hh:mm A');
-                            orderdetail.deliveredon = moment(data.Deliveredon).format('hh:mm A');
+                            orderdet.status = "Delivered";
+                            orderdet.pickedon = moment(data.Pickedon).format('hh:mm A');
+                            orderdet.deliveredon = moment(data.Deliveredon).format('hh:mm A');
                         }
                         else if(data.Pickedon != null && data.Pickedon != undefined) {
-                            orderdetail.status = "Picked up";
-                            orderdetail.pickedon = moment(data.Pickedon).format('hh:mm A');
+                            orderdet.status = "Picked up";
+                            orderdet.pickedon = moment(data.Pickedon).format('hh:mm A');
                         }
                         else if(data.Acceptedon != null && data.Acceptedon != undefined) {
-                            orderdetail.acceptedon = moment(data.Acceptedon).format('hh:mm A');
-                            orderdetail.status = "Accepted";
+                            orderdet.acceptedon = moment(data.Acceptedon).format('hh:mm A');
+                            orderdet.status = "Accepted";
                         }
                         else {
-                            orderdetail.status = "Yet to accept";
+                            orderdet.status = "Yet to accept";
                         }
 
                         if(data.Pickedon != null && data.Pickedon != undefined &&
                            data.Deliveredon != null && data.Deliveredon != undefined) {
-                            orderdetail.starttimestamp =  (moment(data.Pickedon).unix())*1000;
-                            orderdetail.endtimestamp =  (moment(data.Deliveredon).unix())*1000;
+                            orderdet.starttimestamp =  (moment(data.Pickedon).unix())*1000;
+                            orderdet.endtimestamp =  (moment(data.Deliveredon).unix())*1000;
                         }
                     }
                     else
-                        orderdetail.status = null;
-                                   
+                        orderdet.status = null;
+                    
                     utility.applyscope($scope);
                 });
             }
@@ -493,17 +635,41 @@ define(['angular',
                 else 
                     vm.tagfilterOrders = vm.orders;
 
+                vm.timefilter();
+            }
+
+            vm.timefilter = function() {
+                if(vm.time1 == utility.getTimeInMins("12:00 AM") && vm.time2 == utility.getTimeInMins("11:59 PM")) {
+                    vm.time2options = initializeTime(false);
+                    vm.timefilterOrders = vm.tagfilterOrders;
+                }
+                else {
+                    vm.time2options =  _.filter(vm.time1options, function(opt) {return opt.id > vm.time1});
+
+                    vm.timefilterOrders = _.filter(vm.tagfilterOrders, function(order){ 
+                        var timesplit = order.time.split('-');
+                        var ordertime = utility.getTimeInMins(timesplit[0]);
+                        if(ordertime >= vm.time1 && ordertime <= vm.time2)
+                            return true;
+                        else
+                            return false;
+                    });
+                }
+                utility.applyscope($scope);
+
                 vm.statusfilter();
             }
 
             vm.statusfilter = function() {
                 var statusarr = [];
+                vm.nolocationOrder = [];
+                
                 for(var i=0; i< vm.selectedStatus.length; i++){
                     statusarr.push(vm.selectedStatus[i].id);
                 }
                 if(jQuery.inArray("All", statusarr) < 0)
-                    vm.filterOrders = _.filter(vm.tagfilterOrders, function(order){ 
-                        if(jQuery.inArray("Unassigned", statusarr) >= 0 && (order.status == null || order.status == undefined))
+                    vm.filterOrders = _.filter(vm.timefilterOrders, function(order){ 
+                        if(jQuery.inArray("Unassigned", statusarr) >= 0 && ((order.status == null || order.status == undefined) && (order.deviceid == null || order.deviceid == undefined)))
                             return true;
                         else if(jQuery.inArray(order.status, statusarr) >= 0) {
                             return true;
@@ -511,7 +677,10 @@ define(['angular',
                         return false;
                     });
                 else 
-                    vm.filterOrders = vm.tagfilterOrders;
+                    vm.filterOrders = vm.timefilterOrders;
+
+                vm.hasunassignorders = _.filter(vm.filterOrders, function(ord){ return ord.status == null && ord.deviceid == null}).length > 0; //is any unassign orders
+                vm.nolocationOrder = _.filter(vm.filterOrders, function(ord){ return ord.latitude == null});
             }
 
             vm.addOrder = function() {
@@ -536,39 +705,46 @@ define(['angular',
                 isassignorderclickd = true;
             }
 
-            vm.assignorder = function(order, user) {
+            vm.assignorder = function(ord, user) {
                 isassignorderclickd = true;
-                if(user.loggedin == true)  {
-                   submitted = true;
-                   spinner.show();
+                submitted = true;
+                spinner.show();
+               
+                var orderstoassign = [];
+                if($.isArray(ord) == false)
+                    orderstoassign.push(ord);
+                else
+                    orderstoassign = ord;
 
-                   var deliverydate =  vm.isdatesupport ? moment(order.date).format('YYYYMMDD') : moment(utility.getDateFromString(order.date)).format('YYYYMMDD');
-                   var assignorders = {};
-                   assignorders.Name = order.name;
-                   assignorders.Address = order.address + (order.zip != null && order.zip != undefined ? (" " +order.zip) : "");
-                   assignorders.Amount = order.amount;
-                   assignorders.Mobile = order.mobilenumber;
-                   assignorders.Time = order.time;
-                   assignorders.Notes = (order.notes != null && order.notes != undefined) ? order.notes : "";
-                   assignorders.Items = [];
-                   if(order.items != null && order.items != undefined && order.items.length > 0) {
+                for(var i =0 ; i<orderstoassign.length; i++) {
+                    var order = orderstoassign[i];
+                    var deliverydate =  vm.isdatesupport ? moment(order.date).format('YYYYMMDD') : moment(utility.getDateFromString(order.date)).format('YYYYMMDD');
+                    var assignorders = {};
+                    assignorders.Name = order.name;
+                    assignorders.Address = order.address + (order.zip != null && order.zip != undefined ? (" " +order.zip) : "");
+                    assignorders.Amount = order.amount;
+                    assignorders.Mobile = order.mobilenumber;
+                    assignorders.Time = order.time;
+                    assignorders.Notes = (order.notes != null && order.notes != undefined) ? order.notes : "";
+                    assignorders.Items = [];
+                    if(order.items != null && order.items != undefined && order.items.length > 0) {
                         for (var i = 0; i < order.items.length; i++) {
                             assignorders.Items.push({Name: (order.items[i].quantity +  " X " + order.items[i].name), Description: ""});
                         };
-                   }
-                   else if(order.productdesc != null && order.productdesc != undefined && order.productdesc != ""){
+                    }
+                    else if(order.productdesc != null && order.productdesc != undefined && order.productdesc != ""){
                         assignorders.Items.push({Name: "", Description: order.productdesc});
-                   }
+                    }
 
-                   var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+user.deviceid+"/"+deliverydate+"/"+order.ordernumber);
-                   ordersref.set(assignorders); 
+                    var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+user.deviceid+"/"+deliverydate+"/"+order.ordernumber);
+                    ordersref.set(assignorders); 
 
-                   var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+deliverydate+"/"+order.ordernumber);
-                   ordersref1.update({deviceid : user.deviceid});
+                    var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+deliverydate+"/"+order.ordernumber);
+                    ordersref1.update({deviceid : user.deviceid});
+                }
 
-                   submitted = false;
-                   spinner.hide();
-               }
+                submitted = false;
+                spinner.hide();
             }
 
             vm.unassignorder = function(order) {
@@ -585,17 +761,26 @@ define(['angular',
                 });
             }
 
-            vm.markasDelivered = function (order) {
+            vm.markasDelivered = function (ord) {
                 isassignorderclickd = true;
                 var drivername = $("#drivernametxt").val();
                 var date = getOrderDate();
                 var timestamp = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
 
-                var orderfbref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+date+"/"+order.ordernumber);
-                orderfbref.update({markeddeliveredon: timestamp, markeddelivereddriver: (drivername != null && drivername != undefined && drivername != "" ? drivername : "")});
+                var orderstoassign = [];
+                if($.isArray(ord) == false)
+                    orderstoassign.push(ord);
+                else
+                    orderstoassign = ord;
+                
+                for(var i =0 ; i<orderstoassign.length; i++) {
+                    var order = orderstoassign[i];
+                    var orderfbref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+date+"/"+order.ordernumber);
+                    orderfbref.update({markeddeliveredon: timestamp, markeddelivereddriver: (drivername != null && drivername != undefined && drivername != "" ? drivername : "")});
+                }
             }
 
-            vm.dropdownclicked = function(ordernumber, $index) {
+            vm.dropdownclicked = function($index) {
                 isassignorderclickd = true;
                 if($("#userdropdown"+$index).hasClass('show') == true) {
                     $("#userdropdown"+$index).removeClass("show");
@@ -605,6 +790,42 @@ define(['angular',
                     $("#userdropdown"+$index).addClass("show");
                 }
                 utility.applyscope($scope);
+            }
+
+            vm.exportOrders = function() {
+                var deliverydate =  moment(vm.selecteddate).format('DD/MM/YYYY');
+                var ordersexport = [];
+                ordersexport.push(["Order number", "Customer name", "Customer address", "Zipcode", "Customer mobile number", "Delivery date (dd/mm/yyyy)", "Delivery time(hh:mm AM/PM - hh:mm AM/PM)", "Amount to collect from customer (Number only. Don’t use currency symbols)",
+                  "Product description", "Notes", "Tags"])
+                for(var i=0; i< vm.orders.length; i++) {
+                    var ordinfo = vm.orders[i];
+                    ordersexport.push([
+                        ordinfo.ordernumber,
+                        ordinfo.name,
+                        ordinfo.address,
+                        ordinfo.zip,
+                        ordinfo.mobilenumber,
+                        deliverydate,
+                        ordinfo.time,
+                        ordinfo.amount,
+                        (ordinfo.productdesc != null && ordinfo.productdesc != undefined && ordinfo.productdesc != "") ? ordinfo.productdesc : "-",
+                        (ordinfo.notes != null && ordinfo.notes != undefined && ordinfo.notes != "") ? ordinfo.notes : "-",
+                        (ordinfo.tags != null && ordinfo.tags != undefined && ordinfo.tags != "") ? ordinfo.tags : "-"
+                    ])
+                }
+
+                export_array_to_excel([ordersexport, []], "Orders");
+            }
+
+            vm.showMapClicked = function() {
+                vm.selectedTag = "All";
+                vm.selectedStatus = [{id: "All"}];
+                vm.time1 = utility.getTimeInMins("12:00 AM");
+                vm.time2 = utility.getTimeInMins("11:59 PM");
+                vm.tagfilter();
+
+                vm.showmaps = !vm.showmaps;
+                utility.setOrderView(vm.showmaps == true ? "Map" : "Table");
             }
 
             window.onclick = function(event) {

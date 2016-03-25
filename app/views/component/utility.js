@@ -36,7 +36,9 @@ define(['angular'], function (angular) {
                 setProductSelected : setProductSelected,
                 getDateFromString : getDateFromString,
                 getSourcePincode : getSourcePincode,
-                setSourcePincode : setSourcePincode
+                setSourcePincode : setSourcePincode,
+                getOrderView : getOrderView,
+                setOrderView : setOrderView
             };
             
             function applyscope($scope) {
@@ -142,6 +144,15 @@ define(['angular'], function (angular) {
 
             function setOrderSelected(order) {
                 sessionStorage.setItem('selectedorder', (order != null ? angular.toJson(order, true) : null));
+            }
+
+            function getOrderView() {
+                var orderview = sessionStorage.getItem('orderview');
+                return orderview != null && orderview != undefined && orderview != "" ? orderview : "Table"                
+            }
+
+            function setOrderView(orderview) {
+                sessionStorage.setItem('orderview', orderview);
             }
 
             function getProductSelected() {
@@ -281,6 +292,9 @@ define(['angular'], function (angular) {
             }
 
             function getTimeInMins(value) {
+                if(value.indexOf('AM') > 0 && value.indexOf('12') ==0) {
+                    value = value.replace('12', '0');
+                }
                 var timesplit = value.split(':');
                 var isPM = (timesplit[0]>=1 && timesplit[0]<12) && value.indexOf('PM')>=0;
 

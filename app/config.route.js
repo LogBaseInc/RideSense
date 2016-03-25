@@ -193,6 +193,15 @@ define(['angular',
                          allowAnonymous: false
                      }
                  },
+                  {
+                     url: '/orders/map',
+                     config: {
+                         templateUrl: 'views/orders/ordersmap.html',
+                         title: 'orders',
+                         controllerUrl: 'views/orders/ordersmap',
+                         allowAnonymous: false
+                     }
+                 },
                  {
                      url: '/order',
                      config: {

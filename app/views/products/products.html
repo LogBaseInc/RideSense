@@ -5,6 +5,7 @@
 	    <div class="input-group-btn">
 	    	<a type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.addProduct()"><span class="glyphicon glyphicon-plus"></span></a>
 	    	<a type="button" class="btn btn-default tm-no-outline" href="#account/items/upload"><span class="glyphicon glyphicon-file"></span></a>
+	    	<a type="button" data-ng-if="vm.products.length > 0" class="btn btn-default tm-no-outline" data-ng-click="vm.exportItems()"><span class="glyphicon glyphicon-download-alt"></span></a>
 	    </div>
 	</div>
 	<div class="container-fluid">
@@ -14,7 +15,6 @@
 					<br/>
 					<div>
 						<h5 class="tm-heading tripsheading" style="margin-left:14px;"><span class="glyphicon glyphicon-chevron-right" style="margin-right:1px"></span>Items | Total: {{vm.products.length}}
-							<a data-ng-click="vm.exportItems()" style="float:right" data-ng-if="vm.products.length > 0">Export Items</a>
 						</h5>
 				    </div>
 			    </div>

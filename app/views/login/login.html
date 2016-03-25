@@ -125,6 +125,30 @@
                                 </div>
                             </div>
 
+                            <div class="form-group" data-ng-class="{ 'has-error': signupform.textcountry.$invalid && signupform.textcountry.$touched }">
+                                <span class="block input-icon input-icon-right">
+                                   <select id="txtcountry" name="txtcountry" class="form-control" name="country" data-ng-model="vm.newuser.country" name="txtcountry" required>
+                                    </select>
+                                    <script language="javascript">
+                                        populateCountries("txtcountry");
+                                    </script>
+                                </span>
+                                <div data-ng-messages="signupform.textcountry.$error" data-ng-if="vm.interacted(signupform.txtcountry)" class="error-messages">
+                                    <div ng-message="required">Country required</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group zeromargin" data-ng-class="{ 'has-error': signupform.textmobilenumber.$invalid && signupform.textmobilenumber.$touched }">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="text" placeholder="Enter a Mobile Number" name="textmobilenumber" data-ng-model="vm.newuser.mobilenumber" class="form-control" ng-pattern="/^[0-9+]*$/" required maxLength="10" minLength="10">
+                                </span>
+                                <div data-ng-messages="signupform.textmobilenumber.$error" data-ng-if="vm.interacted(signupform.textmobilenumber)" class="error-messages">
+                                    <div ng-message="required">Mobile number required</div>
+                                    <div ng-message="pattern">Enter a valid mobile number</div>
+                                    <div ng-message="minlength">Enter a valid mobile number</div>
+                                </div>
+                            </div>
+
                             <div class="form-group" data-ng-class="{ 'has-error': signupform.textnewemail.$invalid && signupform.textnewemail.$touched }">
                                 <span class="block input-icon input-icon-right">
                                     <input type="text" class="form-control" data-ng-model="vm.newuser.email" placeholder="Email ID" name="textnewemail" required ng-pattern="/^[_a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,4})$/">
@@ -134,7 +158,7 @@
                                     <div ng-message="pattern">Enter a valid Email ID</div>
                                 </div>
                             </div>
-
+                            
                             <div class="form-group" data-ng-class="{ 'has-error': signupform.textnewpwd.$invalid && signupform.textnewpwd.$touched }">
                                 <span class="block input-icon input-icon-right">
                                     <input type="password" class="form-control" placeholder="Password" name="textnewpwd" required data-ng-model="vm.newuser.password">
@@ -155,7 +179,7 @@
                                     <div ng-message="required">Repeat the password</div>
                                 </div>
                             </div>
-
+            
                             <div class="form-group" data-ng-class="{ 'has-error': signupform.chkagreement.$invalid && signupform.chkagreement.$touched }">
                                 <input type="checkbox" class="ace" name="chkagreement" required data-ng-model="vm.newuser.agreed">
                                 &nbsp;<span class="lbl">

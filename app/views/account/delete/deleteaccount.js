@@ -67,46 +67,46 @@
                     for(property in snapshot.val()) {
                         var devicesref = new Firebase(config.firebaseUrl+'devices/'+property);
                         devicesref.remove();
+                    }
 
-                        //api token
-                        var tokenref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/token/id');
-                        tokenref.once("value", function(snapshot) {
-                            if(snapshot.val() != null && snapshot.val() != undefined && snapshot.val() != "") {
-                                var tokensref = new Firebase(config.firebaseUrl+'tokens/'+snapshot.val());
-                                tokensref.remove();
+                    //api token
+                    var tokenref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/token/id');
+                    tokenref.once("value", function(snapshot) {
+                        if(snapshot.val() != null && snapshot.val() != undefined && snapshot.val() != "") {
+                            var tokensref = new Firebase(config.firebaseUrl+'tokens/'+snapshot.val());
+                            tokensref.remove();
+                        }
+
+                            //collabarators
+                        var collabarators = [];
+                        var collabaratorsref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/users');
+                        collabaratorsref.once("value", function(snapshot) {
+                            var data = snapshot.val();
+                            for(property in data) {
+                                var collabarator = data[property];
+                                if(collabarator.joined == true) {
+                                    collabarators.push(collabarator.uid);
+                                }
                             }
 
-                                //collabarators
-                            var collabarators = [];
-                            var collabaratorsref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/users');
-                            collabaratorsref.once("value", function(snapshot) {
-                                var data = snapshot.val();
-                                for(property in data) {
-                                    var collabarator = data[property];
-                                    if(collabarator.joined == true) {
-                                        collabarators.push(collabarator.uid);
-                                    }
-                                }
+                            console.log(collabarators);
 
-                                console.log(collabarators);
+                            //delete account
+                            var accountref = new Firebase(config.firebaseUrl+'accounts/'+accountid);
+                            accountref.remove();
 
-                                //delete account
-                                var accountref = new Firebase(config.firebaseUrl+'accounts/'+accountid);
-                                accountref.remove();
+                            //delete user
+                            return loginservice.removeuser(vm.email, vm.password).then(userremovedcompleted)
 
-                                //delete user
-                                return loginservice.removeuser(vm.email, vm.password).then(userremovedcompleted)
-
-                            }, function (errorObject) {
-                                utility.errorlog("The device read failed: " ,errorObject);
-                            });
-
-                            
                         }, function (errorObject) {
                             utility.errorlog("The device read failed: " ,errorObject);
                         });
 
-                    }
+                        
+                    }, function (errorObject) {
+                        utility.errorlog("The device read failed: " ,errorObject);
+                    });
+                    
                 }, function (errorObject) {
                     utility.errorlog("The device read failed: " ,errorObject);
                 });

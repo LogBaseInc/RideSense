@@ -14,11 +14,12 @@
 								<center style="margin-top:50px;">
 				                   <i class="glyphicon glyphicon-plus grey"></i>
 				                   <span class="text-muted">Select or Drop file</span>
+				                   <br/>
+				                   <br/>
+				                   <span data-ng-show="vm.selectedfile != null" style="color:green">{{vm.selectedfile.name}}</span>
 				                   <input type="file" ngf-select="" ng-model="vm.selectedfile" name="file" accept=".xlsx">
 				                </center>
 			                </span>
-			                <br/>
-			               	<span data-ng-show="vm.selectedfile != null" style="color:green">{{vm.selectedfile.name}}</span>
 		            	</div>
 					</div>
 				</form>

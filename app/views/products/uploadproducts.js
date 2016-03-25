@@ -36,6 +36,21 @@ define(['angular',
 		        }
         	}
 
+            function checkItemFileHeader(itemheader){
+                var isvalid = false;
+
+                if(itemheader.length >=1 && 
+                    itemheader[0].toLowerCase().indexOf('item name') >=0 && 
+                    itemheader[1].toLowerCase().indexOf('description') >=0 && 
+                    itemheader[2].toLowerCase().indexOf('price') >=0 && 
+                    itemheader[3].toLowerCase().indexOf('unit') >=0 && 
+                    itemheader[4].toLowerCase().indexOf('inventory') >=0) {
+                    isvalid = true;
+                }
+
+                return isvalid;
+            }
+
         	function parseExcelRows(data) { 
                 if(data.isdirectfromexport == false) {
             		var products = [];
@@ -43,51 +58,60 @@ define(['angular',
             			if(data.worksheets[0].length > 1) {
             				var records= data.worksheets[0];
             				if(records.length >0) {
-    	        				for(var j = 1; j < records.length; j++) {
-    	        					var productinfo = records[j];
-                                    if(productinfo.length >= 5 && 
-                                        productinfo[0] != null && productinfo[0] != undefined && productinfo[0] != "" && productinfo[0].toString() != "NaN" &&
-                                        productinfo[1] != null && productinfo[1] != undefined && productinfo[1] != "" && productinfo[1].toString() != "NaN" &&
-                                        productinfo[2] != null && productinfo[2] != undefined && productinfo[2] != "" && productinfo[2].toString() != "NaN" &&
-                                        productinfo[3] != null && productinfo[3] != undefined && productinfo[3] != "" && productinfo[3].toString() != "NaN" &&
-                                        productinfo[4] != null && productinfo[4] != undefined && productinfo[4] != "" && productinfo[4].toString() != "NaN") {
+                                if(checkItemFileHeader(records[0])) {
+        	        				for(var j = 1; j < records.length; j++) {
+        	        					var productinfo = records[j];
+                                        if(productinfo.length >= 5 && 
+                                            productinfo[0] != null && productinfo[0] != undefined && productinfo[0] != "" && productinfo[0].toString() != "NaN" &&
+                                            productinfo[1] != null && productinfo[1] != undefined && productinfo[1] != "" && productinfo[1].toString() != "NaN" &&
+                                            productinfo[2] != null && productinfo[2] != undefined && productinfo[2] != "" && productinfo[2].toString() != "NaN" &&
+                                            productinfo[3] != null && productinfo[3] != undefined && productinfo[3] != "" && productinfo[3].toString() != "NaN" &&
+                                            productinfo[4] != null && productinfo[4] != undefined && productinfo[4] != "" && productinfo[4].toString() != "NaN") {
 
-                                        if(!isNaN(productinfo[2]) && !isNaN(productinfo[4])) {
-                                            var product = {};
-                                            product.name = productinfo[0].toString();
-                                            product.description = productinfo[1].toString();
-                                            product.price = productinfo[2].toString();
-                                            product.unit = productinfo[3].toString();
-                                            product.inventory = productinfo[4].toString();
-                                            product.uuid = productinfo.length>5 && isGuid(productinfo[5]) ? productinfo[5] : utility.generateUUID();
+                                            if(!isNaN(productinfo[2]) && !isNaN(productinfo[4])) {
+                                                var product = {};
+                                                product.name = productinfo[0].toString();
+                                                product.description = productinfo[1].toString();
+                                                product.price = productinfo[2].toString();
+                                                product.unit = productinfo[3].toString();
+                                                product.inventory = productinfo[4].toString();
+                                                product.uuid = productinfo.length>5 && isGuid(productinfo[5]) ? productinfo[5] : utility.generateUUID();
 
-                                            products.push(product);
+                                                products.push(product);
+                                            }
                                         }
                                     }
-                                }
-                                if(products.length > 0) {
-                                    return productservice.saveProducts(accountid, products).then (
-                                    function(data) {
-                                        submitted = false;
-                                        vm.buttondisabled = false;
-                                        spinner.hide();
-                                        notify.success(products.length + " Item saved succesfully");
-                                        utility.applyscope($scope);
-                                        vm.cancel();
+                                    if(products.length > 0) {
+                                        return productservice.saveProducts(accountid, products).then (
+                                        function(data) {
+                                            submitted = false;
+                                            vm.buttondisabled = false;
+                                            spinner.hide();
+                                            notify.success(products.length + " Item saved succesfully");
+                                            utility.applyscope($scope);
+                                            vm.cancel();
+                                        }
+                                        , function(error) {
+                                            submitted = false;
+                                            vm.buttondisabled = false;
+                                            spinner.hide();
+                                            notify.error("Somethings went wrong, please try after some time");
+                                            utility.applyscope($scope);
+                                        });
                                     }
-                                    , function(error) {
+                                    else {
                                         submitted = false;
                                         vm.buttondisabled = false;
                                         spinner.hide();
-                                        notify.error("Somethings went wrong, please try after some time");
+                                        notify.error("No valid item found");
                                         utility.applyscope($scope);
-                                    });
+                                    }
                                 }
                                 else {
                                     submitted = false;
                                     vm.buttondisabled = false;
                                     spinner.hide();
-                                    notify.error("No valid item found");
+                                    notify.error("Few columns are missing, please use the latest template available");
                                     utility.applyscope($scope);
                                 }
             				}

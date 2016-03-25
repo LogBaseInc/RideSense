@@ -189,8 +189,11 @@ define(['angular',
                     var accountref = new Firebase(config.firebaseUrl+'accounts/account'+uuid);
                     var accountobj = {};
                     accountobj.email = vm.newuser.email;
+                    accountobj.mobilenumber = vm.newuser.mobilenumber;
                     accountobj.name = vm.newuser.accountname;
                     accountobj.timezone = getTimeZone();
+                    accountobj.address = {};
+                    accountobj.address.country = vm.newuser.country;
                     accountobj.createdon = moment(new Date()).format('YYYY/DD/MM HH:mm:ss');
                     accountref.set(accountobj);
 

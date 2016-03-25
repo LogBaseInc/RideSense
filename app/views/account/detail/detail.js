@@ -28,7 +28,7 @@ define(['angular',
             var tokenref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/token');
             var inventoryTrackingRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/inventorytracking');
             var manualDeliveryRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/manualdelivery');
-
+            var mobileref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/mobilenumber');
             activate();
 
             function activate() {
@@ -53,7 +53,14 @@ define(['angular',
                 }, function (errorObject) {
                     utility.errorlog("The account name read failed: ", errorObject);
                 });
-                
+
+                mobileref.once("value", function(snapshot) {
+                    vm.mobilenumber = snapshot.val();
+                    utility.applyscope($scope);
+                }, function (errorObject) {
+                    utility.errorlog("The mobile number read failed: ", errorObject);
+                });
+                               
                 addressref.once("value", function(snapshot) {
                     vm.address = snapshot.val();
                     if(vm.address == null)
@@ -109,6 +116,7 @@ define(['angular',
             vm.update = function () {
                 accountref.set(vm.accountname);
                 addressref.set(vm.address);
+                mobileref.set(vm.mobilenumber);
                 inventoryTrackingRef.set($('#role-toggle1').prop('checked'));
                 manualDeliveryRef.set($('#role-toggle2').prop('checked'));
                 notify.success('Account details updated successfully');

@@ -50,7 +50,21 @@ define(['angular',
             }
 
             vm.exportItems = function() {
-                export_table_to_excel('producttable');
+               var itemsexport = [];
+                itemsexport.push(["Item name", "Description", "Price (Number only, don't include currency symbol)", "Unit (Kg / Count)", "Inventory", "UUID(Don't edit this. For new leave it blank)"]);
+                for(var i=0; i< vm.products.length; i++) {
+                    var iteminfo = vm.products[i];
+                    itemsexport.push([
+                        iteminfo.name,
+                        iteminfo.description,
+                        iteminfo.price,
+                        iteminfo.unit,
+                        iteminfo.inventory,
+                        iteminfo.uuid
+                    ])
+                }
+
+                export_array_to_excel([itemsexport, []], "Items");
             }
         }
     })();

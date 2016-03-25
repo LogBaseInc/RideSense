@@ -1,16 +1,19 @@
 <div data-ng-controller="orders as vm">
 	<div class="input-group input-group-lg livemapsearch">
-		<input type="text" class="form-control tm-search-text tm-no-outline fullwidth" placeholder="Search order" data-ng-model="vm.search" 
-		 />
+		<input type="text" class="form-control tm-search-text tm-no-outline fullwidth" placeholder="Search order" data-ng-model="vm.search" data-ng-hide="vm.showmaps"/>
+		 <div class="input-group input-group-lg livemapsearch" style="width:100%" data-ng-show="vm.showmaps">
+			<google-places></google-places>
+		</div>
 	    <div class="input-group-btn">
 	    	<a type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.addOrder()"><span class="glyphicon glyphicon-plus"></span></a>
 	    	<a type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.uploadfile()"><span class="glyphicon glyphicon-file"></span></a>
+	    	<a type="button" class="btn btn-default tm-no-outline" data-ng-click="vm.exportOrders()" data-ng-if="vm.orders.length > 0"><span class="glyphicon glyphicon-download-alt"></span></a>
 	    </div>
 	</div>
 
-	<div data-ng-if="vm.isdesktop == false" ng-include src="'views/orders/morders.html'"> </div>
+	<div data-ng-if="vm.isdesktop == false" ng-include src="'views/orders/morders.html'"></div>
 	<div data-ng-if="vm.isdesktop == true" class="container-fluid">
-		<div class="row">
+		<div class="row" data-ng-hide="vm.showmaps">
 			<div class="row col-xs-12">
 				<div>
 					<br/>
@@ -42,13 +45,13 @@
 				        </div>
 
 				        <div class="orderfilter marginleft10">
+				        	<a style="float:right; margin-left:20px;font-size:26px;" data-ng-click="vm.showMapClicked()" data-ng-if="vm.filterOrders.length > 0" class="glyphicon glyphicon-map-marker" title='View orders in map' data-toggle="tooltip" data-placement="top" tooltip></a>
 				        	<div ng-dropdown-multiselect="" options="vm.columns" selected-model="vm.selectedcolumns" extra-settings="vm.columnsselectsettings" class="multiselectdiv" events="vm.columnevents" checkboxes="true"></div>
 				        </div>
-
 				    </div>
 			    </div>
 			</div>
-			<div class="col-xs-12" data-ng-if="vm.filterOrders.length > 0">
+			<div class="col-xs-12" data-ng-if="vm.filterOrders.length > 0" style="padding-right:0px !important;" style="margin-top:-10px;">
 				<table id="ordertable" name="ordertable" style="margin-bottom:200px">
 					<thead>
 						<tr class="cakebeecolor">
@@ -95,13 +98,13 @@
 							</td>
 							<td data-ng-show="vm.statusshow" class="ordertd">
 								<div data-ng-if="order.status != null">
-									<div data-ng-if="vm.istoday == true && (order.status == 'Yet to accept' || order.status == 'Accepted')">
+									<div data-ng-if="vm.showassign == true && (order.status == 'Yet to accept' || order.status == 'Accepted')">
 										<div data-ng-click="vm.unassignorder(order)">
 											<span>{{order.vehiclenumber}}</span>
 											<i class="glyphicon glyphicon-remove unassgincolor marginleft10"></i>
 										</div>
 									</div>
-									<div data-ng-if="vm.istoday == false && order.status == 'Yet to accept'">
+									<div data-ng-if="vm.showassign == false && order.status == 'Yet to accept'">
 										<span>{{order.vehiclenumber}}</span>
 									</div>
 									<div data-ng-if="order.status == 'Accepted'">									
@@ -126,17 +129,17 @@
 										<span data-ng-if="order.cancelledon">@ {{order.cancelledon}}</span>
 									</div>
 								</div>
-								<div data-ng-if="order.status == null && order.deviceid != null && vm.istoday==false">
+								<div data-ng-if="order.status == null && order.deviceid != null && vm.showassign==false">
 									<span>{{order.vehiclenumber}}</span> </br>
 								</div>
-								<div data-ng-if="order.status == null && vm.istoday == true">
+								<div data-ng-if="order.status == null && vm.showassign == true">
 									<div class="dropdown" data-ng-if="order.deviceid == null">
-										<button type="button" class="btn btn-default dropbtn orderdisplaybtn" data-ng-click="vm.dropdownclicked(order.ordernumber, $index)">Assign</button>
+										<button type="button" class="btn btn-default dropbtn orderdisplaybtn" data-ng-click="vm.dropdownclicked($index)">Assign</button>
 										<div id="userdropdown{{$index}}" class="dropdown-content">
 										    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)" data-ng-if="user.loggedin == true">
 										    	<img src="assets/images/greendot.png" style="margin-right:5px"></img>{{user.vehiclenumber}}</a>
 
-										    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)" data-ng-if="user.loggedin == false" style="cursor: none !important; color:grey;"><img src="assets/images/reddot.png" style="margin-right:5px"></img>{{user.vehiclenumber}}</a>
+										    <a href="" data-ng-repeat="user in vm.users" data-ng-click="vm.assignorder(order, user)" data-ng-if="user.loggedin == false"><img src="assets/images/reddot.png" style="margin-right:5px"></img>{{user.vehiclenumber}}</a>
 
 										    <a data-ng-if="vm.manualdelivery==true" type="button" style="margin-top:10px;"  confirm on-confirm="vm.markasDelivered(order)">Mark as Delivered</a>
 										</div>
@@ -153,6 +156,9 @@
 				<br/>
 			</div>
 		</div> <!-- row -->
+		
+		<div data-ng-if="vm.showmaps == true" ng-include src="'views/orders/ordersmap.html'"> </div>
+
 	</div> <!--container -->
 </div>
 
