@@ -512,7 +512,7 @@ define(['angular',
                             items = items + ",\n";
 
                         vm.order.items.push({name: vm.products[i].name, quantity: vm.products[i].quantity, price : parseFloat(vm.products[i].price), unitprice : parseFloat(vm.products[i].unitprice), 
-                        uuid : (vm.products[i].uuid != null && vm.products[i].uuid != undefined) ? vm.products[i].uuid : ""});
+                        uuid : (vm.products[i].uuid != null && vm.products[i].uuid != undefined && vm.products[i].uuid != "") ? vm.products[i].uuid : ""});
                     }
                     amount = amount + parseFloat(vm.products[i].price);
                 }
@@ -525,7 +525,7 @@ define(['angular',
                 var inventories = [];
                 if(type == "Add") {
                     for (var i = 0; i < vm.products.length; i++) {
-                        if(vm.products[i].uuid != null && vm.products[i].uuid != undefined) {
+                        if(vm.products[i].uuid != null && vm.products[i].uuid != undefined && vm.products[i].uuid != "") {
                             if(vm.products[i].quantity != null && vm.products[i].quantity != undefined && vm.products[i].quantity != "")
                                 inventories.push({uuid : vm.products[i].uuid, inventory_diff :  (0-parseFloat(vm.products[i].quantity)).toString()});
                         }
@@ -533,7 +533,7 @@ define(['angular',
                 }
                 else if(type == "Delete") {
                     for (var i = 0; i < vm.products.length; i++) {
-                        if(vm.products[i].uuid != null && vm.products[i].uuid != undefined && parseFloat(vm.products[i].originalQuantity) > 0) {
+                        if(vm.products[i].uuid != null && vm.products[i].uuid != undefined && vm.products[i].uuid != "" && parseFloat(vm.products[i].originalQuantity) > 0) {
                             inventories.push({uuid : vm.products[i].uuid, inventory_diff :  vm.products[i].originalQuantity.toString()});
                         }
                     }
@@ -544,7 +544,7 @@ define(['angular',
                 }
                 else if(type == "Update") {
                     for (var i = 0; i < vm.products.length; i++) {
-                        if(vm.products[i].uuid != null && vm.products[i].uuid != undefined) {
+                        if(vm.products[i].uuid != null && vm.products[i].uuid != undefined && vm.products[i].uuid != "") {
                             if(vm.products[i].quantity != null && vm.products[i].quantity != undefined && vm.products[i].quantity != "") 
                             {
                                 if(parseFloat(vm.products[i].originalQuantity) > 0) 
@@ -562,7 +562,7 @@ define(['angular',
                     }
 
                     for (var j = 0; j < vm.removedinventory.length; j++) {
-                        if(vm.removedinventory[j].uuid != null && vm.removedinventory[j].uuid != undefined) {
+                        if(vm.removedinventory[j].uuid != null && vm.removedinventory[j].uuid != undefined && vm.removedinventory[j].uuid != "") {
                            var alreadyadded = _.filter(inventories, function(inv){ return inv.uuid ==  vm.removedinventory[j].uuid});
                            
                            if(alreadyadded != null && alreadyadded.length > 0) {
