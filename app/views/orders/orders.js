@@ -722,7 +722,7 @@ define(['angular',
                     var assignorders = {};
                     assignorders.Name = order.name;
                     assignorders.Address = order.address + (order.zip != null && order.zip != undefined ? (" " +order.zip) : "");
-                    assignorders.Amount = order.amount;
+                    assignorders.Amount = parseFloat(order.amount);
                     assignorders.Mobile = order.mobilenumber;
                     assignorders.Time = order.time;
                     assignorders.Notes = (order.notes != null && order.notes != undefined) ? order.notes : "";

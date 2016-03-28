@@ -23,7 +23,7 @@ define(['angular',
             var selecting = false,mouseDownPos, gribBoundingBox = null, mouseIsDown = 0;
             omapvm.isfilterclicked = false;
             var selectedorder = null;
-            
+            omapvm.showorhidefilter = showorhidefilter;
             activate();
 
             function activate () {
@@ -31,6 +31,8 @@ define(['angular',
                 navigator.geolocation.getCurrentPosition(currentPositionCallback);
 
                 setGoogleMaps();
+
+                showorhidefilter();
             }
 
             function currentPositionCallback(position) {
@@ -116,7 +118,7 @@ define(['angular',
                } 
             }
 
-            omapvm.showorhidefilter = function($event) {
+            function showorhidefilter ($event) {
                 var mapPos = parseInt($('.filteroption').css('right'), 10);
                 if (mapPos < 0) {
                     omapvm.isfilterclicked = true;

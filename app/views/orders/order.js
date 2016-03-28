@@ -592,7 +592,8 @@ define(['angular',
             }
 
             function checkOrderNumber() {
-               var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+vm.order.deliverydate+"/"+vm.order.ordernumber);
+               var orddeliverdate =  vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
+               var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+orddeliverdate+"/"+vm.order.ordernumber);
                ordersref.once("value", function(snapshot) {
                     if(snapshot.val() == null) {
                         updateinventories("Add");
@@ -661,9 +662,7 @@ define(['angular',
             }
 
             function addFirebaseOrder () {
-                $log.info(vm.order,['stick', 'order', 'ui', accountid]);
                 setTags();
-
                 submitted = true;
                 spinner.show();
                 var ordsave = {
@@ -681,6 +680,8 @@ define(['angular',
                     items : vm.order.items != null &&  vm.order.items != undefined ? vm.order.items: "",
                     tags: vm.order.tags != null &&  vm.order.tags != undefined ? vm.order.tags: ""
                 }
+
+                $log.info({order: ordsave,tags:['stick', 'order', 'ui', accountid], type: 'add'});
                 return orderservice.saveOrder([ordsave], accountid).then(
                 function(data){
                     saveCustomer();
@@ -713,7 +714,6 @@ define(['angular',
                 };
                 
                 updateorder.time = updateorder.time.replace(/\s+/g, " ");  
-                
                 var ordsave = {
                     order_id: vm.order.ordernumber.toString(),
                     name: vm.order.name.toString(),
@@ -729,11 +729,14 @@ define(['angular',
                     items : updateorder.items,
                     tags: updateorder.tags
                 }
+
+                $log.info({order: ordsave,tags:['stick', 'order', 'ui', accountid], type: 'update'});
                 return orderservice.saveOrder([ordsave], accountid).then(
                 function(data){
                     if(vm.order.deviceid != null && vm.order.deviceid != undefined) {
-                        var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber);
-                        ordersref1.update({Name: vm.order.name, Mobile: vm.order.mobilenumber, Amount: vm.order.amount, Time: updateorder.time, 
+                        var orddeliverdate =  vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
+                        var ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+vm.order.deviceid+"/"+orddeliverdate+"/"+vm.order.ordernumber);
+                        ordersref1.update({Name: vm.order.name, Mobile: vm.order.mobilenumber, Amount: parseFloat(vm.order.amount), Time: updateorder.time, 
                             Address: vm.order.address + (vm.order.zip != null && vm.order.zip != undefined ? (" " + vm.order.zip) : ""), Notes: updateorder.notes});
 
                         if(vm.order.items != null && vm.order.items != undefined && vm.order.items.length > 0) {
@@ -743,17 +746,17 @@ define(['angular',
                                 items.push({Name: (vm.order.items[i].quantity +  " X " + vm.order.items[i].name), Description: ""});
                             };
 
-                            ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber+"/Items");
+                            ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+vm.order.deviceid+"/"+orddeliverdate+"/"+vm.order.ordernumber+"/Items");
                             ordersref1.set(items);
                         }
                         else if(vm.order.productdesc != null && vm.order.productdesc != undefined && vm.order.productdesc != "") {
                             var items = [];
                             items.push({Name: "", Description: vm.order.productdesc});
-                            ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber+"/Items");
+                            ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+vm.order.deviceid+"/"+orddeliverdate+"/"+vm.order.ordernumber+"/Items");
                             ordersref1.set(items);
                         }
                         else {
-                            ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber+"/Items");
+                            ordersref1 = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+vm.order.deviceid+"/"+orddeliverdate+"/"+vm.order.ordernumber+"/Items");
                             ordersref1.remove();
                         }
                     }
