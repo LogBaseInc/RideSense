@@ -83,7 +83,6 @@ define(['angular',
                 getDevices();
 
                 updatelastseen();
-               
             }
 
             function initializeTime(isstart){
@@ -341,7 +340,7 @@ define(['angular',
             }
 
             function setIsToday() {
-                if((vm.isdatesupport == false && moment(todaysdate).format('DD/MM/YYYY') == moment(vm.selecteddate).format('DD/MM/YYYY')) ||
+                if((vm.isdatesupport == false && moment(utility.getDateFromString(todaysdate)).format('DD/MM/YYYY') <= moment(utility.getDateFromString(vm.selecteddate)).format('DD/MM/YYYY')) ||
                    (vm.isdatesupport == true && moment(todaysdate).format('DD/MM/YYYY') <= moment(vm.selecteddate).format('DD/MM/YYYY')))
                     vm.showassign = true;
                 else
@@ -679,7 +678,11 @@ define(['angular',
                 else 
                     vm.filterOrders = vm.timefilterOrders;
 
-                vm.hasunassignorders = _.filter(vm.filterOrders, function(ord){ return ord.status == null && ord.deviceid == null}).length > 0; //is any unassign orders
+                if(vm.showassign)
+                    vm.hasunassignorders = _.filter(vm.filterOrders, function(ord){ return ord.status == null && ord.deviceid == null}).length > 0; //is any unassign orders
+                else
+                    vm.hasunassignorders = false;
+
                 vm.nolocationOrder = _.filter(vm.filterOrders, function(ord){ return ord.latitude == null});
             }
 

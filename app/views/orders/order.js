@@ -27,6 +27,7 @@ define(['angular',
             vm.trackinventory = false;
             vm.inventoryerror = false;
             vm.removedinventory = [];
+            vm.istoday = false;
 
             Object.defineProperty(vm, 'canAdd', {
                 get: canAdd
@@ -78,6 +79,14 @@ define(['angular',
                     vm.time2 = "6:00 PM"
                     setTodayDate();
                 }
+
+                var todaysdate = vm.isdatesupport ? new Date() : moment(new Date()).format('DD/MM/YYYY');
+                 if((vm.isdatesupport == false && moment(utility.getDateFromString(todaysdate)).format('DD/MM/YYYY') <= moment(utility.getDateFromString(vm.selecteddate)).format('DD/MM/YYYY')) ||
+                   (vm.isdatesupport == true && moment(todaysdate).format('DD/MM/YYYY') <= moment(vm.selecteddate).format('DD/MM/YYYY')))
+                    vm.istoday = true;
+                else
+                    vm.istoday = false; 
+
                 vm.removedinventory = [];
                 vm.tagsdetail = vm.order.tagsdetail;
                 initializeTagColors();
