@@ -57,6 +57,8 @@ define(['angular',
                 if(utility.getOrderSelected() != null) {
                     vm.order = utility.getOrderSelected();
                     var timesplit = vm.order.time.split('-');
+                    if(timesplit.length < 2)
+                        timesplit = vm.order.time.split('–');
                     vm.time1 = timesplit[0];
                     vm.time2 = timesplit[1];
                     if(vm.order.items != null && vm.order.items != undefined && vm.order.items.length > 0) {
@@ -723,6 +725,7 @@ define(['angular',
                 };
                 
                 updateorder.time = updateorder.time.replace(/\s+/g, " ");  
+                updateorder.time = updateorder.time.replace("–", "-"); 
                 var ordsave = {
                     order_id: vm.order.ordernumber.toString(),
                     name: vm.order.name.toString(),

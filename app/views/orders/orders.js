@@ -443,11 +443,15 @@ define(['angular',
 
             function getOrderDetail(orderinfo) {
                 var orderdetail = {};
+                
                 var timesplit = orderinfo.time.split('-');
+                if(timesplit.length < 2)
+                    timesplit = orderinfo.time.split('–');
                 var ispm = false;
                 if(timesplit[0].toLowerCase().indexOf('pm') >=0 && parseInt(timesplit[0]) >= 1 && parseInt(timesplit[0]) <= 11) {
                     ispm = true;
                 }
+
                 orderdetail.timetosort = (isNaN(parseInt(timesplit[0])) ? 24 : (ispm ? (parseInt(timesplit[0])+12) : parseInt(timesplit[0])));
                 orderdetail.createdat = (orderinfo.createdat != null && orderinfo.createdat != undefined) ? getCreatedTime(orderinfo.createdat) : null;
                 orderdetail.ordernumber = orderprop;
@@ -721,6 +725,7 @@ define(['angular',
 
                 for(var i =0 ; i<orderstoassign.length; i++) {
                     var order = orderstoassign[i];
+                    order.time = order.time.replace("–", "-");
                     var deliverydate =  vm.isdatesupport ? moment(order.date).format('YYYYMMDD') : moment(utility.getDateFromString(order.date)).format('YYYYMMDD');
                     var assignorders = {};
                     assignorders.Name = order.name;
