@@ -24,7 +24,10 @@
 					<div class="form-group zeromargin" data-ng-class="{ 'has-error': orderform.textmobilenumber.$invalid && orderform.textmobilenumber.$touched }">
 						<label class="col-md-3 control-label">Customer mobile number<span style="margin-left:5px">*</span></label>
 						<div class="col-md-6">
-							<input type="text" autocomplete="off" splaceholder="Enter a Customer Mobile Number" name="textmobilenumber" data-ng-model="vm.order.mobilenumber" typeahead="cust.mobile as cust.mobile for cust in vm.mobilenumbers | filter:{mobile:$viewValue}" typeahead-template-url="customerElement.html" typeahead-on-select="vm.mobileselected($item, $model, $label)" class="form-control" ng-pattern="/^[0-9+]*$/" ng-readonly="vm.order.cancelled" data-ng-change="vm.mobilechanged()" required maxLength="10" minLength="10">
+							<input type="text" autocomplete="off" placeholder="Enter a Customer Mobile Number" name="textmobilenumber" data-ng-model="vm.order.mobilenumber" class="form-control" ng-pattern="/^[0-9+]*$/" ng-readonly="vm.order.cancelled" data-ng-change="vm.mobilechanged()" required maxLength="10" minLength="10">
+							<img src="assets/images/spinner.gif" style="margin-top:5px; height:20px;" data-ng-if="vm.fecthingaddressdata"></img>
+							<small data-ng-if="vm.usernotfound == true">*No user found</small>
+
 		                    <div data-ng-messages="orderform.textmobilenumber.$error" data-ng-if="vm.interacted(orderform.textmobilenumber)" class="error-messages">
 		                        <div ng-message="required">Customer mobile number required</div>
 		                        <div ng-message="pattern">Enter a valid mobile number</div>

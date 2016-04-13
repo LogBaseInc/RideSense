@@ -116,7 +116,8 @@ define(['angular',
             function registerdevice() {
                 submitted = true;
                 spinner.show();
-                return mobileuuidservice.getMobileUuid(vm.device.drivermobile, sessionservice.getAccountName()).then(getMobileUuidCompleted, getMobileUuidFailed);
+                vm.device.devicenumber = utility.generateUUID();
+                adddev()
             }
 
             function checkUserName() {
@@ -145,17 +146,6 @@ define(['angular',
                 $temp.val(text).select();
                 document.execCommand("copy");
                 $temp.remove();
-            }
-
-            function getMobileUuidCompleted(data) {
-                vm.device.devicenumber = data.uuid;
-                adddev()
-            }
-
-            function getMobileUuidFailed() {
-                submitted = false;
-                spinner.hide();
-                notify.error('Something went wrong, please try after some time.');  
             }
 
             function adddev() {

@@ -28,6 +28,8 @@ define(['angular',
             vm.inventoryerror = false;
             vm.removedinventory = [];
             vm.istoday = false;
+            vm.usernotfound = false;
+            vm.fecthingaddressdata = false;
 
             Object.defineProperty(vm, 'canAdd', {
                 get: canAdd
@@ -92,7 +94,6 @@ define(['angular',
                 vm.removedinventory = [];
                 vm.tagsdetail = vm.order.tagsdetail;
                 initializeTagColors();
-                getAllMobileNumbers();
                 getProducts();
             }
 
@@ -189,15 +190,6 @@ define(['angular',
                 });
             }
 
-            function getAllMobileNumbers() {
-                return customerservice.getAllMobileNumbers(accountid).then(
-                function(data) {
-                    vm.mobilenumbers = (data != null && data != undefined ) ? data : [];
-                }
-                , function(error) {
-                });
-            }
-
             function getProducts() {
                 return productservice.getProductsBrief(accountid).then(
                 function(data) {
@@ -222,18 +214,23 @@ define(['angular',
             }
 
             function getAddressbyMobile(mobilenumber) {
+                vm.fecthingaddressdata = true;
                 return customerservice.getAddressbyMobile(accountid, mobilenumber).then(
-                function(data) {    
-                    if(data != null && data != undefined && data.length > 0) {
+                function(data) {  
+                    vm.fecthingaddressdata = false;
+                    if(data != null && data != undefined && data.length > 0 && !jQuery.isEmptyObject(data[0])) {
+                        vm.usernotfound = false;
                         vm.order.name = data[0].name;
                         vm.order.address = data[0].address;
                         vm.order.zip = data[0].zip;
                     }
                     else {
+                        vm.usernotfound = true;
                         vm.order.name = null
                         vm.order.address = null;
                         vm.order.zip = null;
                     }
+                    utility.applyscope($scope);
                 }
                 ,function(error) {
                 });
@@ -245,6 +242,8 @@ define(['angular',
             }
 
             vm.mobilechanged = function() {
+                vm.usernotfound = false;
+                vm.fecthingaddressdata = false;
                 if(vm.order.mobilenumber == null || vm.order.mobilenumber == undefined) {
                     vm.order.name = null
                     vm.order.address = null;
