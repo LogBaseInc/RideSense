@@ -738,7 +738,8 @@ define(['angular',
                     zip : updateorder.zip.toString(),
                     country: vm.country,
                     items : updateorder.items,
-                    tags: updateorder.tags
+                    tags: updateorder.tags,
+                    url: vm.order.url
                 }
 
                 $log.info({order: ordsave,tags:['stick', 'order', 'ui', accountid], type: 'update'});
@@ -796,6 +797,9 @@ define(['angular',
                     ordersref.remove();
                 }
 
+                var ordertrackref = new Firebase(config.firebaseUrl+'trackurl/'+vm.order.deliverydate+"/"+accountid+"_"+vm.order.ordernumber);
+                ordertrackref.remove();
+
                 notify.success('Order deleted successfully');
                 vm.cancel();
             }
@@ -819,6 +823,9 @@ define(['angular',
                 if(vm.order.deviceid != null && vm.order.deviceid != undefined) {
                     var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/orders/'+vm.order.deviceid+"/"+vm.order.deliverydate+"/"+vm.order.ordernumber+"/Cancelledon");
                     ordersref.set(cancelledon);
+
+                    var ordertrackref = new Firebase(config.firebaseUrl+'trackurl/'+vm.order.deliverydate+"/"+accountid+"_"+vm.order.ordernumber+"/status");
+                    ordertrackref.set("Cancelled");
                 }
 
                 notify.success('Order cancelled successfully');

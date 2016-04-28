@@ -21,6 +21,7 @@ define(['angular',
 			var isunclusterallowed = true;
 			var accountid = sessionservice.getaccountId();
 			var devicesref = null;
+			var previoustwodaytimestamp;
 
 		 	vm.distanceCovered = 0;
 		 	vm.showmaps =false;
@@ -40,8 +41,6 @@ define(['angular',
 				disableDefaultUI: !(utility.IsDesktop()),    
 			}
 			vm.onlineusers = 0;
-            vm.offlineusers = 0;
-
 			activate();
 
 		 	vm.markersEvents = {
@@ -67,7 +66,10 @@ define(['angular',
 		 	function activate() {
 		 		vm.carsearch = true;
 		 		vm.locationsearch = false;
-		 		
+		 		vm.hidenotactivefor2days = true;
+		 		var previoustwodate = moment(new Date().setDate(new Date().getDate()-2)).format("MM/DD/YYYY"); 
+		 		previoustwodaytimestamp = Date.parse(previoustwodate); 
+
 		 		var ua = navigator.userAgent;
 				if( ua.indexOf("Android") >= 0 ) {
 				  var androidversion = parseFloat(ua.slice(ua.indexOf("Android")+8));
@@ -96,18 +98,13 @@ define(['angular',
                 devicesref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/devices');
                 devicesref.on("value", function(snapshot) {
                     vm.onlineusers = 0;
-                    vm.offlineusers = 0;
                     if(snapshot.val() != null && snapshot.val() != undefined) {
                         accountdevices = snapshot.val();
                         for(prop in accountdevices) {
                             if(accountdevices[prop].activity != null && accountdevices[prop].activity != undefined) {
                                 if ((moment(accountdevices[prop].activity.date).format('DD/MM/YYYY') == moment(new Date()).format('DD/MM/YYYY')) && accountdevices[prop].activity.login == true)
                                     vm.onlineusers = vm.onlineusers + 1;
-                                else
-                                    vm.offlineusers = vm.offlineusers + 1;
                             }
-                            else 
-                               vm.offlineusers = vm.offlineusers + 1;
                         }
                         utility.applyscope($scope);
                     }
@@ -146,9 +143,12 @@ define(['angular',
 					var devicedetails = sessionservice.getAccountDevices();
 			 		var vehiclenumber = devicedetails[childSnapshot.key()].vehiclenumber;
 			 		if(_.filter(vm.carlist, function(car) { return car.name == vehiclenumber}).length == 0) {
-						vm.carlist.push({name : vehiclenumber});
-						vm.cars.models.push(getLiveCarObject(childSnapshot.val(), childSnapshot.key(), vehiclenumber));
-						utility.applyscope($scope);
+			 			var childdata = childSnapshot.val();
+			 			if((vm.hidenotactivefor2days == true && childdata.locationtime >= previoustwodaytimestamp) || vm.hidenotactivefor2days == false) {
+							vm.carlist.push({name : vehiclenumber});
+							vm.cars.models.push(getLiveCarObject(childdata, childSnapshot.key(), vehiclenumber));
+							utility.applyscope($scope);
+						}
 					}
 				});
 		 	}
@@ -182,7 +182,11 @@ define(['angular',
 				  	utility.errorlog("The current day distance read failed: " , errorObject);
 				});
 		 	}
-			
+
+			vm.visibilityofdevice = function() {
+				getlivecardata();
+			}
+
 		 	vm.searchOptionChanged = function(searchoption){
 			 	if(searchoption == 'location'){
 				 	vm.locationsearch = true;
@@ -249,10 +253,12 @@ define(['angular',
 
 			 	for(property in data) {
 			 		if(property != undefined) {
-				 		var livecarobj  = data[property];
-				 		var vehiclenumber = devicedetails[property].vehiclenumber;
-						vm.carlist.push({name : vehiclenumber});
-						vm.cars.models.push(getLiveCarObject(livecarobj, property, vehiclenumber));
+			 			if((vm.hidenotactivefor2days == true && data[property].locationtime >= previoustwodaytimestamp) || vm.hidenotactivefor2days == false) {
+					 		var livecarobj  = data[property];
+					 		var vehiclenumber = devicedetails[property].vehiclenumber;
+							vm.carlist.push({name : vehiclenumber});
+							vm.cars.models.push(getLiveCarObject(livecarobj, property, vehiclenumber));
+						}
 					 }
 				 	utility.applyscope($scope);
 				 	setGoogleMaps();

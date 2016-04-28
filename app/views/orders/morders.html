@@ -34,13 +34,11 @@
 				<br/>
 				<br/>
 				<div data-ng-show="order.status != null" style="float:right">
-					<div data-ng-show="vm.showassign == true && order.status == 'Yet to accept'">
+					<div data-ng-if="vm.showassign == true && (order.status == 'Yet to accept' || order.status == 'Accepted' || order.status == 'Picked up')">
 						<div data-ng-click="vm.unassignorder(order)" style="float:right;margin-top: -10px;">
 							<span class="drivername">{{order.vehiclenumber}}</span>
 							<i class="glyphicon glyphicon-remove unassgincolor marginleft10"></i>
 						</div>
-						<br/>
-						<button data-ng-if="vm.manualdelivery==true" type="button" class="btn btn-default" style="float:right;" data-ng-click="vm.markasDelivered(order)">Mark as Delivered</button>
 					</div>
 					<div data-ng-show="vm.showassign == false && order.status == 'Yet to accept'">
 						<span class="drivername">{{order.vehiclenumber}}</span>
@@ -50,7 +48,6 @@
 						<small>Accepted @ {{order.acceptedon}}</small>
 					</div>
 					<div data-ng-show="order.status == 'Picked up'">
-						<span class="drivername">{{order.vehiclenumber}}</span> </br>
 						<small>Picked @ {{order.pickedon}}</small>
 					</div>
 					<div data-ng-show="order.status == 'Delivered'">

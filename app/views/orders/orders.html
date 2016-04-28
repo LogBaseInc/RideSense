@@ -81,6 +81,8 @@
 								<span class="sortorder" ng-show="predicate == 'items'" ng-class="{reverse:reverse}"></span>
 							</th>	
 
+							<th data-ng-show="vm.notesshow" ng-click="ordersort(null)">Notes</th>
+
 							<th data-ng-show="vm.tagsshow" ng-click="ordersort(null)">Tags</th>
 
 							<th data-ng-show="vm.statusshow" ng-click="ordersort(null)">Status</th>
@@ -97,13 +99,14 @@
 							<td data-ng-show="vm.deliverytimeshow" class="ordertd">{{order.time}}</td>
 							<td data-ng-show="vm.amountshow" class="ordertd">Rs. {{order.amount}}</td>
 							<td data-ng-show="vm.addressshow" class="ordertd">{{order.address}} {{order.zip}}</td>
-							<td data-ng-show="vm.itemsshow" class="ordertd">{{order.productname}} {{order.productdesc}}</td>
+							<td data-ng-show="vm.itemsshow" class="ordertd">{{order.productdesc}}</td>
+							<td data-ng-show="vm.notesshow" class="ordertd">{{order.formattednotes}}</td>
 							<td data-ng-show="vm.tagsshow" class="ordertd">
 								<span data-ng-repeat="tag in order.tagsdetail"class="badge {{tag.tagcolor}}">{{tag.tag}}</span>
 							</td>
 							<td data-ng-show="vm.statusshow" class="ordertd">
 								<div data-ng-if="order.status != null">
-									<div data-ng-if="vm.showassign == true && (order.status == 'Yet to accept' || order.status == 'Accepted')">
+									<div data-ng-if="vm.showassign == true && (order.status == 'Yet to accept' || order.status == 'Accepted' || order.status == 'Picked up')">
 										<div data-ng-click="vm.unassignorder(order)">
 											<span>{{order.vehiclenumber}}</span>
 											<i class="glyphicon glyphicon-remove unassgincolor marginleft10"></i>
@@ -116,7 +119,6 @@
 										<small>Accepted @ {{order.acceptedon}}</small>
 									</div>
 									<div data-ng-if="order.status == 'Picked up'">
-										<span>{{order.vehiclenumber}}</span> <br/>
 										<small>Picked @ {{order.pickedon}}</small>
 									</div>
 									<div data-ng-if="order.status == 'Delivered'">

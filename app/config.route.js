@@ -75,6 +75,15 @@ define(['angular',
                         allowAnonymous: true
                      }
                  },
+                {
+                     url: '/user/activate/:accountId?/:email?',
+                     config: {
+                        templateUrl: 'views/account/users/activateuser.html',
+                        title: 'detail',
+                        controllerUrl: 'views/account/users/activateuser',
+                        allowAnonymous: true
+                     }
+                },
                  {
                      url: '/account/devices',
                      config: {

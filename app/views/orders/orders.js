@@ -1,4 +1,3 @@
-
 define(['angular',
     'config.route',
     'lib',
@@ -32,6 +31,7 @@ define(['angular',
             vm.amountshow = false;
             vm.addressshow = false;
             vm.itemsshow = false;
+            vm.notesshow = true;
             vm.tagsshow = false;
             vm.statusshow = false;
             vm.selectedcolumns = [];
@@ -201,6 +201,7 @@ define(['angular',
                         vm.itemsshow = true;
                         vm.tagsshow = true;
                         vm.statusshow = true;
+                        vm.notesshow = true;
 
                        vm.selectedcolumns = [{id: "Order #"}, {id: "Customer name"}, {id: "Delivery time"}, {id: "Amount to collect"}, {id: "Address"}, {id: "Items"}, {id: "Tags"}, {id: "Status"}];
                     }
@@ -251,6 +252,7 @@ define(['angular',
                     {id: "Amount to collect", label: "Amount to collect"},
                     {id: "Address", label: "Address"},
                     {id: "Items", label: "Items"},
+                    {id: "Notes", label: "Notes"},
                     {id: "Tags", label: "Tags"},
                     {id: "Status", label: "Status"}];
 
@@ -285,6 +287,8 @@ define(['angular',
                     vm.addressshow = selected;
                 else if(item.id == "Items")
                     vm.itemsshow = selected;
+                else if(item.id == "Notes")
+                    vm.notesshow = selected;
                 else if(item.id == "Tags")
                     vm.tagsshow = selected;
                 else if(item.id == "Status")
@@ -477,6 +481,12 @@ define(['angular',
                 orderdetail.productdesc = orderinfo.productdesc;
                 orderdetail.items = orderinfo.items;
                 orderdetail.notes = orderinfo.notes;
+                orderdetail.formattednotes = "";
+                if(orderinfo.notes != null && orderinfo.notes != undefined && orderinfo.notes != "") {
+                    var formattednotes = orderinfo.notes.substring(0, orderinfo.notes.indexOf("**")).split("\n\n");
+                    if(formattednotes.length == 2)
+                        orderdetail.formattednotes = formattednotes[1];
+                }
                 orderdetail.url = ((orderinfo.url != null && orderinfo.url != undefined && orderinfo.url != "") ? orderinfo.url : null);
                 orderdetail.tags = orderinfo.tags;
                 orderdetail.tagsdetail = [];
@@ -785,6 +795,9 @@ define(['angular',
                     var order = orderstoassign[i];
                     var orderfbref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+date+"/"+order.ordernumber);
                     orderfbref.update({markeddeliveredon: timestamp, markeddelivereddriver: (drivername != null && drivername != undefined && drivername != "" ? drivername : "")});
+
+                    var ordertrackref = new Firebase(config.firebaseUrl+'trackurl/'+date+"/"+accountid+"_"+order.ordernumber+"/status");
+                    ordertrackref.set("Delivered");
                 }
             }
 

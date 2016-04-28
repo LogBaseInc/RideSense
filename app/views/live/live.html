@@ -28,10 +28,15 @@
 			</a>
 		</div>
 
+		<div class="mapagentvisibilitydiv">
+			<input type="checkbox" data-ng-model="vm.hidenotactivefor2days" data-ng-change="vm.visibilityofdevice();" style="font-size:17px;"></input> 
+			<span style="margin-left:3px;">Hide agents not active for past 2 days</span>
+		<div>
+
 		<div class="tm-live-summary">
 		    <p class="tm-live-today">Today</p>
-			<h1 class="tm-live-distance">{{vm.distanceCovered}}</h1>
-			<h4>{{vm.onlineusers}}<small class="tm-overlay-unit" style="margin-left:5px;margin-right:5px;">online</small>| {{vm.offlineusers}}<small class="tm-overlay-unit" style="margin-left:5px;margin-right:5px;">offline</small></h4>
+			<h1 class="tm-live-distance">{{vm.distanceCovered}} km</h1>
+			<h4>{{vm.onlineusers}}<small class="tm-overlay-unit" style="margin-left:5px;margin-right:5px;">online</small>| {{vm.cars.models.length-vm.onlineusers}}<small class="tm-overlay-unit" style="margin-left:5px;margin-right:5px;">offline</small></h4>
 			<div data-ng-if="!vm.istracking">
 				<hr class="tm-light-margin"/>
 				<small>Zoom in for live tracking.</small>
