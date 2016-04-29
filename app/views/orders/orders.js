@@ -41,6 +41,7 @@ define(['angular',
             vm.manualdelivery = false;
             vm.showmaps = false;
             vm.hasunassignorders = false;
+            var totalorderscount =0;
 
             activate();
             $scope.ordersort = function(predicate) {
@@ -58,6 +59,7 @@ define(['angular',
                 $rootScope.routeSelection = 'orders';
                 $scope.predicate = null;
                 $scope.reverse = false;
+                updateTotalOrdersCount(0);
 
                 vm.time1options = initializeTime(true);
                 vm.time2options = initializeTime(false);
@@ -85,6 +87,27 @@ define(['angular',
                 updatelastseen();
             }
 
+            vm.getTotalAmount = function(filterresults) {
+                $('#totalamount').text(0);
+                totalAmount = 0;
+                totalorderscount = 0;
+                updateTotalOrdersCount(0);
+
+                if(filterresults != null && filterresults != undefined) {
+                    totalorderscount = filterresults.length;
+                    vm.totalAmount = _.reduce(filterresults, function(sumnum, ord){ return sumnum + parseFloat(ord.amount); }, 0);
+                }
+
+                updateTotalOrdersCount(totalorderscount);
+                $('#totalamount').text(vm.totalAmount);
+                utility.applyscope($scope);
+            }
+
+            function updateTotalOrdersCount(count) {
+                $('#totalorderspan').text(count);
+                $('#totalamount').text(0);
+            }
+            
             function initializeTime(isstart){
                 var timeoptions = [];
 
@@ -698,6 +721,11 @@ define(['angular',
                     vm.hasunassignorders = false;
 
                 vm.nolocationOrder = _.filter(vm.filterOrders, function(ord){ return ord.latitude == null});
+
+                if(vm.filterOrders.length ==0 || vm.search == null || vm.search == "" || vm.search == undefined)
+                    updateTotalOrdersCount(vm.filterOrders.length);
+                else
+                    updateTotalOrdersCount(0);
             }
 
             vm.addOrder = function() {

@@ -45,19 +45,21 @@
 					        	<div ng-dropdown-multiselect="" options="vm.statusoptions" selected-model="vm.selectedStatus" extra-settings="vm.statussselectsettings" events="vm.statusevents" checkboxes="true" class="width170" style="height:35px;display:inline"></div>
 					        </div>
 					        <div class="orderfilter marginleft10">
-					        	<span>Total orders : {{vm.filterOrders.length}}<span>
+					        	<span>Total orders : <span id="totalorderspan"></span></span>
 					        </div>
 
 					        <div class="orderfilter marginleft10">
-					        	
 					        	<div ng-dropdown-multiselect="" options="vm.columns" selected-model="vm.selectedcolumns" extra-settings="vm.columnsselectsettings" class="multiselectdiv" events="vm.columnevents" checkboxes="true"></div>
 					        </div>
+					    </div>
+					    <div style="margin-left:16px; margin-top:15px;">
+					    	<span style="float:right;">Total amount to collect : Rs. <span id="totalamount"></span></span>
 					    </div>
 					</div>
 			    </div>
 			</div>
 			<div class="col-xs-12" data-ng-if="vm.filterOrders.length > 0" style="padding-right:0px !important;" style="margin-top:-10px;">
-				<table id="ordertable" name="ordertable" style="margin-bottom:200px">
+				<table id="ordertable" name="ordertable" style="margin-bottom:300px; margin-top:0px !important;">
 					<thead>
 						<tr class="cakebeecolor">
 							<th data-ng-show="vm.orderidshow" ng-click="ordersort('orderid')"> Order
@@ -89,8 +91,10 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr data-ng-repeat="order in vm.filterOrders | filter: vm.search | orderBy:predicate:reverse" data-ng-click="vm.orderClicked(order)">
+						<tr data-ng-repeat="order in vm.filterOrders  | orderBy:predicate:reverse | filter: vm.search as filterresults" data-ng-click="vm.orderClicked(order)">
+							{{vm.getTotalAmount(filterresults)}}
 							<td data-ng-show="vm.orderidshow" class="ordertd">
+								<span>{{totalamount}}</span>
 								<span data-ng-if="order.url == null || order.url == undefined">{{order.ordernumber}}</span>
 								<a data-ng-if="order.url != null && order.url != undefined" href="{{order.url}}" target="_blank" data-ng-click="vm.linkClicked(order.url)">{{order.ordernumber}}</a>
 							</td>
