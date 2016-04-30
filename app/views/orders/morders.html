@@ -41,11 +41,10 @@
 							<i class="glyphicon glyphicon-remove unassgincolor marginleft10"></i>
 						</div>
 					</div>
-					<div data-ng-show="vm.showassign == false && order.status == 'Yet to accept'">
+					<div data-ng-show="vm.showassign == false && (order.status == 'Yet to accept' || order.status == 'Accepted' || order.status == 'Picked up')">
 						<span class="drivername">{{order.vehiclenumber}}</span>
 					</div>
 					<div data-ng-show="order.status == 'Accepted'">									
-						<span class="drivername">{{order.vehiclenumber}}</span> </br>
 						<small>Accepted @ {{order.acceptedon}}</small>
 					</div>
 					<div data-ng-show="order.status == 'Picked up'">
