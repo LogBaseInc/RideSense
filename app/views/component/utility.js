@@ -38,7 +38,8 @@ define(['angular'], function (angular) {
                 getSourcePincode : getSourcePincode,
                 setSourcePincode : setSourcePincode,
                 getOrderView : getOrderView,
-                setOrderView : setOrderView
+                setOrderView : setOrderView,
+                isDateFiledSupported : isDateFiledSupported
             };
             
             function applyscope($scope) {
@@ -299,6 +300,16 @@ define(['angular'], function (angular) {
                 var isPM = (timesplit[0]>=1 && timesplit[0]<12) && value.indexOf('PM')>=0;
 
                 return  (isPM ? ((12 + parseInt(timesplit[0])) *60) : (parseInt(timesplit[0]) *60)) + (parseFloat("0."+timesplit[1]) *60);
+            }
+
+            function isDateFiledSupported(){
+                var datefield=document.createElement("input")
+                datefield.setAttribute("type", "date")
+                if (datefield.type != "date") { //if browser doesn't support input type="date"
+                    return false;
+                }
+                else
+                   return true;
             }
          }
     })();

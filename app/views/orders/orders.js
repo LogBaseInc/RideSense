@@ -79,7 +79,7 @@ define(['angular',
                 vm.tagsoption.push({name:"All", value:"All"});
 
                 getOrderColumns();
-                isDateFiledSupported();
+                vm.isdatesupport = utility.isDateFiledSupported();
                 setTodayDate();
                 getAllTags();
                 getDevices();
@@ -189,7 +189,9 @@ define(['angular',
                         accountdevices = snapshot.val();
                         for(prop in accountdevices){
                             if(accountdevices[prop].activity != null && accountdevices[prop].activity != undefined) {
-                                if ((moment(accountdevices[prop].activity.date).format('DD/MM/YYYY') == moment(todaysdate).format('DD/MM/YYYY')) && accountdevices[prop].activity.login == true)
+                                if ((vm.isdatesupport == true && moment(accountdevices[prop].activity.date).format('DD/MM/YYYY') == moment(todaysdate).format('DD/MM/YYYY') ||
+                                    (vm.isdatesupport == false && moment(accountdevices[prop].activity.date).format('DD/MM/YYYY') == todaysdate)) && 
+                                    accountdevices[prop].activity.login == true)
                                     vm.users.push({deviceid : prop, vehiclenumber: accountdevices[prop].vehiclenumber, loggedin : true});
                                 else
                                     vm.users.push({deviceid : prop, vehiclenumber: accountdevices[prop].vehiclenumber, loggedin : false});
@@ -367,8 +369,8 @@ define(['angular',
             }
 
             function setIsToday() {
-                if((vm.isdatesupport == false && moment(utility.getDateFromString(todaysdate)).format('DD/MM/YYYY') <= moment(utility.getDateFromString(vm.selecteddate)).format('DD/MM/YYYY')) ||
-                   (vm.isdatesupport == true && moment(todaysdate).format('DD/MM/YYYY') <= moment(vm.selecteddate).format('DD/MM/YYYY')))
+                if((vm.isdatesupport == false && moment(utility.getDateFromString(todaysdate)) <= moment(utility.getDateFromString(vm.selecteddate))) ||
+                   (vm.isdatesupport == true && moment(todaysdate) <= moment(vm.selecteddate)))
                     vm.showassign = true;
                 else
                     vm.showassign = false; 
@@ -615,16 +617,6 @@ define(['angular',
                     
                     utility.applyscope($scope);
                 });
-            }
-
-            function isDateFiledSupported(){
-                var datefield=document.createElement("input")
-                datefield.setAttribute("type", "date")
-                if (datefield.type != "date") { //if browser doesn't support input type="date"
-                   vm.isdatesupport = false;
-                }
-                else
-                   vm.isdatesupport = true;
             }
 
             $rootScope.$on('datepicker:dateselected', function (event, data) {

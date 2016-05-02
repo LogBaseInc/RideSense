@@ -53,7 +53,7 @@ define(['angular',
                 initializeUnusedTags();
                 getInventoryTracking();
 
-                isDateFiledSupported();
+                vm.isdatesupport = utility.isDateFiledSupported();
                 getCountryName();
 
                 if(utility.getOrderSelected() != null) {
@@ -167,16 +167,6 @@ define(['angular',
 
             function setTodayDate() {
                 vm.selecteddate = vm.isdatesupport ? new Date() : moment(new Date()).format('DD/MM/YYYY');
-            }
-
-            function isDateFiledSupported(){
-                var datefield=document.createElement("input")
-                datefield.setAttribute("type", "date")
-                if (datefield.type != "date") { //if browser doesn't support input type="date"
-                   vm.isdatesupport = false;
-                }
-                else
-                   vm.isdatesupport = true;
             }
 
             //Get methods

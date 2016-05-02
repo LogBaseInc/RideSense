@@ -230,6 +230,15 @@ define(['angular',
                      }
                  },
                  {
+                     url: '/orders/agents',
+                     config: {
+                         templateUrl: 'views/orders/assignagent.html',
+                         title: 'assignagent',
+                         controllerUrl: 'views/orders/assignagent',
+                         allowAnonymous: false,
+                     }
+                 },
+                 {
                      url: '/account/items',
                      config: {
                          templateUrl: 'views/products/products.html',

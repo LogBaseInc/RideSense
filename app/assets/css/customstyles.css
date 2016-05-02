@@ -956,7 +956,7 @@ ul#strength {
 }
 
 .badgegreen {
-    background-color: rgba(51, 205, 123, .6) !important;
+    background-color: rgba(58, 156, 104, 0.8) !important;
 }
 
 .badgered {
@@ -1368,5 +1368,29 @@ a {
     border: 1px solid rgba(128, 128, 128, 0.34);
     border-radius: 4px;
     right: 0
+}
+
+.ordicon {
+    margin-right: 10px;
+    font-size: 12px;
+}
+
+/* Tooltip */
+.tooltip > .tooltip-inner {
+      background-color: white;
+      color: #FFFFFF; 
+      border: 1px solid gray; 
+      font-size: 14px;
+      color: black;
+      opacity: 2;
+}
+  /* Tooltip on top */
+.tooltip.top > .tooltip-arrow {
+      border-top: 5px solid gray;
+}
+
+hr {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
 }
 

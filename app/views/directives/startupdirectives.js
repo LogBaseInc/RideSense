@@ -105,6 +105,29 @@ define(['angular'], function (angular) {
               });
           };
       });
+
+      module.directive('lbTooltip', function(){
+        return {
+            restrict: 'A',
+            link: function(scope, element, attrs){
+                var order = angular.fromJson(attrs.lbTooltip);
+                var title='<small><i class="glyphicon glyphicon-map-marker ordicon"></i>'+ order.address+" " +order.zip+'</small><br/><hr><small><i class="glyphicon glyphicon-gift ordicon"></i>'+order.productdesc+'</small>'
+                $(element).tooltip({
+                  title: title, 
+                  html: true, 
+                  placement: "top"
+                }); 
+
+                $(element).hover(function(){
+                    // on mouseenter
+                    $(element).tooltip('show');
+                }, function(){
+                    // on mouseleave
+                    $(element).tooltip('hide');
+                });
+            }
+        };
+      });
       
       module.directive('ccSpinner', ['$window', function ($window) {
         var directive = {
