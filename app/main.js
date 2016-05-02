@@ -46,7 +46,7 @@ require.config({
         'ngMessages': ['angular'],
         'ngSanitize': ['angular'],
         bootstrap: {
-            deps: ["jquery"]
+            deps: ["jquery", "jqueryui"]
         },
 
         jquery: {

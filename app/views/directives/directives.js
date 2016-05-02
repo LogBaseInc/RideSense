@@ -73,21 +73,6 @@ define(['angular',
         }
       }]);
 
-      configroute.register.directive('tooltip', function(){
-        return {
-            restrict: 'A',
-            link: function(scope, element, attrs){
-                $(element).hover(function(){
-                    // on mouseenter
-                    $(element).tooltip('show');
-                }, function(){
-                    // on mouseleave
-                    $(element).tooltip('hide');
-                });
-            }
-        };
-      });
-
       configroute.register.directive('confirm', ['$modal', '$parse', '$rootScope', function($modal, $parse, $rootScope){
         return {
           link: function(scope, el, attr){

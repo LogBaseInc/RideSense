@@ -5,14 +5,15 @@ define([
     "angular-route",
     'ngMessages',
     'ngSanitize',
-    "bootstrap",
     'jquery',
+    'jqueryui',
+    "bootstrap",
     'ui-bootstrap',
     'spinner',
     'toaster',
     'loggly',
     //'idle'
-    'jqueryui',
+    
     'bootbox',
     'ngbootbox'
 ], function () { });
