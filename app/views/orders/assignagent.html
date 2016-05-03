@@ -25,6 +25,7 @@
 	    				<img data-ng-show="user.loggedin==true" src="assets/images/greendot.png" class="ordicon" style="margin-top:-2px;"></img>
 	    				<img data-ng-show="user.loggedin==false" src="assets/images/reddot.png" class="ordicon" style="margin-top:-2px;"></img>
 	    				<span style="color:black">{{user.vehiclenumber}}</span>
+	    				<span data-ng-if="vm.hascod" style="float:right">COD Rs. {{user.codamount}}</span>
 	    			</h5>
 	    			<div data-ng-repeat="order in user.orders" style="margin-top:5px; margin-left:40px;">
 	    				<div style="width:140px;position: absolute;">{{order.time}}</div>

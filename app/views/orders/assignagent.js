@@ -14,6 +14,7 @@ define(['angular',
             var assignedordersref = [];
             var tags = [];
             vm.unassignedordercount = 0;
+            vm.hascod = false;
 
             activate();
 
@@ -199,17 +200,29 @@ define(['angular',
                 vm.noordersagents = [];
                 for(var i=0; i<vm.users.length; i++){
                     if(vm.users[i].orders.length > 0) {
+                        var codamount = 0;
+                        if(vm.hascod) {
+                            codamount =  _.reduce(vm.users[i].orders, 
+                            function(sumnum, ord) { 
+                                return sumnum + (ord.cod != null && ord.cod != undefined && ord.cod != "" ? ord.cod : 0) 
+                            }, 0);
+                            if(isNaN(codamount)) 
+                                codamount = 0;
+                        }
+
                         var ordersgroup = _.groupBy(vm.users[i].orders, function(order){ return order.timetosort});
                         var orders = [];
                         for(prop in ordersgroup) {
+
                             orders.push({timetosort: prop, data : ordersgroup[prop], time : ordersgroup[prop][0].time});
                         }
-                        orders.sort(SortByTime)
+                        orders.sort(SortByTime);
                         vm.agentorders.push({
                             deviceid : vm.users[i].deviceid,
                             vehiclenumber : vm.users[i].vehiclenumber,
                             orders : orders,
-                            loggedin : vm.users[i].loggedin
+                            loggedin : vm.users[i].loggedin,
+                            codamount : codamount
                         })
                     }
                     else {
@@ -273,6 +286,11 @@ define(['angular',
                                 });
                             }
                         }
+                    }
+
+                    if(orderinfo.cod != null && orderinfo.cod != undefined && orderinfo.cod != "") {
+                        vm.hascod = true;
+                        orderdetail.cod = parseFloat(orderinfo.cod);
                     }
                 }
                 return orderdetail;

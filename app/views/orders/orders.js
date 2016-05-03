@@ -10,10 +10,7 @@ define(['angular',
             var todaysdate = '';
             var unassignorderref = null;
             var devicesref = null;
-            vm.isdatesupport = false;
-            vm.orders = [];
             var datefilter = "";
-            vm.showassign = false;
             var accountdevices = sessionservice.getAccountDevices();
             var accountid = sessionservice.getaccountId();
             var userid = sessionservice.getSession().uid;
@@ -21,10 +18,15 @@ define(['angular',
             var orderindex = [];
             var assignedordersref = [];
             var tags = [];
+            var timeoptions = [];
+            var totalorderscount =0;
+
+            vm.orders = [];
+            vm.showassign = false;
+            vm.isdatesupport = false;
             vm.tagsoption = [];
             vm.selectedTag = "All";
             vm.selectedStatus = [{id: "All"}];
-
             vm.orderidshow = false;
             vm.nameshow = false;
             vm.deliverytimeshow = false;
@@ -41,7 +43,6 @@ define(['angular',
             vm.manualdelivery = false;
             vm.showmaps = false;
             vm.hasunassignorders = false;
-            var totalorderscount =0;
 
             activate();
             $scope.ordersort = function(predicate) {
@@ -109,61 +110,65 @@ define(['angular',
             }
             
             function initializeTime(isstart){
-                var timeoptions = [];
+                timeoptions = [];
 
                 if(isstart)
-                    timeoptions.push({id:utility.getTimeInMins("12:00 AM"), value:"12:00 AM"});
+                    addtimeoption("12:00 AM");
 
-                timeoptions.push({id:utility.getTimeInMins("12:30 AM"), value:"12:30 AM"});
-                timeoptions.push({id:utility.getTimeInMins("1:00 AM"), value:"1:00 AM"});
-                timeoptions.push({id:utility.getTimeInMins("1:30 AM"), value:"1:30 AM"});
-                timeoptions.push({id:utility.getTimeInMins("2:00 AM"), value:"2:00 AM"});
-                timeoptions.push({id:utility.getTimeInMins("2:30 AM"), value:"2:30 AM"});
-                timeoptions.push({id:utility.getTimeInMins("3:00 AM"), value:"3:00 AM"});
-                timeoptions.push({id:utility.getTimeInMins("3:30 AM"), value:"3:30 AM"});
-                timeoptions.push({id:utility.getTimeInMins("4:00 AM"), value:"4:00 AM"});
-                timeoptions.push({id:utility.getTimeInMins("4:30 AM"), value:"4:30 AM"});
-                timeoptions.push({id:utility.getTimeInMins("5:00 AM"), value:"5:00 AM"});
-                timeoptions.push({id:utility.getTimeInMins("5:30 AM"), value:"5:30 AM"});
-                timeoptions.push({id:utility.getTimeInMins("6:00 AM"), value:"6:00 AM"});
-                timeoptions.push({id:utility.getTimeInMins("6:30 AM"), value:"6:30 AM"});
-                timeoptions.push({id:utility.getTimeInMins("7:00 AM"), value:"7:00 AM"});
-                timeoptions.push({id:utility.getTimeInMins("7:30 AM"), value:"7:30 AM"});
-                timeoptions.push({id:utility.getTimeInMins("8:00 AM"), value:"8:00 AM"});
-                timeoptions.push({id:utility.getTimeInMins("8:30 AM"), value:"8:30 AM"});
-                timeoptions.push({id:utility.getTimeInMins("9:00 AM"), value:"9:00 AM"});
-                timeoptions.push({id:utility.getTimeInMins("9:30 AM"), value:"9:30 AM"});
-                timeoptions.push({id:utility.getTimeInMins("10:00 AM"), value:"10:00 AM"});
-                timeoptions.push({id:utility.getTimeInMins("10:30 AM"), value:"10:30 AM"});
-                timeoptions.push({id:utility.getTimeInMins("11:00 AM"), value:"11:00 AM"});
-                timeoptions.push({id:utility.getTimeInMins("11:30 AM"), value:"11:30 AM"});
-                timeoptions.push({id:utility.getTimeInMins("12:00 PM"), value:"12:00 PM"});
-                timeoptions.push({id:utility.getTimeInMins("12:30 PM"), value:"12:30 PM"});
-                timeoptions.push({id:utility.getTimeInMins("1:00 PM"), value:"1:00 PM"});
-                timeoptions.push({id:utility.getTimeInMins("1:30 PM"), value:"1:30 PM"});
-                timeoptions.push({id:utility.getTimeInMins("2:00 PM"), value:"2:00 PM"});
-                timeoptions.push({id:utility.getTimeInMins("2:30 PM"), value:"2:30 PM"});
-                timeoptions.push({id:utility.getTimeInMins("3:00 PM"), value:"3:00 PM"});
-                timeoptions.push({id:utility.getTimeInMins("3:30 PM"), value:"3:30 PM"});
-                timeoptions.push({id:utility.getTimeInMins("4:00 PM"), value:"4:00 PM"});
-                timeoptions.push({id:utility.getTimeInMins("4:30 PM"), value:"4:30 PM"});
-                timeoptions.push({id:utility.getTimeInMins("5:00 PM"), value:"5:00 PM"});
-                timeoptions.push({id:utility.getTimeInMins("5:30 PM"), value:"5:30 PM"});
-                timeoptions.push({id:utility.getTimeInMins("6:00 PM"), value:"6:00 PM"});
-                timeoptions.push({id:utility.getTimeInMins("6:30 PM"), value:"6:30 PM"});
-                timeoptions.push({id:utility.getTimeInMins("7:00 PM"), value:"7:00 PM"});
-                timeoptions.push({id:utility.getTimeInMins("7:30 PM"), value:"7:30 PM"});
-                timeoptions.push({id:utility.getTimeInMins("8:00 PM"), value:"8:00 PM"});
-                timeoptions.push({id:utility.getTimeInMins("8:30 PM"), value:"8:30 PM"});
-                timeoptions.push({id:utility.getTimeInMins("9:00 PM"), value:"9:00 PM"});
-                timeoptions.push({id:utility.getTimeInMins("9:30 PM"), value:"9:30 PM"});
-                timeoptions.push({id:utility.getTimeInMins("10:00 PM"), value:"10:00 PM"});
-                timeoptions.push({id:utility.getTimeInMins("10:30 PM"), value:"10:30 PM"});
-                timeoptions.push({id:utility.getTimeInMins("11:00 PM"), value:"11:00 PM"});
-                timeoptions.push({id:utility.getTimeInMins("11:30 PM"), value:"11:30 PM"});
-                timeoptions.push({id:utility.getTimeInMins("11:59 PM"), value:"11:59 PM"});
+                addtimeoption("12:30 AM");
+                addtimeoption("1:00 AM");
+                addtimeoption("1:30 AM");
+                addtimeoption("2:00 AM");
+                addtimeoption("2:30 AM");
+                addtimeoption("3:00 AM");
+                addtimeoption("3:30 AM");
+                addtimeoption("4:00 AM");
+                addtimeoption("4:30 AM");
+                addtimeoption("5:00 AM");
+                addtimeoption("5:30 AM");
+                addtimeoption("6:00 AM");
+                addtimeoption("6:30 AM");
+                addtimeoption("7:00 AM");
+                addtimeoption("7:30 AM");
+                addtimeoption("8:00 AM");
+                addtimeoption("8:30 AM");
+                addtimeoption("9:00 AM");
+                addtimeoption("9:30 AM");
+                addtimeoption("10:00 AM");
+                addtimeoption("10:30 AM");
+                addtimeoption("11:00 AM");
+                addtimeoption("11:30 AM");
+                addtimeoption("12:00 PM");
+                addtimeoption("12:30 PM");
+                addtimeoption("1:00 PM");
+                addtimeoption("1:30 PM");
+                addtimeoption("2:00 PM");
+                addtimeoption("2:30 PM");
+                addtimeoption("3:00 PM");
+                addtimeoption("3:30 PM");
+                addtimeoption("4:00 PM");
+                addtimeoption("4:30 PM");
+                addtimeoption("5:00 PM");
+                addtimeoption("5:30 PM");
+                addtimeoption("6:00 PM");
+                addtimeoption("6:30 PM");
+                addtimeoption("7:00 PM");
+                addtimeoption("7:30 PM");
+                addtimeoption("8:00 PM");
+                addtimeoption("8:30 PM");
+                addtimeoption("9:00 PM");
+                addtimeoption("9:30 PM");
+                addtimeoption("10:00 PM");
+                addtimeoption("10:30 PM");
+                addtimeoption("11:00 PM");
+                addtimeoption("11:30 PM");
+                addtimeoption("11:59 PM");
 
                 return timeoptions;
+            }
+
+            function addtimeoption(time) {
+                timeoptions.push({id:utility.getTimeInMins(time), value:time});
             }
 
             function updatelastseen() {
