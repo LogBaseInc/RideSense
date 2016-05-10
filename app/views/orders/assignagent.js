@@ -272,7 +272,7 @@ define(['angular',
                         if(formattednotes.length == 2)
                             orderdetail.formattednotes = formattednotes[1];
                     }
-
+                    orderdetail.url = (orderinfo.url != null && orderinfo.url != undefined && orderinfo.url != "") ? orderinfo.url : null;
                     orderdetail.tags = orderinfo.tags;
                     orderdetail.tagsdetail = [];
                     if(orderinfo.tags != null && orderinfo.tags != undefined && orderinfo.tags != "") {

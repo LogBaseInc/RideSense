@@ -1,7 +1,8 @@
 define(['angular',
     'config.route',
     'lib',
-    'views/account/users/users'], function (angular, configroute) {
+    'views/account/users/users',
+    'views/account/agentappsettings/agentappsetting.js'], function (angular, configroute) {
     (function () {
 
         configroute.register.controller('accountdetail', ['$scope', '$location', '$http', 'config', 'notify', 'spinner', 'sessionservice', 'utility', accountdetail]);

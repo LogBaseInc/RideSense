@@ -120,19 +120,22 @@
 									<div data-ng-if="vm.showassign == false && (order.status == 'Yet to accept' || order.status == 'Accepted' || order.status == 'Picked up')">
 										<span>{{order.vehiclenumber}}</span>
 									</div>
-									<div data-ng-if="order.status == 'Accepted'">									<small>Accepted @ {{order.acceptedon}}</small>
+									<div data-ng-if="order.status == 'Accepted'">									
+										<small>Accepted @ {{order.acceptedon}}</small>
 									</div>
 									<div data-ng-if="order.status == 'Picked up'">
-										<small>Picked @ {{order.pickedon}}</small>
+										<small>Picked @ {{order.pickedon}}</small><br/>
+										<small data-ng-if="order.startedon">Started @ {{order.startedon}}</small>
 									</div>
 									<div data-ng-if="order.status == 'Delivered'">
 										<div data-ng-if="order.markeddeliveredon == null">
 											<span>{{order.vehiclenumber}}</span> <br/>
-											<small>{{order.pickedon}} - {{order.deliveredon}}</small>
+											<small data-ng-if="order.pickedon">{{order.pickedon}} - {{order.deliveredon}}</small>
+											<small data-ng-if="order.pickedon == null">Delivered @ {{order.deliveredon}}</small>
 										</div>
 										<div data-ng-if="order.markeddeliveredon != null">
-											<span>{{order.markeddelivereddriver}}</span> <br/>
-											<small>Marked as delivered @ {{order.pickedon}}</small>
+											<span>{{order.markeddelivereddriver}}</span><br/>
+											<small>Marked as delivered @ {{order.deliveredon}}</small>
 										</div>
 									</div>
 									<div data-ng-if="order.cancelled == true">

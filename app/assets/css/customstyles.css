@@ -1394,3 +1394,11 @@ hr {
     margin-bottom: 10px !important;
 }
 
+input[type=checkbox] {
+    font-size: 25px !important;
+}
+
+.agentapp-status-help {
+    margin-left:18px;
+}
+

@@ -549,8 +549,8 @@ define(['angular',
                 }
                 else if(orderdetail.markeddeliveredon != null) {
                     orderdetail.status = "Delivered";
-                    orderdetail.pickedon = moment(orderdetail.markeddeliveredon).format('hh:mm A');
-                    orderdetail.deliveredon = null;
+                    orderdetail.deliveredon = moment(orderdetail.markeddeliveredon).format('hh:mm A');
+                    orderdetail.pickedon = null;
                     orderdetail.cancelled = false;
                 }
 
@@ -596,12 +596,15 @@ define(['angular',
                     if(data != null) {
                         if(data.Deliveredon != null && data.Deliveredon != undefined) {
                             orderdet.status = "Delivered";
-                            orderdet.pickedon = moment(data.Pickedon).format('hh:mm A');
+                            orderdet.pickedon = (data.Pickedon != null && data.Pickedon != undefined) ? moment(data.Pickedon).format('hh:mm A') : null;
                             orderdet.deliveredon = moment(data.Deliveredon).format('hh:mm A');
                         }
                         else if(data.Pickedon != null && data.Pickedon != undefined) {
                             orderdet.status = "Picked up";
                             orderdet.pickedon = moment(data.Pickedon).format('hh:mm A');
+                            if(data.Startedon != null && data.Startedon != undefined) {
+                                orderdet.startedon = moment(data.Startedon).format('hh:mm A');
+                            }
                         }
                         else if(data.Acceptedon != null && data.Acceptedon != undefined) {
                             orderdet.acceptedon = moment(data.Acceptedon).format('hh:mm A');

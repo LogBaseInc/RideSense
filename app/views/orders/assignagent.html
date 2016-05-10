@@ -54,7 +54,8 @@
 			<div class="col-xs-12" data-ng-repeat="unassignorder in vm.unassignorders" style="border:1px solid rgba(211, 211, 211, 0.48);border-radius:10px; margin-top:10px;">
 				<h5 style="color:black;">{{unassignorder.time}}</h5>
 				<div style="margin-top:15px; margin-left:40px; margin-bottom:10px;" data-ng-repeat="order in unassignorder.data">
-					<span>#{{order.ordernumber}}</span>
+					<span data-ng-if="order.url == null || order.url == undefined">#{{order.ordernumber}}</span>
+					<a data-ng-if="order.url != null && order.url != undefined" href="{{order.url}}" target="_blank" data-ng-click="vm.linkClicked(order.url)">#{{order.ordernumber}}</a>
 					<div data-ng-show="vm.showassign == true" style="float:right">
 						<div class="dropdown">
 							<button type="button" class="btn btn-default dropbtn orderdisplaybtn" data-ng-click="vm.dropdownclicked($parent.$index, $index)">Assign</button>

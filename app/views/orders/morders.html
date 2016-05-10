@@ -48,11 +48,19 @@
 						<small>Accepted @ {{order.acceptedon}}</small>
 					</div>
 					<div data-ng-show="order.status == 'Picked up'">
-						<small>Picked @ {{order.pickedon}}</small>
+						<small>Picked @ {{order.pickedon}}</small><br/>
+						<small data-ng-if="order.startedon">Started @ {{order.startedon}}</small>
 					</div>
 					<div data-ng-show="order.status == 'Delivered'">
-						<span class="drivername">{{order.vehiclenumber}}</span> </br>
-						<small>{{order.pickedon}} - {{order.deliveredon}}</small>
+						<div data-ng-if="order.markeddeliveredon == null">
+							<span>{{order.vehiclenumber}}</span> <br/>
+							<small data-ng-if="order.pickedon">{{order.pickedon}} - {{order.deliveredon}}</small>
+							<small data-ng-if="order.pickedon == null">Delivered @ {{order.deliveredon}}</small>
+						</div>
+						<div data-ng-if="order.markeddeliveredon != null">
+							<span>{{order.markeddelivereddriver}}</span><br/>
+							<small>Marked as delivered @ {{order.deliveredon}}</small>
+						</div>
 					</div>
 					<div data-ng-if="order.cancelled == true">
 						<span>Cancelled</span> </br>
