@@ -1,0 +1,24 @@
+<div class="row beige-bg" style="padding: 0px">
+	<div class="col-xs-12 col-md-4">
+		<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right"></span>
+			<span data-ng-if="vm.showallcars==true">This Month Order Activity</span>
+			<span data-ng-if="vm.showallcars==false">Order Summary for {{vm.selectedcar.vehiclenumber}}</span>
+		</h5>
+		<small>{{vm.currentdate}} upto Now</small>
+		<hr/>					
+		<h4 data-ng-if="vm.showallcars==false">{{vm.selectedcar.drivername}} <small><span data-ng-if="vm.selectedcar.drivername && vm.selectedcar.drivermobile">|</span> {{vm.selectedcar.drivermobile}}</small></h4>
+		<h4>{{vm.totalOrder}} <small>total orders.</small></h4>
+		<h4>{{vm.averageOrder}} / day <small>average orders.</small></h4>
+		<br/>
+		<br/>
+	</div>
+	<div class="col-xs-12 col-md-8" data-ng-if="vm.orderData.data.length > 0" >
+		<h5 class="tm-heading"><span class="glyphicon glyphicon-chevron-right" style="margin-left:-4px"></span> Order Metrics</h5>
+		<br/>
+		<highchart config="vm.ordersConfig"></highchart>
+	</div>
+</div>
+
+
+		
+

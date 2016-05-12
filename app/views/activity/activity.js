@@ -1,10 +1,10 @@
 define(['angular',
     'config.route',
-    'lib', 
-    'views/orders/orderactivity'], function (angular, configroute) {
+    'lib',
+    'views/services/orderservice'], function (angular, configroute) {
     (function () {
-        configroute.register.controller('cardetails', ['$rootScope', '$routeParams' ,'$scope', '$location', 'config', 'spinner', 'sessionservice', 'utility', cardetails]);
-        function cardetails($rootScope, $routeParams, $scope, $location, config, spinner, sessionservice, utility) {
+        configroute.register.controller('cardetails', ['$rootScope', '$routeParams' ,'$scope', '$location', 'config', 'spinner', 'sessionservice', 'utility', 'orderservice', cardetails]);
+        function cardetails($rootScope, $routeParams, $scope, $location, config, spinner, sessionservice, utility, orderservice) {
             var vm = this;
             var currentmonth;
             var todaysdate = '';
@@ -13,17 +13,20 @@ define(['angular',
             var selectedcarref;
             var carLiveRef = ""
 
-            vm.distanceData = [];
             vm.showallcars = true;
+            vm.distanceData = [];
             vm.totalDistance = 0;
+            vm.averagedistance = 0;
+            vm.todayDistance = 0;
+            vm.orderData = [];
+            vm.totalOrder = 0;
+            vm.averageOrder = 0;
             vm.totalcars = 0;
             vm.selectedcar = {};
             vm.isdatesupport = false;
-            vm.averagedistance = 0;
             vm.orderstripsBy3 = [];
-            var orderstripsplit = [];
-
             vm.errandtripsBy3 = [];
+            var orderstripsplit = [];
             var errandtripsplit = [];
 
             activate();
@@ -402,16 +405,18 @@ define(['angular',
             
             function getAllCarDistanceDetails() {
                 spinner.show();  
-                if(selectedcarref) selectedcarref.off("value");              
-                allcaractivityref.orderByChild("timestamp").limitToLast(30).once("value", function(snapshot) {
-                    setDistanceChartConfig(snapshot.val());
+                orderservice.updateOrderCount(accountid).then(function() {
+                    if(selectedcarref) selectedcarref.off("value");              
+                    allcaractivityref.limitToLast(31).once("value", function(snapshot) {
+                        setDistanceChartConfig(snapshot.val());
+                    });
                 });
             }
 
             function getCarDistanceDetail(devicenumber) {
                 spinner.show();
                 selectedcarref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/activity/devices/'+devicenumber+'/daily/');
-                selectedcarref.orderByChild("timestamp").limitToLast(30).once("value", function(snapshot) {
+                selectedcarref.limitToLast(31).once("value", function(snapshot) {
                     setDistanceChartConfig(snapshot.val());
                 });
             }
@@ -422,14 +427,29 @@ define(['angular',
                 vm.distanceData.date = [];
                 vm.averagedistance = 0;
                 vm.totalDistance = 0;
+                vm.todayDistance = 0;
 
-                for(var i = 29 ; i >= 0; i --) {
+                vm.orderData.categories = [];
+                vm.orderData.data = [];
+                vm.orderData.date = [];
+                vm.averageOrder = 0;
+                vm.totalOrder = 0;
+
+                for(var i = 30 ; i >= 0; i --) {
                     var newdate = new Date();
                     newdate.setDate(newdate.getDate() - i);
                     var categoryDate = moment(new Date(newdate)).format('YYYYMMDD');
+                    
+                    //Distance
                     vm.distanceData.categories.push(moment(new Date(newdate)).format('MMM DD'));
                     vm.distanceData.date.push(categoryDate);
                     vm.distanceData.data.push(0);
+
+                    //Order
+                    vm.orderData.categories.push(moment(new Date(newdate)).format('MMM DD'));
+                    vm.orderData.date.push(categoryDate);
+                    vm.orderData.data.push(0);
+
                     if(i == 0) { todaysdate= categoryDate;}
                 }
 
@@ -437,16 +457,20 @@ define(['angular',
                     var dateIndex = vm.distanceData.date.indexOf(property);
                     if(dateIndex >= 0) {
                         vm.distanceData.data[dateIndex] = !isNaN(data[property].distance) ? parseFloat(data[property].distance.toFixed(2)) : 0;
+                        vm.orderData.data[dateIndex] = !isNaN(data[property].ordercount) ? parseInt(data[property].ordercount) : 0;
                     }
 
                     if(vm.showallcars == false) {
-                        if(todaysdate == property) { vm.totalDistance = !isNaN(data[property].distance) ? data[property].distance : 0}
-                    }
-                    else {
-                        if(property.indexOf(currentmonth) == 0) {
-                            vm.totalDistance = vm.totalDistance + (!isNaN(data[property].distance) ? data[property].distance : 0);
+                        if(todaysdate == property) { 
+                            vm.todayDistance = !isNaN(data[property].distance) ? parseFloat(data[property].distance) : 0;
                         }
                     }
+                    
+                    if(property.indexOf(currentmonth) == 0) {
+                        vm.totalDistance = vm.totalDistance + (!isNaN(data[property].distance) ? parseFloat(data[property].distance) : 0);
+                        vm.totalOrder = vm.totalOrder + (!isNaN(data[property].ordercount) ? parseInt(data[property].ordercount) : 0);
+                    }
+                    
                 }
 
                 if(vm.totalDistance > 0) {
@@ -454,7 +478,13 @@ define(['angular',
                     vm.averagedistance = (vm.totalDistance / curerntday);
                 }
 
+                if(vm.totalOrder > 0) {
+                    var curerntday = new Date().getDate();;
+                    vm.averageOrder = Math.round(vm.totalOrder / curerntday);
+                }
+
                 distanceChartConfig();
+                ordersChartConfig();
                 spinner.hide();
                 utility.applyscope($scope);
             }
@@ -495,6 +525,50 @@ define(['angular',
                     yAxis: {
                         min: 0,
                         title : 'Distance'
+                    },
+                    loading: false,
+                    size: {
+                        height: 175
+                    }
+                };
+            }
+
+            function ordersChartConfig() {
+                vm.ordersConfig = {
+                    options: {
+                        chart: {
+                            type: 'line',
+                            zoomType: 'x',
+                            backgroundColor: '#EFEBE9',
+                            marginBottom: 50,
+                            events: {
+                            load: function (event) {
+                                setTimeout( function () {$(window).resize();}, 100);
+                            }
+                         }
+                        },
+                        legend: {
+                            enabled: false
+                        },
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    title: {
+                        text: ''
+                    },
+                    series: [{
+                            name: 'Orders',
+                            data: vm.orderData.data,
+                            color: 'LightCoral'
+                        }
+                    ],
+                    xAxis: {
+                        categories: vm.orderData.categories
+                    },
+                    yAxis: {
+                        min: 0,
+                        title : 'Orders'
                     },
                     loading: false,
                     size: {

@@ -9,6 +9,7 @@ define(['angular', 'config.route'], function (angular, configroute) {
             var accountid = sessionservice.getaccountId();
             var service = {
                 saveOrder: saveOrder,
+                updateOrderCount : updateOrderCount
             };
             return service;
 
@@ -25,6 +26,17 @@ define(['angular', 'config.route'], function (angular, configroute) {
                     $log.error({ordernumber: orderid, tags:['stick', 'order', 'ui', 'order_error', accountid], error: angular.toJson(error)});
                     return $q.reject(error);
                 });
+            }
+
+            function updateOrderCount(accountid) {
+              var urlstr = apiurl + 'analytics/update/ordercount/'+accountid;
+              return $http.get(urlstr)
+                 .then(function (response) {
+                     return response.data;
+                 }, function (error, code) {
+                    $log.error(urlstr +" Error :" + error);
+                    return $q.reject(error);
+              });
             }
         }
     })();
