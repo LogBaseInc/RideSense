@@ -112,6 +112,15 @@ define(['angular',
                      }
                  },
                  {
+                     url: '/account/customers',
+                     config: {
+                         templateUrl: 'views/customers/customers.html',
+                         title: 'customers',
+                         controllerUrl: 'views/customers/customers',
+                         allowAnonymous: false
+                     }
+                 },
+                 {
                      url: '/tracking',
                      config: {
                          templateUrl: 'views/live/live.html',

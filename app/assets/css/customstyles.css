@@ -899,6 +899,11 @@ ul#strength {
     .itemtd:nth-of-type(3):before { content: "Price"; }
     .itemtd:nth-of-type(4):before { content: "Unit"; }
     .itemtd:nth-of-type(5):before { content: "Inventory"; }
+
+    .customertd:nth-of-type(1):before { content: "Customer name"; }
+    .customertd:nth-of-type(2):before { content: "Mobile number"; }
+    .customertd:nth-of-type(3):before { content: "Address"; }
+    .customertd:nth-of-type(4):before { content: "Zipcode"; }
     
   }
   
@@ -1400,5 +1405,11 @@ input[type=checkbox] {
 
 .agentapp-status-help {
     margin-left:18px;
+}
+
+.disabled {
+    pointer-events:none; 
+    opacity:0.6;        
+    cursor: not-allowed;
 }
 
