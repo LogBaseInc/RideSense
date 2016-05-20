@@ -39,25 +39,6 @@ define(['angular',
                 return $scope.productform.$valid && !submitted;
             }
 
-            vm.deleteconfirm = function() {
-                submitted = true;
-                spinner.show();
-                return productservice.deleteProduct(accountid, vm.product.uuid).then (
-                function(data) {
-                    submitted = false;
-                    spinner.hide();
-                    notify.success("Item deleted succesfully");
-                    utility.applyscope($scope);
-                    vm.cancel();
-                }
-                , function(error) {
-                    submitted = false;
-                    spinner.hide();
-                    notify.error("Somethings went wrong, please try after some time");
-                    utility.applyscope($scope);
-                });
-            }
-
             vm.addproduct = function() {
                 saveProduct();
             }

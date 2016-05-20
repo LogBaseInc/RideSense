@@ -37,11 +37,12 @@ define(['angular', 'config.route'], function (angular, configroute) {
                 });
             }
 
-            function deleteProduct(accountid, uuid) {
-              var urlstr = (url + 'products/'+accountid +'/'+ uuid);
+            function deleteProduct(accountid, products) {
+              var urlstr = (url + 'products/delete/'+ accountid);
               return $http({
                     url: urlstr,
-                    method: "DELETE"
+                    method: "POST",
+                    data: products
                 })
                 .then(function(response) {
                     return response.data;

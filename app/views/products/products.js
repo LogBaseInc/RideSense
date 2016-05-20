@@ -10,7 +10,10 @@ define(['angular',
         	var vm = this;
             var rawlogs = null;
         	var accountid= sessionservice.getaccountId();
+            var ischeckboxclicked = false;
             vm.products = [];
+            vm.itemstodelete = [];
+            vm.isdelete = false;
 
             activate();
 
@@ -20,9 +23,11 @@ define(['angular',
             };
 
             function activate () {
+                vm.submitted = false;
                 $scope.reverse = false;
                 $scope.predicate = "name";
                 vm.products = [];
+                vm.itemstodelete = [];
                 getProducts();
              }
 
@@ -45,8 +50,41 @@ define(['angular',
             }
 
             vm.productClicked = function(product) {
-                utility.setProductSelected(product);
-                $location.path('/account/item')
+                if(vm.ischeckboxclicked == false) {
+                    utility.setProductSelected(product);
+                    $location.path('/account/item');
+                }
+                vm.ischeckboxclicked = false;
+            }
+
+            vm.checkboxchanged = function() {
+                vm.ischeckboxclicked = true;
+                vm.itemstodelete = _.pluck(_.filter(vm.products, function(prd){ return prd.isdelete }), 'uuid');
+                console.log(vm.itemstodelete);
+            }
+
+            vm.deleteconfirm = function() {
+                vm.isdelete = false;
+                vm.submitted = true;
+                spinner.show();
+                return productservice.deleteProduct(accountid, vm.itemstodelete).then (
+                function(data) {
+                    setTimeout(
+                      function() 
+                      {
+                        vm.submitted = false;
+                        spinner.hide();
+                        notify.success("Items deleted succesfully");
+                        utility.applyscope($scope);
+                        activate();
+                      }, 15000); //15 sec
+                }
+                , function(error) {
+                    vm.submitted = false;
+                    spinner.hide();
+                    notify.error("Somethings went wrong, please try after some time");
+                    utility.applyscope($scope);
+                });
             }
 
             vm.exportItems = function() {
@@ -63,7 +101,6 @@ define(['angular',
                         iteminfo.uuid
                     ])
                 }
-
                 export_array_to_excel([itemsexport, []], "Items");
             }
         }
