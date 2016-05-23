@@ -93,7 +93,7 @@ define(['angular',
                     vm.success = true;
                     sessionservice.setSession(data, accountId);
                     loginanalytics(data, accountId);
-                    $rootScope.$emit('alertcount');
+                    $rootScope.$emit('logincompleted');
                     $location.path('/detail');    
                     utility.applyscope($scope);     
                 }

@@ -7,35 +7,39 @@ define(['angular'], function () {
 
         function shell($rootScope, $scope, $location, config, notify, sessionservice, utility) {
             var vm = this;
+            vm.isVendor = true;
             vm.loadSpinner = false;
             vm.isloggedIn = sessionservice.isLoggedIn();
-            vm.openAlertsCount = 0;
-            vm.alerts = null;
-            var alertsfbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/alerts');
+            //vm.openAlertsCount = 0;
+            //vm.alerts = null;
+            //var alertsfbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/alerts');
             vm.offline = false;
             vm.reconnect = false;
             vm.notnet = false;
             vm.online = false;
             vm.logout = logout;
             vm.accountname = sessionservice.getAccountName();
-            vm.isAdmin = sessionservice.getRole();
             var timer;
 
             activate();
 
             function activate() { 
+                var role = sessionservice.getRole();
+                vm.isAdmin = role.isAdmin;
+                vm.isVendor = role.isVendor;
+
                 checkIfLoggedIn();
 
                 checkinternetstatus();
-                readalerts();
+                //readalerts();
                 checkexpiry();
                 if(vm.isloggedIn == 'true') {
                     sessionservice.getDevices();
                 }
             }
 
-            $rootScope.$on('alertcount', function (event, data) {
-                alertsfbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/alerts');
+            $rootScope.$on('logincompleted', function (event, data) {
+                //alertsfbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/alerts');
 
                 var accountnamefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/name');
                 accountnamefbref.on("value", function(snapshot) {
@@ -45,7 +49,7 @@ define(['angular'], function () {
                 }, function (errorObject) {
                 });
 
-                readalerts();
+                //readalerts();
             });
 
             $rootScope.$on('logout', function() {
@@ -53,10 +57,11 @@ define(['angular'], function () {
             });
 
             $rootScope.$on('login:role', function(event, data) {
-                vm.isAdmin = data.role;
+                vm.isAdmin = data.isAdmin;
+                vm.isVendor = data.isVendor;
             });
 
-            function readalerts() {
+            /*function readalerts() {
                 alertsfbref.on("value", function(snapshot) {
                     var data = snapshot.val();
                     vm.openAlertsCount = 0;
@@ -78,9 +83,9 @@ define(['angular'], function () {
                 }, function (errorObject) {
                     //utility.errorlog("The alerts read failed: " , errorObject);
                 });
-            }
+            }*/
 
-           function getAlertText(alertType) {
+           /*function getAlertText(alertType) {
                 var alerttext = '';
                 alertType = alertType.toLowerCase();
                 if(alertType == 'panic')
@@ -94,7 +99,7 @@ define(['angular'], function () {
                 else if (alertType == 'unplugged')
                     alerttext = 'Device unplugged from car';
                 return alerttext;
-            }
+            }*/
 
             function logout(){
                 sessionservice.clear();
@@ -106,6 +111,8 @@ define(['angular'], function () {
                 if(timer !=undefined && timer != null)
                     clearTimeout(timer);
                 analytics.track('Logged Out');
+                vm.isAdmin = false;
+                vm.isVendor = true;
                 $location.path('/login');
             }
 
@@ -192,6 +199,14 @@ define(['angular'], function () {
                     $rootScope.$evalAsync(function () {
                         $location.path('/login');
                     });
+                 }
+                 else if(isAnonymous == false && next.$$route != null && next.$$route != undefined && 
+                        vm.isVendor == true && next.$$route.allowvendor != true) {
+                    event.preventDefault();
+                 }
+                 else if(isAnonymous == false && next.$$route != null && next.$$route != undefined &&
+                        vm.isAdmin == false && next.$$route.allowregular != true) {
+                    event.preventDefault();
                  }
             });
 

@@ -32,8 +32,8 @@
 			        <div class="collapse navbar-collapse" id="navbar-collapse">
 			          <ul class="nav navbar-nav">
 			         	<li ng-class="routeSelection == 'orders' ? 'active' : ''"><a href="#/orders">Orders</a></li>
-			            <li ng-class="routeSelection != '' && routeSelection == 'live' ? 'active' : ''"><a href="#/tracking">Tracking</a></li>
-			            <li ng-class="routeSelection == 'activity' ? 'active' : ''"><a href="#/activity">Activity</a></li>
+			            <li data-ng-show="vm.isVendor==false" ng-class="routeSelection != '' && routeSelection == 'live' ? 'active' : ''"><a href="#/tracking">Tracking</a></li>
+			            <li data-ng-show="vm.isVendor==false" ng-class="routeSelection == 'activity' ? 'active' : ''"><a href="#/activity">Activity</a></li>
 			          </ul>
 			          <ul class="nav navbar-nav navbar-right">
 			            <li class="dropdown">
@@ -46,6 +46,8 @@
 			                <li data-ng-if="vm.isAdmin" style="height: 30px !important; margin-bottom: 10px !important;"><a href="#/account/items" style="height:100% !important; padding-top:5px !important">Manage Items</a></li>
 
 			                <li data-ng-if="vm.isAdmin" style="height: 30px !important; margin-bottom: 10px !important;"><a href="#/account/customers" style="height:100% !important; padding-top:5px !important">Manage Customers</a></li>
+
+			                 <li data-ng-if="vm.isAdmin == false" style="height: 30px !important; margin-bottom: 10px !important;"><a href="#/account/changepassword" style="height:100% !important; padding-top:5px !important">Change Password</a></li>
 			                
 			                <li data-ng-if="vm.isAdmin" class="divider" style="height:1px !important"></li>
 			                

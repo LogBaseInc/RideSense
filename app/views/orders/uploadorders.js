@@ -9,8 +9,10 @@ define(['angular',
         	$rootScope.routeSelection = 'orders';
         	var vm = this;
         	var submitted = false;
-        	vm.buttondisabled = false;
         	var accountid= sessionservice.getaccountId();
+            var userid = sessionservice.getSession().uid;
+            vm.buttondisabled = false;
+
             activate();
 
             function activate(){
@@ -113,6 +115,7 @@ define(['angular',
 
                                                 orders.push({
                                                     order_id: orderinfo[0],
+                                                    createdby : userid,
                                                     name: orderinfo[1],
                                                     address: orderinfo[2],
                                                     zip: orderinfo[3],

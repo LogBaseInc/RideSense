@@ -11,7 +11,7 @@
 	    </div>
 	</div>
 
-	<div data-ng-if="vm.isdesktop == false" ng-include src="'views/orders/morders.html'"></div>
+	<div data-ng-if="vm.isdesktop == false && vm.isVendor==false" ng-include src="'views/orders/morders.html'"></div>
 	<div data-ng-if="vm.isdesktop == true" class="container-fluid">
 		<div class="row" data-ng-hide="vm.showmaps">
 			<div class="row col-xs-12">
@@ -20,8 +20,8 @@
 					<div>
 						<h5 class="tm-heading tripsheading" style="margin-left:14px;">
 							<span class="glyphicon glyphicon-chevron-right" style="margin-right:1px"></span>Orders
-							<a style="margin-left:10px; text-decoration: underline !important;" data-ng-click="vm.showMapClicked()" data-ng-if="vm.filterOrders.length > 0" >View in map</a>
-							<a style="margin-left:10px; text-decoration: underline !important;" href="#/orders/agents">Agents view</a>
+							<a style="margin-left:10px; text-decoration: underline !important;" data-ng-click="vm.showMapClicked()" data-ng-if="vm.filterOrders.length > 0 && vm.isVendor==false" >View in map</a>
+							<a style="margin-left:10px; text-decoration: underline !important;" href="#/orders/agents" data-ng-if="vm.isVendor==false">Agents view</a>
 						</h5>
 						<br/>
 						<div style="margin-top:10px;">
@@ -118,6 +118,7 @@
 										</div>
 									</div>
 									<div data-ng-if="vm.showassign == false && (order.status == 'Yet to accept' || order.status == 'Accepted' || order.status == 'Picked up')">
+										<span data-ng-if="vm.isVendor == true && order.status != 'Accepted' && order.status != 'Picked up'" style="margin-right:3px">Assigned to</span>
 										<span>{{order.vehiclenumber}}</span>
 									</div>
 									<div data-ng-if="order.status == 'Accepted'">									
@@ -159,6 +160,7 @@
 										</div>
 									</div>
 								</div>
+								<div data-ng-if="order.status == null && vm.showassign == false && vm.isVendor == true">Unassigned</div>
 							</td>
 						</tr>
 					</tbody>

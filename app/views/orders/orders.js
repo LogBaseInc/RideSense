@@ -43,6 +43,7 @@ define(['angular',
             vm.manualdelivery = false;
             vm.showmaps = false;
             vm.hasunassignorders = false;
+            vm.isVendor = true;
 
             activate();
             $scope.ordersort = function(predicate) {
@@ -359,7 +360,7 @@ define(['angular',
                 var selectedorder = utility.getOrderSelected();
                 utility.setOrderSelected(null);
                 if(selectedorder == null) {
-                    vm.showassign = true;
+                    vm.showassign = vm.isVendor ? false : true;
                     vm.selecteddate = todaysdate;
                     datefilter = vm.selecteddate;
 
@@ -376,7 +377,7 @@ define(['angular',
             function setIsToday() {
                 if((vm.isdatesupport == false && moment(utility.getDateFromString(todaysdate)) <= moment(utility.getDateFromString(vm.selecteddate))) ||
                    (vm.isdatesupport == true && moment(todaysdate) <= moment(vm.selecteddate)))
-                    vm.showassign = true;
+                    vm.showassign = vm.isVendor ? false : true;
                 else
                     vm.showassign = false; 
             }
@@ -401,6 +402,8 @@ define(['angular',
 
                 unassignorderref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+date);
                 unassignorderref.on("value", function(snapshot) {
+                    vm.isVendor = sessionservice.getRole().isVendor;
+                    setIsToday();
                     vm.orders = [];
                     orderindex = [];
                     for(var i = 0; i< assignedordersref.length; i++) {
@@ -410,6 +413,17 @@ define(['angular',
                     assignedordersref = [];
 
                     var data = snapshot.val();
+                    if(vm.isVendor == true) {
+                        data = _.filter(data, function(order) { 
+                            if(order != null && order != undefined) {
+                                if(order.createdby != null && order.createdby != undefined) {
+                                    return order.createdby == userid;
+                                }
+                                return false;
+                            }
+                            return false;
+                        });
+                    }
                     for(orderprop in data) {
                         var orderinfo = data[orderprop];
                         var orderdetail = getOrderDetail(orderinfo);
@@ -488,7 +502,8 @@ define(['angular',
 
                 orderdetail.timetosort = (isNaN(parseInt(timesplit[0])) ? 24 : (ispm ? (parseInt(timesplit[0])+12) : parseInt(timesplit[0])));
                 orderdetail.createdat = (orderinfo.createdat != null && orderinfo.createdat != undefined) ? getCreatedTime(orderinfo.createdat) : null;
-                orderdetail.ordernumber = orderprop;
+                orderdetail.createdby = (orderinfo.createdby != null && orderinfo.createdby != undefined) ? orderinfo.createdby : null;
+                orderdetail.ordernumber = orderinfo.ordernumber;
                 orderdetail.name = orderinfo.name;
                 orderdetail.address = orderinfo.address;
                 orderdetail.zip = orderinfo.zip;
@@ -661,7 +676,7 @@ define(['angular',
 
             vm.tagfilter = function() {
                 if(vm.selectedTag != "All")
-                    vm.tagfilterOrders = _.filter(vm.orders, function(order){ 
+                    vm.tagfilterOrders = _.filter(vm.orders, function(order) { 
                         for(var i = 0; i < order.tagsdetail.length; i++) {
                             if(order.tagsdetail[i].tag.toLowerCase() == vm.selectedTag.toLowerCase())
                                 return true;

@@ -34,18 +34,30 @@ define(['angular',
                 for(var property in data) {
                     var email = utility.getDecodeString(property);
                     
-                    uservm.users.push({
+                    var user = {
                         email : email,
-                        admin: data[property].admin ? 'Administrator' : 'Regular',
+                        isAdmin: data[property].admin,
+                        isRegular : !(data[property].admin),
+                        isVendor : (data[property].vendor != null && data[property].vendor != undefined) ? data[property].vendor : false,
                         status: data[property].joined ? 'Joined' : 'Invited',
                         joinedon : data[property].joined ? moment(data[property].joinedon).format('MMM DD, YYYY') : ''
-                    });
-
+                    };
+                    user.role = setUserRole(user);
+                    uservm.users.push(user);
                     uservm.useremails.push(email);
                 }
                 uservm.shownousers = uservm.users.length <=0 ;
                 spinner.hide();
                 utility.applyscope($scope);
+            }
+
+            function setUserRole(user) {
+                if(user.isAdmin)
+                    return "Administrator";
+                else if(user.isAdmin == false && user.isVendor == true)
+                    return "Vendor";
+                else if(user.isAdmin == false)
+                    return "Regular"
             }
 
             uservm.adduser = function(){

@@ -7,8 +7,8 @@
         configroute.register.controller('changepassword', ['$rootScope', '$scope', '$location', 'config', 'notify', 'spinner', 'sessionservice', 'loginservice', 'utility', changepassword]);
         function changepassword($rootScope, $scope, $location, config, notify, spinner, sessionservice, loginservice, utility) {
             var submitted = false;
-            var email = ""
             var vm = this;
+            vm.email = ""
             vm.repeatpwderror= false;
             vm.isPasswordGood = false;
 
@@ -23,8 +23,9 @@
             activate();
 
             function activate() {
+                $rootScope.routeSelection = '';
                 utility.scrollToTop();
-                email = sessionservice.getSession().password.email;
+                vm.email = sessionservice.getSession().password.email;
             }
 
             $rootScope.$on('passwordStrength', function(event, data) {
@@ -45,10 +46,18 @@
                 return $scope.passform.$valid && !submitted && !vm.repeatpwderror && vm.isPasswordGood;
             }
 
+            vm.cancel = function() {
+                var role = sessionservice.getRole();
+                if(role.isAdmin == true)
+                    $location.path("/account/detail");
+                else
+                     $location.path("/orders");
+            }
+
             vm.changepassword = function () {
                 submitted = true;
                 spinner.show();
-                loginservice.changepassword(email, vm.currentpassword, vm.password).then(changepasswordCompleted, changepasswordFailed);
+                loginservice.changepassword(vm.email, vm.currentpassword, vm.password).then(changepasswordCompleted, changepasswordFailed);
             }
 
             function changepasswordCompleted() {

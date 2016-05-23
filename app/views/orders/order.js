@@ -9,14 +9,16 @@ define(['angular',
         function order($rootScope, $routeParams, $http, $log, $scope, $location, config, spinner, notify, sessionservice, utility, $window, customerservice, productservice, orderservice) {
             var vm = this;
             var submitted = false;
+            var alltagsref = null;
+            var accountid = sessionservice.getaccountId();
+            var userid = sessionservice.getSession().uid;
+
             vm.order = {};
             vm.createtag = false;
             vm.deletetags = false;
             vm.tagColors = [];
             vm.selectcolor = "badgeblue";
-            var alltagsref = null;
             vm.alltags = [];
-            var accountid = sessionservice.getaccountId();
             vm.checkdistance = false;
             vm.showdistance = false;
             vm.spincode = utility.getSourcePincode();;
@@ -582,6 +584,7 @@ define(['angular',
                 spinner.show();
                 
                 vm.order.createdat = new Date().getTime();
+                vm.order.createdby = userid;
                 
                 if(vm.order.amount == null || vm.order.amount == undefined)
                     vm.order.amount = 0;
@@ -678,7 +681,8 @@ define(['angular',
                     zip : vm.order.zip != null &&  vm.order.zip != undefined ? vm.order.zip.toString() : "",
                     country: vm.country,
                     items : vm.order.items != null &&  vm.order.items != undefined ? vm.order.items: "",
-                    tags: vm.order.tags != null &&  vm.order.tags != undefined ? vm.order.tags: ""
+                    tags: vm.order.tags != null &&  vm.order.tags != undefined ? vm.order.tags: "",
+                    createdby : vm.order.createdby
                 }
 
                 $log.info({order: ordsave,tags:['stick', 'order', 'ui', accountid], type: 'add'});
@@ -729,7 +733,8 @@ define(['angular',
                     country: vm.country,
                     items : updateorder.items,
                     tags: updateorder.tags,
-                    url: vm.order.url
+                    url: vm.order.url,
+                    createdby : (vm.order.createdby != null && vm.order.createdby != undefined) ? vm.order.createdby : null
                 }
 
                 $log.info({order: ordsave,tags:['stick', 'order', 'ui', accountid], type: 'update'});

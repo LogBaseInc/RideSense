@@ -171,7 +171,7 @@ define(['angular',
 		 		var currentday = moment().format("YYYYMMDD");
 				distancefbref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/activity/daily/'+currentday);
 				distancefbref.on("value", function(snapshot) {
-				  	vm.distanceCovered = snapshot.val() != null ? (snapshot.val().distance.toFixed(2)) : 0; 
+				  	vm.distanceCovered = snapshot.val() != null && snapshot.val().distance != null? (snapshot.val().distance.toFixed(2)) : 0; 
 
 				  	var distancex =  vm.previousdaydistance / 24;
 				  	var time = moment().format("HH.mm");

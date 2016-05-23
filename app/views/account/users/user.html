@@ -16,10 +16,18 @@
 			</div>
 			<div class="form-group">
 				<label class="col-md-3 control-label">Role</label>
-				<div class="col-md-6">
-					<input id="role-toggle" checked type="checkbox" data-toggle="toggle" data-on="Administrator" data-off="Regular" data-onstyle="default" data-offstyle="default">
-					<br/><br/>
-            		<small class="text-muted">Only administrators can add, remove users and manage the account.</small>
+				<div class="col-md-6" style="margin-top:8px;">
+            		<input type="radio" name="role" id="adminradio" data-ng-model="vm.role" value="Administrator"> 
+            			<label for="adminradio" style="margin-left:5px;">Administrator</label>
+            		</input>
+            		<br/>
+            		<input type="radio" name="role" id="regradio" data-ng-model="vm.role" value="Regular"> 
+            			<label for="regradio" style="margin-left:5px;">Regular</label>
+            		</input>
+            		<br/>
+            		<input type="radio" name="role" id="vendorradio" data-ng-model="vm.role" value="Vendor"> 
+            			<label for="vendorradio" style="margin-left:5px;">Vendor</label>
+            		</input>
             	</div>	
             	<div class="col-md-12">
             		

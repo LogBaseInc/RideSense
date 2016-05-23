@@ -90,7 +90,9 @@ define(['angular',
                         templateUrl: 'views/account/devices/devices.html',
                         title: 'devices',
                         controllerUrl: 'views/account/devices/devices',
-                        allowAnonymous: false
+                        allowAnonymous: false,
+                        allowregular : false,
+                        allowvendor :false
                      }
                  },
                  {
@@ -99,7 +101,9 @@ define(['angular',
                          templateUrl: 'views/account/device/device.html',
                          title: 'device',
                          controllerUrl: 'views/account/device/device',
-                         allowAnonymous: false
+                         allowAnonymous: false,
+                         allowregular: false,
+                         allowvendor: false
                      }
                  },
                  {
@@ -108,7 +112,9 @@ define(['angular',
                          templateUrl: 'views/account/detail/detail.html',
                          title: 'detail',
                          controllerUrl: 'views/account/detail/detail',
-                         allowAnonymous: false
+                         allowAnonymous: false,
+                         allowregular : false,
+                         allowvendor : false
                      }
                  },
                  {
@@ -117,7 +123,9 @@ define(['angular',
                          templateUrl: 'views/customers/customers.html',
                          title: 'customers',
                          controllerUrl: 'views/customers/customers',
-                         allowAnonymous: false
+                         allowAnonymous: false,
+                         allowregular : false,
+                         allowvendor : false
                      }
                  },
                  {
@@ -126,10 +134,13 @@ define(['angular',
                          templateUrl: 'views/live/live.html',
                          title: 'tracking',
                          controllerUrl: 'views/live/live',
-                         allowAnonymous: false
+                         allowAnonymous: false,
+                         allowvendor : false,
+                         allowregular : true,
+                         allowvendor : false
                      }
                  },
-                 {
+                 /*{
                      url: '/alerts',
                      config: {
                          templateUrl: 'views/alerts/alerts.html',
@@ -155,14 +166,16 @@ define(['angular',
                          controllerUrl: 'views/alerts/alertdetail/alertdetails',
                          allowAnonymous: false
                      }
-                 },
+                 },*/
                  {
                      url: '/account/changepassword',
                      config: {
                          templateUrl: 'views/account/changepassword/changepassword.html',
                          title: 'changepassword',
                          controllerUrl: 'views/account/changepassword/changepassword',
-                         allowAnonymous: false
+                         allowAnonymous: false,
+                         allowregular : true,
+                         allowvendor : true
                      }
                  },
                  {
@@ -171,7 +184,9 @@ define(['angular',
                          templateUrl: 'views/activity/activity.html',
                          title: 'activity',
                          controllerUrl: 'views/activity/activity',
-                         allowAnonymous: false
+                         allowAnonymous: false,
+                         allowregular : true,
+                         allowvendor : false
                      }
                  },
                  {
@@ -180,7 +195,9 @@ define(['angular',
                          templateUrl: 'views/activity/tripdetail/tripdetail.html',
                          title: 'trip',
                          controllerUrl: 'views/activity/tripdetail/tripdetail',
-                         allowAnonymous: false
+                         allowAnonymous: false,
+                         allowregular : true,
+                         allowvendor : true
                      }
                  },
                  {
@@ -189,7 +206,9 @@ define(['angular',
                          templateUrl: 'views/activity/agentmap/agentmap.html',
                          title: 'detail',
                          controllerUrl: 'views/activity/agentmap/agentmap',
-                         allowAnonymous: false
+                         allowAnonymous: false,
+                         allowregular : true,
+                         allowvendor : false
                      }
                  },
                  {
@@ -198,7 +217,9 @@ define(['angular',
                          templateUrl: 'views/account/delete/deleteaccount.html',
                          title: 'detail',
                          controllerUrl: 'views/account/delete/deleteaccount',
-                         allowAnonymous: false
+                         allowAnonymous: false,
+                         allowregular : false,
+                         allowvendor : false
                      }
                  },
                 
@@ -208,7 +229,9 @@ define(['angular',
                          templateUrl: 'views/orders/orders.html',
                          title: 'orders',
                          controllerUrl: 'views/orders/orders',
-                         allowAnonymous: false
+                         allowAnonymous: false,
+                         allowregular : true,
+                         allowvendor : true
                      }
                  },
                   {
@@ -217,7 +240,9 @@ define(['angular',
                          templateUrl: 'views/orders/ordersmap.html',
                          title: 'orders',
                          controllerUrl: 'views/orders/ordersmap',
-                         allowAnonymous: false
+                         allowAnonymous: false,
+                         allowregular : true,
+                         allowvendor : false
                      }
                  },
                  {
@@ -226,7 +251,9 @@ define(['angular',
                          templateUrl: 'views/orders/order.html',
                          title: 'orders',
                          controllerUrl: 'views/orders/order',
-                         allowAnonymous: false
+                         allowAnonymous: false,
+                         allowregular : true,
+                         allowvendor : true
                      }
                  },
                  {
@@ -236,6 +263,8 @@ define(['angular',
                          title: 'uploadorders',
                          controllerUrl: 'views/orders/uploadorders',
                          allowAnonymous: false,
+                         allowregular : true,
+                         allowvendor : true
                      }
                  },
                  {
@@ -245,6 +274,8 @@ define(['angular',
                          title: 'assignagent',
                          controllerUrl: 'views/orders/assignagent',
                          allowAnonymous: false,
+                         allowregular : true,
+                         allowvendor : false
                      }
                  },
                  {
@@ -254,6 +285,8 @@ define(['angular',
                          title: 'items',
                          controllerUrl: 'views/products/products',
                          allowAnonymous: false,
+                         allowregular : false,
+                         allowvendor : false
                      }
                  },
                  {
@@ -263,6 +296,8 @@ define(['angular',
                          title: 'items',
                          controllerUrl: 'views/products/product',
                          allowAnonymous: false,
+                         allowregular : false,
+                         allowvendor : false
                      }
                  },
                  {
@@ -272,6 +307,8 @@ define(['angular',
                          title: 'items',
                          controllerUrl: 'views/products/uploadproducts',
                          allowAnonymous: false,
+                         allowregular : false,
+                         allowvendor : false
                      }
                  },
             ];

@@ -24,22 +24,15 @@ define(['angular',
 
             activate();
 
-            function activate(){
-                
-                $('input[type=checkbox][data-toggle^=toggle]').bootstrapToggle();
-
-                $(document).on('click.bs.toggle', 'div[data-toggle^=toggle]', function(e) {
-                    var $checkbox = $(this).find('input[type=checkbox]');
-                    setroleType($checkbox.prop('checked') ? 'admin' : 'notadmin');
-                });
-
-                $('#role-toggle').prop('checked', true).change();
-
+            function activate() {
                 getUsers();
                 if($rootScope.userselected) {
                     vm.isEdit = true;
                     vm.userName = $rootScope.userselected.email;
-                    vm.isAdmin = $rootScope.userselected.admin.indexOf('Admin') >=0 ? true  : false;
+                    vm.isAdmin = $rootScope.userselected.isAdmin;
+                    vm.isRegular = $rootScope.userselected.isRegular;
+                    vm.isVendor = $rootScope.userselected.isVendor;
+                    vm.role = $rootScope.userselected.role;
                     vm.isJoined = $rootScope.userselected.status == 'Joined' ? true : false;
                     $('#role-toggle').prop('checked', vm.isAdmin).change();
                     
@@ -96,8 +89,10 @@ define(['angular',
                     var userName = utility.getEncodeString(vm.userName);
 
                     userfberef = new Firebase(config.firebaseUrl+'accounts/'+accountId+'/users/'+userName);
-                    var userjson = '{"admin":'+vm.isAdmin + ',"joined" : false' + ',"invitedon":' + new Date().getTime() +'}';
-                    userfberef.set(angular.fromJson(userjson));
+                    var user = getUserRole();
+                    user.joined = false;
+                    user.invitedon = new Date().getTime();
+                    userfberef.set(user);
 
                     return userservice.sendUserInviteEmail(vm.userName, accountname, getInvitationUrl()).then(sendUserInviteEmailCompleted, sendUserInviteEmailFailed);
                 }
@@ -121,14 +116,21 @@ define(['angular',
                 return config.hosturl+'user/activate/'+utility.getEncodeString(accountId)+'/'+userName;
             }
 
+            function getUserRole() {
+                var user = {};
+                user.admin = vm.role == "Administrator" ? true : false;
+                user.vendor = vm.role == "Vendor" ? true :false;
+                return user;
+            }
+
             vm.edituser = function () {
                 submitted = true;
                 spinner.show();
 
                 var userName = utility.getEncodeString(vm.userName);
 
-                userfberef = new Firebase(config.firebaseUrl+'accounts/'+accountId+'/users/'+userName+'/admin');
-                userfberef.set(vm.isAdmin);
+                userfberef = new Firebase(config.firebaseUrl+'accounts/'+accountId+'/users/'+userName);
+                userfberef.update(getUserRole());
 
                 submitted = false;
                 spinner.hide();

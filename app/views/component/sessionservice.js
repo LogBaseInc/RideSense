@@ -83,11 +83,16 @@ define(['angular', 'utility'], function (angular) {
                 //setOrderTracking();
                 var username = getEncodedusername();
                 if(username) {
-                    var adminfbref = new Firebase(config.firebaseUrl+'accounts/'+getaccountId()+'/users/'+username+'/admin');
+                    var adminfbref = new Firebase(config.firebaseUrl+'accounts/'+getaccountId()+'/users/'+username);
                     adminfbref.once("value", function(snapshot) {
-                        var isadmin = snapshot.val() != null ? snapshot.val() : true;
-                        localStorage.setItem('role', isadmin);
-                        $rootScope.$emit('login:role', {role: isadmin});
+                        var isAdmin = true;
+                        var isVendor = false;
+                        if(snapshot.val() != null && snapshot.val() != undefined) {
+                            isAdmin = snapshot.val().admin;
+                            isVendor = (snapshot.val().vendor != null && snapshot.val().vendor != undefined) ? snapshot.val().vendor : false;
+                        }
+                        localStorage.setItem('role', angular.toJson({isAdmin: isAdmin, isVendor : isVendor}, true));
+                        $rootScope.$emit('login:role', {isAdmin: isAdmin, isVendor : isVendor});
 
                     }, function(errorObject) {
                     });
@@ -120,7 +125,7 @@ define(['angular', 'utility'], function (angular) {
 
             function getRole() {
                 var role = localStorage.getItem('role');
-                return role != null ? (role == 'true' ? true : false) : true;
+                return role != null ? angular.fromJson(role) : {isAdmin: false, isVendor : false};
             }
 
 
