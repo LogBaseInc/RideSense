@@ -40,6 +40,7 @@ define(['angular',
                 }
                 else {
                     vm.isEdit = false;
+                    vm.role = "Administrator";
                     if($rootScope.useremail)
                         vm.userName = $rootScope.useremail;
                     $rootScope.useremail = null;

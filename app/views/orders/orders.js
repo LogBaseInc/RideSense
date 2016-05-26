@@ -33,7 +33,10 @@ define(['angular',
             vm.amountshow = false;
             vm.addressshow = false;
             vm.itemsshow = false;
-            vm.notesshow = true;
+            vm.deliverychargeshow = false;
+            vm.pickuplocationshow = false;
+            vm.vendorshow = false;
+            vm.notesshow = false;
             vm.tagsshow = false;
             vm.statusshow = false;
             vm.selectedcolumns = [];
@@ -61,6 +64,10 @@ define(['angular',
                 $rootScope.routeSelection = 'orders';
                 $scope.predicate = null;
                 $scope.reverse = false;
+
+                vm.vendorsupport = false;
+                checkvendorsupport();
+
                 updateTotalOrdersCount(0);
 
                 vm.time1options = initializeTime(true);
@@ -87,6 +94,41 @@ define(['angular',
                 getDevices();
 
                 updatelastseen();
+            }
+
+            function checkvendorsupport() {
+                var vendorref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/vendorsupport');
+                vendorref.once("value", function(snapshot) {
+                    if(snapshot.val() != null && snapshot.val() != undefined && snapshot.val() != "") {
+                        vm.vendorsupport = snapshot.val();
+                        if(vm.vendorsupport == true) {
+                            vm.columns.splice(6, 0, {id: "Delivery Charge", label: "Delivery Charge"}, {id: "Pickup Location", label: "Pickup Location"});
+                            getVendorEmails();
+                        }
+                    }
+                    else{
+                       vm.vendorsupport = false;
+                    }
+                    utility.applyscope($scope);
+                }, function(errorObject){
+
+                });
+            }
+
+            function getVendorEmails() {
+                var ref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/users');
+                ref.once("value", function(snapshot) {
+                    var data = snapshot.val();
+                    vm.vendors = [];
+                    for(prop in data) {
+                        if(data[prop].vendor == true) {
+                            vm.vendors[data[prop].uid] = utility.getDecodeString(prop);
+                        }
+                    }
+                    utility.applyscope($scope);
+                }, function (errorObject) {
+                    utility.errorlog("The users read failed: " , errorObject);
+                });
             }
 
             vm.getTotalAmount = function(filterresults) {
@@ -233,8 +275,12 @@ define(['angular',
                         vm.tagsshow = true;
                         vm.statusshow = true;
                         vm.notesshow = true;
+                        vm.deliverychargeshow = true;
+                        vm.pickuplocationshow = true;
+                        vm.vendorshow = true;
 
-                       vm.selectedcolumns = [{id: "Order #"}, {id: "Customer name"}, {id: "Delivery time"}, {id: "Amount to collect"}, {id: "Address"}, {id: "Items"}, {id: "Tags"}, {id: "Status"}];
+                        vm.selectedcolumns = [{id: "Order #"}, {id: "Customer name"}, {id: "Delivery time"}, {id: "Amount to collect"}, {id: "Address"}, {id: "Items"}, {id: "Delivery Charge"}, {id: "Pickup Location"}, {id: "Vendor"}, {id: "Notes"}, {id: "Tags"}, {id: "Status"}];
+                        alltagsref.set(vm.selectedcolumns);
                     }
                     utility.applyscope($scope);
                 }, 
@@ -324,6 +370,12 @@ define(['angular',
                     vm.tagsshow = selected;
                 else if(item.id == "Status")
                     vm.statusshow = selected;
+                else if(item.id == "Delivery Charge")
+                    vm.deliverychargeshow = selected;
+                else if(item.id == "Pickup Location")
+                    vm.pickuplocationshow = selected;
+                else if(item.id == "Vendor")
+                    vm.vendorshow = selected;
 
                 var ordercolumnsrf = new Firebase(config.firebaseUrl+'users/'+userid+'/settings/ordercolumns');
                 ordercolumnsrf.set(vm.selectedcolumns);
@@ -360,7 +412,6 @@ define(['angular',
                 var selectedorder = utility.getOrderSelected();
                 utility.setOrderSelected(null);
                 if(selectedorder == null) {
-                    vm.showassign = vm.isVendor ? false : true;
                     vm.selecteddate = todaysdate;
                     datefilter = vm.selecteddate;
 
@@ -370,13 +421,13 @@ define(['angular',
                     vm.selecteddate = vm.isdatesupport ? new Date(selectedorder.date) : moment(utility.getDateFromString(selectedorder.date)).format('DD/MM/YYYY');              
                     datefilter = vm.selecteddate;
 
-                    setIsToday();
                 }
+                setIsToday();
             }
 
             function setIsToday() {
                 if((vm.isdatesupport == false && moment(utility.getDateFromString(todaysdate)) <= moment(utility.getDateFromString(vm.selecteddate))) ||
-                   (vm.isdatesupport == true && moment(todaysdate) <= moment(vm.selecteddate)))
+                   (vm.isdatesupport == true && moment(moment(todaysdate).format("YYYY/MM/DD")) <= moment(moment(vm.selecteddate).format("YYYY/MM/DD"))))
                     vm.showassign = vm.isVendor ? false : true;
                 else
                     vm.showassign = false; 
@@ -403,6 +454,14 @@ define(['angular',
                 unassignorderref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+date);
                 unassignorderref.on("value", function(snapshot) {
                     vm.isVendor = sessionservice.getRole().isVendor;
+                    if(vm.vendorsupport == true && vm.isVendor == false && vm.columns.length == 11) {
+                        vm.columns.splice(8, 0, {id: "Vendor", label: "Vendor"});
+                    }
+                    else if(vm.isVendor == true && vm.columns.length != 9) {
+                        vm.columns.splice(2,1);
+                        vm.columns.splice(8,1);
+                    }
+
                     setIsToday();
                     vm.orders = [];
                     orderindex = [];
@@ -531,6 +590,8 @@ define(['angular',
                     var formattednotes = orderinfo.notes.substring(0, orderinfo.notes.indexOf("**")).split("\n\n");
                     if(formattednotes.length == 2)
                         orderdetail.formattednotes = formattednotes[1];
+                    else
+                        orderdetail.formattednotes = orderinfo.notes;
                 }
                 orderdetail.url = ((orderinfo.url != null && orderinfo.url != undefined && orderinfo.url != "") ? orderinfo.url : null);
                 orderdetail.tags = orderinfo.tags;
@@ -569,6 +630,11 @@ define(['angular',
                     orderdetail.cancelled = false;
                 }
 
+                orderdetail.deliverycharge = (orderinfo.deliverycharge != null && orderinfo.deliverycharge != null) ? orderinfo.deliverycharge : 0;
+                orderdetail.pickuplocation = (orderinfo.pickuplocation != null && orderinfo.pickuplocation != null) ? orderinfo.pickuplocation : null;
+                if(vm.vendorsupport && vm.isVendor == false) {
+                    orderdetail.vendor = vm.vendors[orderinfo.createdby] || "Self";
+                }
 
                 //For maps
                 orderdetail.title = orderinfo.ordernumber;

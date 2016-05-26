@@ -60,7 +60,7 @@
 			    </div>
 			</div>
 			<div class="col-xs-12" data-ng-if="vm.filterOrders.length > 0" style="padding-right:0px !important;" style="margin-top:-10px;">
-				<table id="ordertable" name="ordertable" style="margin-bottom:300px; margin-top:0px !important;">
+				<table id="ordertable" name="ordertable" style="margin-bottom:300px; margin-top:10px !important;">
 					<thead>
 						<tr class="cakebeecolor">
 							<th data-ng-show="vm.orderidshow" ng-click="ordersort('orderid')"> Order
@@ -70,7 +70,7 @@
 							<th data-ng-show="vm.nameshow" ng-click="ordersort('name')"> Customer name
 								<span class="sortorder" ng-show="predicate == 'name'" ng-class="{reverse:reverse}"></span>
 							</th>
-							<th data-ng-show="vm.deliverytimeshow" ng-click="ordersort(null)">Delivery time</th>
+							<th data-ng-show="vm.deliverytimeshow && !vm.isVendor" ng-click="ordersort(null)">Delivery time</th>
 
 							<th data-ng-show="vm.amountshow" ng-click="ordersort('amount')">Amount to collect 
 								<span class="sortorder" ng-show="predicate == 'amount'" ng-class="{reverse:reverse}"></span>
@@ -84,9 +84,21 @@
 								<span class="sortorder" ng-show="predicate == 'items'" ng-class="{reverse:reverse}"></span>
 							</th>	
 
+							<th data-ng-show="((vm.isVendor || vm.vendorsupport) && vm.deliverychargeshow)" ng-click="ordersort('deliverycharge')">Delivery Charge
+								<span class="sortorder" ng-show="predicate == 'deliverycharge'" ng-class="{reverse:reverse}"></span>
+							</th>
+
+							<th data-ng-show="((vm.isVendor || vm.vendorsupport) && vm.pickuplocationshow)" ng-click="ordersort('pickuplocation')">Pickup Location
+								<span class="sortorder" ng-show="predicate == 'pickuplocation'" ng-class="{reverse:reverse}"></span>
+							</th>
+
+							<th data-ng-show="vm.vendorsupport && !vm.isVendor && vm.vendorshow" ng-click="ordersort('vendor')">Vendor
+								<span class="sortorder" ng-show="predicate == 'vendor'" ng-class="{reverse:reverse}"></span>
+							</th>
+
 							<th data-ng-show="vm.notesshow" ng-click="ordersort(null)">Notes</th>
 
-							<th data-ng-show="vm.tagsshow" ng-click="ordersort(null)">Tags</th>
+							<th data-ng-show="vm.tagsshow && !vm.isVendor" ng-click="ordersort(null)">Tags</th>
 
 							<th data-ng-show="vm.statusshow" ng-click="ordersort(null)">Status</th>
 						</tr>
@@ -101,12 +113,15 @@
 							</td>
 
 							<td data-ng-show="vm.nameshow" class="ordertd"><span>{{order.name}}</span><br/><span style="margin-top:5px;">{{order.mobilenumber}}</span></td>
-							<td data-ng-show="vm.deliverytimeshow" class="ordertd">{{order.time}}</td>
+							<td data-ng-show="vm.deliverytimeshow && !vm.isVendor" class="ordertd">{{order.time}}</td>
 							<td data-ng-show="vm.amountshow" class="ordertd">Rs. {{order.amount}}</td>
 							<td data-ng-show="vm.addressshow" class="ordertd">{{order.address}} {{order.zip}}</td>
 							<td data-ng-show="vm.itemsshow" class="ordertd">{{order.productdesc}}</td>
+							<td data-ng-show="((vm.isVendor || vm.vendorsupport) && vm.deliverychargeshow)" class="ordertd">Rs. {{order.deliverycharge}}</td>
+							<td data-ng-show="((vm.isVendor || vm.vendorsupport) && vm.pickuplocationshow)" class="ordertd">{{order.pickuplocation}}</td>
+							<td data-ng-show="(vm.vendorsupport && !vm.isVendor && vm.vendorshow)" class="ordertd">{{order.vendor}}</td>
 							<td data-ng-show="vm.notesshow" class="ordertd">{{order.formattednotes}}</td>
-							<td data-ng-show="vm.tagsshow" class="ordertd">
+							<td data-ng-show="vm.tagsshow && !vm.isVendor" class="ordertd">
 								<span data-ng-repeat="tag in order.tagsdetail"class="badge {{tag.tagcolor}}">{{tag.tag}}</span>
 							</td>
 							<td data-ng-show="vm.statusshow" class="ordertd">

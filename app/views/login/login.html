@@ -140,12 +140,10 @@
 
                             <div class="form-group zeromargin" data-ng-class="{ 'has-error': signupform.textmobilenumber.$invalid && signupform.textmobilenumber.$touched }">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="text" placeholder="Enter a Mobile Number" name="textmobilenumber" data-ng-model="vm.newuser.mobilenumber" class="form-control" ng-pattern="/^[0-9+]*$/" required maxLength="10" minLength="10">
+                                    <input type="text" placeholder="Enter a Mobile Number" name="textmobilenumber" data-ng-model="vm.newuser.mobilenumber" class="form-control" required>
                                 </span>
                                 <div data-ng-messages="signupform.textmobilenumber.$error" data-ng-if="vm.interacted(signupform.textmobilenumber)" class="error-messages">
                                     <div ng-message="required">Mobile number required</div>
-                                    <div ng-message="pattern">Enter a valid mobile number</div>
-                                    <div ng-message="minlength">Enter a valid mobile number</div>
                                 </div>
                             </div>
 

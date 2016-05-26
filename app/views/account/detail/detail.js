@@ -27,17 +27,20 @@ define(['angular',
             var accountref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/name');
             var addressref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/address');
             var tokenref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/token');
-            var inventoryTrackingRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/inventorytracking');
-            var manualDeliveryRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/manualdelivery');
+            var settingsRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings');
             var mobileref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/mobilenumber');
             activate();
 
             function activate() {
                 $('#role-toggle1').bootstrapToggle();
                 $('#role-toggle2').bootstrapToggle();
+                $('#role-toggle3').bootstrapToggle();
+                $('#role-toggle4').bootstrapToggle();
 
                 $('#role-toggle1').prop('checked', false).change();
                 $('#role-toggle2').prop('checked', false).change();
+                $('#role-toggle3').prop('checked', false).change();
+                $('#role-toggle4').prop('checked', false).change();
 
                 spinner.show();
                 accountref.once("value", function(snapshot) {
@@ -72,20 +75,23 @@ define(['angular',
                     utility.errorlog("The address read failed: ", errorObject);
                 });
 
-                inventoryTrackingRef.once("value", function(snapshot) {
-                    $('#role-toggle1').prop('checked', (snapshot.val() != null && snapshot.val() != undefined && snapshot.val() != "" && snapshot.val() == true ? true : false)).change();
+                settingsRef.once("value", function(snapshot) {
+                    var settings = snapshot.val();
+                    if(settings != null && settings != undefined && settings!= "") {
+                        var inventorytracking = (settings.inventorytracking != null && settings.inventorytracking != undefined && settings.inventorytracking != "") ? settings.inventorytracking : false;
+                        var manualdelivery = (settings.manualdelivery != null && settings.manualdelivery != undefined && settings.manualdelivery != "") ? settings.manualdelivery : false;
+                        var vendorsupport = (settings.vendorsupport != null && settings.vendorsupport != undefined && settings.vendorsupport !="") ? settings.vendorsupport : false;
+                        var autoorderid = (settings.autoorderid != null && settings.autoorderid != undefined && settings.autoorderid !="") ? settings.autoorderid : false;
+                        
+                        $('#role-toggle1').prop('checked', inventorytracking).change();
+                        $('#role-toggle2').prop('checked', manualdelivery).change();
+                        $('#role-toggle3').prop('checked', vendorsupport).change();
+                        $('#role-toggle4').prop('checked', autoorderid).change();
+                    }
                     utility.applyscope($scope);
                 }, function (errorObject) {
                     utility.errorlog("Inventory Tracking read failed: ", errorObject);
                 });
-
-                manualDeliveryRef.once("value", function(snapshot) {
-                    $('#role-toggle2').prop('checked', (snapshot.val() != null && snapshot.val() != undefined && snapshot.val() != "" && snapshot.val() == true ? true : false)).change();
-                    utility.applyscope($scope);
-                }, function (errorObject) {
-                    utility.errorlog("Manual Delivery read failed: ", errorObject);
-                });
-
 
                 tokenref.on("value", function(snapshot) {
                     if(snapshot.val() != null) {
@@ -118,9 +124,13 @@ define(['angular',
                 accountref.set(vm.accountname);
                 addressref.set(vm.address);
                 mobileref.set(vm.mobilenumber);
-                inventoryTrackingRef.set($('#role-toggle1').prop('checked'));
-                manualDeliveryRef.set($('#role-toggle2').prop('checked'));
-                notify.success('Account details updated successfully');
+                settingsRef.update({
+                    inventorytracking : $('#role-toggle1').prop('checked'),
+                    manualdelivery : $('#role-toggle2').prop('checked'),
+                    vendorsupport : $('#role-toggle3').prop('checked'),
+                    autoorderid : $('#role-toggle4').prop('checked')
+                });
+                notify.success("Account details updated successfully");
             }
 
             vm.getToken = function() {

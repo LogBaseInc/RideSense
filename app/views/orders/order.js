@@ -32,6 +32,8 @@ define(['angular',
             vm.istoday = false;
             vm.usernotfound = false;
             vm.fecthingaddressdata = false;
+            vm.isVendor = sessionservice.getRole().isVendor;
+            vm.autoOrderId = false;
 
             Object.defineProperty(vm, 'canAdd', {
                 get: canAdd
@@ -51,9 +53,10 @@ define(['angular',
             function activate() {
                 $rootScope.routeSelection = 'orders';
                 vm.isOrderEdit = false;
+                vm.vendorsupport = false;
 
+                getSettings();
                 initializeUnusedTags();
-                getInventoryTracking();
 
                 vm.isdatesupport = utility.isDateFiledSupported();
                 getCountryName();
@@ -75,6 +78,7 @@ define(['angular',
                     vm.selecteddate = vm.isdatesupport ? new Date(vm.order.date): moment(utility.getDateFromString(vm.order.date)).format('DD/MM/YYYY');
                 }
                 else {
+                    vm.isOrderEdit = false;
                     vm.order.tagsdetail = [];
                     vm.order.createdat = null;
                     vm.order.cancelled = false;
@@ -112,6 +116,29 @@ define(['angular',
                 vm.tagColors.push({color: "badgeorange"});
                 vm.tagColors.push({color: "badgegray"});
                 vm.tagColors.push({color: "badgeblack"});
+            }
+
+            function getSettings() {
+                var settingsRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings');
+                settingsRef.once("value", function(snapshot) {
+                    var settings = snapshot.val();
+                    if(settings != null && settings != undefined && settings!= "") {
+                        vm.vendorsupport = (settings.vendorsupport != null && settings.vendorsupport != undefined && settings.vendorsupport != "") ? settings.vendorsupport : false;
+                        vm.trackinventory = (settings.inventorytracking != null && settings.inventorytracking != undefined && settings.inventorytracking != "") ? settings.inventorytracking : false;
+                        vm.autoOrderId = (settings.autoorderid != null && settings.autoorderid != undefined && settings.autoorderid !="") ? settings.autoorderid : false;
+                    }
+                    else{
+                       vm.vendorsupport = false;
+                       vm.trackinventory = false;
+                       vm.autoOrderId  = false;
+                    }
+                    if(vm.autoOrderId == true && vm.isOrderEdit == false) {
+                        vm.order.ordernumber = getRandomOrderId();
+                    }
+                    utility.applyscope($scope);
+                }, function(errorObject){
+
+                });
             }
 
             function getCountryName() {
@@ -169,17 +196,6 @@ define(['angular',
 
             function setTodayDate() {
                 vm.selecteddate = vm.isdatesupport ? new Date() : moment(new Date()).format('DD/MM/YYYY');
-            }
-
-            //Get methods
-            function getInventoryTracking() {
-                var inventoryTrackingRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/inventorytracking');
-                inventoryTrackingRef.once("value", function(snapshot) {
-                    vm.trackinventory =  (snapshot.val() != null && snapshot.val() != undefined && snapshot.val() != "" && snapshot.val() == true ? true : false);
-                    utility.applyscope($scope);
-                }, function (errorObject) {
-                    utility.errorlog("Inventory Tracking read failed: ", errorObject);
-                });
             }
 
             function getProducts() {
@@ -241,7 +257,7 @@ define(['angular',
                     vm.order.address = null;
                     vm.order.zip = null;
                 }
-                else if(vm.order.mobilenumber.length == 10)
+                else if(vm.order.mobilenumber.length >= 10)
                     getAddressbyMobile(vm.order.mobilenumber)
             }
 
@@ -598,14 +614,21 @@ define(['angular',
                var orddeliverdate =  vm.isdatesupport ? moment(vm.selecteddate).format('YYYYMMDD') : moment(utility.getDateFromString(vm.selecteddate)).format('YYYYMMDD');
                var ordersref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/unassignorders/'+orddeliverdate+"/"+vm.order.ordernumber);
                ordersref.once("value", function(snapshot) {
-                    if(snapshot.val() == null) {
+                    if (snapshot.val() == null) {
                         updateinventories("Add");
                     }
-                    else{
-                        notify.error("Order number already exists");
-                        submitted = false;
-                        spinner.hide();
-                        utility.applyscope($scope);
+                    else {
+                        if(vm.autoOrderId == false) {
+                            notify.error("Order number already exists");
+                            submitted = false;
+                            spinner.hide();
+                            utility.applyscope($scope);
+                        }
+                        else {
+                            vm.order.ordernumber = getRandomOrderId();
+                            utility.applyscope($scope);
+                            checkOrderNumber();
+                        }
                     }
                    
                 });
@@ -682,7 +705,9 @@ define(['angular',
                     country: vm.country,
                     items : vm.order.items != null &&  vm.order.items != undefined ? vm.order.items: "",
                     tags: vm.order.tags != null &&  vm.order.tags != undefined ? vm.order.tags: "",
-                    createdby : vm.order.createdby
+                    createdby : vm.order.createdby,
+                    deliverycharge : (vm.order.deliverycharge != null && vm.order.deliverycharge != undefined) ? vm.order.deliverycharge : 0,
+                    pickuplocation : (vm.order.pickuplocation != null && vm.order.pickuplocation != undefined) ? vm.order.pickuplocation : ""
                 }
 
                 $log.info({order: ordsave,tags:['stick', 'order', 'ui', accountid], type: 'add'});
@@ -734,7 +759,9 @@ define(['angular',
                     items : updateorder.items,
                     tags: updateorder.tags,
                     url: vm.order.url,
-                    createdby : (vm.order.createdby != null && vm.order.createdby != undefined) ? vm.order.createdby : null
+                    createdby : (vm.order.createdby != null && vm.order.createdby != undefined) ? vm.order.createdby : null,
+                    deliverycharge : (vm.order.deliverycharge != null && vm.order.deliverycharge != undefined) ? vm.order.deliverycharge : 0,
+                    pickuplocation : (vm.order.pickuplocation != null && vm.order.pickuplocation != undefined) ? vm.order.pickuplocation : ""
                 }
 
                 $log.info({order: ordsave,tags:['stick', 'order', 'ui', accountid], type: 'update'});
@@ -845,6 +872,10 @@ define(['angular',
                 submitted = false;
                 spinner.hide();
                 $location.path('/orders');
+            }
+
+            function getRandomOrderId() {
+                return Math.floor(Math.random()*100000);
             }
 
             $rootScope.$on('datepicker:dateselected', function (event, data) {

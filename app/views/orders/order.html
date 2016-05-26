@@ -11,7 +11,7 @@
 					</h5>
 
 					<br/>
-					<div class="form-group zeromargin" data-ng-class="{ 'has-error': orderform.textordernumber.$invalid && orderform.textordernumber.$touched }">
+					<div class="form-group zeromargin" data-ng-class="{ 'has-error': orderform.textordernumber.$invalid && orderform.textordernumber.$touched }" data-ng-if="vm.autoOrderId == false || vm.isOrderEdit">
 						<label class="col-md-3 control-label">Order number<span style="margin-left:5px">*</span></label>
 						<div class="col-md-6">
 							<input type="text" class="form-control" placeholder="Enter a Order Number" name="textordernumber" data-ng-model="vm.order.ordernumber" required ng-readonly="vm.isOrderEdit">
@@ -24,14 +24,12 @@
 					<div class="form-group zeromargin" data-ng-class="{ 'has-error': orderform.textmobilenumber.$invalid && orderform.textmobilenumber.$touched }">
 						<label class="col-md-3 control-label">Customer mobile number<span style="margin-left:5px">*</span></label>
 						<div class="col-md-6">
-							<input type="text" autocomplete="off" placeholder="Enter a Customer Mobile Number" name="textmobilenumber" data-ng-model="vm.order.mobilenumber" class="form-control" ng-pattern="/^[0-9+]*$/" ng-readonly="vm.order.cancelled" data-ng-change="vm.mobilechanged()" required maxLength="10" minLength="10">
+							<input type="text" autocomplete="off" placeholder="Enter a Customer Mobile Number" name="textmobilenumber" data-ng-model="vm.order.mobilenumber" class="form-control" ng-readonly="vm.order.cancelled" data-ng-change="vm.mobilechanged()" required>
 							<img src="assets/images/spinner.gif" style="margin-top:5px; height:20px;" data-ng-if="vm.fecthingaddressdata"></img>
 							<small data-ng-if="vm.usernotfound == true">*No user found</small>
 
 		                    <div data-ng-messages="orderform.textmobilenumber.$error" data-ng-if="vm.interacted(orderform.textmobilenumber)" class="error-messages">
 		                        <div ng-message="required">Customer mobile number required</div>
-		                        <div ng-message="pattern">Enter a valid mobile number</div>
-		                        <div ng-message="minlength">Enter a valid mobile number</div>
 		                    </div>
 		            	</div>
 					</div>
@@ -57,11 +55,10 @@
 					</div>
 
 					<div class="form-group zeromargin" data-ng-class="{ 'has-error': orderform.textcustomerzip.$invalid && orderform.textcustomerzip.$touched }">
-						<label class="col-md-3 control-label">Customer zipcode<span style="margin-left:5px">*</span></label>
+						<label class="col-md-3 control-label">Customer zipcode</label>
 						<div class="col-md-6">
-							<input type="text" class="form-control" placeholder="Enter a Customer ZipCode" name="textcustomerzip" data-ng-model="vm.order.zip" required ng-readonly="vm.order.cancelled" ng-pattern="/^[0-9+]*$/">
+							<input type="text" class="form-control" placeholder="Enter a Customer ZipCode" name="textcustomerzip" data-ng-model="vm.order.zip" ng-readonly="vm.order.cancelled" ng-pattern="/^[0-9+]*$/">
 		                    <div data-ng-messages="orderform.textcustomerzip.$error" data-ng-if="vm.interacted(orderform.textcustomerzip)" class="error-messages">
-		                        <div ng-message="required">Customer zipcode required</div>
 		                        <div ng-message="pattern">Enter valid zipcode</div>
 		                    </div>
 		            	</div>
@@ -136,7 +133,7 @@
 					    </div>
 			        </div>
 
-			        <div class="form-group zeromargin">
+			        <div class="form-group zeromargin" data-ng-hide="vm.isVendor">
 						<label class="col-md-3 control-label">Delivery time<span style="margin-left:5px;">*</span></label>
 				        <div id="time-range" class="col-md-6">
 						    <p>Time Range: <span class="slider-time">{{vm.time1}}</span> - <span class="slider-time2">{{vm.time2}}</span>
@@ -148,6 +145,23 @@
 						</div>
 					</div>
 
+					<div data-ng-if="vm.isVendor || vm.vendorsupport" class="form-group zeromargin" data-ng-class="{ 'has-error': orderform.textdeliveryamount.$invalid && orderform.textdeliveryamount.$touched }">
+						<label class="col-md-3 control-label">Delivery charge</label>
+						<div class="col-md-6">
+							<input type="text" class="form-control" placeholder="Delivery charge amount" name="textdeliveryamount" data-ng-model="vm.order.deliverycharge" ng-pattern="/^[0-9.]*$/" ng-readonly="vm.order.cancelled || vm.isVendor">
+		                    <div data-ng-messages="orderform.textdeliveryamount.$error" data-ng-if="vm.interacted(orderform.textdeliveryamount)" class="error-messages">
+		                        <div ng-message="pattern">Enter a valid amount</div>
+		                    </div>
+		            	</div>
+					</div>
+
+					<div data-ng-if="vm.isVendor || vm.vendorsupport"  class="form-group zeromargin">
+						<label class="col-md-3 control-label">Pickup location</label>
+						<div class="col-md-6">
+							<input type="text" class="form-control" placeholder="Enter pickup location" name="textpickup" data-ng-model="vm.order.pickuplocation" ng-readonly="vm.order.cancelled"></input>
+		            	</div>
+					</div>
+
 					<div class="form-group zeromargin">
 						<label class="col-md-3 control-label">Notes</label>
 						<div class="col-md-6">
@@ -155,7 +169,7 @@
 		                </div>
 					</div>
 
-					<div class="form-group zeromargin">
+					<div class="form-group zeromargin" data-ng-hide="vm.isVendor">
 						<label class="col-md-3 control-label">Tags</label>
 		                <div class="col-md-6">
 		                	<div class="tagsborder">
@@ -169,7 +183,7 @@
 						</div>
 					</div>
 
-					<div ng-include src="'views/orders/tagtmp.html'" data-ng-hide="vm.order.cancelled"> </div>
+					<div data-ng-hide="vm.isVendor" ng-include src="'views/orders/tagtmp.html'" data-ng-hide="vm.order.cancelled"> </div>
 				</form>
 				<div>
 				 	<center data-ng-hide="vm.isdelete || vm.iscancel">

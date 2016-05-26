@@ -135,9 +135,8 @@ define(['angular',
                          title: 'tracking',
                          controllerUrl: 'views/live/live',
                          allowAnonymous: false,
-                         allowvendor : false,
                          allowregular : true,
-                         allowvendor : false
+                         allowvendor : false,
                      }
                  },
                  /*{
