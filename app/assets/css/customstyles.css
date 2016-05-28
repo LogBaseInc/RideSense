@@ -791,6 +791,14 @@ ul#strength {
     outline:none;
 }
 
+.printtabletr {
+    background: white !important;
+}
+
+.printtabletd {
+    border-top: none !important; 
+    background: white !important;
+}
 /* 
   Generic Styling, for Desktops/Laptops 
   */
@@ -1414,5 +1422,20 @@ input[type=checkbox] {
     pointer-events:none; 
     opacity:0.6;        
     cursor: not-allowed;
+}
+
+.printMe {display: none;}
+.printtawk {display: block !important;}
+@media print {
+    .printMe {display: block;}
+    .printtawk {display: none !important;}
+}
+
+.printlable {
+    width:220px;
+}
+
+.printsep {
+    margin-right: 10px; 
 }
 

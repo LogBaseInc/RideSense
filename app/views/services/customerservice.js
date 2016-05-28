@@ -52,7 +52,8 @@ define(['angular', 'config.route'], function (angular, configroute) {
                 $http({
                     url: urlstr,
                     method: "POST",
-                    data: {mobile_number: mobile.toString(), name: name, address: address, zip: zip.toString()}
+                    data: {mobile_number: mobile.toString(), name: name, address: address, 
+                           zip: (zip != null && zip != undefined && zip != "") ? zip.toString() : ""}
                 })
                 .then(function(response) {
                     return response.data;

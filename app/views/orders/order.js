@@ -51,6 +51,8 @@ define(['angular',
 
             //Activate
             function activate() {
+                $("#tawkchat-iframe-container").addClass("printtawk");
+
                 $rootScope.routeSelection = 'orders';
                 vm.isOrderEdit = false;
                 vm.vendorsupport = false;
