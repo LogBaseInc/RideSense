@@ -34,6 +34,7 @@ define(['angular',
             vm.fecthingaddressdata = false;
             vm.isVendor = sessionservice.getRole().isVendor;
             vm.autoOrderId = false;
+            vm.accountName = sessionservice.getAccountName();
 
             Object.defineProperty(vm, 'canAdd', {
                 get: canAdd
@@ -121,6 +122,22 @@ define(['angular',
             }
 
             function getSettings() {
+                var addressref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/address');
+                addressref.once("value", function(snapshot) {
+                    vm.address = snapshot.val() != null && snapshot.val() != undefined ? snapshot.val() : null;
+                    utility.applyscope($scope);
+                }, function (errorObject) {
+                    utility.errorlog("The address read failed: ", errorObject);
+                });
+
+                var mobileref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/mobilenumber');
+                mobileref.once("value", function(snapshot) {
+                    vm.mobilenumber = snapshot.val();
+                    utility.applyscope($scope);
+                }, function (errorObject) {
+                    utility.errorlog("The mobile number read failed: ", errorObject);
+                });
+
                 var settingsRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings');
                 settingsRef.once("value", function(snapshot) {
                     var settings = snapshot.val();
