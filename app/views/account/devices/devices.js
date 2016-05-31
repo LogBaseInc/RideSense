@@ -28,28 +28,32 @@ define(['angular',
                 vm.devicesdetails = [];
 
                 for(var property in data) {
-                    vm.devices.push({
-                        devicenumber : property,
-                        boughton: moment(data[property].addedon).format('MMM DD, YYYY'),
-                        displayvehiclenumber: data[property].vehiclenumber.length > 20 ? (data[property].vehiclenumber.substring(0,20)+"...") : data[property].vehiclenumber,
-                        vehicletype : data[property].vehicletype ? data[property].vehicletype : 'car',
-                        vehiclenumber: data[property].vehiclenumber,
-                        type : data[property].type ? data[property].type : 'stick',
-                        addedon : data[property].addedon,
-                        appversion : (data[property].appversion != null && data[property].appversion != undefined && data[property].appversion != "") ? data[property].appversion : null
-                    });
+                    if(data[property].vehiclenumber != null && data[property].vehiclenumber != undefined && data[property].vehiclenumber != "" && 
+                       data[property].vehicletype != null && data[property].vehicletype != undefined && data[property].vehicletype != "" &&
+                       data[property].addedon != null && data[property].addedon != undefined && data[property].addedon != "") {
+                        vm.devices.push({
+                            devicenumber : property,
+                            boughton: moment(data[property].addedon).format('MMM DD, YYYY'),
+                            displayvehiclenumber: data[property].vehiclenumber.length > 20 ? (data[property].vehiclenumber.substring(0,20)+"...") : data[property].vehiclenumber,
+                            vehicletype : data[property].vehicletype ? data[property].vehicletype : 'car',
+                            vehiclenumber: data[property].vehiclenumber,
+                            type : data[property].type ? data[property].type : 'stick',
+                            addedon : data[property].addedon,
+                            appversion : (data[property].appversion != null && data[property].appversion != undefined && data[property].appversion != "") ? data[property].appversion : null
+                        });
 
-                    vm.devicesdetails.push({
-                        devicenumber : property,
-                        boughton: moment(data[property].addedon).format('MMM DD, YYYY'),
-                        drivername : data[property].drivername,
-                        driverid : data[property].driverid,
-                        drivermobile : data[property].drivermobile,
-                        vehiclenumber: data[property].vehiclenumber,
-                        type : (data[property].type != null && data[property].type != undefined) ? data[property].type : 'stick',
-                        vehicletype : data[property].vehicletype ? data[property].vehicletype : 'car',
-                        addedon : data[property].addedon
-                    });
+                        vm.devicesdetails.push({
+                            devicenumber : property,
+                            boughton: moment(data[property].addedon).format('MMM DD, YYYY'),
+                            drivername : data[property].drivername,
+                            driverid : data[property].driverid,
+                            drivermobile : data[property].drivermobile,
+                            vehiclenumber: data[property].vehiclenumber,
+                            type : (data[property].type != null && data[property].type != undefined) ? data[property].type : 'stick',
+                            vehicletype : data[property].vehicletype ? data[property].vehicletype : 'car',
+                            addedon : data[property].addedon
+                        });
+                    }
                 }
                 
                 vm.devices.sort(SortByDate);

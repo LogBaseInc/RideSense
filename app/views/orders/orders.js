@@ -47,6 +47,7 @@ define(['angular',
             vm.showmaps = false;
             vm.hasunassignorders = false;
             vm.isVendor = true;
+            vm.previousdaysassign = true;
 
             activate();
             $scope.ordersort = function(predicate) {
@@ -66,7 +67,7 @@ define(['angular',
                 $scope.reverse = false;
 
                 vm.vendorsupport = false;
-                checkvendorsupport();
+                getSettings();
 
                 updateTotalOrdersCount(0);
 
@@ -82,7 +83,6 @@ define(['angular',
                     vm.showmaps = false;
 
                 setColumnOptions();
-                getInventoryTracking();
 
                 vm.tagsoption = [];
                 vm.tagsoption.push({name:"All", value:"All"});
@@ -90,25 +90,38 @@ define(['angular',
                 getOrderColumns();
                 vm.isdatesupport = utility.isDateFiledSupported();
                 setTodayDate();
-                getAllTags();
                 getDevices();
 
                 updatelastseen();
             }
 
-            function checkvendorsupport() {
-                var vendorref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/vendorsupport');
+            function getSettings() {
+                var vendorref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings');
                 vendorref.once("value", function(snapshot) {
-                    if(snapshot.val() != null && snapshot.val() != undefined && snapshot.val() != "") {
-                        vm.vendorsupport = snapshot.val();
+                    vm.tagsoption = [];
+                    var setting = snapshot.val();
+                    if(setting != null && setting != undefined && setting != "") {
+                        vm.manualdelivery =  (setting.manualdelivery != null && setting.manualdelivery != undefined && setting.manualdelivery != "") ? true : false;
+                        vm.vendorsupport = (setting.vendorsupport != null && setting.vendorsupport != undefined && setting.vendorsupport != "") ? setting.vendorsupport : false;
                         if(vm.vendorsupport == true) {
                             vm.columns.splice(6, 0, {id: "Delivery Charge", label: "Delivery Charge"}, {id: "Pickup Location", label: "Pickup Location"});
                             getVendorEmails();
                         }
+                        
+                        tags = setting.tags;
+                        vm.tagsoption = [];
+                        vm.tagsoption.push({name:"All", value:"All"});
+                        for(prop in tags) {
+                            vm.tagsoption.push({name:prop, value:prop});
+                        }
                     }
-                    else{
-                       vm.vendorsupport = false;
+                    else {
+                        vm.vendorsupport = false;
+                        vm.manualdelivery = false;
+                        vm.tagsoption.push({name:"All", value:"All"});
                     }
+
+                    getUnAssignOrders();
                     utility.applyscope($scope);
                 }, function(errorObject){
 
@@ -217,16 +230,6 @@ define(['angular',
             function updatelastseen() {
                 var lastseenref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/lastseen');
                 lastseenref.set(moment(new Date()).format('YYYY/DD/MM HH:mm:ss'));
-            }
-
-            function getInventoryTracking() {
-                var manualdeliverygRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/manualdelivery');
-                manualdeliverygRef.once("value", function(snapshot) {
-                    vm.manualdelivery =  (snapshot.val() != null && snapshot.val() != undefined && snapshot.val() != "" && snapshot.val() == true ? true : false);
-                    utility.applyscope($scope);
-                }, function (errorObject) {
-                    utility.errorlog("manual delivery read failed: ", errorObject);
-                });
             }
 
             function getDevices() {
@@ -383,29 +386,6 @@ define(['angular',
                 utility.applyscope($scope);
             }
 
-            function getAllTags() {
-                spinner.show();
-                var alltagsref = new Firebase(config.firebaseUrl+'accounts/'+accountid+"/"+'settings/tags');
-                alltagsref.once("value", function(snapshot) {
-                    vm.tagsoption = [];
-                    if(snapshot.val() != null && snapshot.val() != undefined) {
-                        tags = snapshot.val();
-                        vm.tagsoption = [];
-                        vm.tagsoption.push({name:"All", value:"All"});
-                        for(prop in tags) {
-                            vm.tagsoption.push({name:prop, value:prop});
-                        }
-                    }
-                    else {
-                        vm.tagsoption.push({name:"All", value:"All"});
-                    }
-                    getUnAssignOrders();
-                }, 
-                function(errorObject) {
-                    spinner.hide();
-                });
-            }
-
             function setTodayDate() {                    
                 todaysdate = vm.isdatesupport ? new Date() : moment(new Date()).format('DD/MM/YYYY');
 
@@ -430,7 +410,7 @@ define(['angular',
                    (vm.isdatesupport == true && moment(moment(todaysdate).format("YYYY/MM/DD")) <= moment(moment(vm.selecteddate).format("YYYY/MM/DD"))))
                     vm.showassign = vm.isVendor ? false : true;
                 else
-                    vm.showassign = false; 
+                    vm.showassign = vm.previousdaysassign ? true : false; 
             }
 
             function getOrderDate () {
