@@ -108,7 +108,7 @@ define(['angular',
                             getVendorEmails();
                         }
                         
-                        tags = setting.tags;
+                        tags = setting.tags != null && setting.tags != undefined && setting.tags != "" ? setting.tags: [];
                         vm.tagsoption = [];
                         vm.tagsoption.push({name:"All", value:"All"});
                         for(prop in tags) {
