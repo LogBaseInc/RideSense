@@ -19,6 +19,13 @@ define(['angular'], function () {
             vm.online = false;
             vm.logout = logout;
             vm.accountname = sessionservice.getAccountName();
+            if(vm.accountname == 'Cakebee') {
+                vm.logoUrl = 'assets/images/logo-mc.png';
+                vm.appName = 'TryOD';
+            } else {
+                vm.logoUrl = 'assets/images/logo.png';
+                vm.appName = 'Stick';
+            }
             var timer;
 
             activate();
@@ -44,6 +51,13 @@ define(['angular'], function () {
                 var accountnamefbref = new Firebase(config.firebaseUrl+'accounts/'+sessionservice.getaccountId()+'/name');
                 accountnamefbref.on("value", function(snapshot) {
                     vm.accountname = snapshot.val();
+                    if(vm.accountname == 'MarketChal') {
+                        vm.logoUrl = 'assets/images/logo-mc.png';
+                        vm.appName = 'TryOD';
+                    } else {
+                        vm.logoUrl = 'assets/images/logo.png';
+                        vm.appName = 'Stick';
+                    }
                     sessionservice.setAccountName(vm.accountname);
                     utility.applyscope($scope);
                 }, function (errorObject) {

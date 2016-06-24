@@ -15,6 +15,8 @@ define(['angular',
             vm.urlisdelete = false;
             vm.webhookurl = null;
             vm.loggedinusername = sessionservice.getusername();
+            vm.notificationEnabled = false;
+            vm.notificationKey = null;
             
             Object.defineProperty(vm, 'canupdate', {
                 get: canupdate
@@ -29,6 +31,8 @@ define(['angular',
             var tokenref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/token');
             var settingsRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings');
             var mobileref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/mobilenumber');
+            var notificationSettingsRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/notifications');
+
             activate();
 
             function activate() {
@@ -93,6 +97,30 @@ define(['angular',
                     utility.errorlog("Inventory Tracking read failed: ", errorObject);
                 });
 
+                notificationSettingsRef.once("value", function(snapshot) {
+                    var notificationSettings = snapshot.val();
+                    console.log('Going to check notification settings for: ' + vm.loggedinusername);
+                    if(notificationSettings != null && notificationSettings != undefined && notificationSettings!= "") {
+                        //TODO
+                        for (var key in notificationSettings) {
+                            if(notificationSettings[key] === vm.loggedinusername) {
+                                vm.notificationEnabled = true;
+                                vm.notificationKey = key;
+                                console.log('Notification enabled: ' + vm.notificationEnabled + ', key: ' + key);
+                                $('#role-toggle5').prop('checked', vm.notificationEnabled).change();
+                            } else {
+                                console.log('Notification not enabled for: ' + vm.loggedinusername);
+                            }
+                        }
+                    } else {
+                        console.log('No notification settings found');
+                    }
+                    utility.applyscope($scope);
+                }, function (errorObject) {
+                    utility.errorlog("Inventory Tracking read failed: ", errorObject);
+                });
+
+
                 tokenref.on("value", function(snapshot) {
                     if(snapshot.val() != null) {
                         vm.token = snapshot.val();
@@ -131,6 +159,29 @@ define(['angular',
                     autoorderid : $('#role-toggle4').prop('checked')
                 });
                 notify.success("Account details updated successfully");
+            }
+
+            vm.saveNotificationPref = function () {
+                var currNotificationEnabled = $('#role-toggle5').prop('checked');
+
+                if(currNotificationEnabled != vm.notificationEnabled) {
+                    if(currNotificationEnabled) {
+                        //Add to firebase
+                        var newRef = notificationSettingsRef.push(vm.loggedinusername);
+                        vm.notificationEnabled = true;
+                        vm.notificationKey = newRef.key();
+                        console.log('Notifications enabled. Key is: ' + vm.notificationKey);
+                    } else {
+                        //Remove in firebase
+                        notificationSettingsRef.child(vm.notificationKey).remove();
+                        vm.notificationEnabled = false;
+                        vm.notificationKey = null;
+                        console.log('Notifications disabled.');
+                    }
+                } else {
+                    console.log('No change in notification preference.');
+                }
+                notify.success("Notification preferences updated successfully");
             }
 
             vm.getToken = function() {
