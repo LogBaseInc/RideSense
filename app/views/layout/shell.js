@@ -19,7 +19,7 @@ define(['angular'], function () {
             vm.online = false;
             vm.logout = logout;
             vm.accountname = sessionservice.getAccountName();
-            if(vm.accountname == 'Cakebee') {
+            if(vm.accountname == 'MarketChal') {
                 vm.logoUrl = 'assets/images/logo-mc.png';
                 vm.appName = 'TryOD';
             } else {
