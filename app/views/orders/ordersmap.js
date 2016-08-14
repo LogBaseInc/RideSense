@@ -19,6 +19,7 @@ define(['angular',
             omapvm.clusterOptions = {
                averageCenter : true,
                ignoreHidden : true,
+               imagePath: "assets/images/m"
             };
             var selecting = false,mouseDownPos, gribBoundingBox = null, mouseIsDown = 0;
             omapvm.isfilterclicked = false;

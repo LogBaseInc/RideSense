@@ -33,6 +33,7 @@ define(['angular',
 		 	vm.clusterOptions = {
 							      averageCenter : true,
 							      ignoreHidden : true,
+							      imagePath: "assets/images/m"
 								};
 			vm.docluster = true;
 			vm.liverefs = [];

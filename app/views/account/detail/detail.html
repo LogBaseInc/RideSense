@@ -80,34 +80,44 @@
             	</div>
 			</div>
 			<br/>
+
+			<div class="row">
+				<div class="col-md-11">
+
 			<div class="panel panel-default">
 				<div class="panel-heading">Auto Generate Delivery Time</div>
 				<div class="panel-body">
 					<br/>
 					<div class="form-group zeromargin">
-						<label class="col-md-3 control-label">Enabled</label>
+						<label class="col-md-4 control-label">Enabled</label>
 						<div class="col-md-8">
 		                   <input id="role-toggle5" name="role-toggle4" checked type="checkbox" data-toggle="toggle" data-on="Yes" data-off="No" data-onstyle="default" data-offstyle="default">
 		            	</div>
 					</div>
 					<div class="form-group zeromargin">
-						<label class="col-md-3 control-label">Time To Deliver (minutes)<span style="margin-left:5px"></span></label>
+						<label class="col-md-4 control-label">Time To Deliver (minutes)<span style="margin-left:5px"></span></label>
 						<div class="col-md-8">
 		                   	<input type="number" class="form-control" placeholder="Minutes from Order Time" name="minFromOrderTime" data-ng-model="vm.minFromOrderTime">
 		            	</div>
 					</div>
 					<div class="form-group zeromargin">
-						<label class="col-md-3 control-label">Delivery Time Window (minutes)<span style="margin-left:5px"></span></label>
+						<label class="col-md-4 control-label">Delivery Time Window (minutes)<span style="margin-left:5px"></span></label>
 						<div class="col-md-8">
 		                   	<input type="number" class="form-control" placeholder="Delivery Time Window (minutes)" name="deliveryTimeWindow" data-ng-model="vm.deliveryTimeWindow">
 		            	</div>
 					</div>
 					<div class="form-group zeromargin">
-						<label class="col-md-3 control-label">Round-off Delivery Time (minutes)<span style="margin-left:5px"></span></label>
+						<label class="col-md-4 control-label">Round-off Delivery Time (minutes)<span style="margin-left:5px"></span></label>
 						<div class="col-md-8">
+							<!--
 		                   	<input type="number" class="form-control" placeholder="By 0, 15, 30 or 60 minutes" name="roundOffOrderTime" data-ng-model="vm.roundOffOrderTime">
+		            		-->
+		            		<select class="form-control" ng-model="vm.roundOffOrderTime" ng-options="roundOffOption.value as roundOffOption.label for roundOffOption in [{label:'None', value: null},{label:'To 15th Minute', value: 15},{label:'To 30th Minute', value: 30},{label:'To An Hour', value: 60}]"></select>
 		            	</div>
 					</div>
+				</div>
+			</div>
+
 				</div>
 			</div>
 		</form>
