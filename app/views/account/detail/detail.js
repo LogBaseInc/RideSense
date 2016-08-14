@@ -17,6 +17,9 @@ define(['angular',
             vm.loggedinusername = sessionservice.getusername();
             vm.notificationEnabled = false;
             vm.notificationKey = null;
+            vm.minFromOrderTime = null;
+            vm.deliveryTimeWindow = null;
+            vm.roundOffOrderTime = null;
             
             Object.defineProperty(vm, 'canupdate', {
                 get: canupdate
@@ -40,11 +43,13 @@ define(['angular',
                 $('#role-toggle2').bootstrapToggle();
                 $('#role-toggle3').bootstrapToggle();
                 $('#role-toggle4').bootstrapToggle();
+                $('#role-toggle5').bootstrapToggle();
 
                 $('#role-toggle1').prop('checked', false).change();
                 $('#role-toggle2').prop('checked', false).change();
                 $('#role-toggle3').prop('checked', false).change();
                 $('#role-toggle4').prop('checked', false).change();
+                $('#role-toggle5').prop('checked', false).change();
 
                 spinner.show();
                 accountref.once("value", function(snapshot) {
@@ -86,11 +91,16 @@ define(['angular',
                         var manualdelivery = (settings.manualdelivery != null && settings.manualdelivery != undefined && settings.manualdelivery != "") ? settings.manualdelivery : false;
                         var vendorsupport = (settings.vendorsupport != null && settings.vendorsupport != undefined && settings.vendorsupport !="") ? settings.vendorsupport : false;
                         var autoorderid = (settings.autoorderid != null && settings.autoorderid != undefined && settings.autoorderid !="") ? settings.autoorderid : false;
-                        
+                        var autodeliverytime = (settings.autodeliverytime != null && settings.autodeliverytime != undefined && settings.autodeliverytime !="") ? settings.autodeliverytime : false;
+                        vm.minFromOrderTime = (settings.minfromordertime != null && settings.minfromordertime != undefined && settings.minfromordertime !="") ? settings.minfromordertime : null;
+                        vm.deliveryTimeWindow = (settings.deliverytimewindow != null && settings.deliverytimewindow != undefined && settings.deliverytimewindow !="") ? settings.deliverytimewindow : null;
+                        vm.roundOffOrderTime = (settings.roundoffordertime != null && settings.roundoffordertime != undefined && settings.roundoffordertime !="") ? settings.roundoffordertime : null;
+
                         $('#role-toggle1').prop('checked', inventorytracking).change();
                         $('#role-toggle2').prop('checked', manualdelivery).change();
                         $('#role-toggle3').prop('checked', vendorsupport).change();
                         $('#role-toggle4').prop('checked', autoorderid).change();
+                        $('#role-toggle5').prop('checked', autodeliverytime).change();
                     }
                     utility.applyscope($scope);
                 }, function (errorObject) {
@@ -156,7 +166,11 @@ define(['angular',
                     inventorytracking : $('#role-toggle1').prop('checked'),
                     manualdelivery : $('#role-toggle2').prop('checked'),
                     vendorsupport : $('#role-toggle3').prop('checked'),
-                    autoorderid : $('#role-toggle4').prop('checked')
+                    autoorderid : $('#role-toggle4').prop('checked'),
+                    autodeliverytime: $('#role-toggle5').prop('checked'),
+                    minfromordertime: vm.minFromOrderTime,
+                    deliverytimewindow: vm.deliveryTimeWindow,
+                    roundoffordertime: vm.roundOffOrderTime
                 });
                 notify.success("Account details updated successfully");
             }

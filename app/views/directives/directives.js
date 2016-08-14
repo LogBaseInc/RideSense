@@ -25,12 +25,62 @@ define(['angular',
             var timeoneinmins = utility.getTimeInMins(scope.timeone);
             var timetwoinmins = utility.getTimeInMins(scope.timetwo);
 
+            scope.$watch('timeone', function() {
+              timeoneinmins = utility.getTimeInMins(scope.timeone);
+              timetwoinmins = utility.getTimeInMins(scope.timetwo);
+
+              element.slider({
+                  range: true,
+                  disabled: scope.iscancelled,
+                  min: 0,
+                  max: 1440,
+                  step: 15,
+                  values: [timeoneinmins, timetwoinmins],
+                  slide: function (e, ui) {
+                      scope.timeone = utility.getTime1(ui.values[0]);
+                      scope.timetwo = utility.getTime2(ui.values[1]);
+                      utility.applyscope(scope);
+                  },
+
+                  stop : function(e, ui){
+                    if(scope.slidestop != null && scope.slidestop != undefined)
+                        scope.slidestop();
+                  }
+              });
+
+            });
+
+            scope.$watch('timetwo', function() {
+              timeoneinmins = utility.getTimeInMins(scope.timeone);
+              timetwoinmins = utility.getTimeInMins(scope.timetwo);
+
+              element.slider({
+                  range: true,
+                  disabled: scope.iscancelled,
+                  min: 0,
+                  max: 1440,
+                  step: 15,
+                  values: [timeoneinmins, timetwoinmins],
+                  slide: function (e, ui) {
+                      scope.timeone = utility.getTime1(ui.values[0]);
+                      scope.timetwo = utility.getTime2(ui.values[1]);
+                      utility.applyscope(scope);
+                  },
+
+                  stop : function(e, ui){
+                    if(scope.slidestop != null && scope.slidestop != undefined)
+                        scope.slidestop();
+                  }
+              });
+
+            });
+
             element.slider({
               range: true,
               disabled: scope.iscancelled,
               min: 0,
               max: 1440,
-              step: 30,
+              step: 15,
               values: [timeoneinmins, timetwoinmins],
               slide: function (e, ui) {
                   scope.timeone = utility.getTime1(ui.values[0]);

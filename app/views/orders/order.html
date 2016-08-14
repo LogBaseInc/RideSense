@@ -256,7 +256,8 @@
 		            <tr class="printtabletr" data-ng-if="vm.order.productdesc">
 						<td class="printtabletd">Items</td>
 						<td class="printtabletd">:</td>
-						<td class="printtabletd">{{vm.order.productdesc}}</td>
+						<td class="printtabletd"><div ng-bind-html="vm.getPrintableDesc(vm.order.productdesc)"></div></td>
+
 		            </tr>
 					<tr class="printtabletr">
 						<td class="printtabletd">Amount to collect from customer</td>

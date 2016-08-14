@@ -35,6 +35,10 @@ define(['angular',
             vm.isVendor = sessionservice.getRole().isVendor;
             vm.autoOrderId = false;
             vm.accountName = sessionservice.getAccountName();
+            vm.autoDeliveryTime = false;
+            vm.roundOffOrderTime = null;
+            vm.minFromOrderTime = null;
+            vm.deliveryTimeWindow = null;
 
             Object.defineProperty(vm, 'canAdd', {
                 get: canAdd
@@ -145,12 +149,69 @@ define(['angular',
                         vm.vendorsupport = (settings.vendorsupport != null && settings.vendorsupport != undefined && settings.vendorsupport != "") ? settings.vendorsupport : false;
                         vm.trackinventory = (settings.inventorytracking != null && settings.inventorytracking != undefined && settings.inventorytracking != "") ? settings.inventorytracking : false;
                         vm.autoOrderId = (settings.autoorderid != null && settings.autoorderid != undefined && settings.autoorderid !="") ? settings.autoorderid : false;
+                        vm.autoDeliveryTime = (settings.autodeliverytime != null && settings.autodeliverytime != undefined && settings.autodeliverytime !="") ? settings.autodeliverytime : false;
+                        vm.minFromOrderTime = (settings.minfromordertime != null && settings.minfromordertime != undefined && settings.minfromordertime !="") ? settings.minfromordertime : 0;
+                        vm.deliveryTimeWindow = (settings.deliverytimewindow != null && settings.deliverytimewindow != undefined && settings.deliverytimewindow !="") ? settings.deliverytimewindow : 0;
+                        vm.roundOffOrderTime = (settings.roundoffordertime != null && settings.roundoffordertime != undefined && settings.roundoffordertime !="") ? settings.roundoffordertime : 0;
                     }
                     else{
                        vm.vendorsupport = false;
                        vm.trackinventory = false;
                        vm.autoOrderId  = false;
+                       vm.autoDeliveryTime = false;
                     }
+
+                    //New Date Logic
+                    //console.log('Auto Delivery Time: ' + vm.autoDeliveryTime);
+                    if((vm.autoDeliveryTime) && (utility.getOrderSelected() == null)) {
+                        if (vm.minFromOrderTime != null && vm.deliveryTimeWindow != null) {
+                            var now = new Date();
+                            if(vm.roundOffOrderTime == 15) {
+                                var elapsedMinutes = now.getMinutes();
+                                var minutesToAdd = 0;
+                                //console.log('Elapsed minutes from last hour: ' + elapsedMinutes);
+                                if(elapsedMinutes <= 15)
+                                    minutesToAdd = 15 - elapsedMinutes;
+                                else if(elapsedMinutes > 15 && elapsedMinutes <=30 )
+                                    minutesToAdd = 30 - elapsedMinutes;
+                                else if(elapsedMinutes > 30 && elapsedMinutes <=45 )
+                                    minutesToAdd = 45 - elapsedMinutes;
+                                else if(elapsedMinutes > 45 && elapsedMinutes <=60 )
+                                    minutesToAdd = 60 - elapsedMinutes;
+                                //console.log('Adding minutes for round off: ' + minutesToAdd);
+                                now = new Date(now.getTime() + (minutesToAdd * 60 * 1000));
+                            }
+                            else if(vm.roundOffOrderTime == 30) {
+                                var elapsedMinutes = now.getMinutes();
+                                var minutesToAdd = 0;
+                                //console.log('Elapsed minutes from last hour: ' + elapsedMinutes);
+                                if(elapsedMinutes <= 30)
+                                    minutesToAdd = 30 - elapsedMinutes;
+                                else if(elapsedMinutes > 30 && elapsedMinutes <=60 )
+                                    minutesToAdd = 60 - elapsedMinutes;
+                                //console.log('Adding minutes for round off: ' + minutesToAdd);
+                                now = new Date(now.getTime() + (minutesToAdd * 60 * 1000));
+                            }
+                            else if(vm.roundOffOrderTime == 60) {
+                                var elapsedMinutes = now.getMinutes();
+                                var minutesToAdd = 0;
+                                //console.log('Elapsed minutes from last hour: ' + elapsedMinutes);
+                                if(elapsedMinutes <= 60)
+                                    minutesToAdd = 60 - elapsedMinutes;
+                                //console.log('Adding minutes for round off: ' + minutesToAdd);
+                                now = new Date(now.getTime() + (minutesToAdd * 60 * 1000));
+                            }
+                            var newtimeStart = new Date(now.getTime() + (vm.minFromOrderTime * 60 * 1000));
+                            var newtimeEnd = new Date(now.getTime() + ((vm.minFromOrderTime + vm.deliveryTimeWindow) * 60 * 1000));
+                            vm.selecteddate = vm.isdatesupport ? newtimeStart : moment(newtimeStart).format('DD/MM/YYYY');
+                            vm.time1 = moment(newtimeStart).format('h:mm A');
+                            vm.time2 = moment(newtimeEnd).format('h:mm A');
+                            //console.log('Delivery Date: ' + vm.selecteddate);
+                            //console.log('Delivery Start Time: ' + vm.time1);
+                            //console.log('Delivery End Time: ' + vm.time2);
+                        }
+                    }
+
                     if(vm.autoOrderId == true && vm.isOrderEdit == false) {
                         vm.order.ordernumber = getRandomOrderId();
                     }
@@ -894,8 +955,20 @@ define(['angular',
             }
 
             function getRandomOrderId() {
-                return Math.floor(Math.random()*100000);
+                //Make this a function of time:
+                var now = moment(new Date()).format('YYMMDDHHmmss');;
+                var dateBasedOrderId = now + Math.floor(Math.random() * 100).toString();
+                //console.log('Generated Order Id: ' + dateBasedOrderId);
+                return dateBasedOrderId;
+                //return Math.floor(Math.random()*100000);
             }
+
+            vm.getPrintableDesc = function(desc) {
+                //console.log('Desc to convert: ' + desc);
+                var printableDesc = desc.replace(/\n/g, "<br />");
+                //console.log('Printable desc: ' + printableDesc);
+                return printableDesc;
+            };
 
             $rootScope.$on('datepicker:dateselected', function (event, data) {
                 if(data.date.format('DD/MM/YYYY') != vm.selecteddate) {

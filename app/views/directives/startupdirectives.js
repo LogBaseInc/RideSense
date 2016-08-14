@@ -147,5 +147,6 @@ define(['angular'], function (angular) {
             }, true);
         }
       }]);
+
   })();
 });

@@ -1439,3 +1439,11 @@ input[type=checkbox] {
     margin-right: 10px; 
 }
 
+.printtabletd {
+    color: Black !important;
+    vertical-align:top
+}
+
+.printMe {
+    margin: 20px;
+}
