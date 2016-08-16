@@ -957,7 +957,8 @@ define(['angular',
             function getRandomOrderId() {
                 //Make this a function of time:
                 var now = moment(new Date()).format('YYMMDDHHmmss');;
-                var dateBasedOrderId = now + Math.floor(Math.random() * 100).toString();
+                var rand = Math.floor(Math.random() * (100 - 10 + 1)) + 10;
+                var dateBasedOrderId = now + rand.toString();
                 //console.log('Generated Order Id: ' + dateBasedOrderId);
                 return dateBasedOrderId;
                 //return Math.floor(Math.random()*100000);

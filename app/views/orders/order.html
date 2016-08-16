@@ -217,85 +217,87 @@
 		    	</div>
 		    </div>
 		    <div print-only class="printMe">
-		    	<h2 style="margin-left:20px;">Receipt
-		    		<div style="float:right; margin-right:20px;">
-		    			<h4>{{vm.accountName}}</h4>
-		    			<h5 data-ng-if="vm.address && vm.address.addressline">{{vm.address.addressline}}</h5>
-		    			<h5 data-ng-if="vm.address && vm.address.city">{{vm.address.city}}</h5>
-		    			<h5>Ph: {{vm.mobilenumber}}</h5>
-		    		</div>
-		    	</h2>
-			    <table style="margin-top:0px !important; margin-left:20px; margin-right:20px;">
-			    	<tr class="printtabletr"><td colspan="3" class="printtabletd"><hr></td></tr>
-			    	<br/>
-					<tr class="printtabletr">
-						<td class="printtabletd">Order number</td>
-						<td class="printtabletd">:</td>
-						<td class="printtabletd">{{vm.order.ordernumber}}</td>
-		            </tr>
-		            <tr class="printtabletr">
-						<td class="printtabletd">Customer mobile number</td>
-						<td class="printtabletd">:</td>
-						<td class="printtabletd">{{vm.order.mobilenumber}}</td>
-		            </tr>
-					<tr class="printtabletr">
-						<td class="printtabletd">Customer name</td>
-						<td class="printtabletd">:</td>
-						<td class="printtabletd">{{vm.order.name}}</td>
-		            </tr>
-		            <tr class="printtabletr">
-						<td class="printtabletd">Customer address</td>
-						<td class="printtabletd">:</td>
-						<td class="printtabletd">{{vm.order.address}}</td>
-		            </tr>
-		            <tr class="printtabletr" data-ng-if="vm.order.zip">
-						<td class="printtabletd">Customer zipcode</td>
-						<td class="printtabletd">:</td>
-						<td class="printtabletd">{{vm.order.zip}}</td>
-		            </tr>
-		            <tr class="printtabletr" data-ng-if="vm.order.productdesc">
-						<td class="printtabletd">Items</td>
-						<td class="printtabletd">:</td>
-						<td class="printtabletd"><div ng-bind-html="vm.getPrintableDesc(vm.order.productdesc)"></div></td>
+		    	<small>
+		    		<center>
+		    			<br/>
+				    	<p>Receipt</p>
+		    			<p>{{vm.accountName}}</p>
+		    			<p data-ng-if="vm.address && vm.address.addressline">{{vm.address.addressline}}</p>
+		    			<p data-ng-if="vm.address && vm.address.city">{{vm.address.city}}</p>
+		    			<p>Ph: {{vm.mobilenumber}}</p>
+    				</center>
+				    <table style="margin-top:0px !important; margin-left:20px; margin-right:20px;">
+				    	<tr class="printtabletr"><td colspan="3" class="printtabletd"><hr></td></tr>
+						<tr class="printtabletr">
+							<td class="printtabletd">Order #:</td>
+							<!--<td class="printtabletd">:</td>-->
+							<td class="printtabletd">{{vm.order.ordernumber}}</td>
+			            </tr>
+			            <tr class="printtabletr">
+							<td class="printtabletd">Mobile:</td>
+							<!--<td class="printtabletd">:</td>-->
+							<td class="printtabletd">{{vm.order.mobilenumber}}</td>
+			            </tr>
+						<tr class="printtabletr">
+							<td class="printtabletd">Name:</td>
+							<!--<td class="printtabletd">:</td>-->
+							<td class="printtabletd">{{vm.order.name}}</td>
+			            </tr>
+			            <tr class="printtabletr">
+							<td class="printtabletd">Address:</td>
+							<!--<td class="printtabletd">:</td>-->
+							<td class="printtabletd">{{vm.order.address}}</td>
+			            </tr>
+			            <tr class="printtabletr" data-ng-if="vm.order.zip">
+							<td class="printtabletd">Zipcode:</td>
+							<!--<td class="printtabletd">:</td>-->
+							<td class="printtabletd">{{vm.order.zip}}</td>
+			            </tr>
+			            <tr class="printtabletr" data-ng-if="vm.order.productdesc">
+							<td class="printtabletd">Items:</td>
+							<!--<td class="printtabletd">:</td>-->
+							<td class="printtabletd"><div ng-bind-html="vm.getPrintableDesc(vm.order.productdesc)"></div></td>
 
-		            </tr>
-					<tr class="printtabletr">
-						<td class="printtabletd">Amount to collect from customer</td>
-						<td class="printtabletd">:</td>
-						<td class="printtabletd">Rs. {{vm.order.amount}}</td>
-		            </tr>
-		            <tr class="printtabletr">
-						<td class="printtabletd">Delivery date</td>
-						<td class="printtabletd">:</td>
-						<td class="printtabletd">{{vm.selecteddate | date: 'dd MMM, yyyy'}}</td>
-		            </tr>
-					<tr class="printtabletr" data-ng-hide="vm.isVendor">
-						<td class="printtabletd">Delivery time</td>
-						<td class="printtabletd">:</td>
-						<td class="printtabletd">{{vm.time1}} - {{vm.time2}}</td>
-		            </tr>
-		            <tr class="printtabletr" data-ng-if="vm.isVendor || vm.vendorsupport">
-						<td class="printtabletd">Delivery charge</td>
-						<td class="printtabletd">:</td>
-						<td class="printtabletd">Rs. {{vm.order.deliverycharge}}</td>
-		            </tr>
-					<tr class="printtabletr" data-ng-if="vm.isVendor || vm.vendorsupport">
-						<td class="printtabletd">Pickup location</td>
-						<td class="printtabletd">:</td>
-						<td class="printtabletd">{{vm.order.pickuplocation}}</td>
-		            </tr>
-					<tr class="printtabletr" data-ng-if="vm.order.notes">
-						<td class="printtabletd">Notes</td>
-						<td class="printtabletd">:</td>
-						<td class="printtabletd">{{vm.order.notes}}</td>
-		            </tr>
-					<tr class="printtabletr" data-ng-if="vm.isVendor == false && vm.order.tags">
-						<td class="printtabletd">Tags</td>
-						<td class="printtabletd">:</td>
-						<td class="printtabletd">{{vm.order.tags}}</td>
-		            </tr>
-		            <tr class="printtabletr"><td colspan="3" class="printtabletd"><hr></td></tr>
-		        </table>
+			            </tr>
+						<tr class="printtabletr">
+							<td class="printtabletd">Amount:</td>
+							<!--<td class="printtabletd">:</td>-->
+							<td class="printtabletd">Rs. {{vm.order.amount}}</td>
+			            </tr>
+			            <tr class="printtabletr">
+							<td class="printtabletd">Delivery date:</td>
+							<!--<td class="printtabletd">:</td>-->
+							<td class="printtabletd">{{vm.selecteddate | date: 'dd MMM, yyyy'}}</td>
+			            </tr>
+						<tr class="printtabletr" data-ng-hide="vm.isVendor">
+							<td class="printtabletd">Delivery time:</td>
+							<!--<td class="printtabletd">:</td>-->
+							<td class="printtabletd">{{vm.time1}} - {{vm.time2}}</td>
+			            </tr>
+			            <tr class="printtabletr" data-ng-if="vm.isVendor || vm.vendorsupport">
+							<td class="printtabletd">Delivery charge:</td>
+							<!--<td class="printtabletd">:</td>-->
+							<td class="printtabletd">Rs. {{vm.order.deliverycharge}}</td>
+			            </tr>
+						<tr class="printtabletr" data-ng-if="vm.isVendor || vm.vendorsupport">
+							<td class="printtabletd">Pickup location:</td>
+							<!--<td class="printtabletd">:</td>-->
+							<td class="printtabletd">{{vm.order.pickuplocation}}</td>
+			            </tr>
+						<tr class="printtabletr" data-ng-if="vm.order.notes">
+							<td class="printtabletd">Notes:</td>
+							<!--<td class="printtabletd">:</td>-->
+							<td class="printtabletd">{{vm.order.notes}}</td>
+			            </tr>
+			            <!--
+						<tr class="printtabletr" data-ng-if="vm.isVendor == false && vm.order.tags">
+							<td class="printtabletd">Tags:</td>
+							<td class="printtabletd">{{vm.order.tags}}</td>
+			            </tr>
+			        	-->
+			            <tr class="printtabletr"><td colspan="3" class="printtabletd"><hr></td></tr>
+			        </table>
+		    	</small>
 		    </div>
 		</div> <!-- row ends -->
 	</div> <!-- container ends -->
