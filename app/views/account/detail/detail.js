@@ -20,6 +20,7 @@ define(['angular',
             vm.minFromOrderTime = null;
             vm.deliveryTimeWindow = null;
             vm.roundOffOrderTime = null;
+            var userid = sessionservice.getSession().uid;
             
             Object.defineProperty(vm, 'canupdate', {
                 get: canupdate
@@ -31,7 +32,7 @@ define(['angular',
 
             var accountref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/name');
             var addressref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/address');
-            var tokenref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/token');
+            var tokenref = new Firebase(config.firebaseUrl+'users/'+userid+'/token');
             var settingsRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings');
             var mobileref = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/mobilenumber');
             var notificationSettingsRef = new Firebase(config.firebaseUrl+'accounts/'+accountid+'/settings/notifications');
@@ -208,6 +209,7 @@ define(['angular',
                 var data = {};
                 data.accountId = accountid;
                 data.orderCount = {count: 0, date: moment(new Date()).format("YYYYMMDD")};
+                data.userId = userid;
                 tokensref.set(data);
             }
 

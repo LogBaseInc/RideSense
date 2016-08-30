@@ -1,5 +1,5 @@
 require.config({
-    urlArgs: '9.5',
+    urlArgs: '9.6',
     waitSeconds: 0,
     paths: {
         angular: '../bower_components/angular/angular',
