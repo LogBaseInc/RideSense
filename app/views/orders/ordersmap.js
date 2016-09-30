@@ -28,7 +28,8 @@ define(['angular',
             activate();
 
             function activate () {
-                omapvm.map = { center: { latitude: 11, longitude: 77 }, zoom: defaultzoom };
+                // Show general Map
+                omapvm.map = { center: { latitude: 0, longitude: 0 }, zoom: 2 };
                 navigator.geolocation.getCurrentPosition(currentPositionCallback);
 
                 setGoogleMaps();
