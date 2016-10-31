@@ -22,7 +22,10 @@ define(['angular'], function () {
             if(vm.accountname == 'MarketChal') {
                 vm.logoUrl = 'assets/images/logo-mc.png';
                 vm.appName = 'TryOD';
-            } else {
+            } else if (vm.accountname == 'Thefishchain') { 
+								vm.logoUrl = 'assets/images/logo-fc.png';
+                vm.appName = 'TheFishChain';
+						} else {
                 vm.logoUrl = 'assets/images/logo.png';
                 vm.appName = 'Stick';
             }

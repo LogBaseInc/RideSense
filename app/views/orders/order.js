@@ -800,7 +800,10 @@ define(['angular',
                 function (error){
                     submitted = false;
                     spinner.hide();
-                    notify.error("Something went wrong, please try after sometime");
+										if(error.status === 400 && error.data.error === 'Max order limit reached for the current plan.')
+											notify.error("Unable to place order due to insufficient account balance. Email contactus@logbase.io to reactivate.");
+										else
+											notify.error("Something went wrong, please try after sometime");
                     utility.applyscope($scope);
                 });
             }
