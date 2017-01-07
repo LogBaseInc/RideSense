@@ -9,7 +9,8 @@ define(['angular', 'config.route'], function (angular, configroute) {
             var accountid = sessionservice.getaccountId();
             var service = {
                 saveOrder: saveOrder,
-                updateOrderCount : updateOrderCount
+                updateOrderCount : updateOrderCount,
+								updateOrderStatus: updateOrderStatus
             };
             return service;
 
@@ -38,6 +39,33 @@ define(['angular', 'config.route'], function (angular, configroute) {
                     return $q.reject(error);
               });
             }
+
+						function updateOrderStatus(order, accountid, date, webhookUrl, drivername) {
+							var now = new Date();
+							var payload = {
+								order_id: order.ordernumber, 
+								account_id: accountid,
+								hook_url: webhookUrl,
+								delivery_date: date,
+								activity: 'DELIVERED',
+								time_ms: now.getTime(),
+								device_id: drivername
+							};
+							console.log('Send event payload: ' + JSON.stringify(payload, null, 2));
+							return $http({
+                    method: 'POST',
+                    url: apiurl + 'events/app/',
+                    data: payload
+                }).then(function (response) {
+                    //$log.info({ordernumber:orderid, tags:['stick', 'order', 'ui', 'order_success', accountid], error: false});
+										console.log('Order delivered event sent: ' + JSON.stringify(response.data, null, 2));
+                    return response.data;
+                }, function (error) {
+                    //$log.error({ordernumber: orderid, tags:['stick', 'order', 'ui', 'order_error', accountid], error: angular.toJson(error)});
+										console.log('Error while sending event notification: ' + JSON.stringify(error, null, 2));
+                    return $q.reject(error);
+                });
+						}
         }
     })();
 });

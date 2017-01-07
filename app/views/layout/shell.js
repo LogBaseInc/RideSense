@@ -27,7 +27,7 @@ define(['angular'], function () {
                 vm.appName = 'TheFishChain';
 						} else {
                 vm.logoUrl = 'assets/images/logo.png';
-                vm.appName = 'Stick';
+                vm.appName = 'NowDelivered';
             }
             var timer;
 
@@ -59,7 +59,7 @@ define(['angular'], function () {
                         vm.appName = 'TryOD';
                     } else {
                         vm.logoUrl = 'assets/images/logo.png';
-                        vm.appName = 'Stick';
+                        vm.appName = 'NowDelivered';
                     }
                     sessionservice.setAccountName(vm.accountname);
                     utility.applyscope($scope);

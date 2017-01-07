@@ -1,11 +1,12 @@
 define(['angular',
     'config.route',
     'lib',
+		'views/services/orderservice',
     'views/orders/ordersmap.js'
     ], function (angular, configroute) {
     (function () {
-        configroute.register.controller('orders', ['$rootScope', '$routeParams' ,'$scope', '$location', 'config', 'spinner', 'sessionservice', 'utility', orders]);
-        function orders($rootScope, $routeParams, $scope, $location, config, spinner, sessionservice, utility) {
+        configroute.register.controller('orders', ['$rootScope', '$routeParams' ,'$scope', '$location', 'config', 'spinner', 'sessionservice', 'utility', 'orderservice', 'notify', orders]);
+        function orders($rootScope, $routeParams, $scope, $location, config, spinner, sessionservice, utility, orderservice, notify) {
             var vm = this;
             var todaysdate = '';
             var unassignorderref = null;
@@ -48,6 +49,7 @@ define(['angular',
             vm.hasunassignorders = false;
             vm.isVendor = true;
             vm.previousdaysassign = true;
+						vm.webhookUrl = '';
 
             activate();
             $scope.ordersort = function(predicate) {
@@ -114,6 +116,9 @@ define(['angular',
                         for(prop in tags) {
                             vm.tagsoption.push({name:prop, value:prop});
                         }
+												if(setting.webhook != null && setting.webhook != undefined) {
+													vm.webhookUrl = setting.webhook.url != null && setting.webhook.url != undefined ? setting.webhook.url : '';
+												}
                     }
                     else {
                         vm.vendorsupport = false;
@@ -887,6 +892,21 @@ define(['angular',
 
                     var ordertrackref = new Firebase(config.firebaseUrl+'trackurl/'+date+"/"+accountid+"_"+order.ordernumber+"/status");
                     ordertrackref.set("Delivered");
+										//Webhook event notification - starts
+										if(vm.webhookUrl != null && vm.webhookUrl != '') {
+											console.log('Webhook is setup: ' + vm.webhookUrl);
+											return orderservice.updateOrderStatus(order, accountid, date, vm.webhookUrl, drivername).then(
+												function(data){
+													console.log('Succesfully sent event notification.');
+												},
+												function (error){
+													console.log('Could not send delivered event notification: ' + JSON.stringify(error));
+													notify.error('Could not send delivered event notification.');
+												});
+										}
+										else
+											console.log('Webhook not setup');
+										//Webhook event notification - ends
                 }
             }
 

@@ -39,7 +39,7 @@
             }
 
             vm.deleteuser = function () {
-                bootbox.confirm("If you continue, your stick account and all the data within it will be permanently deleted. If you still want to delete this account, press OK", function(result) {
+                bootbox.confirm("If you continue, your account and all the data within it will be permanently deleted. If you still want to delete this account, press OK", function(result) {
                     if(result == true) {
                         submitted = true;
                         spinner.show();
