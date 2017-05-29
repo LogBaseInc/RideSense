@@ -1,0 +1,65 @@
+<!DOCTYPE html><html><head><style>/* This helps the ng-show/ng-hide animations start at the right place. */
+        /* Since Angular has this but needs to load, this gives us the class early. */
+        .ng-hide {
+            display: none!important;
+        }
+        [ng-cloak] {
+            display: none;
+        }
+
+        .topNegative1000 {
+            top: -1000px !important;
+        }
+
+        .topZero {
+            top: 0 !important;
+        }
+
+        .mainview-animation {
+            position: relative;
+        }
+
+            .mainview-animation.ng-enter {
+                -webkit-transition: .3s linear all; /* Safari/Chrome */
+                -moz-transition: .3s linear all; /* Firefox */
+                -o-transition: .3s linear all; /* Opera */
+                transition: .3s linear all; /* IE10+ and Future Browsers */
+            }
+
+            /**
+ * Pre animation -> enter
+ */
+            .mainview-animation.ng-enter {
+                /* The animation preparation code */
+                opacity: 0;
+            }
+
+                /**
+ * Post animation -> enter
+ */
+                .mainview-animation.ng-enter.ng-enter-active {
+                    /* The animation code itself */
+                    opacity: 1;
+                }
+
+        .navbar.navbar-default.ng-hide {
+            display: none;
+        }
+
+        #page-rightbar .jspHorizontalBar {
+            /*display: none !important;*/
+        }
+
+        .fc-grid .fc-day-number {
+            padding: 5px 6px;
+        }</style><title>NowDelivered</title><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width,height=device-height,initial-scale=1,maximum-scale=1"><meta name="description" content="NowDelivered"><meta name="title" content="NowDelivered"><script>// Must be first. IE10 mobile viewport fix
+        if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+            var msViewportStyle = document.createElement("style");
+            var mq = "@-ms-viewport{width:auto!important}";
+            msViewportStyle.appendChild(document.createTextNode(mq));
+            document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+        }</script><link defer="defer" href="assets/css/style.build.min.css" rel="stylesheet"><link defer="defer" href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet" type="text/css"><script defer="defer" src="https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script><link rel="icon" type="image/png" href="favicon.ico"><link media="print" rel="stylesheet" href="/bower_components/angularPrint/angularPrint.css"><link defer="defer" href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css" rel="stylesheet"><script defer="defer" src="scripts/countries.min.js"></script><script type="text/javascript" src="scripts/xlsx.core.min.js"></script><script type="text/javascript" src="scripts/Blob.js"></script><script type="text/javascript" src="scripts/FileSaver.js"></script><script type="text/javascript" src="scripts/Export2Excel.js"></script></head><body><div data-ng-include="'views/layout/shell.html'"></div><script type="text/javascript" data-main="main" src="bower_components/requirejs/require.js"></script><script>require.config({
+            urlArgs: '10.1'
+        });</script><script defer="defer" type="text/javascript">!function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","group","track","ready","alias","page","once","off","on"];analytics.factory=function(t){return function(){var e=Array.prototype.slice.call(arguments);e.unshift(t);analytics.push(e);return analytics}};for(var t=0;t<analytics.methods.length;t++){var e=analytics.methods[t];analytics[e]=analytics.factory(e)}analytics.load=function(t){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src=("https:"===document.location.protocol?"https://":"http://")+"cdn.segment.com/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(e,n)};analytics.SNIPPET_VERSION="3.0.1";
+            analytics.load('eM99fUWXogz55Od6MiCpTK49oQmfbm5E'); //Production
+        }}();</script></body></html>
