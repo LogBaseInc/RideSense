@@ -216,7 +216,7 @@
 		        	<br/><br/>
 		    	</div>
 		    </div>
-		    <div print-only class="printMe">
+		    <div print-only class="printMe" print-if="vm.canPrint">
 		    	<small>
 		    		<center>
 		    			<br/>
@@ -299,6 +299,56 @@
 			        </table>
 		    	</small>
 		    </div>
+			<!--Print A4 Section Starts-->
+			<div print-only class="printA4" print-if="!vm.canPrint" class="noPrintMargin">
+				<span style="float:left;padding:5% 0% 0% 5%"><img height="75px" src="../../assets/images/logo-fc.png"></span>
+					<div style="text-align :right;padding:5% 5% 2.5% 5%">
+				    	<p style="padding-bottom:2.5%">Order #: {{vm.order.ordernumber}}</p>
+		    			<p>{{vm.accountName}}</p>
+		    			<p data-ng-if="vm.address && vm.address.addressline">{{vm.address.addressline}}</p>
+		    			<p data-ng-if="vm.address && vm.address.city">{{vm.address.city}}</p>
+		    			<p>Ph: {{vm.mobilenumber}}</p>
+					</div>
+					<div style="text-align :right;padding:0% 5% 5% 5%">
+						<p>Mobile : {{vm.order.mobilenumber}}</p>
+						<p>Name : {{vm.order.name}}</p>
+						<p>Address : {{vm.order.address}}</p>
+						<p data-ng-if="vm.order.zip">Zipcode : {{vm.order.zip}}</p>
+					</div> 
+					<table style="width:100%;margin:5%;"> 
+						<thead style="border-bottom:0.5px solid lightgrey !important">
+							<tr>
+								<td style="border-top:none !important;color:black !important;width:40% !important">Item</td>
+								<td style="border-top:none !important;color:black !important;width:30% !important">Quantity</td>
+								<td style="border-top:none !important;color:black !important;width:30% !important">Price</td>
+								<td style="border-top:none !important;width:10% !important" ></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="product in vm.products" style="background: none !important">
+								<td style="border-top:none !important;color:black !important;width:40% !important">{{product.name}}</td>
+								<td style="border-top:none !important;color:black !important;width:30% !important">{{product.quantity}}</td>
+								<td style="border-top:none !important;color:black !important;width:30% !important" >{{product.price}}</td>
+								<td style="border-top:none !important;width:10% !important"></td>
+							</tr>
+							<tr style="background: none !important;padding:2.5% 0% 0% 0%">
+								<td style="border-top:none !important;color:black !important;width:40% !important"></td>
+								<td style="border-top:none !important;color:black !important;width:30% !important">Total</td>
+								<td style="border-top:none !important;color:black !important;width:30% !important">{{vm.order.amount}}</td>
+								<td style="border-top:none !important;width:10% !important"></td>
+							</tr>
+
+						</tbody>
+					</table>
+					<div style="text-align:left;padding:0% 0% 5% 5%">
+						<p>Delivery date: {{vm.selecteddate | date: 'dd MMM, yyyy'}}</p>
+						<p data-ng-hide="vm.isVendor">Delivery time: {{vm.time1}} - {{vm.time2}}</p>
+						<p data-ng-if="vm.isVendor || vm.vendorsupport">Delivery charge: Rs. {{vm.order.deliverycharge}}</p>
+						<p data-ng-if="vm.isVendor || vm.vendorsupport">Pickup location: {{vm.order.pickuplocation}}</p>
+						<p data-ng-if="vm.order.notes">Notes: {{vm.order.notes}}</p>
+					</div>
+				</div>
+			<!--Print A4 Section Ends-->
 		</div> <!-- row ends -->
 	</div> <!-- container ends -->
 </div>
