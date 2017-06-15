@@ -301,52 +301,94 @@
 		    </div>
 			<!--Print A4 Section Starts-->
 			<div print-only class="printA4" print-if="!vm.canPrint" class="noPrintMargin">
-				<span style="float:left;padding:5% 0% 0% 5%"><img height="75px" src="../../assets/images/logo-fc.png"></span>
-					<div style="text-align :right;padding:5% 5% 2.5% 5%">
-				    	<p style="padding-bottom:2.5%">Order #: {{vm.order.ordernumber}}</p>
-		    			<p>{{vm.accountName}}</p>
-		    			<p data-ng-if="vm.address && vm.address.addressline">{{vm.address.addressline}}</p>
-		    			<p data-ng-if="vm.address && vm.address.city">{{vm.address.city}}</p>
-		    			<p>Ph: {{vm.mobilenumber}}</p>
+				<div style="padding:5% 5% 1% 5%">
+					<div style="float:left">
+						<img height="90px" src="../../assets/images/logo-fc.png">
 					</div>
-					<div style="text-align :right;padding:0% 5% 5% 5%">
-						<p>Mobile : {{vm.order.mobilenumber}}</p>
-						<p>Name : {{vm.order.name}}</p>
-						<p>Address : {{vm.order.address}}</p>
-						<p data-ng-if="vm.order.zip">Zipcode : {{vm.order.zip}}</p>
-					</div> 
-					<table style="width:100%;margin:5%;"> 
-						<thead style="border-bottom:0.5px solid lightgrey !important">
+					<span style="padding:2.5% 2.5% 2.5% 35%;font-weight:600">ORDER INVOICE</span>
+					<span style="float:right"><span style="font-weight:500">Order #:</span>&nbsp;&nbsp;{{vm.order.ordernumber}}</span><br/><br/><br/><br/>
+					<!--<span style="float:left;padding-left:2.5%">Name:&nbsp;&nbsp;{{vm.order.name}}</span>-->
+					<!--<span style="float:right"><span style="font-weight:500">Amount Payable:</span>&nbsp;&nbsp;Rs.{{vm.order.amount}}</span><br/>
+					<span style="text-align:left;padding-left:2.5%">
+						<span data-ng-if="vm.address && vm.address.addressline">Address:&nbsp;&nbsp;{{vm.order.address}}</span>
+						<span data-ng-if="vm.address && vm.address.zip">&nbsp;&nbsp;{{vm.order.zip}}</span>
+					</span><br/>-->
+					<!--<span style="text-align:left;padding-left:2.5%">Phone:&nbsp;&nbsp;{{vm.order.mobilenumber}}</span>-->
+				</div>
+				<!--<div style="padding:2% 5% 1% 5%">
+						<span style="width:20%"><span style="font-weight:500">Order #:</span>{{vm.order.ordernumber}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+						<span><span style="font-weight:500">Amount Payable:</span> {{vm.order.amount}}</span> 
+				</div>-->
+				<div style="padding:0% 5% 0% 5%">
+					<table>
+						<tbody>
 							<tr>
-								<td style="border-top:none !important;color:black !important;width:40% !important">Item</td>
-								<td style="border-top:none !important;color:black !important;width:30% !important">Quantity</td>
-								<td style="border-top:none !important;color:black !important;width:30% !important">Price</td>
-								<td style="border-top:none !important;width:10% !important" ></td>
+								<td style="border:none !important;color:black !important;font-weight:500;padding-bottom:0% !important">FISH CHAIN</td>
+								<td style="border:none !important;color:black !important;font-weight:500;padding-bottom:0% !important">{{vm.order.name}}</td>
+							</tr>
+							<tr style="background: none !important">
+								<td style="border:none !important;color:black !important;padding-bottom:0% !important">No.18, P.N Palayam Road, Ganapathy, Coimbatore - 641006, Near Ennar Corel Appartment</td>
+								<td style="border:none !important;color:black !important;padding-bottom:0% !important">{{vm.order.address}}</td>
+							</tr>
+							<tr>
+								<td style="border:none !important;color:black !important;padding-bottom:0% !important">9655760418</td>
+								<td style="border:none !important;color:black !important;padding-bottom:0% !important">{{vm.order.mobilenumber}}</td>
+							</tr>
+						</tbody>
+					</table>
+					<hr/>
+				</div>
+				<div style="padding:0% 5% 1% 5%">
+					<table>
+						<tbody>
+							<tr>
+								<td style="border:none !important;color:black !important"><span style="font-weight:500">Delivery date</span><br style="line-height:2"/>{{vm.selecteddate | date: 'dd MMM, yyyy'}}</td>
+								<td style="text-align:center !important;border:none !important;color:black !important;" data-ng-hide="vm.isVendor"><span style="font-weight:500">Delivery time</span><br style="line-height:2"/>{{vm.time1}} - {{vm.time2}}</td>
+								<td style="text-align:center !important;border:none !important;color:black !important" data-ng-if="vm.isVendor || vm.vendorsupport"><span style="font-weight:500">Delivery charge</span><br style="line-height:2"/> Rs. {{vm.order.deliverycharge}}</td>
+								<td style="text-align:right !important;border:none !important;color:black !important;padding-right:0px !important" data-ng-if="vm.order.notes"><span style="font-weight:500">Delivery  notes</span><br style="line-height:2"/>{{vm.order.notes}}</td>
+								<!--<td style="text-align:right !important;border:none !important;color:black !important;padding-right:0px !important" data-ng-if="vm.isVendor || vm.vendorsupport"><span style="font-weight:500">Pickup location</span><br style="line-height:2"/>{{vm.order.pickuplocation}}</td>-->
+							</tr>
+						</tbody>
+					</table>
+					<hr/>
+				</div>
+				<div style="padding:0% 5% 1% 5%">
+					<table style="margin-top:0% !important">
+						<thead style="border-bottom:1px solid grey !important">
+							<tr>
+								<td style="color:black !important;border:none !important;font-weight:600">Item</td>
+								<td style="color:black !important;border:none !important;text-align:center !important;font-weight:600">Quantity</td>
+								<td style="color:black !important;border:none !important;text-align:right !important;font-weight:600">Price</td>
 							</tr>
 						</thead>
 						<tbody>
 							<tr ng-repeat="product in vm.products" style="background: none !important">
-								<td style="border-top:none !important;color:black !important;width:40% !important">{{product.name}}</td>
-								<td style="border-top:none !important;color:black !important;width:30% !important">{{product.quantity}}</td>
-								<td style="border-top:none !important;color:black !important;width:30% !important" >{{product.price}}</td>
-								<td style="border-top:none !important;width:10% !important"></td>
+								<td style="color:black !important;border:none !important;">{{product.name}}</td>
+								<td style="color:black !important;border:none !important;text-align:center !important;">{{product.quantity}}</td>
+								<td style="color:black !important;border:none !important;text-align:right !important;">Rs.{{product.price}}</td>
 							</tr>
-							<tr style="background: none !important;padding:2.5% 0% 0% 0%">
-								<td style="border-top:none !important;color:black !important;width:40% !important"></td>
-								<td style="border-top:none !important;color:black !important;width:30% !important">Total</td>
-								<td style="border-top:none !important;color:black !important;width:30% !important">{{vm.order.amount}}</td>
-								<td style="border-top:none !important;width:10% !important"></td>
+							<tr style="background: none !important">
+								<td style="border:none !important;"></td>
+								<td style="border:none !important;"></td>
+								<td style="color:black !important;border:none !important;text-align:right !important;font-weight:500">Total:&nbsp;&nbsp;Rs.{{vm.order.amount}}</td>
 							</tr>
-
+							<tr style="background: none !important">
+								<td style="border:none !important;"></td>
+								<td style="border:none !important;"></td>
+								<td style="color:black !important;border:none !important;text-align:right !important;font-weight:600">Amount Payable:&nbsp;&nbsp;Rs.{{vm.order.amount}}</td>
+							</tr>
 						</tbody>
 					</table>
-					<div style="text-align:left;padding:0% 0% 5% 5%">
+					<hr/>
+					<center><p style="border:none !important;color:black !important" ><span style="font-weight:500">Thank You. Visit Again.</span></p></center>
+				</div>
+					<!--<div style="text-align:left;padding:0% 0% 5% 5%">
 						<p>Delivery date: {{vm.selecteddate | date: 'dd MMM, yyyy'}}</p>
 						<p data-ng-hide="vm.isVendor">Delivery time: {{vm.time1}} - {{vm.time2}}</p>
 						<p data-ng-if="vm.isVendor || vm.vendorsupport">Delivery charge: Rs. {{vm.order.deliverycharge}}</p>
 						<p data-ng-if="vm.isVendor || vm.vendorsupport">Pickup location: {{vm.order.pickuplocation}}</p>
 						<p data-ng-if="vm.order.notes">Notes: {{vm.order.notes}}</p>
-					</div>
+					</div>-->
 				</div>
 			<!--Print A4 Section Ends-->
 		</div> <!-- row ends -->
