@@ -39,7 +39,7 @@ define(['angular',
             vm.roundOffOrderTime = null;
             vm.minFromOrderTime = null;
             vm.deliveryTimeWindow = null;
-            vm.canPrint = true;
+            vm.canPrint = false;
             vm.logourl = "assets/images/logo-fc.png";
             Object.defineProperty(vm, 'canAdd', {
                 get: canAdd

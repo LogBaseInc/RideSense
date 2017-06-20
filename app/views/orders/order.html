@@ -303,7 +303,7 @@
 			<div print-only class="printA4" print-if="!vm.canPrint" class="noPrintMargin">
 				<div style="padding:5% 5% 1% 5%">
 					<div style="float:left">
-						<img height="90px" src="../../assets/images/logo-fc.png">
+						<img height="100px" src="../../assets/images/Fish-Chain.jpg">
 					</div>
 					<span style="padding:2.5% 2.5% 2.5% 35%;font-weight:600">ORDER INVOICE</span>
 					<span style="float:right"><span style="font-weight:500">Order #:</span>&nbsp;&nbsp;{{vm.order.ordernumber}}</span><br/><br/><br/><br/>
@@ -321,16 +321,20 @@
 				</div>-->
 				<div style="padding:0% 5% 0% 5%">
 					<table>
-						<tbody>
-							<tr>
-								<td style="border:none !important;color:black !important;font-weight:500;padding-bottom:0% !important">FISH CHAIN</td>
+						<tbody>						
+							<tr style="background: none !important">
+								<td style="border:none !important;color:black !important;font-weight:600;padding-bottom:0% !important"></td>
+								<td style="border:none !important;color:black !important;font-weight:600;padding-bottom:0% !important">Customer Details</td>
+								</tr>
+							<tr style="background: none !important">
+								<td style="border:none !important;color:black !important;font-weight:600;padding-bottom:0% !important">FISH CHAIN</td>
 								<td style="border:none !important;color:black !important;font-weight:500;padding-bottom:0% !important">{{vm.order.name}}</td>
 							</tr>
 							<tr style="background: none !important">
-								<td style="border:none !important;color:black !important;padding-bottom:0% !important">No.18, P.N Palayam Road, Ganapathy, Coimbatore - 641006, Near Ennar Corel Appartment</td>
+								<td style="border:none !important;color:black !important;padding-bottom:0% !important">No.18, P.N Palayam Road, Ganapathy, Coimbatore - 641006</td>
 								<td style="border:none !important;color:black !important;padding-bottom:0% !important">{{vm.order.address}}</td>
 							</tr>
-							<tr>
+							<tr style="background: none !important">
 								<td style="border:none !important;color:black !important;padding-bottom:0% !important">9655760418</td>
 								<td style="border:none !important;color:black !important;padding-bottom:0% !important">{{vm.order.mobilenumber}}</td>
 							</tr>
@@ -380,7 +384,14 @@
 						</tbody>
 					</table>
 					<hr/>
-					<center><p style="border:none !important;color:black !important" ><span style="font-weight:500">Thank You. Visit Again.</span></p></center>
+					<div>
+						<center><p style="border:none !important;color:black !important" ><span style="font-weight:500">We love to hear from you !!!</span></p></center>
+						<p><span style="float:left"><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;&nbsp;9442053511</span><span style="margin-left:350px"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;freshcare@fishchain.in</span><span style="float:right"><i class="fa fa-facebook-official" aria-hidden="true"></i>&nbsp;&nbsp;facebook.com/fishchain</span></p>
+					</div><br/>
+					<center>
+						<img height="250px" width="1050px" src="../../assets/images/Fish-Chain-Ratio.jpg">
+					</center>
+					<div style="height:7cm"></div>
 				</div>
 					<!--<div style="text-align:left;padding:0% 0% 5% 5%">
 						<p>Delivery date: {{vm.selecteddate | date: 'dd MMM, yyyy'}}</p>
