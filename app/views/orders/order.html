@@ -377,13 +377,13 @@
 							</tr>
 						</tbody>
 					</table>
-					<p style="padding:10px;text-align:right;border: 1px solid #ddd;margin:0px !important">Subtotal Rs.{{ vm.calculateSubTotal() }}</p>
-					<p style="padding:10px;text-align:right;border: 1px solid #ddd;margin:0px !important">VAT 5%</p>
-					<p style="padding:10px;text-align:right;border: 1px solid #ddd;margin:0px !important">Delivery Charge 
+					<p style="padding:10px;text-align:right;border: 1px solid #ddd;margin:0px !important">Subtotal&nbsp;&nbsp;&nbsp; Rs.{{ vm.calculateSubTotal() }}</p>
+					<p style="padding:10px;text-align:right;border: 1px solid #ddd;margin:0px !important">VAT 5% &nbsp;&nbsp;&nbsp;Included</p>
+					<p style="padding:10px;text-align:right;border: 1px solid #ddd;margin:0px !important">Delivery Charge&nbsp;&nbsp;&nbsp; 
 						<span data-ng-if="vm.order.deliverycharge > 0">Rs.{{ vm.calculateSubTotal() }}</span>
 						<span data-ng-if="vm.order.deliverycharge <= 0">Rs. 0</span>
 					</p>
-					<p style="padding:10px;text-align:right;border: 1px solid #ddd;margin:0px !important">Final Total Rs.{{ vm.calculateGrandTotal() }}</p>
+					<p style="padding:10px;text-align:right;border: 1px solid #ddd;margin:0px !important">Final Total&nbsp;&nbsp;&nbsp; Rs.{{ vm.calculateGrandTotal() }}</p>
 					<p style="text-align: right;font-weight:600;margin-bottom:0px !important;padding:10px;">Amount Payable:&nbsp;&nbsp;Rs.{{vm.calculateGrandTotal()}}</p>
 					<div style="margin-top:20px">
 						<center><p style="border:none !important;color:black !important" ><span style="font-weight:500">Share your experience on <strong>facebook.com/fishchain &</strong>
