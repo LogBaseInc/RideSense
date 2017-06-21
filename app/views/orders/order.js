@@ -503,6 +503,18 @@ define(['angular',
                 addoneProduct();
             }
 
+            vm.calculateGrandTotal = function() {
+                return parseInt(vm.order.deliverycharge) + vm.calculateSubTotal()
+            }
+
+            vm.calculateSubTotal = function() {
+                let subtotal = 0;
+                for (let index in vm.products){
+                   subtotal += vm.products[index].price 
+                }
+                return subtotal;
+            }
+
             function addoneProduct () {
                 vm.products.push({name:"", quantity:null, originalQuantity : 0, price:null, unitprice:0,inventoryerror: false});
             }
