@@ -324,19 +324,27 @@
 						<tbody>						
 							<tr style="background: none !important">
 								<td style="border:none !important;color:black !important;font-weight:600;padding-bottom:0% !important">FISH CHAIN</td>
-								<td style="border:none !important;color:black !important;font-weight:600;padding-bottom:0% !important">Customer Details</td>
-								</tr>
+								<td style="border:none !important;color:black !important;font-weight:600;padding-bottom:0% !important;padding-left:100px !important">Customer Details</td>
+							</tr>
 							<tr style="background: none !important">
-								<td style="border:none !important;color:black !important;padding-bottom:0% !important">No.18, P.N Palayam Road, Ganapathy, Coimbatore - 641006</td>
-								<td style="border:none !important;color:black !important;font-weight:500;padding-bottom:0% !important">{{vm.order.name}}</td>
+								<td style="border:none !important;color:black !important;padding-bottom:0% !important">No.18, P.N Palayam Road,</td>
+								<td style="border:none !important;color:black !important;font-weight:500;padding-bottom:0% !important;padding-left:100px !important">{{vm.order.name}}</td>
+							</tr>
+							<tr style="background: none !important">
+								<td style="border:none !important;color:black !important;padding-bottom:0% !important">Near CM Kalyana Mandapam,</td>
+								<td style="border:none !important;color:black !important;padding-bottom:0% !important;padding-left:100px !important">{{vm.order.address}}</td>
+							</tr>
+							<tr style="background: none !important">
+								<td style="border:none !important;color:black !important;padding-bottom:0% !important">Ganapathy - 641 006.</td>
+								<td style="border:none !important;color:black !important;padding-bottom:0% !important;padding-left:100px !important">{{vm.order.mobilenumber}}</td>
+							</tr>
+							<tr style="background: none !important">
+								<td style="border:none !important;color:black !important;padding-bottom:0% !important"><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;&nbsp;9442053511</td>
+								<td style="border:none !important;color:black !important;padding-bottom:0% !important;padding-left:100px !important"></td>
 							</tr>
 							<tr style="background: none !important">
 								<td style="border:none !important;color:black !important;padding-bottom:0% !important"><i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;freshcare@fishchain.in</td>
-								<td style="border:none !important;color:black !important;padding-bottom:0% !important">{{vm.order.address}}</td>
-							</tr>
-							<tr style="background: none !important">
-								<td style="border:none !important;color:black !important;padding-bottom:0% !important"><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;&nbsp;9442053511</td>								
-								<td style="border:none !important;color:black !important;padding-bottom:0% !important">{{vm.order.mobilenumber}}</td>
+								<td style="border:none !important;color:black !important;padding-bottom:0% !important;padding-left:100px !important"></td>
 							</tr>
 						</tbody>
 					</table>
@@ -350,7 +358,6 @@
 								<td style="text-align:center !important;border:none !important;color:black !important;" data-ng-hide="vm.isVendor"><span style="font-weight:500">Delivery time</span><br style="line-height:2"/>{{vm.time1}} - {{vm.time2}}</td>
 								<td style="text-align:center !important;border:none !important;color:black !important" data-ng-if="vm.isVendor || vm.vendorsupport"><span style="font-weight:500">Delivery charge</span><br style="line-height:2"/> 
 								<span data-ng-if="vm.order.deliverycharge > 0">Rs. {{vm.order.deliverycharge}}</span><span data-ng-if="vm.order.deliverycharge <= 0">Free</span></td>
-								<td style="text-align:right !important;border:none !important;color:black !important;padding-right:0px !important" data-ng-if="vm.order.notes"><span style="font-weight:500">Delivery  notes</span><br style="line-height:2"/>{{vm.order.notes}}</td>
 								<!--<td style="text-align:right !important;border:none !important;color:black !important;padding-right:0px !important" data-ng-if="vm.isVendor || vm.vendorsupport"><span style="font-weight:500">Pickup location</span><br style="line-height:2"/>{{vm.order.pickuplocation}}</td>-->
 							</tr>
 						</tbody>
@@ -364,7 +371,7 @@
 								<td style="color:black !important;font-weight:600;">Item</td>
 								<td style="color:black !important;text-align:center !important;font-weight:600;">Quantity</td>
 								<td style="color:black !important;text-align:center !important;font-weight:600;">Unit Price</td>
-								<td style="color:black !important;text-align:right !important;font-weight:600;">Price</td>
+								<td style="color:black !important;text-align:right !important;font-weight:600;">Amount</td>
 							</tr>
 						</thead>
 						<tbody>
@@ -384,11 +391,16 @@
 						<span data-ng-if="vm.order.deliverycharge <= 0">Rs. 0</span>
 					</p>
 					<p style="padding:10px;text-align:right;border: 1px solid #ddd;margin:0px !important">Final Total&nbsp;&nbsp;&nbsp; Rs.{{ vm.calculateGrandTotal() }}</p>
-					<p style="text-align: right;font-weight:600;margin-bottom:0px !important;padding:10px;">Amount Payable:&nbsp;&nbsp;Rs.{{vm.calculateGrandTotal()}}</p>
-					<div style="margin-top:20px">
-						<center><p style="border:none !important;color:black !important" ><span style="font-weight:500">Share your experience on <strong>facebook.com/fishchain &</strong>
-						<br/><strong><span style="font-size:20px">WIN Rs.500</span></strong><br/> worth marinated seafood every week.</span></p></center>
-					</div><br/>
+					<div style="padding-bottom:50px">
+						<p style="float: right;font-weight:600;margin-bottom:0px !important;padding:10px;">Amount Payable:&nbsp;&nbsp;&nbsp;Rs.{{vm.calculateGrandTotal()}}</p>						
+						<p style="float: left;margin-bottom:0px !important;padding:10px;" data-ng-if="vm.order.notes"><span style="font-weight:600">Delivery  Note:</span>&nbsp;&nbsp;&nbsp;{{vm.order.notes}}</p>
+					</div>
+					<div style="text-align:center">
+						<p style="border:none !important;color:black !important" ><center><span style="font-weight:500">Share your experience on <strong>facebook.com/fishchain &</strong><center></p>
+						<p><center><strong><span style="font-size:20px">WIN Rs.500</span></strong></center></p>
+						<p><center>worth marinated seafood every week.</center></p>
+					<br/>
+					</div>
 					<center>
 						<img height="250px" width="1050px" src="../../assets/images/Fish-Chain-Ratio.jpg">
 					</center>
