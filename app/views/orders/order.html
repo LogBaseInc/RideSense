@@ -197,7 +197,8 @@
 			           	
 			           	<button type="button" class="margintop15 btn btn-default" data-ng-if="vm.order.status=='Delivered' && !vm.order.cancelled && vm.order.deliveredon != null" data-ng-click="vm.viewtrip()">View trip</button>
 			           	
-			           	<button type="button" class="margintop15 btn btn-default" data-ng-if="vm.isOrderEdit" print-btn>Print Receipt</button>
+			           	<button type="button" class="margintop15 btn btn-default" data-ng-if="vm.isOrderEdit && !(vm.accountName === 'Thefishchain')" print-btn>Print Receipt</button>
+						<button type="button" class="margintop15 btn btn-default" data-ng-if="vm.isOrderEdit && (vm.accountName === 'Thefishchain')" print-btn>Print A4 Receipt</button>
 
 			           	<button type="button" class="margintop15 btn btn-default" ng-click="vm.cancel();">Go Back</button>
 			        </center>
@@ -216,7 +217,7 @@
 		        	<br/><br/>
 		    	</div>
 		    </div>
-		    <div print-only class="printMe" print-if="vm.canPrint">
+		    <div print-only class="printMe" print-if="!(vm.accountName === 'Thefishchain')">
 		    	<small>
 		    		<center>
 		    			<br/>
@@ -300,25 +301,14 @@
 		    	</small>
 		    </div>
 			<!--Print A4 Section Starts-->
-			<div print-only class="printA4" print-if="!vm.canPrint" class="noPrintMargin">
+			<div print-only class="printA4" print-if="vm.accountName === 'Thefishchain'" class="noPrintMargin">
 				<div style="padding:5% 5% 1% 5%">
 					<div style="float:left">
 						<img height="100px" src="../../assets/images/Fish-Chain.jpg">
 					</div>
 					<span style="padding:2.5% 2.5% 2.5% 35%;font-weight:600">ORDER INVOICE</span>
 					<span style="float:right"><span style="font-weight:500">Order #:</span>&nbsp;&nbsp;{{vm.order.ordernumber}}</span><br/><br/><br/><br/>
-					<!--<span style="float:left;padding-left:2.5%">Name:&nbsp;&nbsp;{{vm.order.name}}</span>-->
-					<!--<span style="float:right"><span style="font-weight:500">Amount Payable:</span>&nbsp;&nbsp;Rs.{{vm.order.amount}}</span><br/>
-					<span style="text-align:left;padding-left:2.5%">
-						<span data-ng-if="vm.address && vm.address.addressline">Address:&nbsp;&nbsp;{{vm.order.address}}</span>
-						<span data-ng-if="vm.address && vm.address.zip">&nbsp;&nbsp;{{vm.order.zip}}</span>
-					</span><br/>-->
-					<!--<span style="text-align:left;padding-left:2.5%">Phone:&nbsp;&nbsp;{{vm.order.mobilenumber}}</span>-->
 				</div>
-				<!--<div style="padding:2% 5% 1% 5%">
-						<span style="width:20%"><span style="font-weight:500">Order #:</span>{{vm.order.ordernumber}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-						<span><span style="font-weight:500">Amount Payable:</span> {{vm.order.amount}}</span> 
-				</div>-->
 				<div style="padding:0% 5% 0% 5%">
 					<table>
 						<tbody>						
@@ -339,7 +329,7 @@
 								<td style="border:none !important;color:black !important;padding-bottom:0% !important;padding-left:100px !important">{{vm.order.mobilenumber}}</td>
 							</tr>
 							<tr style="background: none !important">
-								<td style="border:none !important;color:black !important;padding-bottom:0% !important"><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;&nbsp;9442053511</td>
+								<td style="border:none !important;color:black !important;padding-bottom:0% !important"><i class="fa fa-phone" aria-hidden="true"></i>&nbsp;&nbsp;94420 53511</td>
 								<td style="border:none !important;color:black !important;padding-bottom:0% !important;padding-left:100px !important"></td>
 							</tr>
 							<tr style="background: none !important">
@@ -358,7 +348,6 @@
 								<td style="text-align:center !important;border:none !important;color:black !important;" data-ng-hide="vm.isVendor"><span style="font-weight:500">Delivery time</span><br style="line-height:2"/>{{vm.time1}} - {{vm.time2}}</td>
 								<td style="text-align:center !important;border:none !important;color:black !important" data-ng-if="vm.isVendor || vm.vendorsupport"><span style="font-weight:500">Delivery charge</span><br style="line-height:2"/> 
 								<span data-ng-if="vm.order.deliverycharge > 0">Rs. {{vm.order.deliverycharge}}</span><span data-ng-if="vm.order.deliverycharge <= 0">Free</span></td>
-								<!--<td style="text-align:right !important;border:none !important;color:black !important;padding-right:0px !important" data-ng-if="vm.isVendor || vm.vendorsupport"><span style="font-weight:500">Pickup location</span><br style="line-height:2"/>{{vm.order.pickuplocation}}</td>-->
 							</tr>
 						</tbody>
 					</table>
@@ -387,12 +376,12 @@
 					<p style="padding:10px;text-align:right;border: 1px solid #ddd;margin:0px !important">Subtotal&nbsp;&nbsp;&nbsp; Rs.{{ vm.calculateSubTotal() }}</p>
 					<p style="padding:10px;text-align:right;border: 1px solid #ddd;margin:0px !important">VAT 5% &nbsp;&nbsp;&nbsp;Included</p>
 					<p style="padding:10px;text-align:right;border: 1px solid #ddd;margin:0px !important">Delivery Charge&nbsp;&nbsp;&nbsp; 
-						<span data-ng-if="vm.order.deliverycharge > 0">Rs.{{ vm.calculateSubTotal() }}</span>
-						<span data-ng-if="vm.order.deliverycharge <= 0">Rs. 0</span>
+						<span data-ng-if="vm.order.deliverycharge > 0">Rs.{{ vm.order.deliverycharge }}</span>
+						<span data-ng-if="vm.order.deliverycharge <= 0">Free</span>
 					</p>
 					<p style="padding:10px;text-align:right;border: 1px solid #ddd;margin:0px !important">Final Total&nbsp;&nbsp;&nbsp; Rs.{{ vm.calculateGrandTotal() }}</p>
 					<div style="padding-bottom:50px">
-						<p style="float: right;font-weight:600;margin-bottom:0px !important;padding:10px;">Amount Payable:&nbsp;&nbsp;&nbsp;Rs.{{vm.calculateGrandTotal()}}</p>						
+						<p style="float: right;font-weight:600;margin-bottom:0px !important;padding:10px;">Amount Payable:&nbsp;&nbsp;&nbsp;Rs.{{vm.order.amount}}</p>						
 						<p style="float: left;margin-bottom:0px !important;padding:10px;" data-ng-if="vm.order.notes"><span style="font-weight:600">Delivery  Note:</span>&nbsp;&nbsp;&nbsp;{{vm.order.notes}}</p>
 					</div>
 					<div style="text-align:center">
@@ -404,15 +393,7 @@
 					<center>
 						<img height="250px" width="1050px" src="../../assets/images/Fish-Chain-Ratio.jpg">
 					</center>
-					<div style="height:7cm"></div>
 				</div>
-					<!--<div style="text-align:left;padding:0% 0% 5% 5%">
-						<p>Delivery date: {{vm.selecteddate | date: 'dd MMM, yyyy'}}</p>
-						<p data-ng-hide="vm.isVendor">Delivery time: {{vm.time1}} - {{vm.time2}}</p>
-						<p data-ng-if="vm.isVendor || vm.vendorsupport">Delivery charge: Rs. {{vm.order.deliverycharge}}</p>
-						<p data-ng-if="vm.isVendor || vm.vendorsupport">Pickup location: {{vm.order.pickuplocation}}</p>
-						<p data-ng-if="vm.order.notes">Notes: {{vm.order.notes}}</p>
-					</div>-->
 				</div>
 			<!--Print A4 Section Ends-->
 		</div> <!-- row ends -->

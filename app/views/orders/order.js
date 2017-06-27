@@ -39,8 +39,6 @@ define(['angular',
             vm.roundOffOrderTime = null;
             vm.minFromOrderTime = null;
             vm.deliveryTimeWindow = null;
-            vm.canPrint = false;
-            vm.logourl = "assets/images/logo-fc.png";
             Object.defineProperty(vm, 'canAdd', {
                 get: canAdd
             });
@@ -504,13 +502,13 @@ define(['angular',
             }
 
             vm.calculateGrandTotal = function() {
-                return parseInt(vm.order.deliverycharge) + vm.calculateSubTotal()
+                return (vm.order.deliverycharge ? parseInt(vm.order.deliverycharge) : 0) + vm.calculateSubTotal()
             }
 
             vm.calculateSubTotal = function() {
                 let subtotal = 0;
                 for (let index in vm.products){
-                   subtotal += vm.products[index].price 
+                   subtotal += parseInt(vm.products[index].price);
                 }
                 return subtotal;
             }
