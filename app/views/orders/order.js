@@ -39,7 +39,6 @@ define(['angular',
             vm.roundOffOrderTime = null;
             vm.minFromOrderTime = null;
             vm.deliveryTimeWindow = null;
-
             Object.defineProperty(vm, 'canAdd', {
                 get: canAdd
             });
@@ -500,6 +499,18 @@ define(['angular',
             //Products method
             vm.addproduct = function() {
                 addoneProduct();
+            }
+
+            vm.calculateGrandTotal = function() {
+                return (vm.order.deliverycharge ? parseInt(vm.order.deliverycharge) : 0) + vm.calculateSubTotal()
+            }
+
+            vm.calculateSubTotal = function() {
+                let subtotal = 0;
+                for (let index in vm.products){
+                   subtotal += parseInt(vm.products[index].price);
+                }
+                return subtotal;
             }
 
             function addoneProduct () {

@@ -1447,3 +1447,6 @@ input[type=checkbox] {
 .printMe {
     margin: 20px;
 }
+.small-br {
+    line-height: 5px;
+}
