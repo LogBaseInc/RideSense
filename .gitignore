@@ -4,5 +4,4 @@ dist old
 .tmp
 .sass-cache
 bower_components
-
-
+tmp
